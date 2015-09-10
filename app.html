@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html ng-app="helpNow">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Help Now</title>
+
+    <!-- Bootstrap -->
+    <link href="style/bootstrap.css" rel="stylesheet">
+	<link href="style/help.css" rel="stylesheet">
+    <script type="text/javascript" src="lib/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="angular/angular.js"></script>
+    <script type="text/javascript" src="angular/angular-route.js"></script>
+    <script type="text/javascript" src="lib/bootstrap.js"></script>
+	
+	<script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="controllers/root.js"></script>
+    <script type="text/javascript" src="controllers/event-list.js"></script>
+    <script type="text/javascript" src="controllers/org-login.js"></script>
+    <script type="text/javascript" src="controllers/gov-login.js"></script>
+    <script type="text/javascript" src="controllers/event-map.js"></script>
+</head>
+<body ng-controller="RootCtrl">
+    <div class="container page-container">
+        <nav class="navbar navbar-inverse" role="navigation">
+			<div class="container">
+
+				<div class="navbar-header">
+				  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				  </button>
+				  <a class="navbar-brand" href="#">
+					<img alt="Help Now" src="style/images/logo.png" />
+				  </a>
+				</div>
+				
+				<div id="navbar" class="navbar-collapse collapse">
+				  <ul class="nav navbar-nav">
+					<li ng-class="getMenuClass('events')"><a href="#/events">Get Help</a></li>
+					<li ng-class="getMenuClass('orgs')"><a href="#/org_login">Aid Organizations</a></li>
+					<li ng-class="getMenuClass('govs')"><a href="#/gov_login">Governments</a></li>
+					<li class="dropdown">
+					  <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Language <span class="caret"></span></a>
+					  <ul class="dropdown-menu">
+						<li><a ng-click="setCurrentLanguage('Eng')" ng-class="getLanguageClass('Eng')"><img style="margin-bottom: 2px" height="10" width="20" src="style/images/uk_flag.png" /> English</a></li>
+						<li><a ng-click="setCurrentLanguage('Ben')" ng-class="getLanguageClass('Ben')"><img style="margin-bottom: 2px" height="10" width="20" src="style/images/bangladesh_flag.png" /> Bengali</a></li>
+					  </ul>
+					</li>
+				  </ul>
+				</div>
+			</div>
+		</nav>
+
+        <div class="row main-content">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <ng-view />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <h6>Version 0.5.0</h6>
+        </footer>
+    </div>
+</body>
+
+</html>

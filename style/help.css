@@ -1,0 +1,119 @@
+body {
+	background-color: #a49f79;
+	background-image: url("images/sky5.jpg");
+	background-position: center -120px;
+	color: #53503d;
+}
+
+h2 {
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
+.form-control {
+	background-color: #efffd9;
+	color: black;
+}
+
+.navbar-inverse {
+	background-color: rgba(117, 115, 105, 0.8);
+	border-color: #888;
+}
+
+.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus,
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus  {
+	background-color: rgba(117, 115, 105, 1);
+	color: #e7ffd9;
+}
+
+.navbar-brand {
+	padding: 5px 10px;
+}
+
+.navbar-inverse .navbar-nav > li > a, .navbar-inverse .navbar-brand {
+	color: #92e0ff;
+}
+
+.navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
+	color: #444;
+}
+
+.navbar-inverse .navbar-nav .open .dropdown-menu > li > a:hover {
+	color: #444;
+	background-color:  #e7ffd9;
+}
+
+.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus,
+.navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus,
+.navbar-inverse .navbar-brand:hover, .navbar-inverse .navbar-brand:focus  {
+	color: #e7ffd9;
+}
+
+.dropdown-menu, .navbar-nav .open .dropdown-menu {
+	background-color: #cac7b1;
+}
+
+.navbar-inverse .navbar-nav .open .dropdown-menu > li > a:active, 
+.dropdown-menu > li > a.active {
+	background-color: #dedcce;
+}
+
+.dropdown-menu > li > a:hover {
+	background-color: #e7ffd9;
+}
+
+.main-content {
+	margin-top: 30px;
+}
+
+.panel {
+	background-color: rgba(247, 255, 217, 0.7);
+	border-color: #888;
+}
+
+.panel-body {
+    padding: 25px;
+}
+
+.map-small {
+	margin-bottom: 20px;
+	background-color: pink;
+}
+
+.map-small img {
+	border-radius: 4px 4px 0px 0px;
+}
+
+.separated {
+	margin-top: 20px;
+}
+
+.btn-primary {
+	background-color: #3c87a5;
+	color: white;
+}
+
+.btn-primary:hover {
+	background-color: #2d647b;
+	color: white;
+}
+
+.btn span {
+	margin-right: 7px;
+}
+
+a {
+	color: #3c87a5;
+}
+
+a:hover {
+	color: #2d647b;
+}
+
+.icon-bar {
+	height: 40px;
+	background-color: #4e4d46;
+	max-width: 400px;
+	border-radius: 0px 0px 4px 4px;
+	padding-left: 20px;
+}
