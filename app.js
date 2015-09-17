@@ -1,5 +1,9 @@
 angular.module("helpNow", ["ngRoute"])
 	.config(function ($routeProvider) {
+	    $routeProvider.when("/ind_login", {
+	        templateUrl: "views/ind-login.html"
+	    });
+
 		$routeProvider.when("/org_login", {
 			templateUrl: "views/org-login.html"
 		});

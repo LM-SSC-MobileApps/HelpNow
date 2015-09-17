@@ -24,6 +24,7 @@
 	<script type="text/javascript" src="app.js"></script>
     <script type="text/javascript" src="controllers/root.js"></script>
     <script type="text/javascript" src="controllers/event-list.js"></script>
+	<script type="text/javascript" src="controllers/ind-login.js"></script>
     <script type="text/javascript" src="controllers/org-login.js"></script>
     <script type="text/javascript" src="controllers/gov-login.js"></script>
     <script type="text/javascript" src="controllers/event-map.js"></script>
@@ -48,6 +49,7 @@
 				<div id="navbar" class="navbar-collapse collapse">
 				  <ul class="nav navbar-nav">
 					<li ng-class="getMenuClass('events')"><a href="#/events">{{text.menu_help}}</a></li>
+					<li ng-class="getMenuClass('inds')"><a href="#/ind_login">{{text.menu_ind}}</a></li>
 					<li ng-class="getMenuClass('orgs')"><a href="#/org_login">{{text.menu_org}}</a></li>
 					<li ng-class="getMenuClass('govs')"><a href="#/gov_login">{{text.menu_gov}}</a></li>
 					<li class="dropdown">
