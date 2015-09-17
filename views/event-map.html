@@ -1,29 +1,61 @@
 <div ng-controller="EventMapCtrl">
 	<h2>Event {{eventID}}</h2>
     <div id="map" style="height: 710px; border: 1px solid #AAA;"></div>
-    <div id="slider" style="height: 100px;">
+    <div id="slider" style="height: 100px; width: 200px;">
+        <span>Selection Radius: </span>
         <input id="overlayRadiusSlider" type="range" min="0" max="100" value="5" step="5" onchange="showValue(this.value)" />
         <span id="range">5 km</span>
+        <br />
+        <br />
+        <input type="checkbox" id="unitsToggle" name="unitsToggle" class="switch" checked="checked" onchange="changeUnits(this.checked)" />
+        <label for="unitsToggle">Metric</label>
     </div>
 </div>
+
 
 <script type="text/javascript">
     if (document.getElementById("overlayRadiusSlider").value == 0) {
         document.getElementById("range").innerHTML = 1 + " km";
-        var overlayRadius = document.getElementById("overlayRadiusSlider").value * 1000;
     }
     document.getElementById("range").innerHTML = document.getElementById("overlayRadiusSlider").value + " km";
     var overlayRadius = document.getElementById("overlayRadiusSlider").value * 1000;
+    var radiusRawVal = document.getElementById("overlayRadiusSlider").value;
     var locationOutline;
+    var isMetric;
 
     function showValue(newValue) {
-        if (newValue == 0) {
+        if (newValue == 0)
             newValue = 1;
+
+
+        radiusRawVal = newValue;
+        if (isMetric) {
+            overlayRadius = newValue * 1000 / 0.62137119;
+            document.getElementById("range").innerHTML = newValue + " km";
         }
-        overlayRadius = newValue * 1000;
-        document.getElementById("range").innerHTML = newValue + " km";
-        if (locationOutline != undefined) {
+        else {
+            overlayRadius = newValue * 1000 * 0.62137119;
+            document.getElementById("range").innerHTML = newValue + " mi";
+        }
+            
+        if (locationOutline != undefined)
             locationOutline.setRadius(overlayRadius);
+    }
+
+    function changeUnits(isChecked) {
+        if (isChecked) {
+            document.getElementById("range").innerHTML = radiusRawVal + " km";
+            isMetric = true;
+            overlayRadius = overlayRadius / 0.62137119;
+            if (locationOutline != undefined)
+                locationOutline.setRadius(overlayRadius);
+        }
+        else {
+            document.getElementById("range").innerHTML = radiusRawVal + " mi";
+            isMetric = false;
+            overlayRadius = overlayRadius * 0.62137119;
+            if (locationOutline != undefined)
+                locationOutline.setRadius(overlayRadius);
         }
     }
 </script>
