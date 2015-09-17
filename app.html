@@ -47,14 +47,14 @@
 				
 				<div id="navbar" class="navbar-collapse collapse">
 				  <ul class="nav navbar-nav">
-					<li ng-class="getMenuClass('events')"><a href="#/events">Get Help</a></li>
-					<li ng-class="getMenuClass('orgs')"><a href="#/org_login">Aid Organizations</a></li>
-					<li ng-class="getMenuClass('govs')"><a href="#/gov_login">Governments</a></li>
+					<li ng-class="getMenuClass('events')"><a href="#/events">{{text.menu_help}}</a></li>
+					<li ng-class="getMenuClass('orgs')"><a href="#/org_login">{{text.menu_org}}</a></li>
+					<li ng-class="getMenuClass('govs')"><a href="#/gov_login">{{text.menu_gov}}</a></li>
 					<li class="dropdown">
-					  <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Language <span class="caret"></span></a>
+					  <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{text.menu_lang}} <span class="caret"></span></a>
 					  <ul class="dropdown-menu">
 						<li><a ng-click="setCurrentLanguage('Eng')" ng-class="getLanguageClass('Eng')"><img style="margin-bottom: 2px" height="10" width="20" src="style/images/uk_flag.png" /> English</a></li>
-						<li><a ng-click="setCurrentLanguage('Ben')" ng-class="getLanguageClass('Ben')"><img style="margin-bottom: 2px" height="10" width="20" src="style/images/bangladesh_flag.png" /> Bengali</a></li>
+						<li><a ng-click="setCurrentLanguage('Ben')" ng-class="getLanguageClass('Ben')"><img style="margin-bottom: 2px" height="10" width="20" src="style/images/bangladesh_flag.png" /> বাংলা</a></li>
 					  </ul>
 					</li>
 				  </ul>

@@ -2,6 +2,7 @@ body {
 	background-color: #a49f79;
 	background-image: url("images/sky5.jpg");
 	background-position: center -120px;
+	background-size: 100% auto;
 	color: #53503d;
 }
 
