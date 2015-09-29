@@ -1,47 +1,143 @@
 <div ng-controller="EventListCtrl">
-	<h2>{{text.events_title}}</h2>
-	<div class="row">
-		<div class="col-md-6">
-			<h4>Hurricane Katrina</h4>
-			<a href="#\event_map\1" class="map-small">
-				<img class="img-responsive" src="style/images/world1.png" />
-			</a>
-			<div class="icon-bar">
-				<img src="style/images/hurricane.png" />
-				<img src="style/images/flood.png" />
-			</div>
-		</div>
-		<div class="col-md-6">
-			<h4>Japan Earthquake/Tsunami</h4>
-			<a href="#\event_map\2" class="map-small">
-				<img class="img-responsive" src="style/images/world2.png" />
-			</a>
-			<div class="icon-bar">
-				<img src="style/images/earthquake.png" />
-				<img src="style/images/flood.png" />
-			</div>
-		</div>
-	</div>
-	<div class="row separated">
-		<div class="col-md-6">
-			<h4>Hurricane Katrina</h4>
-			<a href="#\event_map\3" class="map-small">
-				<img class="img-responsive" src="style/images/world1.png" />
-			</a>
-			<div class="icon-bar">
-				<img src="style/images/hurricane.png" />
-				<img src="style/images/flood.png" />
-			</div>
-		</div>
-		<div class="col-md-6">
-			<h4>Japan Earthquake/Tsunami</h4>
-			<a href="#\event_map\4" class="map-small">
-				<img class="img-responsive" src="style/images/world2.png" />
-			</a>
-			<div class="icon-bar">
-				<img src="style/images/earthquake.png" />
-				<img src="style/images/flood.png" />
-			</div>
-		</div>
-	</div>
+    <div class="row">
+        <div id="map" class="col-md-9" style="height: 512px; border: 1px solid #AAA;"></div>
+        <div id="eventList" class="col-md-3">
+            <h4>Events</h4>
+            <table id="eventsTable" style="margin-right: -10px;">
+                <tr style="border-bottom:2px solid;">
+                    <td>
+                        <img src="style/images/icons/FloodIcon.png" />
+                    </td>
+                    <td>
+                        <h5>Flood</h5>
+                        <h6>Dhaka, Bangladesh</h6>
+                        <a href="#\event_map\Dhaka, Bangladesh\Flood\23.713\90.39\542 km\9-23-2015\4:36 PM\+880 2 555 5555">
+                            (23.713, 90.39, 542 km<sup>2</sup>)
+                        </a>
+                    </td>
+                </tr>
+                <tr style="border-bottom:2px solid;">
+                    <td>
+                        <img src="style/images/icons/TsunamiIcon.png" />
+                    </td>
+                    <td>
+                        <h5>Tsunami</h5>
+                        <h6>Port Moresby, Papua New Guinea</h6>
+                        <a href="#\event_map\Port Moresby, Papua New Guinea\Tsunami\-9.46\147.18\1024 km\9-24-2015\2:16 PM\+880 2 555 5555">
+                            (-9.46, 147.18, 1024 km<sup>2</sup>)
+                        </a>
+                    </td>
+                </tr>
+                <tr style="border-bottom:2px solid;">
+                    <td>
+                        <img src="style/images/icons/EarthquakeIcon.png" />
+                    </td>
+                    <td>
+                        <h5>Earthquake</h5>
+                        <h6>Tacna, Peru</h6>
+                        <a href="#\event_map\Tacna, Peru\Earthquake\-18.04\-70.174\860 km\9-25-2015\1:06 PM\+880 2 555 5555">
+                            (-18.04, -70.174, 860 km<sup>2</sup>)
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
 </div>
+
+<script type='text/javascript'>
+
+    var testData = {
+        max: 8,
+        data: [{ lat: 24.6408, lng: 46.7728, count: 3 }, { lat: 23.7301, lng: 90.3065, count: 2 }]
+    };
+
+    var baseLayer = L.tileLayer(
+      'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+          minZoom: 2,
+          maxZoom: 2,
+          noWrap: true,
+          zoomControl: false
+      }
+    );
+
+    var earthquakeIcon = L.icon({
+        iconUrl: 'style/images/icons/EarthquakeIcon.png',
+        iconSize: [43, 44]
+    });
+
+    var floodIcon = L.icon({
+        iconUrl: 'style/images/icons/FloodIcon.png',
+        iconSize: [43, 44]
+    });
+
+    var tsunamiIcon = L.icon({
+        iconUrl: 'style/images/icons/TsunamiIcon.png',
+        iconSize: [43, 44]
+    });
+
+    var cfg = {
+        // radius should be small ONLY if scaleRadius is true (or small radius is intended)
+        // if scaleRadius is false it will be the constant radius used in pixels
+        "radius": 200,
+        "maxOpacity": .8,
+        // scales the radius based on map zoom
+        "scaleRadius": false,
+        // if set to false the heatmap uses the global maximum for colorization
+        // if activated: uses the data maximum within the current map boundaries
+        //   (there will always be a red spot with useLocalExtremas true)
+        "useLocalExtrema": true,
+        // which field name in your data represents the latitude - default "lat"
+        latField: 'lat',
+        // which field name in your data represents the longitude - default "lng"
+        lngField: 'lng',
+        // which field name in your data represents the data value - default "value"
+        valueField: 'count'
+    };
+
+
+    var heatmapLayer = new HeatmapOverlay(cfg);
+
+    var map = new L.map('map', {
+        layers: [baseLayer/*, heatmapLayer*/],
+        maxBounds: [[-90.0, -180], [90.0, 180.0]],
+    }).setView([20.0, 0.0], 2);
+
+    heatmapLayer.setData(testData);
+
+    L.control.scale().addTo(map);
+
+    map.on('click', function (e) {
+        if (locationOutline != undefined) {
+            map.removeLayer(locationOutline);
+        }
+        locationOutline = L.circle(e.latlng, overlayRadius).addTo(map);
+    });
+
+    var event1Marker = L.marker([23.713, 90.39], { icon: floodIcon }).addTo(map);
+    var event2Marker = L.marker([-9.46, 147.18], { icon: tsunamiIcon }).addTo(map);
+    var event3Marker = L.marker([-18.04, -70.174], { icon: earthquakeIcon }).addTo(map);
+
+    event1Marker.on('click', function (e) {
+        window.location.href = '#/event_map/Dhaka, Bangladesh/Flood/23.713/90.39/542 km/9-23-2015/4:36 PM/+880 2 555 5555';
+    });
+
+    event2Marker.on('click', function (e) {
+        window.location.href = '#/event_map/Port Moresby, Papua New Guinea/Tsunami/-9.46/147.18/1024 km/9-24-2015/2:16 PM/+880 2 555 5555';
+    });
+
+    event3Marker.on('click', function (e) {
+        window.location.href = '#/event_map/Tacna, Peru/Earthquake/-18.04/-70.174/860 km/9-25-2015/1:06 PM/+880 2 555 5555';
+    });
+
+    /*var buildingOutline = L.polygon([
+      [39.557040,-105.165888],
+      [39.554856,-105.163232],
+      [39.555838,-105.161837],
+      [39.557963,-105.164502]
+    ]).addTo(map);
+
+    buildingOutline.bindPopup("Non-Existant Deer Creek Facility");*/
+
+</script>

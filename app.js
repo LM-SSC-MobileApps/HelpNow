@@ -12,7 +12,7 @@ angular.module("helpNow", ["ngRoute"])
 			templateUrl: "views/events.html"
 		});
 		
-		$routeProvider.when("/event_map/:eventID", {
+		$routeProvider.when("/event_map/:location/:eventType/:lat/:long/:eventRadius/:eventDate/:eventTime/:contactPhone", {
 			templateUrl: "views/event-map.html"
 		});
 		
