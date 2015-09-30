@@ -35,6 +35,15 @@ h2 {
 	color: #92e0ff;
 }
 
+.navbar-inverse .navbar-nav > li > a.btn {
+	color: white;
+}
+
+.navbar-inverse .navbar-nav > li > a.btn:hover {
+	color: white;
+	background-color: #d83d2c;
+}
+
 .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
 	color: #444;
 }
@@ -48,6 +57,30 @@ h2 {
 .navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus,
 .navbar-inverse .navbar-brand:hover, .navbar-inverse .navbar-brand:focus  {
 	color: #e7ffd9;
+}
+
+.help-menu .btn {
+	height: 40px;
+	font-weight: bold;
+	color: white;
+	background-color: #d85b4d;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	font-size: 1em;
+}
+
+.help-menu .btn:hover {
+	height: 40px;
+	font-weight: bold;
+	color: white;
+	background-color: red;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	font-size: 1em;
+}
+
+.btn-danger {
+	margin: 5px;
 }
 
 .dropdown-menu, .navbar-nav .open .dropdown-menu {

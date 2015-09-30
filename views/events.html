@@ -4,39 +4,15 @@
         <div id="eventList" class="col-md-3">
             <h4>Events</h4>
             <table id="eventsTable" style="margin-right: -10px;">
-                <tr style="border-bottom:2px solid;">
+                <tr ng-repeat="event in events" style="border-bottom:2px solid;">
                     <td>
                         <img src="style/images/icons/FloodIcon.png" />
                     </td>
                     <td>
-                        <h5>Flood</h5>
-                        <h6>Dhaka, Bangladesh</h6>
-                        <a href="#\event_map\Dhaka, Bangladesh\Flood\23.713\90.39\542 km\9-23-2015\4:36 PM\+880 2 555 5555">
-                            (23.713, 90.39, 542 km<sup>2</sup>)
-                        </a>
-                    </td>
-                </tr>
-                <tr style="border-bottom:2px solid;">
-                    <td>
-                        <img src="style/images/icons/TsunamiIcon.png" />
-                    </td>
-                    <td>
-                        <h5>Tsunami</h5>
-                        <h6>Port Moresby, Papua New Guinea</h6>
-                        <a href="#\event_map\Port Moresby, Papua New Guinea\Tsunami\-9.46\147.18\1024 km\9-24-2015\2:16 PM\+880 2 555 5555">
-                            (-9.46, 147.18, 1024 km<sup>2</sup>)
-                        </a>
-                    </td>
-                </tr>
-                <tr style="border-bottom:2px solid;">
-                    <td>
-                        <img src="style/images/icons/EarthquakeIcon.png" />
-                    </td>
-                    <td>
-                        <h5>Earthquake</h5>
-                        <h6>Tacna, Peru</h6>
-                        <a href="#\event_map\Tacna, Peru\Earthquake\-18.04\-70.174\860 km\9-25-2015\1:06 PM\+880 2 555 5555">
-                            (-18.04, -70.174, 860 km<sup>2</sup>)
+                        <h5>{{event.eventType}}</h5>
+                        <h6>{{event.location}}</h6>
+                        <a href="#\event_map\{{event.id}}">
+                            ({{event.lat}}, {{event.long}}, {{event.eventRadius}})
                         </a>
                     </td>
                 </tr>
@@ -120,15 +96,15 @@
     var event3Marker = L.marker([-18.04, -70.174], { icon: earthquakeIcon }).addTo(map);
 
     event1Marker.on('click', function (e) {
-        window.location.href = '#/event_map/Dhaka, Bangladesh/Flood/23.713/90.39/542 km/9-23-2015/4:36 PM/+880 2 555 5555';
+        window.location.href = '#/event_map/1';
     });
 
     event2Marker.on('click', function (e) {
-        window.location.href = '#/event_map/Port Moresby, Papua New Guinea/Tsunami/-9.46/147.18/1024 km/9-24-2015/2:16 PM/+880 2 555 5555';
+        window.location.href = '#/event_map/2';
     });
 
     event3Marker.on('click', function (e) {
-        window.location.href = '#/event_map/Tacna, Peru/Earthquake/-18.04/-70.174/860 km/9-25-2015/1:06 PM/+880 2 555 5555';
+        window.location.href = '#/event_map/3';
     });
 
     /*var buildingOutline = L.polygon([

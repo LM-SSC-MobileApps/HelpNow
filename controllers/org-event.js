@@ -1,12 +1,18 @@
 var eventLat;
 var eventLong;
 
-angular.module("helpNow").controller("EventMapCtrl", function ($scope, $routeParams) {
-    $scope.eventID = $routeParams.eventID * 1;
-	$scope.event = $scope.getEvent($scope.eventID);
-	eventLat = $scope.event.lat;
-    eventLong = $scope.event.long;
+angular.module("helpNow").controller("OrgEventCtrl", function ($scope, $routeParams) {
+    eventLat = $routeParams.lat;
+    eventLong = $routeParams.long;
 	$scope.setCurrentView("event-map");
+	$scope.location = $routeParams.location;
+	$scope.eventType = $routeParams.eventType;
+	$scope.lat = $routeParams.lat;
+	$scope.long = $routeParams.long;
+	$scope.eventRadius = $routeParams.eventRadius;
+	$scope.eventDate = $routeParams.eventDate.replace(/-/g, "/");
+	$scope.eventTime = $routeParams.eventTime;
+	$scope.contactPhone = $routeParams.contactPhone;
 });
 
 angular.module("helpNow").directive('map', function () {

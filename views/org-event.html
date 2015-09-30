@@ -1,5 +1,5 @@
-<div ng-controller="EventMapCtrl">
-    <h2 style="margin-bottom: -5px; margin-top: -20px;"><img src="style/images/icons/FloodGray.png" style="height: 66px; width: 66px; margin-right: 5px;" />{{location}}</h2>
+<div ng-controller="OrgEventCtrl">
+    <h2 style="margin-bottom: -5px; margin-top: -20px;"><img src="style/images/icons/FloodGray.png" style="height: 66px; width: 66px; margin-right: 5px;" />{{location}} Org</h2>
 	<!--<h2>Event {{eventID}}</h2>-->
     <div id="map" class="col-md-9" style="height: 512px; border: 1px solid #AAA;" map></div>
     <div id="eventList" class="col-md-3">
@@ -9,10 +9,10 @@
                     <img src="style/images/icons/FloodGray.png" style="height: 88px; width: 88px; margin-right: 5px;" />
                 </td>
                 <td>
-                    <h3 style="margin-top: -5px;">{{event.eventType}}</h3>
-                    <h5 style="margin-top: -10px; margin-bottom: -1px;">{{event.location}}</h5>
+                    <h3 style="margin-top: -5px;">{{eventType}}</h3>
+                    <h5 style="margin-top: -10px; margin-bottom: -1px;">{{location}}</h5>
                     <a href="#\event_map\1">
-                        ({{event.lat}}, {{event.long}}, {{event.eventRadius}}<sup>2</sup>)
+                        ({{lat}}, {{long}}, {{eventRadius}}<sup>2</sup>)
                     </a>
                 </td>
             </tr>
@@ -21,7 +21,7 @@
                     <img src="style/images/icons/ClockIconGray.png" style="height: 44px; width: 44px;" />
                 </td>
                 <td>
-                    <h4 style="margin-left: -25px;">{{event.eventDate}} {{event.eventTime}}</h4>
+                    <h4 style="margin-left: -25px;">{{eventDate}} {{eventTime}}</h4>
                 </td>
             </tr>
             <tr>
@@ -30,13 +30,13 @@
                 </td>
                 <td>
                     <h4 style="margin-left: -25px;">More Information</h4>
-                    <h5 style="margin-left: -25px;">{{event.contactPhone}}</h5>
+                    <h5 style="margin-left: -25px;">{{contactPhone}}</h5>
                 </td>
             </tr>
 			<tr>
 				<td colspan="2">
 					<div class="separated">
-						<a id="btn-login" class="btn btn-primary" href="#/org_event/{{event.id}}"><span class="glyphicon glyphicon-globe"></span>Aid Organization View</a>
+						<a id="btn-login" class="btn btn-primary" href="#"><span class="glyphicon glyphicon-globe"></span>Aid Organization View</a>
 					</div>
 				</td>
 			</tr>

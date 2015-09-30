@@ -12,12 +12,16 @@ angular.module("helpNow", ["ngRoute"])
 			templateUrl: "views/events.html"
 		});
 		
-		$routeProvider.when("/event_map/:location/:eventType/:lat/:long/:eventRadius/:eventDate/:eventTime/:contactPhone", {
+		$routeProvider.when("/event_map/:eventID", {
 			templateUrl: "views/event-map.html"
 		});
 		
 		$routeProvider.when("/gov_login", {
 			templateUrl: "views/gov-login.html"
+		});
+		
+		$routeProvider.when("/org_event/:eventID", {
+			templateUrl: "views/org-event.html"
 		});
 		
 		$routeProvider.otherwise({
