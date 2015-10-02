@@ -1,3 +1,4 @@
+//this will set the database environemnt in the config.json file
 process.env.NODE_ENV = 'aws-development';
 // process.env.NODE_ENV = 'local-dev';
 
