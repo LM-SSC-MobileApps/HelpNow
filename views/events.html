@@ -6,7 +6,8 @@
             <table id="eventsTable" style="margin-right: -10px;">
                 <tr ng-repeat="event in events" style="border-bottom:2px solid;">
                     <td>
-                        <img src="style/images/icons/FloodIcon.png" />
+                        <img src="{{event.iconPath}}" />
+                        <!--a id="btn-help" class="btn btn-danger" href="#/event_map/{{event.id}}" style="margin-left: 0px; margin-bottom: -10px;"><span class="glyphicon glyphicon-warning-sign"></span>Help!</!--a>-->
                     </td>
                     <td>
                         <h5>{{event.eventType}}</h5>
