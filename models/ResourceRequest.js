@@ -5,6 +5,8 @@ module.exports = function(sequelize, DataTypes) {
     ResourceRequestID: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
+      autoIncrement: true,
+      primaryKey: true
     },
     ResourceID: {
       type: DataTypes.INTEGER(11),

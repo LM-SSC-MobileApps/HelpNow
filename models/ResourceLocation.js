@@ -5,6 +5,8 @@ module.exports = function(sequelize, DataTypes) {
     ResourceLocationID: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
+      autoIncrement: true,
+      primaryKey: true
     },
     Description: {
       type: DataTypes.STRING,

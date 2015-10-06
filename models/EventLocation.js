@@ -23,6 +23,10 @@ module.exports = function(sequelize, DataTypes) {
     LONG: {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+    Radius: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true,
     }
   });
 };

@@ -25,7 +25,11 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true,
     },
     Status: {
-      type: DataTypes.STRING,
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+    },
+    CreateDate: {
+      type: DataTypes.DATE,
       allowNull: true,
     }
   });
