@@ -2,10 +2,35 @@
 var models  = require('../models'),
     express = require('express');
 
+//Event on-to-many on EventLocation    
+models.Event.hasMany(models.EventLocation, {foreignKey: 'EventID'});
+models.EventLocation.belongsTo(models.Event, {foreignKey: 'EventID'});
+
+//Event one-to-one on EventType
+models.Event.hasOne(models.EventType, {foreignKey: 'EventTypeID'});
+models.EventType.belongsTo(models.Event, {foreignKey: 'EventTypeID'});
+
+//Event one-to-many on ResourceRequest
+models.Event.hasMany(models.ResourceRequest, {foreignKey: 'EventID'});
+models.ResourceRequest.belongsTo(models.Event, {foreignKey: 'EventID'});
+
+//Event many-to-One on Organization
+models.Organization.hasMany(models.Event, {foreignKey: 'OrganizationID'});
+models.Event.belongsTo(models.Organization, {foreignKey: 'OrganizationID'});
+
 var routes = function(){
   var router  = express.Router();
     router.get('/', function(req, res) {
-      models.Event.findAll()
+      models.Event.findAll(
+        {
+          include: [
+            {model: models.EventLocation},
+            {model: models.EventType},
+            {model: models.Organization},
+            {model: models.ResourceRequest}
+          ]
+        }
+      )
         .then(function(event) {
           res.statusCode = 201;
           res.send(
@@ -34,7 +59,13 @@ var routes = function(){
         {
           where: {
             EventID: req.params.id
-          }
+          },
+          include: [
+            {model: models.EventLocation},
+            {model: models.EventType},
+            {model: models.Organization},
+            {model: models.ResourceRequest}
+          ]
         }
       ).then(function(event) {
         res.statusCode = 200;
