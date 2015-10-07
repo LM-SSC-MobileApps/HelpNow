@@ -1,7 +1,52 @@
 <div ng-controller="EventMapCtrl">
     <h2 style="margin-bottom: -5px; margin-top: -20px;"><img src="style/images/icons/FloodGray.png" style="height: 66px; width: 66px; margin-right: 5px;" />{{event.location}}</h2>
-	<!--<h2>Event {{eventID}}</h2>-->
     <div id="map" class="col-md-9" style="height: 512px; border: 1px solid #AAA;" map></div>
+    <div id="resourcePanel" class="col-md-3" hidden="hidden">
+        <table id="resourceTable">
+            <tr>
+                <td>
+                    <img src="style/images/icons/WaterIcon.png" style="height: 88px; width: 88px; margin-right: 5px;" />
+                </td>
+                <td>
+                    <h3 style="margin-top: -5px;">{{resource.resourceType}}</h3>
+                    <a href="#\event_map\1">
+                        ({{resource.lat}}, {{resource.long}})
+                    </a>
+                </td>
+                <td style="vertical-align: top;">
+                    <button style="border:none; background-color: none;" onclick="hideResourcePanel()">X</button>
+                </td>
+            </tr>
+            <tr id="providerRow">
+                <td>
+                    <h4 style="margin-top: 10px;">Provided By:</h4>
+                    <h5>{{resource.provider}}</h5>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <img src="style/images/icons/ClockIconGray.png" style="height: 44px; width: 44px;" />
+                </td>
+                <td>
+                    <h5 style="margin-left: -25px;">{{event.eventDate}} {{event.eventTime}}</h5>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <img src="style/images/icons/PeopleIconGray.png" style="height: 44px; width: 44px;" />
+                </td>
+                <td>
+                    <h4 style="margin-left: -25px;">More Information</h4>
+                    <h5 style="margin-left: -25px;">{{event.contactPhone}}</h5>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <h4>{{resource.message}}</h4>
+                </td>
+            </tr>
+        </table>
+    </div>
     <div id="eventList" class="col-md-3">
         <table id="eventsTable" style="margin-right: -10px;">
             <tr>
@@ -33,6 +78,13 @@
                     <h5 style="margin-left: -25px;">{{event.contactPhone}}</h5>
                 </td>
             </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="separated">
+                        <a id="btn-help" class="btn btn-danger" href="javascript:void(0)" onclick="showHelpPanel()" style="margin-left: 0px; margin-bottom: -10px;"><span class="glyphicon glyphicon-warning-sign"></span>{{text.menu_help}}</a>
+                    </div>
+                </td>
+            </tr>
 			<tr>
 				<td colspan="2">
 					<div class="separated">
@@ -40,6 +92,118 @@
 					</div>
 				</td>
 			</tr>
+        </table>
+    </div>
+    <div id="helpPanel" class="col-md-3" hidden="hidden">
+        <table id="eventsTable" style="margin-right: -10px;">
+            <tr>
+                <td>
+                    <img src="style/images/icons/FloodGray.png" style="height: 88px; width: 88px; margin-right: 5px;" />
+                </td>
+                <td>
+                    <h3 style="margin-top: -5px;">{{event.eventType}}</h3>
+                    <h5 style="margin-top: -10px; margin-bottom: -1px;">{{event.location}}</h5>
+                    <a href="#\event_map\1">
+                        ({{event.lat}}, {{event.long}}, {{event.eventRadius}}<sup>2</sup>)
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <img src="style/images/icons/PinIcon.png" style="height: 44px; width: 44px; margin-right: 5px;" />
+                </td>
+                <td>
+                    <input type="checkbox" name="pinLocation" value="useCurrentLocation" style="margin-left: -40px;" checked="checked" />&nbsp;&nbsp;&nbsp;Use My Current Location<br/>
+                    <input type="checkbox" name="pinLocation" value="useFollowingLocation" style="margin-left: -40px;" />&nbsp;&nbsp;&nbsp;Use The Following Location
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    &nbsp;&nbsp;Lat:&nbsp;<input type="text" name="lat" style="width: 75px; margin-top: 10px;"/>
+                    &nbsp;&nbsp;Long:&nbsp;<input type="text" name="long" style="width: 75px; margin-top: 10px;" />
+                    <h5 align="center">OR</h5>
+                    <h5 style="vertical-align:top">&nbsp;&nbsp;Address:<textarea rows="3" cols="20"></textarea></h5>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    &nbsp;&nbsp;Impacted Region Size:&nbsp;<input type="text" name="lat" style="width: 80px; margin-top: 10px;" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <img src="style/images/icons/PersonIcon.png" style="height: 33px; width: 33px; margin-right: -13px;" />
+                    &nbsp;&nbsp;Number of People:&nbsp;<input type="text" name="lat" style="width: 80px; margin-top: 10px;" /><br />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <img src="style/images/icons/ExclamationIcon.png" style="height: 50px; width: 33px; margin-right: -13px; margin-top: -12px;" />
+                    &nbsp;&nbsp;Criticality of Need:&nbsp;&nbsp;<input type="text" name="lat" style="width: 80px;" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="separated">
+                        <a id="btn-back" class="btn btn-primary" href="javascript:void(0)" onclick="hideResourcePanel()"><span></span>Back</a>
+                    </div>
+                </td>
+                <td>
+                    <div class="separated" align="right">
+                        <a id="btn-next" class="btn btn-primary" href="javascript:void(0)" onclick="showNeedsPanel()"><span></span>Next</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="needsPanel" class="col-md-3" hidden="hidden">
+        <table>
+            <tr>
+                <td>
+                    <img src="style/images/icons/PeopleIconGray.png" style="height: 66px; width: 66px; margin-right: 5px;" /><br />(Optional)
+                </td>
+                <td>
+                    Name:<br/><input type="text" name="name"" /><br />
+                    Phone:<br /><input type="text" name="phone"/><br />
+                    Email:<br /><input type="text" name="email"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="checkbox" name="pinLocation" value="useCurrentLocation" checked="checked" />&nbsp;&nbsp;&nbsp;Send Email or Text Updates
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <h3>Needs</h3><hr style="width: 70%; height: 3px; display: block; margin-top: -22px; margin-left: 75px; border: none; background-color: #898989" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <img src="style/images/icons/WaterNeedIcon.png" style="height: 70px; width: 70px;" />
+                    <img src="style/images/icons/FoodNeedIcon.png" style="height: 70px; width: 70px;" />
+                    <img src="style/images/icons/ShelterNeedIcon.png" style="height: 70px; width: 70px;" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <img src="style/images/icons/FirstAidNeedIcon.png" style="height: 70px; width: 70px;" />
+                    <img src="style/images/icons/MedicineNeedIcon.png" style="height: 70px; width: 70px;" />
+                    <img src="style/images/icons/ClothingNeedIcon.png" style="height: 70px; width: 70px;" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="separated">
+                        <a id="btn-back" class="btn btn-primary" href="javascript:void(0)" onclick="showHelpPanel()"><span></span>Back</a>
+                    </div>
+                </td>
+                <td colspan="2">
+                    <div class="separated" align="right">
+                        <a id="btn-next" class="btn btn-primary" href="javascript:void(0)" onclick="hideResourcePanel()"><span></span>Send Request</a>
+                    </div>
+                </td>
+            </tr>
         </table>
     </div>
     <div id="slider" style="height: 100px; width: 200px;">
@@ -97,5 +261,33 @@
             if (locationOutline != undefined)
                 locationOutline.setRadius(overlayRadius);
         }
+    }
+
+    function showResourcePanel(hasProvider) {
+        document.getElementById("eventList").hidden = true;
+        document.getElementById("resourcePanel").hidden = false;
+        if (hasProvider) document.getElementById("providerRow").hidden = false;
+        else document.getElementById("providerRow").hidden = true;
+    }
+
+    function hideResourcePanel() {
+        document.getElementById("eventList").hidden = false;
+        document.getElementById("resourcePanel").hidden = true;
+        document.getElementById("helpPanel").hidden = true;
+        document.getElementById("needsPanel").hidden = true;
+    }
+
+    function showHelpPanel() {
+        document.getElementById("eventList").hidden = true;
+        document.getElementById("resourcePanel").hidden = true;
+        document.getElementById("helpPanel").hidden = false;
+        document.getElementById("needsPanel").hidden = true;
+    }
+
+    function showNeedsPanel() {
+        document.getElementById("eventList").hidden = true;
+        document.getElementById("resourcePanel").hidden = true;
+        document.getElementById("helpPanel").hidden = true;;
+        document.getElementById("needsPanel").hidden = false;
     }
 </script>
