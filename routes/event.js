@@ -2,7 +2,7 @@
 var models  = require('../models'),
     express = require('express');
 
-//Event on-to-many on EventLocation    
+//Event one-to-many on EventLocation    
 models.Event.hasMany(models.EventLocation, {foreignKey: 'EventID'});
 models.EventLocation.belongsTo(models.Event, {foreignKey: 'EventID'});
 
@@ -23,6 +23,10 @@ var routes = function(){
     router.get('/', function(req, res) {
       models.Event.findAll(
         {
+          where: 
+          {
+            Active: true
+          },
           include: [
             {model: models.EventLocation},
             {model: models.EventType},
