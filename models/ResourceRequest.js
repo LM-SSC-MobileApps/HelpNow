@@ -8,7 +8,7 @@ module.exports = function(sequelize, DataTypes) {
       autoIncrement: true,
       primaryKey: true
     },
-    ResourceID: {
+    ResourceRegistryID: {
       type: DataTypes.INTEGER(11),
       allowNull: true,
     },
@@ -16,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER(11),
       allowNull: true,
     },
-    StateID: {
+    RequestStateID: {
       type: DataTypes.INTEGER(11),
       allowNull: true,
     },

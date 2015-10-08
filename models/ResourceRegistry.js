@@ -12,7 +12,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER(11),
       allowNull: true,
     },
-    TypeID: {
+    ResourceTypeID: {
       type: DataTypes.INTEGER(11),
       allowNull: true,
     },
@@ -20,7 +20,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    LocationID: {
+    ResourceLocationID: {
       type: DataTypes.INTEGER(11),
       allowNull: true,
     }

@@ -45,7 +45,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    RoleID: {
+    AccountRoleID: {
       type: DataTypes.INTEGER(11),
       allowNull: true,
     },

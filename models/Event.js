@@ -24,7 +24,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    Status: {
+    Active: {
       type: DataTypes.BOOLEAN,
       allowNull: true,
     },
