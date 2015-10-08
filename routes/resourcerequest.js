@@ -2,10 +2,35 @@
 var models  = require('../models'),
     express = require('express');
 
+//ResourceRequest one-to-one on RequestState
+models.ResourceRequest.hasOne(models.RequestState, {foreignKey: 'RequestStateID'});
+models.RequestState.belongsTo(models.ResourceRequest, {foreignKey: 'RequestStateID'});
+
+//ResourceRequest one-to-one on ResourceRegistry
+models.ResourceRequest.hasOne(models.ResourceRegistry, {foreignKey: 'ResourceRegistryID'});
+models.ResourceRegistry.belongsTo(models.ResourceRequest, {foreignKey: 'ResourceRegistryID'});
+
+//ResourceRequest one-to-many on ResourceResponse
+models.ResourceRequest.hasMany(models.ResourceResponse, {foreignKey: 'ResourceRequestID'});
+models.ResourceResponse.belongsTo(models.ResourceRequest, {foreignKey: 'ResourceRequestID'});
+
+//ResourceRequest many-to-One on Event
+models.Event.hasMany(models.ResourceRequest, {foreignKey: 'EventID'});
+models.ResourceRequest.belongsTo(models.Event, {foreignKey: 'EventID'});
+
 var routes = function(){
   var router  = express.Router();
     router.get('/', function(req, res) {
-      models.ResourceRequest.findAll()
+      models.ResourceRequest.findAll(
+        {
+          include: [
+            {model: models.Event},
+            {model: models.RequestState},
+            {model: models.ResourceResponse},
+            {model: models.ResourceRegistry}
+          ]
+        }        
+      )
         .then(function(resourceRequest) {
           res.statusCode = 201;
           res.send(
@@ -34,7 +59,13 @@ var routes = function(){
         {
           where: {
             AccountID: req.params.id
-          }
+          },
+          include: [
+            {model: models.Event},
+            {model: models.RequestState},
+            {model: models.ResourceResponse},
+            {model: models.ResourceRegistry}
+          ]
         }
       ).then(function(resourceRequest) {
         res.statusCode = 200;
