@@ -1,19 +1,19 @@
 <div ng-controller="EventListCtrl">
     <div class="row">
-        <div id="map" class="col-md-9" style="height: 512px; border: 1px solid #AAA;"></div>
+        <div id="map" map map-center="20.0,0.0" map-zoom="2" class="col-md-9" style="height: 512px; border: 1px solid #AAA;"></div>
         <div id="eventList" class="col-md-3">
             <h4>Events</h4>
             <table id="eventsTable" style="margin-right: -10px;">
                 <tr ng-repeat="event in events" style="border-bottom:2px solid;">
                     <td>
-                        <img src="{{event.iconPath}}" />
+                        <img src="{{getIcon(event.EventType.Description)}}" />
                         <!--a id="btn-help" class="btn btn-danger" href="#/event_map/{{event.id}}" style="margin-left: 0px; margin-bottom: -10px;"><span class="glyphicon glyphicon-warning-sign"></span>Help!</!--a>-->
                     </td>
                     <td>
-                        <h5>{{event.eventType}}</h5>
-                        <h6>{{event.location}}</h6>
-                        <a href="#\event_map\{{event.id}}">
-                            ({{event.lat}}, {{event.long}}, {{event.eventRadius}})
+                        <h5>{{event.Summary}}</h5>
+                        <h6>{{event.Organization.Name}}</h6>
+                        <a href="#event_map/{{event.EventID}}">
+                            ({{event.EventLocations[0].LAT}}, {{event.EventLocations[0].LONG}}, {{event.EventLocations[0].Radius}})
                         </a>
                     </td>
                 </tr>
@@ -23,7 +23,7 @@
 </div>
 
 <script type='text/javascript'>
-
+/*
     var testData = {
         max: 8,
         data: [{ lat: 24.6408, lng: 46.7728, count: 3 }, { lat: 23.7301, lng: 90.3065, count: 2 }]
@@ -77,7 +77,7 @@
     var heatmapLayer = new HeatmapOverlay(cfg);
 
     var map = new L.map('map', {
-        layers: [baseLayer/*, heatmapLayer*/],
+        layers: [baseLayer/*, heatmapLayer*//*],
         maxBounds: [[-90.0, -180], [90.0, 180.0]],
     }).setView([20.0, 0.0], 2);
 
@@ -107,7 +107,7 @@
     event3Marker.on('click', function (e) {
         window.location.href = '#/event_map/3';
     });
-
+*/
     /*var buildingOutline = L.polygon([
       [39.557040,-105.165888],
       [39.554856,-105.163232],

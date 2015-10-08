@@ -1,6 +1,34 @@
-angular.module("helpNow").controller("RootCtrl", function($scope, $http) {
-	var currentView = "events";
+angular.module("helpNow").controller("RootCtrl", function($scope, $http, $resource) {
 	var currentLanguage = "Eng";
+	
+	$scope.eventsResource = $resource("/api/event");
+	
+	$scope.loadEvents = function() {
+		$scope.eventsResource.get({}, function(data) {
+			$scope.events = data.json;
+			$scope.$broadcast("EventDataLoaded", {});
+		});
+	}
+	
+	$scope.getIcon = function(eventType) {
+		if (eventType == "Flood") {
+			return "style/images/icons/FloodIcon.png";
+		} else if (eventType == "Tsunami") {
+			return "style/images/icons/TsunamiIcon.png";
+		} else {
+			return "style/images/icons/EarthquakeIcon.png";
+		}
+	}
+	
+	$scope.getGrayIcon = function(eventType) {
+		if (eventType == "Flood") {
+			return "style/images/icons/FloodGray.png";
+		} else if (eventType == "Tsunami") {
+			return "style/images/icons/TsunamiGray.png";
+		} else {
+			return "style/images/icons/EarthquakeGray.png";
+		}
+	}
 	
 	$scope.getMenuClass = function(viewName) {
 		return viewName == currentView ? "active" : "";
@@ -50,11 +78,13 @@ angular.module("helpNow").controller("RootCtrl", function($scope, $http) {
 	$scope.getEvent = function(eventID) {
 		for (var i = 0; i < $scope.events.length; i++) {
 			var event = $scope.events[i];
-			if (event.id == eventID) return event;
+			if (event.EventID == eventID) return event;
 		}
 		return {};
 	}
-
+	
+	$scope.loadEvents();
+	
 	$scope.resources = [
         {
             id: 1,
@@ -112,7 +142,7 @@ angular.module("helpNow").controller("RootCtrl", function($scope, $http) {
         }
 	]
 	
-	$scope.events = [
+	var testEvents = [
 		{
 			id: 1,
 			location: "Dhaka, Bangladesh",
