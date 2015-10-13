@@ -1,6 +1,6 @@
 <div ng-controller="EventMapCtrl">
-    <h2 style="margin-bottom: -5px; margin-top: -20px;"><img src="style/images/icons/FloodGray.png" style="height: 66px; width: 66px; margin-right: 5px;" />{{event.location}}</h2>
-    <div id="map" class="col-md-9" style="height: 512px; border: 1px solid #AAA;" map></div>
+    <h2 style="margin-bottom: -5px; margin-top: -20px;"><img src="style/images/icons/FloodGray.png" style="height: 66px; width: 66px; margin-right: 5px;" />{{event.EventLocations[0].Description}}</h2>
+    <div id="map" map map-center="{{event.EventLocations[0].LAT}},{{event.EventLocations[0].LONG}}" map-zoom="13" class="col-md-9" style="height: 512px; border: 1px solid #AAA;"></div>
     <div id="resourcePanel" class="col-md-3" hidden="hidden">
         <table id="resourceTable">
             <tr>
@@ -28,7 +28,7 @@
                     <img src="style/images/icons/ClockIconGray.png" style="height: 44px; width: 44px;" />
                 </td>
                 <td>
-                    <h5 style="margin-left: -25px;">{{event.eventDate}} {{event.eventTime}}</h5>
+                    <h5 style="margin-left: -25px;">{{event.CreateDate | date : "short"}}</h5>
                 </td>
             </tr>
             <tr>
@@ -57,7 +57,7 @@
                     <h3 style="margin-top: -5px;">{{event.EventType.Description}}</h3>
                     <h5 style="margin-top: -10px; margin-bottom: -1px;">{{event.EventLocations[0].Description}}</h5>
                     <a href="#\event_map\1">
-                        ({{event.EventLocations[0].LAT}}, {{event.EventLocations[0].LONG}}, {{event.EventLocations[0].Radius}}<sup>2</sup>)
+                        ({{event.EventLocations[0].LAT}}, {{event.EventLocations[0].LONG}}, {{event.EventLocations[0].Radius}} km<sup>2</sup>)
                     </a>
                 </td>
             </tr>
@@ -101,10 +101,10 @@
                     <img src="style/images/icons/FloodGray.png" style="height: 88px; width: 88px; margin-right: 5px;" />
                 </td>
                 <td>
-                    <h3 style="margin-top: -5px;">{{event.eventType}}</h3>
-                    <h5 style="margin-top: -10px; margin-bottom: -1px;">{{event.location}}</h5>
+                    <h3 style="margin-top: -5px;">{{event.EventType.Description}}</h3>
+                    <h5 style="margin-top: -10px; margin-bottom: -1px;">{{event.EventLocations[0].Description}}</h5>
                     <a href="#\event_map\1">
-                        ({{event.lat}}, {{event.long}}, {{event.eventRadius}}<sup>2</sup>)
+                        ({{event.EventLocations[0].LAT}}, {{event.EventLocations[0].LONG}}, {{event.EventLocations[0].Radius}} km<sup>2</sup>)
                     </a>
                 </td>
             </tr>
