@@ -8,7 +8,11 @@ angular.module("helpNow").controller("EventListCtrl", function($scope) {
 				iconUrl: $scope.getIcon(event.EventType.Description),
 				iconSize: [43, 44]
 			}); 
-			L.marker([event.EventLocations[0].LAT, event.EventLocations[0].LONG], { icon: eventIcon }).addTo(map)
+			var marker = L.marker([event.EventLocations[0].LAT, event.EventLocations[0].LONG], { icon: eventIcon });
+			marker.on("click", function() {
+				window.location = "#event_map/" + event.EventID;
+			});
+			marker.addTo(map)
 		})
 	}
 	

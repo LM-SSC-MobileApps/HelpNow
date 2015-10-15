@@ -1,50 +1,10 @@
 <div ng-controller="OrgEventCtrl">
-    <h2 style="margin-bottom: -5px; margin-top: -20px;"><img src="style/images/icons/FloodGray.png" style="height: 66px; width: 66px; margin-right: 5px;" />{{event.location}}</h2>
-	<div>
+    <div>
 		<a id="showMedical" ng-class="toggleButtonClass('showMedical')" ng-click="toggleButton('showMedical')" ><span class="glyphicon glyphicon-plus"></span></a>
 		<a id="showShelter" ng-class="toggleButtonClass('showShelter')" ng-click="toggleButton('showShelter')"><span class="glyphicon glyphicon-home"></span></a>
 		<a id="showFood" ng-class="toggleButtonClass('showFood')" ng-click="toggleButton('showFood')"><span class="glyphicon glyphicon-cutlery"></span></a>
 		<a id="showWater" ng-class="toggleButtonClass('showWater')" ng-click="toggleButton('showWater')"><span class="glyphicon glyphicon-tint"></span></a>
 	</div>
-	<div id="map" class="col-md-9" style="height: 512px; border: 1px solid #AAA;" map></div>
-    <div id="eventList" class="col-md-3">
-        <table id="eventsTable" style="margin-right: -10px;">
-            <tr>
-                <td>
-                    <img src="style/images/icons/FloodGray.png" style="height: 88px; width: 88px; margin-right: 5px;" />
-                </td>
-                <td>
-                    <h3 style="margin-top: -5px;">{{event.eventType}}</h3>
-                    <h5 style="margin-top: -10px; margin-bottom: -1px;">{{event.location}}</h5>
-                    <a href="#\event_map\1">
-                        ({{event.lat}}, {{event.long}}, {{event.eventRadius}}<sup>2</sup>)
-                    </a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <img src="style/images/icons/ClockIconGray.png" style="height: 44px; width: 44px;" />
-                </td>
-                <td>
-                    <h4 style="margin-left: -25px;">{{event.eventDate}} {{event.eventTime}}</h4>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <img src="style/images/icons/PeopleIconGray.png" style="height: 44px; width: 44px;" />
-                </td>
-                <td>
-                    <h4 style="margin-left: -25px;">More Information</h4>
-                    <h5 style="margin-left: -25px;">{{event.contactPhone}}</h5>
-                </td>
-            </tr>
-			<tr>
-				<td colspan="2">
-					<div class="separated">
-						<a id="btn-login" class="btn btn-primary" href="#/org_event/{{event.id}}"><span class="glyphicon glyphicon-globe"></span>Aid Organization View</a>
-					</div>
-				</td>
-			</tr>
-        </table>
-    </div>
+	<div id="map" map map-center="{{event.EventLocations[0].LAT}},{{event.EventLocations[0].LONG}}" map-zoom="13" class="col-md-9" style="height: 512px; border: 1px solid #AAA;"></div>
+    <div id="eventInfo" ng-include="'views/fragments/event-info.html'" class="col-md-3"></div>
 </div>

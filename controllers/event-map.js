@@ -1,6 +1,6 @@
 angular.module("helpNow").controller("EventMapCtrl", function ($scope, $routeParams) {
     $scope.eventID = $routeParams.eventID * 1;
-    $scope.event = $scope.events[$scope.eventID - 1];
+    $scope.event = $scope.getEvent($scope.eventID);
     $scope.resources = $scope.getResourcesForEvent($scope.eventID);
     $scope.resource = $scope.resources[0];
 	$scope.setCurrentView("event-map");
