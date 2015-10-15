@@ -31,7 +31,8 @@ var routes = function(){
             {model: models.EventLocation},
             {model: models.EventType},
             {model: models.Organization},
-            {model: models.ResourceRequest}
+            {model: models.ResourceRequest},
+            {model: models.ResourceRegistry}
           ]
         }
       )
@@ -68,7 +69,8 @@ var routes = function(){
             {model: models.EventLocation},
             {model: models.EventType},
             {model: models.Organization},
-            {model: models.ResourceRequest}
+            {model: models.ResourceRequest},
+            {model: models.ResourceRegistry}
           ]
         }
       ).then(function(event) {
