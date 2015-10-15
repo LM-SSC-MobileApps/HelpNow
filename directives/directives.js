@@ -78,14 +78,3 @@ angular.module("helpNow").directive('map', function () {
         }
     };
 });
-
-$(function () {
-    map = new L.map('map', {
-        center: new L.LatLng(-33.859, 151.205),
-        zoom: zoom,
-        zoomControl: true,
-        layers: [hybrid]
-    });
-    
-
-});
