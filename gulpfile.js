@@ -7,8 +7,8 @@ gulp.task('default', function(){
 		ext: 'js',
 		env: {
 			//PORT 80 if your machine will allow, or choose a port that is available
-			// PORT: 8080
-			PORT:80
+			 PORT: 8080
+			//  PORT:80
 		},
 		ignore: ['./node_modules/**']
 	})
