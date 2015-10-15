@@ -5,8 +5,8 @@ module.exports = function(sequelize, DataTypes) {
     ResourceRequestID: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
-      autoIncrement: true,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true
     },
     ResourceRegistryID: {
       type: DataTypes.INTEGER(11),
@@ -14,11 +14,11 @@ module.exports = function(sequelize, DataTypes) {
     },
     EventID: {
       type: DataTypes.INTEGER(11),
-      allowNull: true,
+      allowNull: false,
     },
     RequestStateID: {
       type: DataTypes.INTEGER(11),
-      allowNull: true,
+      allowNull: false,
     },
     Notes: {
       type: DataTypes.STRING,
@@ -27,6 +27,18 @@ module.exports = function(sequelize, DataTypes) {
     Quantity: {
       type: DataTypes.DECIMAL(10,0),
       allowNull: true,
+    },
+    ResourceTypeID: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
+    },
+    LAT: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    LONG: {
+      type: DataTypes.STRING,
+      allowNull: false,
     }
   });
 };

@@ -5,8 +5,8 @@ module.exports = function(sequelize, DataTypes) {
     AccountRoleID: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
-      autoIncrement: true,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true
     },
     Name: {
       type: DataTypes.STRING,

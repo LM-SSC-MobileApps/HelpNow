@@ -4,7 +4,7 @@ module.exports = function(sequelize, DataTypes) {
   return sequelize.define('OrganizationAddress', { 
     OrganizationID: {
       type: DataTypes.INTEGER(11),
-      allowNull: false,
+      allowNull: false
     },
     AddressID: {
       type: DataTypes.INTEGER(11),
