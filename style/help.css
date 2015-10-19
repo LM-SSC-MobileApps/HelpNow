@@ -50,23 +50,48 @@ h2 {
 
 #showMedical.active {
 	background: radial-gradient(circle, red, #dc0000);
-	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 5px #dc0000;
+	border: 2px solid red;
+	/* box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 5px #dc0000; */
 }
 
 #showShelter.active {
 	background: radial-gradient(circle, #ffe300, #e7ce00);
-	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 5px #e7ce00;
+	border: 2px solid #ffe300;
+	/* box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 5px #e7ce00; */
 }
 
 #showFood.active {
 	background: radial-gradient(circle, #00ff1c, #00d918);
-	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 5px #00d918;
+	border: 2px solid #00ff1c;
+	/* box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 5px #00d918; */
 }
 
 #showWater.active {
 	background: radial-gradient(circle, #00aaff, #0091d9);
-	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 5px #0091d9;
+	border: 2px solid #00aaff;
+	/* box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 5px #0091d9; */
 }
+
+#showMedical {
+	border: 2px solid red;
+	/* box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 5px #dc0000; */
+}
+
+#showShelter {
+	border: 2px solid #ffe300;
+	/* box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 5px #e7ce00; */
+}
+
+#showFood {
+	border: 2px solid #00ff1c;
+	/* box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 5px #00d918; */
+}
+
+#showWater {
+	border: 2px solid #00aaff;
+	/* box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 5px #0091d9; */
+}
+
 
 a.btn-toggle span {
 	margin: 0px;

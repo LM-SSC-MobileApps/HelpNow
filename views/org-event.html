@@ -6,5 +6,5 @@
 		<a id="showWater" ng-class="toggleButtonClass('showWater')" ng-click="toggleButton('showWater')"><span class="glyphicon glyphicon-tint"></span></a>
 	</div>
 	<div id="map" map map-center="{{event.EventLocations[0].LAT}},{{event.EventLocations[0].LONG}}" map-zoom="13" class="col-md-9" style="height: 512px; border: 1px solid #AAA;"></div>
-    <div id="eventInfo" ng-include="'views/fragments/event-info.html'" class="col-md-3"></div>
+	<div id="eventInfo" ng-include="'views/fragments/event-info.html'" class="col-md-3"></div>
 </div>

@@ -6,6 +6,10 @@ var models  = require('../models'),
 models.ResourceRequest.hasOne(models.RequestState, {foreignKey: 'RequestStateID'});
 models.RequestState.belongsTo(models.ResourceRequest, {foreignKey: 'RequestStateID'});
 
+//ResourceRequest one-to-one on ResourceType
+models.ResourceRequest.hasOne(models.ResourceType, {foreignKey: 'ResourceTypeID'});
+models.ResourceType.belongsTo(models.ResourceRequest, {foreignKey: 'ResourceTypeID'});
+
 //ResourceRequest one-to-one on ResourceRegistry
 models.ResourceRequest.hasOne(models.ResourceRegistry, {foreignKey: 'ResourceRegistryID'});
 models.ResourceRegistry.belongsTo(models.ResourceRequest, {foreignKey: 'ResourceRegistryID'});
@@ -65,6 +69,39 @@ var routes = function(){
             {model: models.RequestState},
             {model: models.ResourceResponse},
             {model: models.ResourceRegistry}
+          ]
+        }
+      ).then(function(resourceRequest) {
+        res.statusCode = 200;
+        res.send(
+          {
+            result: 'success',
+            err:    '',
+            json:  resourceRequest,
+            length: resourceRequest.length
+          }
+        );
+      }
+     ).catch(function (err) {
+       console.error(err);
+       res.statusCode = 502;
+       res.send({
+           result: 'error',
+           err:    err.message
+       });
+      });
+    }
+  )
+  //find ResourceRequest by ID
+  .get('/event/:eventID', function(req, res) {
+      models.ResourceRequest.findAll(
+        {
+          where: {
+            EventID: req.params.eventID
+          },
+          include: [
+            {model: models.RequestState},
+            {model: models.ResourceType}
           ]
         }
       ).then(function(resourceRequest) {
