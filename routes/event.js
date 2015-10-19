@@ -14,6 +14,10 @@ models.EventType.belongsTo(models.Event, {foreignKey: 'EventTypeID'});
 models.Event.hasMany(models.ResourceRequest, {foreignKey: 'EventID'});
 models.ResourceRequest.belongsTo(models.Event, {foreignKey: 'EventID'});
 
+//Event one-to-many on ResourceRegistry
+models.Event.hasMany(models.ResourceRegistry, {foreignKey: 'EventID'});
+models.ResourceRegistry.belongsTo(models.Event, {foreignKey: 'EventID'});
+
 //Event many-to-One on Organization
 models.Organization.hasMany(models.Event, {foreignKey: 'OrganizationID'});
 models.Event.belongsTo(models.Organization, {foreignKey: 'OrganizationID'});
@@ -28,10 +32,13 @@ var routes = function(){
             Active: true
           },
           include: [
+            
             {model: models.EventLocation},
             {model: models.EventType},
             {model: models.Organization},
-            {model: models.ResourceRequest}
+            {model: models.ResourceRequest},
+            {model: models.ResourceRegistry}
+            
           ]
         }
       )
@@ -65,6 +72,7 @@ var routes = function(){
             EventID: req.params.id
           },
           include: [
+            {model: models.ResourceRegistry},
             {model: models.EventLocation},
             {model: models.EventType},
             {model: models.Organization},
