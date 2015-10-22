@@ -1,6 +1,6 @@
 //this will set the database environemnt in the config.json file
-//process.env.NODE_ENV = 'aws-development';
-process.env.NODE_ENV = 'local-dev';
+process.env.NODE_ENV = 'aws-development';
+//process.env.NODE_ENV = 'local-dev';
 
 var express = require('express');
 var path = require('path');
@@ -68,21 +68,11 @@ app.use(express.static('leaflet'));
 app.use('/', express.static( __dirname + '/'));
 
 app.get('/', function (req, res) {
-    console.log("req.hostname = " + req.hostname);
-    console.log("req.protocol = " + req.protocol);
-    console.log("req.url = " + req.url);
-    console.log("req.port = " + req.port);
-
     if (req.protocol == "http" && enable_redirect == "true") {
         res.redirect('https://' + req.hostname + ":" + ssl_port + req.url);
     } else {
         res.sendFile(__dirname + '/app.html');
     }
-    /*if (true) {
-        res.redirect('https://' + req.header('Host') + req.url);
-    } else {*/
-        //res.sendFile(__dirname + '/app.html');
-    //}
 });
 
 app.listen(port, function(){
