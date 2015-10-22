@@ -5,10 +5,10 @@ gulp.task('default', function(){
 	nodemon({
 		script: 'server.js',
 		ext: 'js',
-		env: {
-			//PORT 80 if your machine will allow, or choose a port that is available
-			 PORT: 8080
-			//  PORT:80
+		env: {		
+		    PORT: 8080,
+            SSL_PORT: 4443,
+			ENABLE_REDIRECT: false
 		},
 		ignore: ['./node_modules/**']
 	})

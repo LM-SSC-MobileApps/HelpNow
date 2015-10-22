@@ -7,6 +7,8 @@ var path = require('path');
 var logger = require('morgan');
 var mysql = require('mysql');
 var bodyParser = require('body-parser');
+var https = require('https');
+var fs = require('fs');
 
 //the routes for the helpnow api
 var accountRouter = require('./routes/account')();
@@ -27,10 +29,11 @@ var resourceResponseRouter = require('./routes/resourceresponse')();
 var resourceTypeRouter = require('./routes/resourcetype')();
 var responseStateRouter = require('./routes/responsestate')();
 
-
 var app = express();
 
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 80;
+var ssl_port = process.env.SSL_PORT || 443;
+var enable_redirect = process.env.ENABLE_REDIRECT || true;
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
@@ -64,11 +67,31 @@ app.use(express.static('fonts'));
 app.use(express.static('leaflet'));
 app.use('/', express.static( __dirname + '/'));
 
-app.get('/', function(req, res){
-  // res.send('Welcome to the HelpNow API');
-  res.sendFile(__dirname + '/app.html');
+app.get('/', function (req, res) {
+    console.log("req.hostname = " + req.hostname);
+    console.log("req.protocol = " + req.protocol);
+    console.log("req.url = " + req.url);
+    console.log("req.port = " + req.port);
+
+    if (req.protocol == "http" && enable_redirect == "true") {
+        res.redirect('https://' + req.hostname + ":" + ssl_port + req.url);
+    } else {
+        res.sendFile(__dirname + '/app.html');
+    }
+    /*if (true) {
+        res.redirect('https://' + req.header('Host') + req.url);
+    } else {*/
+        //res.sendFile(__dirname + '/app.html');
+    //}
 });
 
 app.listen(port, function(){
-  console.log('Running on PORT:' + port);
+    console.log('Running on PORT:' + port);
+});
+
+https.createServer({
+    key: fs.readFileSync('./certs/key.pem'),
+    cert: fs.readFileSync('./certs/cert.pem')
+}, app).listen(ssl_port, function() {
+    console.log('Running on PORT:' + ssl_port);
 });
