@@ -8,7 +8,8 @@ gulp.task('default', function () {
         env: {
             PORT: 8080,
             SSL_PORT: 4443,
-            ENABLE_REDIRECT: false
+            ENABLE_REDIRECT: false,
+            NODE_ENV: 'local-dev'
         },
         ignore: ['./node_modules/**']
     })

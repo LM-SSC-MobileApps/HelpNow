@@ -1,6 +1,6 @@
 //this will set the database environemnt in the config.json file
-process.env.NODE_ENV = 'aws-development';
-//process.env.NODE_ENV = 'local-dev';
+// process.env.NODE_ENV = 'aws-development';
+process.env.NODE_ENV = 'local-dev';
 
 var express = require('express');
 var path = require('path');
