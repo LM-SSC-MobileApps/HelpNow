@@ -207,10 +207,6 @@ a.btn-toggle span {
 	border-radius: 4px 4px 0px 0px;
 }
 
-.separated {
-	margin-top: 20px;
-}
-
 .btn-primary {
 	background-color: #3c87a5;
 	color: white;
@@ -308,4 +304,18 @@ input.switch:checked ~ label:after
 
 .separated-small {
 	margin-top: 10px;
+}
+
+.separated-tiny {
+	margin-top: 5px;
+}
+
+#event-info h4 {
+	margin-top: 5px;
+	margin-bottom: 0px;
+}
+
+#event-info h5 {
+	margin-top: 3px;
+	margin-bottom: 0px;
 }

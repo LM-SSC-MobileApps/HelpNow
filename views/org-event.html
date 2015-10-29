@@ -1,8 +1,8 @@
 <div ng-controller="OrgEventCtrl">
 	<div id="map" ng-if="event" map map-center="{{event.EventLocations[0].LAT}},{{event.EventLocations[0].LONG}}" map-zoom="13" class="col-md-9" style="height: 512px; border: 1px solid #AAA;"></div>
 	<div  class="col-md-3">
-		<div id="eventInfo" ng-include="'views/fragments/event-info.html'" class="row"></div>
-		<div class="row separated">
+		<div id="eventInfo" ng-include="'views/fragments/event-info.html'"></div>
+		<div class="row">
 			<div class="col-md-12">
 				<div class="well">
 					<a class="btn btn-primary pull-right" ng-click="toggleFilters()"><span ng-class="filterButtonClass()"></span> {{filterButtonText()}}</a>
