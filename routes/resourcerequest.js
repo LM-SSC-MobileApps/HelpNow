@@ -3,12 +3,10 @@ var models  = require('../models'),
     express = require('express');
 
 //ResourceRequest one-to-one on RequestState
-models.ResourceRequest.hasOne(models.RequestState, {foreignKey: 'RequestStateID'});
-models.RequestState.belongsTo(models.ResourceRequest, {foreignKey: 'RequestStateID'});
+models.ResourceRequest.belongsTo(models.RequestState, {foreignKey: 'RequestStateID'});
 
 //ResourceRequest one-to-one on ResourceType
-models.ResourceRequest.hasOne(models.ResourceType, {foreignKey: 'ResourceTypeID'});
-models.ResourceType.belongsTo(models.ResourceRequest, {foreignKey: 'ResourceTypeID'});
+models.ResourceRequest.belongsTo(models.ResourceType, {foreignKey: 'ResourceTypeID'});
 
 //ResourceRequest one-to-one on ResourceRegistry
 models.ResourceRequest.hasOne(models.ResourceRegistry, {foreignKey: 'ResourceRegistryID'});

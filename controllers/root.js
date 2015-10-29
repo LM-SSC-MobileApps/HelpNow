@@ -1,5 +1,6 @@
 angular.module("helpNow").controller("RootCtrl", function($scope, $http, $resource) {
 	var currentLanguage = "Eng";
+	var currentView = "";
 	
 	$scope.eventsResource = $resource("/api/event");
 	

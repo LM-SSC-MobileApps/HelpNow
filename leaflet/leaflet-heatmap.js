@@ -52,7 +52,7 @@
       map.getPanes().overlayPane.appendChild(this._el);
 
       if (!this._heatmap) {
-        this._heatmap = h337.create(this.cfg);
+		this._heatmap = h337.create(this.cfg);
       } 
 
       // on zoom, reset origin
@@ -141,7 +141,9 @@
 
       generatedData.data = latLngPoints;
 
-      this._heatmap.setData(generatedData);
+	  if (this._heatmap) {
+		this._heatmap.setData(generatedData);
+	  }
     },
     setData: function(data) {
       this._max = data.max || this._max;

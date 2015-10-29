@@ -6,6 +6,16 @@ body {
 	color: #53503d;
 }
 
+hr {
+	border-color: #53503D;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.well {
+	background-color: #f7ffd9;
+}
+
 h2 {
 	margin-top: 10px;
 	margin-bottom: 20px;
@@ -42,54 +52,75 @@ h2 {
 .btn-toggle, .btn-toggle:hover {
 	color: white;
 	font-size: 14px;
-	background-image: linear-gradient(rgba(146, 146, 146, 1), rgba(160, 160, 160, 1) 50%, rgba(146, 146, 146, 1) 50%);
+	background-color: #555;
+	width: 40px;
+	height: 40px;
 	text-align: center;
-	margin-bottom: 5px;
+	margin-bottom: 0px;
 	padding-top: 7px;
+	padding-left: 10px;
+	padding-bottom: 0px;
+	border: 4px solid #3C87A5;
+}
+
+.btn-toggle.active {
+	background-color: #3C87A5;
+	box-shadow: none;
+}
+
+#showNeedsMarkers {
+	background-image: url("images/marker-icon.png");
+	background-position: -5px -3px;
+}
+
+#showHeatmap {
+	background-image: url("images/heatmap.png");
+	background-position: -5px -3px;
 }
 
 #showMedical.active {
-	background: radial-gradient(circle, red, #dc0000);
-	border: 2px solid red;
-	/* box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 5px #dc0000; */
+	background-color: red;
+	border: 4px solid red;
+}
+
+#showEvacuation.active {
+	background-color: #ca62ff;
+	border: 4px solid #ca62ff;
 }
 
 #showShelter.active {
-	background: radial-gradient(circle, #ffe300, #e7ce00);
-	border: 2px solid #ffe300;
-	/* box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 5px #e7ce00; */
+	background-color: #ff9500;
+	border: 4px solid #ff9500;
 }
 
 #showFood.active {
-	background: radial-gradient(circle, #00ff1c, #00d918);
-	border: 2px solid #00ff1c;
-	/* box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 5px #00d918; */
+	background-color: #00a819;
+	border: 4px solid #00a819;
 }
 
 #showWater.active {
-	background: radial-gradient(circle, #00aaff, #0091d9);
-	border: 2px solid #00aaff;
-	/* box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 5px #0091d9; */
+	background-color: #087fff;
+	border: 4px solid #087fff;
+}
+
+#showEvacuation {
+	border: 4px solid #ca62ff;
 }
 
 #showMedical {
-	border: 2px solid red;
-	/* box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 5px #dc0000; */
+	border: 4px solid red;
 }
 
 #showShelter {
-	border: 2px solid #ffe300;
-	/* box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 5px #e7ce00; */
+	border: 4px solid #ff9500;
 }
 
 #showFood {
-	border: 2px solid #00ff1c;
-	/* box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 5px #00d918; */
+	border: 4px solid #00a819;
 }
 
 #showWater {
-	border: 2px solid #00aaff;
-	/* box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 5px #0091d9; */
+	border: 4px solid #087fff;
 }
 
 
@@ -265,4 +296,16 @@ input.switch:checked ~ label:before
 input.switch:checked ~ label:after
 {
 	margin-left: 2em;
+}
+
+.filter-caption {
+	font-size: 10px;
+}
+
+.separated {
+	margin-top: 20px;
+}
+
+.separated-small {
+	margin-top: 10px;
 }

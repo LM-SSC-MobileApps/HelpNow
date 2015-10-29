@@ -2,16 +2,28 @@ angular.module("helpNow").controller("OrgEventCtrl", function ($scope, $routePar
 	var map;
 	var mapLayers = [];
 	
+	$scope.setCurrentView("org-events");
+	
 	$scope.requestsResource = $resource("/api/resourcerequest/event/:eventID");
 	
     $scope.eventID = $routeParams.eventID * 1;
-	$scope.event = $scope.getEvent($scope.eventID);
+	if ($scope.events) {
+		$scope.event = $scope.getEvent($scope.eventID);
+		loadRequests();
+	}
+	
 	$scope.requests = [];
+	
+	$scope.showFilters = true;
 	
 	$scope.showMedical = true;
 	$scope.showShelter = true;
 	$scope.showFood = true;
 	$scope.showWater = true;
+	$scope.showEvacuation = true;
+	
+	$scope.showHeatmap = true;
+	$scope.showNeedsMarkers = true;
 	
 	function getIcon(resourceType) {
 		if (resourceType == "Water") {
@@ -20,13 +32,51 @@ angular.module("helpNow").controller("OrgEventCtrl", function ($scope, $routePar
 			return "style/images/marker-red.png"
 		} else if (resourceType == "Shelter") {
 			return "style/images/marker-orange.png"
+		} else if (resourceType == "Evacuation") {
+			return "style/images/marker-purple.png"
 		} else {
 			return "style/images/marker-green.png"
 		}
 	}
 	
+	$scope.$on("EventDataLoaded", function() {
+		$scope.event = $scope.getEvent($scope.eventID);
+		loadRequests();
+		updateMap()
+	});
+	
+	function buildNeedsMarkers(selectedRequests) {
+		angular.forEach(selectedRequests, function(request) {
+			var requestIcon = L.icon({
+				iconUrl: getIcon(request.ResourceType.Description),
+				iconSize: [27, 41]
+			}); 
+			var marker = L.marker([request.LAT, request.LONG], { icon: requestIcon });
+			marker.bindPopup("<strong>" + request.ResourceType.Description + " (" + request.Quantity + ")</strong><br/>" + request.Notes);
+			mapLayers.push(marker);
+		});
+	}
+	
+	function buildHeatmap(selectedRequests) {
+		var heatmapConfig = {
+			"radius": 100,
+			"maxOpacity": .5,
+			"scaleRadius": false,
+			"useLocalExtrema": true,
+			latField: 'LAT',
+			lngField: 'LONG',
+			valueField: 'Quantity'
+		};
+		
+		var heatmapLayer = new HeatmapOverlay(heatmapConfig);
+		var heatmapData = { data: selectedRequests };
+		heatmapLayer.setData(heatmapData);
+		mapLayers.push(heatmapLayer);
+	}
+	
 	function updateMap() {
-		if (!map) return;
+		if (!map || !$scope.events) return;
+		
 		for (var i = 0; i < mapLayers.length; i++) {
 			var layer = mapLayers[i];
 			map.removeLayer(layer);
@@ -38,55 +88,27 @@ angular.module("helpNow").controller("OrgEventCtrl", function ($scope, $routePar
 			return (type == "Water" && $scope.showWater)
 				|| (type == "Shelter" && $scope.showShelter)
 				|| (type == "Food" && $scope.showFood)
+				|| (type == "Evacuation" && $scope.showEvacuation)
 				|| (type == "First Aid" && $scope.showMedical);
 		});
 		
-		 var heatmapConfig = {
-			// radius should be small ONLY if scaleRadius is true (or small radius is intended)
-			// if scaleRadius is false it will be the constant radius used in pixels
-			"radius": 200,
-			"maxOpacity": .8,
-			// scales the radius based on map zoom
-			"scaleRadius": false,
-			// if set to false the heatmap uses the global maximum for colorization
-			// if activated: uses the data maximum within the current map boundaries
-			//   (there will always be a red spot with useLocalExtremas true)
-			"useLocalExtrema": true,
-			// which field name in your data represents the latitude - default "lat"
-			latField: 'lat',
-			// which field name in your data represents the longitude - default "lng"
-			lngField: 'lng',
-			// which field name in your data represents the data value - default "value"
-			valueField: 'count'
-		};
-		/*var heatmapLayer = new HeatmapOverlay(heatmapConfig);
-		var testData = {
-			max: 8,
-			data: [{ lat: 24.6408, lng: 46.7728, count: 3 }, { lat: 23.7301, lng: 90.3065, count: 2 }]
-		};
-		heatmapLayer.setData(testData);
-		//heatmapLayer.setData(selectedRequests);
-		mapLayers.push(heatmapLayer);
-		*/
+		if ($scope.showHeatmap)
+			buildHeatmap(selectedRequests);
 		
-		angular.forEach(selectedRequests, function(request) {
-			var requestIcon = L.icon({
-				iconUrl: getIcon(request.ResourceType.Description),
-				iconSize: [27, 41]
-			}); 
-			var marker = L.marker([request.LAT, request.LONG], { icon: requestIcon });
-			mapLayers.push(marker);
-		});
+		if ($scope.showNeedsMarkers)
+			buildNeedsMarkers(selectedRequests);
 		
 		angular.forEach(mapLayers, function(layer) {
 			map.addLayer(layer);
 		});
 	}
 
-	$scope.requestsResource.get({eventID: $scope.eventID}, function(data) {
-		$scope.requests = data.json;
-		updateMap();
-	});
+	function loadRequests() {
+		$scope.requestsResource.get({eventID: $scope.eventID}, function(data) {
+			$scope.requests = data.json;
+			updateMap();
+		});
+	}
 	
 	$scope.toggleButtonClass = function(id) {
 		var status = $scope[id];
@@ -102,6 +124,19 @@ angular.module("helpNow").controller("OrgEventCtrl", function ($scope, $routePar
 	$scope.initMap = function(newMap) {
 		map = newMap;
 		updateMap();
+	}
+	
+	$scope.filterButtonClass = function() {
+		return $scope.showFilters ? "glyphicon glyphicon-eye-close" : "glyphicon glyphicon-eye-open";
+	}
+	
+	$scope.filterButtonText = function() {
+		return $scope.showFilters ? "Hide" : "Show";
+	}
+	
+	$scope.toggleFilters = function() {
+		$scope.showFilters = !$scope.showFilters;
+		return false;
 	}
 	
 	$scope.setCurrentView("org-event");
