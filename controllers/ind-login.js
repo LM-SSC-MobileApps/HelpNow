@@ -1,3 +1,3 @@
-angular.module("helpNow").controller("IndLoginCtrl", function($scope) {
+angular.module("helpNow").controller("IndLoginCtrl", ["$scope", function($scope) {
 	$scope.setCurrentView("inds");
-});
+}]);

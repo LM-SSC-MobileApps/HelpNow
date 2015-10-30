@@ -1,3 +1,3 @@
-angular.module("helpNow").controller("GovLoginCtrl", function($scope) {
+angular.module("helpNow").controller("GovLoginCtrl", ["$scope", function($scope) {
 	$scope.setCurrentView("govs");
-});
+}]);

@@ -1,3 +1,3 @@
-angular.module("helpNow").controller("OrgLoginCtrl", function($scope) {
+angular.module("helpNow").controller("OrgLoginCtrl", ["$scope", function($scope) {
 	$scope.setCurrentView("orgs");
-});
+}]);

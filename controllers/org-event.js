@@ -1,7 +1,6 @@
-angular.module("helpNow").controller("OrgEventCtrl", function ($scope, $routeParams, $resource) {
+angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", "$resource", function ($scope, $routeParams, $resource) {
 	var map;
 	var mapLayers = [];
-	
 	$scope.setCurrentView("org-events");
 	
 	$scope.requestsResource = $resource("/api/resourcerequest/event/:eventID");
@@ -10,11 +9,11 @@ angular.module("helpNow").controller("OrgEventCtrl", function ($scope, $routePar
 	if ($scope.events) {
 		$scope.event = $scope.getEvent($scope.eventID);
 		loadRequests();
-	}
+	} 
 	
 	$scope.requests = [];
 	
-	$scope.showFilters = true;
+	$scope.showFilters = true; 
 	
 	$scope.showMedical = true;
 	$scope.showShelter = true;
@@ -27,22 +26,22 @@ angular.module("helpNow").controller("OrgEventCtrl", function ($scope, $routePar
 	
 	function getIcon(resourceType) {
 		if (resourceType == "Water") {
-			return "style/images/marker-blue.png"
+			return "style/images/marker-blue.png";
 		} else if (resourceType == "First Aid") {
-			return "style/images/marker-red.png"
+			return "style/images/marker-red.png";
 		} else if (resourceType == "Shelter") {
-			return "style/images/marker-orange.png"
+			return "style/images/marker-orange.png";
 		} else if (resourceType == "Evacuation") {
-			return "style/images/marker-purple.png"
+			return "style/images/marker-purple.png";
 		} else {
-			return "style/images/marker-green.png"
+			return "style/images/marker-green.png";
 		}
 	}
 	
 	$scope.$on("EventDataLoaded", function() {
 		$scope.event = $scope.getEvent($scope.eventID);
 		loadRequests();
-		updateMap()
+		updateMap();
 	});
 	
 	function buildNeedsMarkers(selectedRequests) {
@@ -60,7 +59,7 @@ angular.module("helpNow").controller("OrgEventCtrl", function ($scope, $routePar
 	function buildHeatmap(selectedRequests) {
 		var heatmapConfig = {
 			"radius": 100,
-			"maxOpacity": .5,
+			"maxOpacity": 0.5,
 			"scaleRadius": false,
 			"useLocalExtrema": true,
 			latField: 'LAT',
@@ -85,11 +84,11 @@ angular.module("helpNow").controller("OrgEventCtrl", function ($scope, $routePar
 		mapLayers = [];
 		var selectedRequests = $scope.requests.filter(function(request) {
 			var type = request.ResourceType.Description;
-			return (type == "Water" && $scope.showWater)
-				|| (type == "Shelter" && $scope.showShelter)
-				|| (type == "Food" && $scope.showFood)
-				|| (type == "Evacuation" && $scope.showEvacuation)
-				|| (type == "First Aid" && $scope.showMedical);
+			return (type == "Water" && $scope.showWater) || 
+				(type == "Shelter" && $scope.showShelter) || 
+				(type == "Food" && $scope.showFood) || 
+				(type == "Evacuation" && $scope.showEvacuation) || 
+				(type == "First Aid" && $scope.showMedical);
 		});
 		
 		if ($scope.showHeatmap)
@@ -113,32 +112,32 @@ angular.module("helpNow").controller("OrgEventCtrl", function ($scope, $routePar
 	$scope.toggleButtonClass = function(id) {
 		var status = $scope[id];
 		return status ? "btn btn-toggle active" : "btn btn-toggle";
-	}
+	};
 	
 	$scope.toggleButton = function(id) {
 		$scope[id] = !$scope[id];
 		updateMap();
 		return false;
-	}
+	};
 	
 	$scope.initMap = function(newMap) {
 		map = newMap;
 		updateMap();
-	}
+	};
 	
 	$scope.filterButtonClass = function() {
 		return $scope.showFilters ? "glyphicon glyphicon-eye-close" : "glyphicon glyphicon-eye-open";
-	}
+	};
 	
 	$scope.filterButtonText = function() {
 		return $scope.showFilters ? "Hide" : "Show";
-	}
+	};
 	
 	$scope.toggleFilters = function() {
 		$scope.showFilters = !$scope.showFilters;
 		return false;
-	}
+	};
 	
 	$scope.setCurrentView("org-event");
-});
+}]);
 

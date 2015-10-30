@@ -1,6 +1,6 @@
 body {
 	background-color: #a49f79;
-	background-image: url("images/sky5.jpg");
+	background-image: url("../style/images/sky5.jpg");
 	background-position: center -120px;
 	background-size: 100% auto;
 	color: #53503d;
@@ -69,12 +69,12 @@ h2 {
 }
 
 #showNeedsMarkers {
-	background-image: url("images/marker-icon.png");
+	background-image:  url("../style/images/marker-icon.png");
 	background-position: -5px -3px;
 }
 
 #showHeatmap {
-	background-image: url("images/heatmap.png");
+	background-image: url("../style/images/heatmap.png");
 	background-position: -5px -3px;
 }
 
@@ -186,7 +186,7 @@ a.btn-toggle span {
 }
 
 .main-content {
-	margin-top: 30px;
+	margin-top: 10px;
 }
 
 .panel {

@@ -1,5 +1,5 @@
 angular.module("helpNow", ["ngRoute", "ngResource"])
-	.config(function ($routeProvider) {
+	.config(["$routeProvider", function ($routeProvider) {
 	    $routeProvider.when("/ind_login", {
 	        templateUrl: "views/ind-login.html"
 	    });
@@ -31,4 +31,4 @@ angular.module("helpNow", ["ngRoute", "ngResource"])
 		$routeProvider.otherwise({
 			templateUrl: "views/events.html"
 		});
-	});
+	}]);

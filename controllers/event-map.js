@@ -1,4 +1,4 @@
-angular.module("helpNow").controller("EventMapCtrl", function ($scope, $routeParams) {
+angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", function ($scope, $routeParams) {
     $scope.eventID = $routeParams.eventID * 1;
     $scope.event = $scope.getEvent($scope.eventID);
     $scope.resources = $scope.getResourcesForEvent($scope.eventID);
@@ -7,7 +7,7 @@ angular.module("helpNow").controller("EventMapCtrl", function ($scope, $routePar
 	
 	$scope.initMap = function(map) {
 		map.on('click', function (e) {
-			if (locationOutline != undefined) {
+			if (locationOutline !== undefined) {
 				map.removeLayer(locationOutline);
 			}
 			locationOutline = L.circle(e.latlng, overlayRadius).addTo(map);
@@ -54,5 +54,5 @@ angular.module("helpNow").controller("EventMapCtrl", function ($scope, $routePar
 		        else showResourcePanel(true);
 		    });
 		}
-	}
-});
+	};
+}]);

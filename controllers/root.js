@@ -1,4 +1,4 @@
-angular.module("helpNow").controller("RootCtrl", function($scope, $http, $resource) {
+angular.module("helpNow").controller("RootCtrl", ["$scope", "$http", "$resource", function($scope, $http, $resource) {
 	var currentLanguage = "Eng";
 	var currentView = "";
 	
@@ -9,7 +9,7 @@ angular.module("helpNow").controller("RootCtrl", function($scope, $http, $resour
 			$scope.events = data.json;
 			$scope.$broadcast("EventDataLoaded", {});
 		});
-	}
+	};
 	
 	$scope.getIcon = function(eventType) {
 		if (eventType == "Flood") {
@@ -19,7 +19,7 @@ angular.module("helpNow").controller("RootCtrl", function($scope, $http, $resour
 		} else {
 			return "style/images/icons/EarthquakeIcon.png";
 		}
-	}
+	};
 	
 	$scope.getGrayIcon = function(eventType) {
 		if (eventType == "Flood") {
@@ -29,15 +29,15 @@ angular.module("helpNow").controller("RootCtrl", function($scope, $http, $resour
 		} else {
 			return "style/images/icons/EarthquakeGray.png";
 		}
-	}
+	};
 	
 	$scope.getMenuClass = function(viewName) {
 		return viewName == currentView ? "active" : "";
-	}
+	};
 	
 	$scope.setCurrentView = function(viewName) {
 		currentView = viewName;
-	}
+	};
 	
 	$scope.setCurrentLanguage = function(language) {
 		currentLanguage = language;
@@ -58,11 +58,11 @@ angular.module("helpNow").controller("RootCtrl", function($scope, $http, $resour
 					alert(data);
 				});
 		}	
-	}
+	};
 	
 	$scope.getLanguageClass = function(language) {
 		return currentLanguage == language ? "active" : "";
-	}
+	};
 	
 	$scope.setCurrentLanguage("Eng");
 
@@ -74,7 +74,7 @@ angular.module("helpNow").controller("RootCtrl", function($scope, $http, $resour
 	    }
 	    if (resources.length > 0) return resources;
 	    return {};
-	}
+	};
 	
 	$scope.getEvent = function(eventID) {
 		for (var i = 0; i < $scope.events.length; i++) {
@@ -82,7 +82,7 @@ angular.module("helpNow").controller("RootCtrl", function($scope, $http, $resour
 			if (event.EventID == eventID) return event;
 		}
 		return {};
-	}
+	};
 	
 	$scope.loadEvents();
 	
@@ -141,7 +141,7 @@ angular.module("helpNow").controller("RootCtrl", function($scope, $http, $resour
             provider: "",
             message: "No more than 1 bag per person.  Only bring what you can carry."
         }
-	]
+	];
 	
 	var testEvents = [
 		{
@@ -181,5 +181,5 @@ angular.module("helpNow").controller("RootCtrl", function($scope, $http, $resour
 			contactPhone: "+880 2 555 5555",
 			iconPath: "style/images/icons/EarthquakeIcon.png"
 		}
-	]
-});
+	];
+}]);

@@ -1,4 +1,4 @@
-angular.module("helpNow").controller("EventListCtrl", function($scope) {
+angular.module("helpNow").controller("EventListCtrl", ["$scope", function($scope) {
 	var map;
 	
 	function addEventsToMap() {
@@ -12,18 +12,18 @@ angular.module("helpNow").controller("EventListCtrl", function($scope) {
 			marker.on("click", function() {
 				window.location = "#event_map/" + event.EventID;
 			});
-			marker.addTo(map)
-		})
+			marker.addTo(map);
+		});
 	}
 	
 	$scope.setCurrentView("events");
 	
 	$scope.$on("EventDataLoaded", function() {
-		addEventsToMap()
+		addEventsToMap();
 	});
 	
 	$scope.initMap = function(newMap) {
 		map = newMap;
 		addEventsToMap();
-	}
-});
+	};
+}]);
