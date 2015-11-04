@@ -1,7 +1,13 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('OrganizationAddress', { 
+  return sequelize.define('OrganizationGroup', { 
+    OrganizationGroupID: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true
+    },
     OrganizationID: {
       type: DataTypes.INTEGER(11),
       allowNull: false
@@ -12,11 +18,11 @@ module.exports = function(sequelize, DataTypes) {
     },
     PrimaryPOC: {
       type: DataTypes.INTEGER(11),
-      allowNull: true,
+      allowNull: true
     },
     SecondaryPOC: {
-      type: DataTypes.STRING,
-      allowNull: true,
+      type: DataTypes.INTEGER(11),
+      allowNull: true
     }
   });
 };
