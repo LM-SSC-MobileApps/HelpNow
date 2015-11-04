@@ -64,6 +64,52 @@ var routes = function(){
       });
     }
   )
+  //find Map Items for Event
+  .get('/mapitems/:eventID', function(req, res) {
+	  var items = {};
+	  models.ResourceRequest.findAll(
+        {
+          where: {
+            EventID: req.params.eventID
+          },
+          include: [
+            {model: models.RequestState},
+            {model: models.ResourceType}
+          ]
+        }
+      ).then(function(resourceRequests) {
+			items.requests = resourceRequests;
+			models.ResourceRegistry.findAll(
+			{
+			  where: {
+				EventID: req.params.eventID
+			  },
+			  include: [
+				{model: models.ResourceType},
+				{model: models.ResourceLocation},
+				{model: models.Organization}
+			  ]
+			}).then(function(resourceLocations) {
+				items.locations = resourceLocations;
+				res.statusCode = 200;
+				res.send(
+				  {
+					result: 'success',
+					err:    '',
+					json:  items
+				  }
+				);
+			})
+      }
+     ).catch(function (err) {
+       console.error(err);
+       res.statusCode = 502;
+       res.send({
+           result: 'error',
+           err:    err.message
+       });
+      });
+  })
   //find Event by ID
   .get('/:id', function(req, res) {
       models.Event.findAll(

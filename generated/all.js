@@ -130,7 +130,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	var mapLayers = [];
 	$scope.setCurrentView("org-events");
 	
-	$scope.requestsResource = $resource("/api/resourcerequest/event/:eventID");
+	$scope.requestsResource = $resource("/api/event/mapitems/:eventID");
 	
     $scope.eventID = $routeParams.eventID * 1;
 	if ($scope.events) {
@@ -147,11 +147,13 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	$scope.showFood = true;
 	$scope.showWater = true;
 	$scope.showEvacuation = true;
+	$scope.showMedicine = true;
 	
 	$scope.showHeatmap = true;
 	$scope.showNeedsMarkers = true;
+	$scope.showLocationMarkers = true;
 	
-	function getIcon(resourceType) {
+	function getNeedsIcon(resourceType) {
 		if (resourceType == "Water") {
 			return "style/images/marker-blue.png";
 		} else if (resourceType == "First Aid") {
@@ -160,8 +162,26 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 			return "style/images/marker-orange.png";
 		} else if (resourceType == "Evacuation") {
 			return "style/images/marker-purple.png";
+		} else if (resourceType == "Medicine") {
+			return "style/images/marker-cyan.png";
 		} else {
 			return "style/images/marker-green.png";
+		}
+	}
+	
+	function getLocationIcon(resourceType) {
+		if (resourceType == "Water") {
+			return "style/images/marker2-blue.png";
+		} else if (resourceType == "First Aid") {
+			return "style/images/marker2-red.png";
+		} else if (resourceType == "Shelter") {
+			return "style/images/marker2-orange.png";
+		} else if (resourceType == "Evacuation") {
+			return "style/images/marker2-purple.png";
+		} else if (resourceType == "Medicine") {
+			return "style/images/marker2-cyan.png";
+		} else {
+			return "style/images/marker2-green.png";
 		}
 	}
 	
@@ -174,7 +194,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	function buildNeedsMarkers(selectedRequests) {
 		angular.forEach(selectedRequests, function(request) {
 			var requestIcon = L.icon({
-				iconUrl: getIcon(request.ResourceType.Description),
+				iconUrl: getNeedsIcon(request.ResourceType.Description),
 				iconSize: [27, 41]
 			}); 
 			var marker = L.marker([request.LAT, request.LONG], { icon: requestIcon });
@@ -200,6 +220,32 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 		mapLayers.push(heatmapLayer);
 	}
 	
+	function buildLocationMarkers() {
+		var selectedLocations = $scope.locations.filter(function(location) {
+			var type = location.ResourceType.Description;
+			return shouldDisplayMarker(type);
+		});
+		
+		angular.forEach(selectedLocations, function(location) {
+			var locationIcon = L.icon({
+				iconUrl: getLocationIcon(location.ResourceType.Description),
+				iconSize: [27, 41]
+			}); 
+			var marker = L.marker([location.ResourceLocation.LAT, location.ResourceLocation.LONG], { icon: locationIcon });
+			marker.bindPopup("<strong>" + location.ResourceType.Description + " (" + location.Organization.Name + ")</strong><br/>" + location.Notes);
+			mapLayers.push(marker);
+		});
+	}
+	
+	function shouldDisplayMarker(type) {
+		return (type == "Water" && $scope.showWater) || 
+				(type == "Shelter" && $scope.showShelter) || 
+				(type == "Food" && $scope.showFood) || 
+				(type == "Evacuation" && $scope.showEvacuation) || 
+				(type == "First Aid" && $scope.showMedical) || 
+				(type == "Medicine" && $scope.showMedicine);
+	}
+	
 	function updateMap() {
 		if (!map || !$scope.events) return;
 		
@@ -211,11 +257,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 		mapLayers = [];
 		var selectedRequests = $scope.requests.filter(function(request) {
 			var type = request.ResourceType.Description;
-			return (type == "Water" && $scope.showWater) || 
-				(type == "Shelter" && $scope.showShelter) || 
-				(type == "Food" && $scope.showFood) || 
-				(type == "Evacuation" && $scope.showEvacuation) || 
-				(type == "First Aid" && $scope.showMedical);
+			return shouldDisplayMarker(type);
 		});
 		
 		if ($scope.showHeatmap)
@@ -224,6 +266,9 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 		if ($scope.showNeedsMarkers)
 			buildNeedsMarkers(selectedRequests);
 		
+		if ($scope.showLocationMarkers)
+			buildLocationMarkers();
+		
 		angular.forEach(mapLayers, function(layer) {
 			map.addLayer(layer);
 		});
@@ -231,7 +276,8 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 
 	function loadRequests() {
 		$scope.requestsResource.get({eventID: $scope.eventID}, function(data) {
-			$scope.requests = data.json;
+			$scope.requests = data.json.requests;
+			$scope.locations = data.json.locations;
 			updateMap();
 		});
 	}

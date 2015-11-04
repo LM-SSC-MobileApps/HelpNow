@@ -73,9 +73,14 @@ h2 {
 	background-position: -5px -3px;
 }
 
+#showLocationMarkers {
+	background-image:  url("../style/images/marker2-icon.png");
+	background-position: -4px -2px;
+}
+
 #showHeatmap {
 	background-image: url("../style/images/heatmap.png");
-	background-position: -5px -3px;
+	background-position: -4px -3px;
 }
 
 #showMedical.active {
@@ -103,12 +108,23 @@ h2 {
 	border: 4px solid #087fff;
 }
 
+#showMedicine.active {
+	background-color: #21dce4;
+	border: 4px solid #21dce4;
+}
+
 #showEvacuation {
 	border: 4px solid #ca62ff;
 }
 
 #showMedical {
 	border: 4px solid red;
+}
+
+#showMedicine {
+	border: 4px solid #21dce4;
+	background-image: url("../style/images/medicine.png");
+	background-position: -5px -3px;
 }
 
 #showShelter {

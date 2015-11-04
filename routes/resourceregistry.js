@@ -2,6 +2,15 @@
 var models  = require('../models'),
     express = require('express');
 
+//ResourceRegistry one-to-one on ResourceType
+models.ResourceRegistry.belongsTo(models.ResourceType, {foreignKey: 'ResourceTypeID'});
+
+//ResourceRegistry one-to-one on ResourceLocation
+models.ResourceRegistry.belongsTo(models.ResourceLocation, {foreignKey: 'ResourceLocationID'});
+
+//ResourceRegistry one-to-one on Organization
+models.ResourceRegistry.belongsTo(models.Organization, {foreignKey: 'OrganizationID'});
+
 var routes = function(){
   var router  = express.Router();
     router.get('/', function(req, res) {
