@@ -1,4 +1,5 @@
-
+var promise = require('bluebird');
+var cluster = require('../modules/cluster');
 var models  = require('../models'),
     express = require('express');
 
@@ -66,8 +67,9 @@ var routes = function(){
   )
   //find Map Items for Event
   .get('/mapitems/:eventID', function(req, res) {
-	  var items = {};
-	  models.ResourceRequest.findAll(
+	  var tasks = [];
+	  //load requests
+	  tasks[0] = models.ResourceRequest.findAll(
         {
           where: {
             EventID: req.params.eventID
@@ -77,31 +79,40 @@ var routes = function(){
             {model: models.ResourceType}
           ]
         }
-      ).then(function(resourceRequests) {
-			items.requests = resourceRequests;
-			models.ResourceRegistry.findAll(
-			{
-			  where: {
-				EventID: req.params.eventID
-			  },
-			  include: [
-				{model: models.ResourceType},
-				{model: models.ResourceLocation},
-				{model: models.Organization}
-			  ]
-			}).then(function(resourceLocations) {
-				items.locations = resourceLocations;
-				res.statusCode = 200;
-				res.send(
-				  {
-					result: 'success',
-					err:    '',
-					json:  items
-				  }
-				);
-			})
-      }
-     ).catch(function (err) {
+      )
+	  .then(cluster.clusterRequests);
+	  
+	  //load resource locations
+	  tasks[1] = models.ResourceRegistry.findAll(
+		{
+		  where: {
+			EventID: req.params.eventID
+		  },
+		  include: [
+			{model: models.ResourceType},
+			{model: models.ResourceLocation},
+			{model: models.Organization}
+		  ]
+	  });
+	  
+	  //when all data is loaded, send the response
+	  promise.all(tasks)
+	  .then(function(results) {
+		var data = {
+			requestClusters: results[0].requestClusters,
+			requests: results[0].requests,
+			locations: results[1]
+		};
+		res.statusCode = 200;
+        res.send(
+          {
+            result: 'success',
+            err:    '',
+            json:  data
+          }
+        );
+	  })
+	  .catch(function (err) {
        console.error(err);
        res.statusCode = 502;
        res.send({
@@ -110,6 +121,7 @@ var routes = function(){
        });
       });
   })
+  
   //find Event by ID
   .get('/:id', function(req, res) {
       models.Event.findAll(

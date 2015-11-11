@@ -90,7 +90,7 @@ var routes = function(){
       });
     }
   )
-  //find ResourceRequest by ID
+  //find ResourceRequest by event ID
   .get('/event/:eventID', function(req, res) {
       models.ResourceRequest.findAll(
         {
