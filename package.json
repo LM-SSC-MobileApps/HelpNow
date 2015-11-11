@@ -8,6 +8,7 @@
   },
   "author": "Michael T Major",
   "dependencies": {
+    "bluebird": "^3.0.5",
     "body-parser": "~1.13.2",
     "cookie-parser": "~1.3.5",
     "debug": "~2.2.0",
@@ -23,6 +24,7 @@
     "jade": "~1.11.0",
     "morgan": "~1.6.1",
     "mysql": "^2.9.0",
+    "node-kmeans": "0.0.1",
     "sequelize": "^3.9.0",
     "sequelize-auto": "0.0.7",
     "sequelize-cli": "^1.9.1",

@@ -6402,6 +6402,11 @@ h2 {
 }
 
 #showNeedsMarkers {
+	background-image:  url("../style/images/markers.png");
+	background-position: -6px -3px;
+}
+
+#showClusters {
 	background-image:  url("../style/images/marker-icon.png");
 	background-position: -5px -3px;
 }

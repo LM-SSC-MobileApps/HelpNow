@@ -23,6 +23,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	$scope.showMedicine = true;
 	
 	$scope.showHeatmap = true;
+	$scope.showClusters = true;
 	$scope.showNeedsMarkers = true;
 	$scope.showLocationMarkers = true;
 	
@@ -72,6 +73,23 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 			}); 
 			var marker = L.marker([request.LAT, request.LONG], { icon: requestIcon });
 			marker.bindPopup("<strong>" + request.ResourceType.Description + " (" + request.Quantity + ")</strong><br/>" + request.Notes);
+			mapLayers.push(marker);
+		});
+	}
+	
+	function buildClusterMarkers() {
+		var selectedClusters = $scope.requestClusters.filter(function(cluster) {
+			var type = cluster.ResourceType.Description;
+			return shouldDisplayMarker(cluster);
+		});
+		
+		angular.forEach(selectedClusters, function(cluster) {
+			var clusterIcon = L.icon({
+				iconUrl: getNeedsIcon(cluster.ResourceType.Description),
+				iconSize: [27, 41]
+			}); 
+			var marker = L.marker([cluster.LAT, cluster.LONG], { icon: clusterIcon });
+			marker.bindPopup("<strong>" + cluster.ResourceType.Description + " (" + cluster.Quantity + ")</strong><br/>" + cluster.Notes);
 			mapLayers.push(marker);
 		});
 	}
@@ -139,6 +157,9 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 		if ($scope.showNeedsMarkers)
 			buildNeedsMarkers(selectedRequests);
 		
+		if ($scope.showClusters)
+			buildClusterMarkers();
+		
 		if ($scope.showLocationMarkers)
 			buildLocationMarkers();
 		
@@ -151,6 +172,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 		$scope.requestsResource.get({eventID: $scope.eventID}, function(data) {
 			$scope.requests = data.json.requests;
 			$scope.locations = data.json.locations;
+			$scope.requestClusters = data.json.requestClusters;
 			updateMap();
 		});
 	}

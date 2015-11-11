@@ -16,10 +16,17 @@
 								<span class="filter-caption">Needs</span>
 							</div>
 							<div class="col-xs-4 text-center">
+								<a id="showClusters" ng-class="toggleButtonClass('showClusters')" ng-click="toggleButton('showClusters')" ></a>
+								<br/>
+								<span class="filter-caption">Clusters</span>
+							</div>
+							<div class="col-xs-4 text-center">
 								<a id="showHeatmap" ng-class="toggleButtonClass('showHeatmap')" ng-click="toggleButton('showHeatmap')"></a>
 								<br/>
 								<span class="filter-caption">Heatmap</span>
 							</div>
+						</div>
+						<div class="row separated-small">
 							<div class="col-xs-4 text-center">
 								<a id="showLocationMarkers" ng-class="toggleButtonClass('showLocationMarkers')" ng-click="toggleButton('showLocationMarkers')"></a>
 								<br/>
