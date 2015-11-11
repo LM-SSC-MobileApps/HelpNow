@@ -33,7 +33,7 @@ var routes = function(){
       models.ResourceType.findAll(
         {
           where: {
-            AccountID: req.params.id
+            ResourceTypeID: req.params.id
           }
         }
       ).then(function(resourceType) {
@@ -87,7 +87,7 @@ var routes = function(){
       req.body,
       {
         where: {
-          AccountID: req.params.id
+          ResourceTypeID: req.params.id
         }
       }
     )
@@ -116,7 +116,7 @@ var routes = function(){
     models.ResourceType.destroy(
       {
         where: {
-          AccountID: req.params.id
+          ResourceTypeID: req.params.id
         }
       }
     )

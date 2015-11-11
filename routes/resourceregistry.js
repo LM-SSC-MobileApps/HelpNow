@@ -42,7 +42,7 @@ var routes = function(){
       models.ResourceRegistry.findAll(
         {
           where: {
-            AccountID: req.params.id
+            ResourceRegistryID: req.params.id
           }
         }
       ).then(function(resourceRegistry) {
@@ -96,7 +96,7 @@ var routes = function(){
       req.body,
       {
         where: {
-          AccountID: req.params.id
+          ResourceRegistryID: req.params.id
         }
       }
     )
@@ -125,7 +125,7 @@ var routes = function(){
     models.ResourceRegistry.destroy(
       {
         where: {
-          AccountID: req.params.id
+          ResourceRegistryID: req.params.id
         }
       }
     )

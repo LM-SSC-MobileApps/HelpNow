@@ -33,7 +33,7 @@ var routes = function(){
       models.RequestState.findAll(
         {
           where: {
-            AccountID: req.params.id
+            RequestStateID: req.params.id
           }
         }
       ).then(function(requestState) {
@@ -87,7 +87,7 @@ var routes = function(){
       req.body,
       {
         where: {
-          AccountID: req.params.id
+          RequestStateID: req.params.id
         }
       }
     )
@@ -116,7 +116,7 @@ var routes = function(){
     models.RequestState.destroy(
       {
         where: {
-          AccountID: req.params.id
+          RequestStateID: req.params.id
         }
       }
     )

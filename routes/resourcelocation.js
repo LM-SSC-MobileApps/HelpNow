@@ -33,7 +33,7 @@ var routes = function(){
       models.ResourceLocation.findAll(
         {
           where: {
-            AccountID: req.params.id
+            ResourceLocationID: req.params.id
           }
         }
       ).then(function(resourceLocation) {
@@ -87,7 +87,7 @@ var routes = function(){
       req.body,
       {
         where: {
-          AccountID: req.params.id
+          ResourceLocationID: req.params.id
         }
       }
     )
@@ -116,7 +116,7 @@ var routes = function(){
     models.ResourceLocation.destroy(
       {
         where: {
-          AccountID: req.params.id
+          ResourceLocationID: req.params.id
         }
       }
     )

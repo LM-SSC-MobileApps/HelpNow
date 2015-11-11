@@ -60,7 +60,7 @@ var routes = function(){
       models.ResourceRequest.findAll(
         {
           where: {
-            AccountID: req.params.id
+            ResourceRequestID: req.params.id
           },
           include: [
             {model: models.Event},
@@ -153,7 +153,7 @@ var routes = function(){
       req.body,
       {
         where: {
-          AccountID: req.params.id
+          ResourceRequestID: req.params.id
         }
       }
     )
@@ -182,7 +182,7 @@ var routes = function(){
     models.ResourceRequest.destroy(
       {
         where: {
-          AccountID: req.params.id
+          ResourceRequestID: req.params.id
         }
       }
     )
