@@ -59,6 +59,22 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 		}
 	}
 	
+	function getClusterIcon(resourceType) {
+		if (resourceType == "Water") {
+			return "style/images/marker-blue-lg.png";
+		} else if (resourceType == "First Aid") {
+			return "style/images/marker-red-lg.png";
+		} else if (resourceType == "Shelter") {
+			return "style/images/marker-orange-lg.png";
+		} else if (resourceType == "Evacuation") {
+			return "style/images/marker-purple-lg.png";
+		} else if (resourceType == "Medicine") {
+			return "style/images/marker-cyan-lg.png";
+		} else {
+			return "style/images/marker-green-lg.png";
+		}
+	}
+	
 	$scope.$on("EventDataLoaded", function() {
 		$scope.event = $scope.getEvent($scope.eventID);
 		loadRequests();
@@ -78,18 +94,19 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	}
 	
 	function buildClusterMarkers() {
+		if (!$scope.requestClusters) return;
 		var selectedClusters = $scope.requestClusters.filter(function(cluster) {
 			var type = cluster.ResourceType.Description;
-			return shouldDisplayMarker(cluster);
+			return shouldDisplayMarker(type);
 		});
 		
 		angular.forEach(selectedClusters, function(cluster) {
 			var clusterIcon = L.icon({
-				iconUrl: getNeedsIcon(cluster.ResourceType.Description),
-				iconSize: [27, 41]
+				iconUrl: getClusterIcon(cluster.ResourceType.Description),
+				iconSize: [40, 60]
 			}); 
 			var marker = L.marker([cluster.LAT, cluster.LONG], { icon: clusterIcon });
-			marker.bindPopup("<strong>" + cluster.ResourceType.Description + " (" + cluster.Quantity + ")</strong><br/>" + cluster.Notes);
+			marker.bindPopup("<strong>" + cluster.ResourceType.Description + "</strong><br/>" + cluster.Notes);
 			mapLayers.push(marker);
 		});
 	}
@@ -112,6 +129,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	}
 	
 	function buildLocationMarkers() {
+		if (!$scope.locations) return;
 		var selectedLocations = $scope.locations.filter(function(location) {
 			var type = location.ResourceType.Description;
 			return shouldDisplayMarker(type);

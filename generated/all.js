@@ -222,7 +222,6 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	
 	function buildClusterMarkers() {
 		if (!$scope.requestClusters) return;
-		
 		var selectedClusters = $scope.requestClusters.filter(function(cluster) {
 			var type = cluster.ResourceType.Description;
 			return shouldDisplayMarker(type);
@@ -257,6 +256,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	}
 	
 	function buildLocationMarkers() {
+		if (!$scope.locations) return;
 		var selectedLocations = $scope.locations.filter(function(location) {
 			var type = location.ResourceType.Description;
 			return shouldDisplayMarker(type);
