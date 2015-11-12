@@ -90,6 +90,59 @@ var routes = function(){
       });
     }
   )
+  //find Orgainzation by AccountID
+  .get('/account/:id', function(req, res) {
+        //get the distinct organizations where the account is either primary or secondary poc
+        var query = "select distinct(OrganizationID) from OrganizationGroup WHERE (PrimaryPOC = "+req.params.id+" OR SecondaryPOC = "+req.params.id+")";
+        models.sequelize.query(query, { type: models.sequelize.QueryTypes.SELECT}
+      ).then(function(orgIDs) {
+        var promises = [];
+        orgIDs.forEach(
+          function(element)
+          {
+            console.info("here is the org id: "+element.OrganizationID);
+            promises.push(
+              models.Organization.findAll(
+                {
+                  where: {
+                    OrganizationID: element.OrganizationID
+                  },
+                    include: [
+                      {model: models.OrganizationType}
+                    ]
+                }
+              )  
+            );
+          }
+        );
+        return Promise.all(promises);
+      }
+     ).then(function(organizations) {
+       var orgs = [];
+       //instead of returning an array for each result, we combine them into one array or Organizaiton
+       organizations.forEach(function(organzation) {
+         orgs.push(organzation);
+       }, this);
+        res.statusCode = 200;
+        res.send(
+          {
+            result: 'success',
+            err:    '',
+            json:  orgs,
+            length: orgs.length
+          }
+        );
+      }
+     ).catch(function (err) {
+       console.error(err);
+       res.statusCode = 502;
+       res.send({
+           result: 'error',
+           err:    err.message
+       });
+      });
+    }
+  )
   //insert into OrganizationType
   .post('/', function(req, res) {
     models.Organization.create(req.body)
