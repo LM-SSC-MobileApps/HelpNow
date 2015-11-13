@@ -20,6 +20,10 @@ models.ResourceResponse.belongsTo(models.ResourceRequest, {foreignKey: 'Resource
 models.Event.hasMany(models.ResourceRequest, {foreignKey: 'EventID'});
 models.ResourceRequest.belongsTo(models.Event, {foreignKey: 'EventID'});
 
+//ResourceRequest many-to-One on RequestUrgency
+models.RequestUrgency.hasMany(models.ResourceRequest, {foreignKey: 'RequestUrgencyID'});
+models.ResourceRequest.belongsTo(models.RequestUrgency, {foreignKey: 'RequestUrgencyID'});
+
 var routes = function(){
   var router  = express.Router();
     router.get('/', function(req, res) {
@@ -29,7 +33,8 @@ var routes = function(){
             {model: models.Event},
             {model: models.RequestState},
             {model: models.ResourceResponse},
-            {model: models.ResourceRegistry}
+            {model: models.ResourceRegistry},
+            {model: models.RequestUrgency}
           ]
         }        
       )
@@ -66,7 +71,8 @@ var routes = function(){
             {model: models.Event},
             {model: models.RequestState},
             {model: models.ResourceResponse},
-            {model: models.ResourceRegistry}
+            {model: models.ResourceRegistry},
+            {model: models.RequestUrgency}
           ]
         }
       ).then(function(resourceRequest) {
@@ -99,7 +105,8 @@ var routes = function(){
           },
           include: [
             {model: models.RequestState},
-            {model: models.ResourceType}
+            {model: models.ResourceType},
+            {model: models.RequestUrgency}
           ]
         }
       ).then(function(resourceRequest) {

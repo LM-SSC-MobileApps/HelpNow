@@ -26,6 +26,7 @@ var resourceRequestRouter = require('./routes/resourcerequest')();
 var resourceResponseRouter = require('./routes/resourceresponse')();
 var resourceTypeRouter = require('./routes/resourcetype')();
 var responseStateRouter = require('./routes/responsestate')();
+var requestUrgencyRouter = require('./routes/requesturgency')();
 
 var app = express();
 
@@ -53,6 +54,7 @@ app.use('/api/resourcerequest', resourceRequestRouter);
 app.use('/api/resourceresponse', resourceResponseRouter);
 app.use('/api/resourcetype', resourceTypeRouter);
 app.use('/api/responsestate', responseStateRouter);
+app.use('/api/requesturgency', requestUrgencyRouter);
 
 //set the express.static locations to serve up the static files
 app.use(express.static('views'));

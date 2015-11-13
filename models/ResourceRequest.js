@@ -39,6 +39,34 @@ module.exports = function(sequelize, DataTypes) {
     LONG: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    RequestUrgencyID: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
+    },
+    AreaSize: {
+      type: DataTypes.DECIMAL(6,2),
+      allowNull: true
+    },
+    UnitOfMeasure: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    RequestorName: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    RequestorPhone: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    RequestorEmail: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    RequestorUpdatePref: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
     }
   });
 };
