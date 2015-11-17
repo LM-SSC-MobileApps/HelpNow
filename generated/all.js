@@ -149,10 +149,10 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	$scope.showEvacuation = true;
 	$scope.showMedicine = true;
 	
-	$scope.showHeatmap = true;
-	$scope.showClusters = true;
+	$scope.showHeatmap = false;
+	$scope.showClusters = false;
 	$scope.showNeedsMarkers = true;
-	$scope.showLocationMarkers = true;
+	$scope.showLocationMarkers = false;
 	
 	function getNeedsIcon(resourceType) {
 		if (resourceType == "Water") {

@@ -24,9 +24,14 @@ function clusterRequestsByType(requests) {
 }
 
 function clusterRequestsForType(typeId, requests) {
+	var numClusters = 4;
+	
 	var filteredReqs = requests.filter(function(req) {
 		return req.ResourceTypeID == typeId;
 	});
+	
+	if (filteredReqs.length < numClusters)
+		return promise.resolve([]);
 	
 	var resourceType = filteredReqs.length > 0 ? filteredReqs[0].ResourceType : {};
 	
@@ -34,7 +39,7 @@ function clusterRequestsForType(typeId, requests) {
 		return [req.LAT, req.LONG];
 	});
 	
-	return clusterize(vectors, {k: 4})
+	return clusterize(vectors, {k: numClusters})
 		.then(function(clusters) {
 			return clusters.map(function(cluster) {
 				return {
