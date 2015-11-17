@@ -1,11 +1,169 @@
-angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", function ($scope, $routeParams) {
+angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", "$resource", function ($scope, $routeParams, $resource) {
+    //$scope.resources = $scope.getResourcesForEvent($scope.eventID);
+    //$scope.resource = $scope.resources[0];
+    var map;
+    var mapLayers = [];
+    $scope.setCurrentView("event-map");
+
+    $scope.requestsResource = $resource("/api/event/mapitems/:eventID");
+
     $scope.eventID = $routeParams.eventID * 1;
-    $scope.event = $scope.getEvent($scope.eventID);
-    $scope.resources = $scope.getResourcesForEvent($scope.eventID);
-    $scope.resource = $scope.resources[0];
-	$scope.setCurrentView("event-map");
-	
-	$scope.initMap = function(map) {
+    if ($scope.events) {
+        $scope.event = $scope.getEvent($scope.eventID);
+        loadRequests();
+    }
+
+    $scope.requests = [];
+
+    $scope.showFilters = true;
+    $scope.showEventDetails = true;
+    $scope.showHelp = false;
+    $scope.showNeeds = false;
+
+    $scope.showMedical = true;
+    $scope.showShelter = true;
+    $scope.showFood = true;
+    $scope.showWater = true;
+    $scope.showEvacuation = true;
+    $scope.showMedicine = true;
+
+    $scope.showLocationMarkers = true;
+
+    function getLocationIcon(resourceType) {
+        if (resourceType == "Water") {
+            return "style/images/icons/WaterResource.png";
+        } else if (resourceType == "First Aid") {
+            return "style/images/icons/FirstAidResource.png";
+        } else if (resourceType == "Shelter") {
+            return "style/images/marker2-orange.png";
+        } else if (resourceType == "Evacuation") {
+            return "style/images/icons/EvacuationIcon.png";
+        } else if (resourceType == "Medicine") {
+            return "style/images/marker2-cyan.png";
+        } else {
+            return "style/images/marker2-green.png";
+        }
+    }
+
+    $scope.$on("EventDataLoaded", function () {
+        $scope.event = $scope.getEvent($scope.eventID);
+        loadRequests();
+        updateMap();
+    });
+
+    function buildLocationMarkers() {
+        var selectedLocations = $scope.locations.filter(function (location) {
+            var type = location.ResourceType.Description;
+            return shouldDisplayMarker(type);
+        });
+
+        angular.forEach(selectedLocations, function (location) {
+            var resourceIconSize = [0, 0];
+            if (location.ResourceType.Description == "Water" || location.ResourceType.Description == "Evacuation") resourceIconSize = [72, 73];
+            else if (location.ResourceType.Description == "First Aid") resourceIconSize = [128, 158.25];
+            else resourceIconSize = [27, 41];
+            var locationIcon = L.icon({
+                iconUrl: getLocationIcon(location.ResourceType.Description),
+                iconSize: resourceIconSize
+            });
+            var marker = L.marker([location.ResourceLocation.LAT, location.ResourceLocation.LONG], { icon: locationIcon });
+            marker.bindPopup("<strong>" + location.ResourceType.Description + " (" + location.Organization.Name + ")</strong><br/>" + location.Notes);
+            mapLayers.push(marker);
+        });
+    }
+
+    function shouldDisplayMarker(type) {
+        return (type == "Water" && $scope.showWater) ||
+				(type == "Shelter" && $scope.showShelter) ||
+				(type == "Food" && $scope.showFood) ||
+				(type == "Evacuation" && $scope.showEvacuation) ||
+				(type == "First Aid" && $scope.showMedical) ||
+				(type == "Medicine" && $scope.showMedicine);
+    }
+
+    function updateMap() {
+        if (!map || !$scope.events) return;
+
+        for (var i = 0; i < mapLayers.length; i++) {
+            var layer = mapLayers[i];
+            map.removeLayer(layer);
+        }
+
+        mapLayers = [];
+        var selectedRequests = $scope.requests.filter(function (request) {
+            var type = request.ResourceType.Description;
+            return shouldDisplayMarker(type);
+        });
+
+        if ($scope.showLocationMarkers)
+            buildLocationMarkers();
+
+        angular.forEach(mapLayers, function (layer) {
+            map.addLayer(layer);
+        });
+    }
+
+    function loadRequests() {
+        $scope.requestsResource.get({ eventID: $scope.eventID }, function (data) {
+            $scope.requests = data.json.requests;
+            $scope.locations = data.json.locations;
+            updateMap();
+        });
+    }
+
+    $scope.toggleButtonClass = function (id) {
+        var status = $scope[id];
+        return status ? "btn btn-toggle active" : "btn btn-toggle";
+    };
+
+    $scope.toggleButton = function (id) {
+        $scope[id] = !$scope[id];
+        updateMap();
+        return false;
+    };
+
+    $scope.toggleNeed = function (id) {
+        $scope[id] = !$scope[id];
+        return false;
+    }
+
+    $scope.initMap = function (newMap) {
+        map = newMap;
+        updateMap();
+    };
+
+    $scope.filterButtonClass = function () {
+        return $scope.showFilters ? "glyphicon glyphicon-eye-close" : "glyphicon glyphicon-eye-open";
+    };
+
+    $scope.filterButtonText = function () {
+        return $scope.showFilters ? "Hide" : "Show";
+    };
+
+    $scope.toggleFilters = function () {
+        $scope.showFilters = !$scope.showFilters;
+        return false;
+    };
+
+    $scope.toggleHelp = function () {
+        $scope.showEventDetails = !$scope.showEventDetails;
+        $scope.showHelp = !$scope.showHelp;
+        return false;
+    }
+
+    $scope.toggleNeeds = function () {
+        $scope.showHelp = !$scope.showHelp;
+        $scope.showNeeds = !$scope.showNeeds;
+        return false;
+    }
+
+    $scope.sendNeedRequest = function () {
+        $scope.showNeeds = !$scope.showNeeds;
+        $scope.showEventDetails = !$scope.showEventDetails;
+        return false;
+    }
+
+    /*$scope.initMap = function(map) {
 		map.on('click', function (e) {
 			if (locationOutline !== undefined) {
 				map.removeLayer(locationOutline);
@@ -54,5 +212,5 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", 
 		        else showResourcePanel(true);
 		    });
 		}
-	};
+	};*/
 }]);

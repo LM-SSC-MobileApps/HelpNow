@@ -1,7 +1,7 @@
 <div ng-controller="EventMapCtrl">
     <h2 style="margin-bottom: -5px; margin-top: -20px;"><img src="style/images/icons/FloodGray.png" style="height: 66px; width: 66px; margin-right: 5px;" />{{event.EventLocations[0].Description}}</h2>
-    <div id="map" map map-center="{{event.EventLocations[0].LAT}},{{event.EventLocations[0].LONG}}" map-zoom="13" class="col-md-9" style="height: 512px; border: 1px solid #AAA;"></div>
-    <div id="resourcePanel" class="col-md-3" hidden="hidden">
+    <div id="map" ng-if="event" map map-center="{{event.EventLocations[0].LAT}},{{event.EventLocations[0].LONG}}" map-zoom="13" class="col-md-9" style="height: 512px; border: 1px solid #AAA;"></div>
+    <!--div id="resourcePanel" class="col-md-3" hidden="hidden">
         <table id="resourceTable">
             <tr>
                 <td>
@@ -46,124 +46,194 @@
                 </td>
             </tr>
         </table>
+    </div-->
+    <div id="rightColumn" class="col-md-3" ng-if="showEventDetails">
+        <div id="eventInfo" ng-include="'views/fragments/event-info.html'"></div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="well">
+                    <a class="btn btn-primary pull-right" ng-click="toggleFilters()"><span ng-class="filterButtonClass()"></span> {{filterButtonText()}}</a>
+                    <h4><span class="glyphicon glyphicon-filter"></span> Filters</h4>
+                    <div id="filter-section" ng-if="showFilters">
+                        <hr class="separated"></hr>
+                        <div class="row">
+                            <div class="col-xs-4 text-center">
+                                <a id="showMedical" ng-class="toggleButtonClass('showMedical')" ng-click="toggleButton('showMedical')"><span class="glyphicon glyphicon-plus"></span></a>
+                                <br />
+                                <span class="filter-caption">First Aid</span>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <a id="showShelter" ng-class="toggleButtonClass('showShelter')" ng-click="toggleButton('showShelter')"><span class="glyphicon glyphicon-home"></span></a>
+                                <br />
+                                <span class="filter-caption">Shelter</span>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <a id="showFood" ng-class="toggleButtonClass('showFood')" ng-click="toggleButton('showFood')"><span class="glyphicon glyphicon-cutlery"></span></a>
+                                <br />
+                                <span class="filter-caption">Food</span>
+                            </div>
+                        </div>
+                        <div class="row separated-small">
+                            <div class="col-xs-4 text-center">
+                                <a id="showMedicine" ng-class="toggleButtonClass('showMedicine')" ng-click="toggleButton('showMedicine')"><span class="glyphicon glyphicon-erase"></span></a>
+                                <br />
+                                <span class="filter-caption">Medicine</span>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <a id="showWater" ng-class="toggleButtonClass('showWater')" ng-click="toggleButton('showWater')"><span class="glyphicon glyphicon-tint"></span></a>
+                                <br />
+                                <span class="filter-caption">Water</span>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <a id="showEvacuation" ng-class="toggleButtonClass('showEvacuation')" ng-click="toggleButton('showEvacuation')"><span class="glyphicon glyphicon-plane"></span></a>
+                                <br />
+                                <span class="filter-caption">Evacuation</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <a id="btn-login" class="btn btn-primary" href="#/org_event/{{event.EventID}}"><span class="glyphicon glyphicon-globe"></span>Aid Organization View</a>
+        </div>
     </div>
-	<div id="rightColumn" class="col-md-3">
-		<div id="eventInfo" ng-include="'views/fragments/event-info.html'"></div>
-		<div>
-			<a id="btn-login" class="btn btn-primary" href="#/org_event/{{event.EventID}}"><span class="glyphicon glyphicon-globe"></span>Aid Organization View</a>
-		</div>
-	</div>
-    <div id="helpPanel" class="col-md-3" hidden="hidden">
-        <table id="eventsTable" style="margin-right: -10px;">
-            <tr>
-                <td>
-                    <img src="style/images/icons/FloodGray.png" style="height: 88px; width: 88px; margin-right: 5px;" />
-                </td>
-                <td>
-                    <h3 style="margin-top: -5px;">{{event.EventType.Description}}</h3>
-                    <h5 style="margin-top: -10px; margin-bottom: -1px;">{{event.EventLocations[0].Description}}</h5>
-                    <a href="#\event_map\1">
-                        ({{event.EventLocations[0].LAT}}, {{event.EventLocations[0].LONG}}, {{event.EventLocations[0].Radius}} km<sup>2</sup>)
-                    </a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <img src="style/images/icons/PinIcon.png" style="height: 44px; width: 44px; margin-right: 5px;" />
-                </td>
-                <td>
-                    <input type="checkbox" name="pinLocation" value="useCurrentLocation" style="margin-left: -40px;" checked="checked" />&nbsp;&nbsp;&nbsp;Use My Current Location<br/>
-                    <input type="checkbox" name="pinLocation" value="useFollowingLocation" style="margin-left: -40px;" />&nbsp;&nbsp;&nbsp;Use The Following Location
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    &nbsp;&nbsp;Lat:&nbsp;<input type="text" name="lat" style="width: 75px; margin-top: 10px;"/>
-                    &nbsp;&nbsp;Long:&nbsp;<input type="text" name="long" style="width: 75px; margin-top: 10px;" />
-                    <h5 align="center">OR</h5>
-                    <h5 style="vertical-align:top">&nbsp;&nbsp;Address:<textarea rows="3" cols="20"></textarea></h5>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    &nbsp;&nbsp;Impacted Region Size:&nbsp;<input type="text" name="lat" style="width: 80px; margin-top: 10px;" />
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <img src="style/images/icons/PersonIcon.png" style="height: 33px; width: 33px; margin-right: -13px;" />
-                    &nbsp;&nbsp;Number of People:&nbsp;<input type="text" name="lat" style="width: 80px; margin-top: 10px;" /><br />
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <img src="style/images/icons/ExclamationIcon.png" style="height: 50px; width: 33px; margin-right: -13px; margin-top: -12px;" />
-                    &nbsp;&nbsp;Criticality of Need:&nbsp;&nbsp;<input type="text" name="lat" style="width: 80px;" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="separated">
-                        <a id="btn-back" class="btn btn-primary" href="javascript:void(0)" onclick="hideResourcePanel()"><span></span>Back</a>
+    <div id="helpPanel" class="col-md-3" ng-if="showHelp">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="well">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <img src="style/images/icons/FloodGray.png" style="height: 52px; width: 52px;" />
+                        </div>
+                        <div id="event-title" class="col-xs-8">
+                            <h4>{{event.EventType.Description}}</h4>
+                            <h5 style="margin-top: -8px;">{{event.EventLocations[0].Description}}</h5>
+                        </div>
                     </div>
-                </td>
-                <td>
-                    <div class="separated" align="right">
-                        <a id="btn-next" class="btn btn-primary" href="javascript:void(0)" onclick="showNeedsPanel()"><span></span>Next</a>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <a href="#\event_map\{{event.EventID}}" style="margin-top: -10px;">
+                                ({{event.EventLocations[0].LAT}}, {{event.EventLocations[0].LONG}}, {{event.EventLocations[0].Radius}} km<sup>2</sup>)
+                            </a>
+                        </div>
                     </div>
-                </td>
-            </tr>
-        </table>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <hr class="separated" />
+                            <input type="checkbox" name="pinLocation" value="useCurrentLocation" checked="checked" />&nbsp;&nbsp;&nbsp;Use My Current Location<br />
+                            <input type="checkbox" name="pinLocation" value="useFollowingLocation" />&nbsp;&nbsp;&nbsp;Use The Following Location
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            Lat:&nbsp;<input type="text" name="lat" style="width: 60px; margin-top: 10px;" />
+                            Long:&nbsp;<input type="text" name="long" style="width: 60px; margin-top: 10px;" />
+                            <h5 align="center">OR</h5>
+                            <h5 style="vertical-align:top">Address:<textarea rows="3" cols="25"></textarea></h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            Impacted Region Size:&nbsp;<input type="text" name="RegionSize" style="width: 50px; margin-top: 10px;" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <img src="style/images/icons/PersonIcon.png" style="height: 33px; width: 33px; margin-right: -13px; margin-left:-15px;" />
+                            &nbsp;&nbsp;Number of People:&nbsp;&nbsp;&nbsp;<input type="text" name="NumPeople" style="width: 50px; margin-top: 10px;" /><br />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <img src="style/images/icons/ExclamationIcon.png" style="height: 50px; width: 33px; margin-right: -13px; margin-top: -12px; margin-left:-15px;" />
+                            &nbsp;&nbsp;Criticality of Need:&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="NeedCriticality" style="width: 50px;" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="separated">
+            <a id="btn-back" class="btn btn-primary" ng-click="toggleHelp()"><span></span>Back</a>
+            <a id="btn-next" class="btn btn-primary pull-right" ng-click="toggleNeeds()"><span></span>Next</a>
+        </div>
     </div>
-    <div id="needsPanel" class="col-md-3" hidden="hidden">
-        <table>
-            <tr>
-                <td>
-                    <img src="style/images/icons/PeopleIconGray.png" style="height: 66px; width: 66px; margin-right: 5px;" /><br />(Optional)
-                </td>
-                <td>
-                    Name:<br/><input type="text" name="name"" /><br />
-                    Phone:<br /><input type="text" name="phone"/><br />
-                    Email:<br /><input type="text" name="email"/>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <input type="checkbox" name="pinLocation" value="useCurrentLocation" checked="checked" />&nbsp;&nbsp;&nbsp;Send Email or Text Updates
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <h3>Needs</h3><hr style="width: 70%; height: 3px; display: block; margin-top: -22px; margin-left: 75px; border: none; background-color: #898989" />
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <img src="style/images/icons/WaterNeedIcon.png" style="height: 70px; width: 70px;" />
-                    <img src="style/images/icons/FoodNeedIcon.png" style="height: 70px; width: 70px;" />
-                    <img src="style/images/icons/ShelterNeedIcon.png" style="height: 70px; width: 70px;" />
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <img src="style/images/icons/FirstAidNeedIcon.png" style="height: 70px; width: 70px;" />
-                    <img src="style/images/icons/MedicineNeedIcon.png" style="height: 70px; width: 70px;" />
-                    <img src="style/images/icons/ClothingNeedIcon.png" style="height: 70px; width: 70px;" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="separated">
-                        <a id="btn-back" class="btn btn-primary" href="javascript:void(0)" onclick="showHelpPanel()"><span></span>Back</a>
+    <div id="needsPanel" class="col-md-3" ng-if="showNeeds">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="well">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <img src="style/images/icons/PeopleIconGray.png" style="height: 66px; width: 66px; margin-right: 5px;" /><br />(Optional)
+                        </div>
+                        <div class="col-xs-8">
+                            Name:<br /><input type="text" name="name" style="width: 130px;" /><br />
+                            Phone:<br /><input type="text" name="phone" style="width: 130px;" /><br />
+                            Email:<br /><input type="text" name="email" style="width: 130px;" />
+                        </div>
                     </div>
-                </td>
-                <td colspan="2">
-                    <div class="separated" align="right">
-                        <a id="btn-next" class="btn btn-primary" href="javascript:void(0)" onclick="hideResourcePanel()"><span></span>Send Request</a>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <input type="checkbox" name="pinLocation" value="useCurrentLocation" checked="checked" />&nbsp;&nbsp;&nbsp;Send Email or Text Updates
+                        </div>
                     </div>
-                </td>
-            </tr>
-        </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="well">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <h4>Needs</h4>
+                            <br />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="needs-section">
+                            <div class="row">
+                                <div class="col-xs-4 text-center">
+                                    <a id="showMedical" ng-class="toggleButtonClass('showMedical')" ng-click="toggleNeed('showMedical')"><span class="glyphicon glyphicon-plus"></span></a>
+                                    <br />
+                                    <span class="filter-caption">First Aid</span>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a id="showShelter" ng-class="toggleButtonClass('showShelter')" ng-click="toggleNeed('showShelter')"><span class="glyphicon glyphicon-home"></span></a>
+                                    <br />
+                                    <span class="filter-caption">Shelter</span>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a id="showFood" ng-class="toggleButtonClass('showFood')" ng-click="toggleNeed('showFood')"><span class="glyphicon glyphicon-cutlery"></span></a>
+                                    <br />
+                                    <span class="filter-caption">Food</span>
+                                </div>
+                            </div>
+                            <div class="row separated-small">
+                                <div class="col-xs-4 text-center">
+                                    <a id="showMedicine" ng-class="toggleButtonClass('showMedicine')" ng-click="toggleNeed('showMedicine')"><span class="glyphicon glyphicon-erase"></span></a>
+                                    <br />
+                                    <span class="filter-caption">Medicine</span>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a id="showWater" ng-class="toggleButtonClass('showWater')" ng-click="toggleNeed('showWater')"><span class="glyphicon glyphicon-tint"></span></a>
+                                    <br />
+                                    <span class="filter-caption">Water</span>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a id="showEvacuation" ng-class="toggleButtonClass('showEvacuation')" ng-click="toggleNeed('showEvacuation')"><span class="glyphicon glyphicon-plane"></span></a>
+                                    <br />
+                                    <span class="filter-caption">Evacuation</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="separated">
+            <a id="btn-back" class="btn btn-primary" ng-click="toggleNeeds()"><span></span>Back</a>
+            <a id="btn-next" class="btn btn-primary pull-right" ng-click="sendNeedRequest()"><span></span>Send Request</a>
+        </div>
     </div>
     <div id="slider" style="height: 100px; width: 200px;">
         <span>Selection Radius: </span>
@@ -200,7 +270,7 @@
             overlayRadius = newValue * 1000 * 0.62137119;
             document.getElementById("range").innerHTML = newValue + " mi";
         }
-            
+
         if (locationOutline != undefined)
             locationOutline.setRadius(overlayRadius);
     }
@@ -220,33 +290,5 @@
             if (locationOutline != undefined)
                 locationOutline.setRadius(overlayRadius);
         }
-    }
-
-    function showResourcePanel(hasProvider) {
-        document.getElementById("eventList").hidden = true;
-        document.getElementById("resourcePanel").hidden = false;
-        if (hasProvider) document.getElementById("providerRow").hidden = false;
-        else document.getElementById("providerRow").hidden = true;
-    }
-
-    function hideResourcePanel() {
-        document.getElementById("eventList").hidden = false;
-        document.getElementById("resourcePanel").hidden = true;
-        document.getElementById("helpPanel").hidden = true;
-        document.getElementById("needsPanel").hidden = true;
-    }
-
-    function showHelpPanel() {
-        document.getElementById("eventList").hidden = true;
-        document.getElementById("resourcePanel").hidden = true;
-        document.getElementById("helpPanel").hidden = false;
-        document.getElementById("needsPanel").hidden = true;
-    }
-
-    function showNeedsPanel() {
-        document.getElementById("eventList").hidden = true;
-        document.getElementById("resourcePanel").hidden = true;
-        document.getElementById("helpPanel").hidden = true;;
-        document.getElementById("needsPanel").hidden = false;
     }
 </script>
