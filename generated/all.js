@@ -62,13 +62,15 @@ angular.module("helpNow").controller("EventListCtrl", ["$scope", function($scope
 	};
 }]);
 angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", "$resource", function ($scope, $routeParams, $resource) {
-    //$scope.resources = $scope.getResourcesForEvent($scope.eventID);
-    //$scope.resource = $scope.resources[0];
+
     var map;
     var mapLayers = [];
+
     $scope.setCurrentView("event-map");
 
     $scope.requestsResource = $resource("/api/event/mapitems/:eventID");
+    
+    $scope.helpRequest = { areaSize: '', unitOfMeasure: '', quantity: '', requestUrgencyID: '' };
 
     $scope.eventID = $routeParams.eventID * 1;
     if ($scope.events) {
@@ -77,6 +79,12 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", 
     }
 
     $scope.requests = [];
+
+    $scope.overlayRadius = 1000;
+    $scope.radiusRawVal = 1;
+    $scope.sliderLabel = "1 km";
+    $scope.locationOutline;
+    $scope.isMetric = true;
 
     $scope.showFilters = true;
     $scope.showEventDetails = true;
@@ -91,6 +99,52 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", 
     $scope.showMedicine = true;
 
     $scope.showLocationMarkers = true;
+    $scope.locationPref = { value: 'Current' };
+
+    $scope.showValue = function () {
+        $scope.$digest();
+        if ($scope.radiusRawVal == 0)
+            $scope.radiusRawVal = 1;
+
+        if ($scope.isMetric) {
+            $scope.overlayRadius = $scope.radiusRawVal * 1000;
+            $scope.sliderLabel = $scope.radiusRawVal + " km";
+        }
+        else {
+            $scope.overlayRadius = $scope.radiusRawVal * 1000;
+            $scope.sliderLabel = $scope.radiusRawVal + " mi";
+        }
+        $scope.helpRequest.areaSize = $scope.sliderLabel;
+
+        if ($scope.locationOutline != undefined)
+            $scope.locationOutline.setRadius($scope.overlayRadius);
+    };
+
+    $scope.changeUnits = function () {
+        if ($scope.isMetric) {
+            $scope.sliderLabel = $scope.radiusRawVal + " km";
+            $scope.overlayRadius = $scope.overlayRadius / 0.62137119;
+            if ($scope.locationOutline != undefined)
+                $scope.locationOutline.setRadius($scope.overlayRadius);
+        }
+        else {
+            $scope.sliderLabel = $scope.radiusRawVal + " mi";
+            $scope.overlayRadius = $scope.overlayRadius * 0.62137119;
+            if ($scope.locationOutline != undefined)
+                $scope.locationOutline.setRadius($scope.overlayRadius);
+        }
+        $scope.helpRequest.areaSize = $scope.sliderLabel;
+    }
+
+    function resetNeedsButtons() {
+        $scope.showMedicalNeed = false;
+        $scope.showShelterNeed = false;
+        $scope.showFoodNeed = false;
+        $scope.showWaterNeed = false;
+        $scope.showEvacuationNeed = false;
+        $scope.showMedicineNeed = false;
+        return false;
+    }
 
     function getLocationIcon(resourceType) {
         if (resourceType == "Water") {
@@ -111,6 +165,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", 
     $scope.$on("EventDataLoaded", function () {
         $scope.event = $scope.getEvent($scope.eventID);
         loadRequests();
+        resetNeedsButtons();
         updateMap();
     });
 
@@ -188,10 +243,21 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", 
     $scope.toggleNeed = function (id) {
         $scope[id] = !$scope[id];
         return false;
-    }
+    };
 
     $scope.initMap = function (newMap) {
         map = newMap;
+        map.on('click', function (e) {
+            if ($scope.locationOutline !== undefined) {
+                map.removeLayer($scope.locationOutline);
+            }
+            $scope.locationOutline = L.circle(e.latlng, $scope.overlayRadius).addTo(map);
+            if ($scope.locationPref.value == "Other") {
+                $scope.helpRequest.lat = e.latlng.lat;
+                $scope.helpRequest.long = e.latlng.lng;
+                $scope.$digest();
+            }
+        });
         updateMap();
     };
 
@@ -212,19 +278,38 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", 
         $scope.showEventDetails = !$scope.showEventDetails;
         $scope.showHelp = !$scope.showHelp;
         return false;
-    }
+    };
 
     $scope.toggleNeeds = function () {
         $scope.showHelp = !$scope.showHelp;
         $scope.showNeeds = !$scope.showNeeds;
         return false;
-    }
+    };
 
     $scope.sendNeedRequest = function () {
+        if ($scope.showMedicalNeed) {
+            alert("Needs First Aid");
+        }
+        if ($scope.showShelterNeed) {
+            alert("Needs Shelter");
+        }
+        if ($scope.showFoodNeed) {
+            alert("Needs Food");
+        }
+        if ($scope.showMedicineNeed) {
+            alert("Needs Medicine");
+        }
+        if ($scope.showWaterNeed) {
+            alert("Needs Water");
+        }
+        if ($scope.showEvacuationNeed) {
+            alert("Needs Evacuation");
+        }
+        resetNeedsButtons();
         $scope.showNeeds = !$scope.showNeeds;
         $scope.showEventDetails = !$scope.showEventDetails;
         return false;
-    }
+    };
 
     /*$scope.initMap = function(map) {
 		map.on('click', function (e) {
@@ -731,7 +816,7 @@ angular.module("helpNow").directive('map', function () {
 			    attribution: '(c) <a href="http://microsites.digitalglobe.com/interactive/basemap_vivid/">DigitalGlobe</a>'
 			});
 
-			var streets = new L.tileLayer('https://{s}.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=' + api_key, {
+			var street = new L.tileLayer('https://{s}.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=' + api_key, {
 			    minZoom: 1,
 			    maxZoom: 19,
 			    attribution: '(c) OpenStreetMap , (c) Mapbox'
