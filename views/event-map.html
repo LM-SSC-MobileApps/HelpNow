@@ -135,7 +135,7 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
-                            Impacted Region Size:&nbsp;<input ng-model="helpRequest.areaSize" type="text" name="RegionSize" style="width: 50px; margin-top: 10px;" />
+                            Impacted Region Size:&nbsp;<input ng-model="helpRequest.areaSize" disabled="disabled" type="text" name="RegionSize" style="width: 50px; margin-top: 10px;" />
                         </div>
                     </div>
                     <div class="row">
@@ -147,7 +147,13 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <img src="style/images/icons/ExclamationIcon.png" style="height: 50px; width: 33px; margin-right: -13px; margin-top: -12px; margin-left:-15px;" />
-                            &nbsp;&nbsp;Criticality of Need:&nbsp;&nbsp;&nbsp;&nbsp;<input ng-model="helpRequest.requestUrgencyID" type="text" name="NeedCriticality" style="width: 50px;" />
+                            &nbsp;&nbsp;Criticality:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select ng-model="helpRequest.requestUrgencyID">
+                                <option value="1">Low</option>
+                                <option value="2">Medium</option>
+                                <option value="3">High</option>
+                                <option value="4">Critical</option>
+                                <option value="5">Danger</option>
+                            </select> 
                         </div>
                     </div>
                 </div>
@@ -167,14 +173,14 @@
                             <img src="style/images/icons/PeopleIconGray.png" style="height: 66px; width: 66px; margin-right: 5px;" /><br />(Optional)
                         </div>
                         <div class="col-xs-8">
-                            Name:<br /><input ng-model="helpRequest.name" type="text" name="name" style="width: 130px;" /><br />
-                            Phone:<br /><input ng-model="helpRequest.phone" type="text" name="phone" style="width: 130px;" /><br />
-                            Email:<br /><input ng-model="helpRequest.email" type="text" name="email" style="width: 130px;" />
+                            Name:<br /><input ng-model="helpRequest.requestorName" type="text" name="name" style="width: 130px;" /><br />
+                            Phone:<br /><input ng-model="helpRequest.requestorPhone" type="text" name="phone" style="width: 130px;" /><br />
+                            Email:<br /><input ng-model="helpRequest.requestorEmail" type="text" name="email" style="width: 130px;" />
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
-                            <input ng-model="helpRequest.userUpdatePref" type="checkbox" name="pinLocation" value="useCurrentLocation" checked="checked" />&nbsp;&nbsp;&nbsp;Send Email or Text Updates
+                            <input ng-model="helpRequest.requestorUpdatePref" type="checkbox" name="pinLocation" value="useCurrentLocation" checked="checked" />&nbsp;&nbsp;&nbsp;Send Email or Text Updates
                         </div>
                     </div>
                 </div>

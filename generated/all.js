@@ -69,13 +69,16 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", 
     $scope.setCurrentView("event-map");
 
     $scope.requestsResource = $resource("/api/event/mapitems/:eventID");
+    $scope.urgencyResource = $resource("/api/requesturgency");
+    $scope.needRequestResource = $resource("/api/resourcerequest");
     
-    $scope.helpRequest = { areaSize: '', unitOfMeasure: '', quantity: '', requestUrgencyID: '' };
+    $scope.helpRequest = { eventID: '', requestStateID: '1', notes: 'Reported from App', areaSize: '', unitOfMeasure: '', quantity: '', requestUrgencyID: '1' };
 
     $scope.eventID = $routeParams.eventID * 1;
     if ($scope.events) {
         $scope.event = $scope.getEvent($scope.eventID);
         loadRequests();
+        loadUrgencyList();
     }
 
     $scope.requests = [];
@@ -83,7 +86,6 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", 
     $scope.overlayRadius = 1000;
     $scope.radiusRawVal = 1;
     $scope.sliderLabel = "1 km";
-    $scope.locationOutline;
     $scope.isMetric = true;
 
     $scope.showFilters = true;
@@ -102,7 +104,6 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", 
     $scope.locationPref = { value: 'Current' };
 
     $scope.showValue = function () {
-        $scope.$digest();
         if ($scope.radiusRawVal == 0)
             $scope.radiusRawVal = 1;
 
@@ -165,6 +166,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", 
     $scope.$on("EventDataLoaded", function () {
         $scope.event = $scope.getEvent($scope.eventID);
         loadRequests();
+        loadUrgencyList();
         resetNeedsButtons();
         updateMap();
     });
@@ -229,6 +231,12 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", 
         });
     }
 
+    function loadUrgencyList() {
+        $scope.urgencyResource.get({}, function (data) {
+            $scope.urgencyList = data.json;
+        });
+    }
+
     $scope.toggleButtonClass = function (id) {
         var status = $scope[id];
         return status ? "btn btn-toggle active" : "btn btn-toggle";
@@ -253,8 +261,8 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", 
             }
             $scope.locationOutline = L.circle(e.latlng, $scope.overlayRadius).addTo(map);
             if ($scope.locationPref.value == "Other") {
-                $scope.helpRequest.lat = e.latlng.lat;
-                $scope.helpRequest.long = e.latlng.lng;
+                $scope.helpRequest.lat = e.latlng.lat.toFixed(3);
+                $scope.helpRequest.long = e.latlng.lng.toFixed(3);
                 $scope.$digest();
             }
         });
@@ -287,22 +295,45 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", 
     };
 
     $scope.sendNeedRequest = function () {
+        $scope.helpRequest.eventID = $scope.eventID;
+        var splitString = $scope.helpRequest.areaSize.split(" ");
+        $scope.helpRequest.areaSize = splitString[0];
+        $scope.helpRequest.unitOfMeasure = splitString[1];
+        /*alert($scope.helpRequest.eventID);
+        alert($scope.helpRequest.requestStateID);
+        alert($scope.helpRequest.notes);
+        alert($scope.helpRequest.quantity);
+        alert($scope.helpRequest.lat);
+        alert($scope.helpRequest.long);
+        alert($scope.helpRequest.requestUrgencyID);
+        alert($scope.helpRequest.areaSize);
+        alert($scope.helpRequest.unitOfMeasure);
+        alert($scope.helpRequest.requestorName);
+        alert($scope.helpRequest.requestorPhone);
+        alert($scope.helpRequest.requestorEmail);
+        alert($scope.helpRequest.requestorUpdatePref);*/
         if ($scope.showMedicalNeed) {
+            $scope.helpRequest.resourceTypeID = '4';
             alert("Needs First Aid");
         }
         if ($scope.showShelterNeed) {
+            $scope.helpRequest.resourceTypeID = '3';
             alert("Needs Shelter");
         }
         if ($scope.showFoodNeed) {
+            $scope.helpRequest.resourceTypeID = '1';
             alert("Needs Food");
         }
         if ($scope.showMedicineNeed) {
+            $scope.helpRequest.resourceTypeID = '6';
             alert("Needs Medicine");
         }
         if ($scope.showWaterNeed) {
+            $scope.helpRequest.resourceTypeID = '2';
             alert("Needs Water");
         }
         if ($scope.showEvacuationNeed) {
+            $scope.helpRequest.resourceTypeID = '5';
             alert("Needs Evacuation");
         }
         resetNeedsButtons();
