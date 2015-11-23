@@ -61,7 +61,7 @@ angular.module("helpNow").controller("EventListCtrl", ["$scope", function($scope
 		addEventsToMap();
 	};
 }]);
-angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", "$resource", function ($scope, $routeParams, $resource) {
+angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$routeParams", "$resource", function ($scope, $http, $routeParams, $resource) {
 
     var map;
     var mapLayers = [];
@@ -72,7 +72,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", 
     $scope.urgencyResource = $resource("/api/requesturgency");
     $scope.needRequestResource = $resource("/api/resourcerequest");
     
-    $scope.helpRequest = { eventID: '', requestStateID: '1', notes: 'Reported from App', areaSize: '', unitOfMeasure: '', quantity: '', requestUrgencyID: '1' };
+    $scope.helpRequest = { EventID: '', RequestStateID: '1', Notes: 'Reported from App', AreaSize: '', UnitOfMeasure: '', Quantity: '', RequestUrgencyID: '1' };
 
     $scope.eventID = $routeParams.eventID * 1;
     if ($scope.events) {
@@ -115,7 +115,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", 
             $scope.overlayRadius = $scope.radiusRawVal * 1000;
             $scope.sliderLabel = $scope.radiusRawVal + " mi";
         }
-        $scope.helpRequest.areaSize = $scope.sliderLabel;
+        $scope.helpRequest.AreaSize = $scope.sliderLabel;
 
         if ($scope.locationOutline != undefined)
             $scope.locationOutline.setRadius($scope.overlayRadius);
@@ -134,8 +134,8 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", 
             if ($scope.locationOutline != undefined)
                 $scope.locationOutline.setRadius($scope.overlayRadius);
         }
-        $scope.helpRequest.areaSize = $scope.sliderLabel;
-    }
+        $scope.helpRequest.AreaSize = $scope.sliderLabel;
+    };
 
     function resetNeedsButtons() {
         $scope.showMedicalNeed = false;
@@ -256,13 +256,13 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", 
     $scope.initMap = function (newMap) {
         map = newMap;
         map.on('click', function (e) {
-            if ($scope.locationOutline !== undefined) {
-                map.removeLayer($scope.locationOutline);
-            }
-            $scope.locationOutline = L.circle(e.latlng, $scope.overlayRadius).addTo(map);
             if ($scope.locationPref.value == "Other") {
-                $scope.helpRequest.lat = e.latlng.lat.toFixed(3);
-                $scope.helpRequest.long = e.latlng.lng.toFixed(3);
+                if ($scope.locationOutline !== undefined) {
+                    map.removeLayer($scope.locationOutline);
+                }
+                $scope.locationOutline = L.circle(e.latlng, $scope.overlayRadius).addTo(map);
+                $scope.helpRequest.LAT = e.latlng.lat.toFixed(3);
+                $scope.helpRequest.LONG = e.latlng.lng.toFixed(3);
                 $scope.$digest();
             }
         });
@@ -289,58 +289,123 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", 
     };
 
     $scope.toggleNeeds = function () {
-        $scope.showHelp = !$scope.showHelp;
-        $scope.showNeeds = !$scope.showNeeds;
+        var hasError = false;
+        if ($scope.showHelp) {
+            if ($scope.locationPref.value == "Other" && ($scope.helpRequest.LAT == undefined || $scope.helpRequest.LONG == undefined)) {
+                hasError = true;
+            }
+            if ($scope.helpRequest.AreaSize == undefined) {
+                hasError = true;
+            }
+            if ($scope.helpRequest.Quantity == undefined || $scope.helpRequest.Quantity == 0) {
+                hasError = true;
+            }
+        }
+        if (!hasError) {
+            $scope.showHelp = !$scope.showHelp;
+            $scope.showNeeds = !$scope.showNeeds;
+        }
+        else {
+            alert("Missing Required Field(s)");
+        }
+        return false;
+    };
+
+    $scope.validateNumber = function (evt) {
+        var e = evt || window.event;
+        var key = e.keyCode || e.which;
+
+        if (!e.shiftKey && !e.altKey && !e.ctrlKey &&
+            // numbers   
+        key >= 48 && key <= 57 ||
+            // Backspace and Tab and Enter
+        key == 8 || key == 9 || key == 13 ||
+            // left and right arrows
+        key == 37 || key == 39 ||
+            // Del and Ins
+        key == 46 || key == 45) {
+            // input is VALID
+            return false;
+        }
+        else {
+            // input is INVALID
+            e.returnValue = false;
+            if (e.preventDefault) e.preventDefault();
+            return true;
+        }
         return false;
     };
 
     $scope.sendNeedRequest = function () {
-        $scope.helpRequest.eventID = $scope.eventID;
-        var splitString = $scope.helpRequest.areaSize.split(" ");
-        $scope.helpRequest.areaSize = splitString[0];
-        $scope.helpRequest.unitOfMeasure = splitString[1];
-        /*alert($scope.helpRequest.eventID);
-        alert($scope.helpRequest.requestStateID);
-        alert($scope.helpRequest.notes);
-        alert($scope.helpRequest.quantity);
-        alert($scope.helpRequest.lat);
-        alert($scope.helpRequest.long);
-        alert($scope.helpRequest.requestUrgencyID);
-        alert($scope.helpRequest.areaSize);
-        alert($scope.helpRequest.unitOfMeasure);
-        alert($scope.helpRequest.requestorName);
-        alert($scope.helpRequest.requestorPhone);
-        alert($scope.helpRequest.requestorEmail);
-        alert($scope.helpRequest.requestorUpdatePref);*/
-        if ($scope.showMedicalNeed) {
-            $scope.helpRequest.resourceTypeID = '4';
-            alert("Needs First Aid");
+        var hasError = false;
+        if ($scope.showNeeds) {
+            if (!$scope.showMedicalNeed && !$scope.showShelterNeed && !$scope.showFoodNeed &&
+                !$scope.showMedicineNeed && !$scope.showWaterNeed && !$scope.showEvacuationNeed) {
+                hasError = true;
+            }
         }
-        if ($scope.showShelterNeed) {
-            $scope.helpRequest.resourceTypeID = '3';
-            alert("Needs Shelter");
+        if (!hasError) {
+            $scope.helpRequest.EventID = $scope.eventID;
+            var splitString = $scope.helpRequest.AreaSize.split(" ");
+            $scope.helpRequest.AreaSize = splitString[0];
+            $scope.helpRequest.UnitOfMeasure = splitString[1];
+            if ($scope.showMedicalNeed) {
+                $scope.helpRequest.ResourceTypeID = '4';
+                postNeedRequest();
+            }
+            if ($scope.showShelterNeed) {
+                $scope.helpRequest.ResourceTypeID = '3';
+                alert("Needs Shelter");
+                postNeedRequest();
+            }
+            if ($scope.showFoodNeed) {
+                $scope.helpRequest.ResourceTypeID = '1';
+                alert("Needs Food");
+                postNeedRequest();
+            }
+            if ($scope.showMedicineNeed) {
+                $scope.helpRequest.ResourceTypeID = '6';
+                alert("Needs Medicine");
+                postNeedRequest();
+            }
+            if ($scope.showWaterNeed) {
+                $scope.helpRequest.ResourceTypeID = '2';
+                alert("Needs Water");
+                postNeedRequest();
+            }
+            if ($scope.showEvacuationNeed) {
+                $scope.helpRequest.ResourceTypeID = '5';
+                alert("Needs Evacuation");
+                postNeedRequest();
+            }
+            resetNeedsButtons();
+            $scope.showNeeds = !$scope.showNeeds;
+            $scope.showEventDetails = !$scope.showEventDetails;
         }
-        if ($scope.showFoodNeed) {
-            $scope.helpRequest.resourceTypeID = '1';
-            alert("Needs Food");
+        else {
+            alert("Specify a Need");
         }
-        if ($scope.showMedicineNeed) {
-            $scope.helpRequest.resourceTypeID = '6';
-            alert("Needs Medicine");
-        }
-        if ($scope.showWaterNeed) {
-            $scope.helpRequest.resourceTypeID = '2';
-            alert("Needs Water");
-        }
-        if ($scope.showEvacuationNeed) {
-            $scope.helpRequest.resourceTypeID = '5';
-            alert("Needs Evacuation");
-        }
-        resetNeedsButtons();
-        $scope.showNeeds = !$scope.showNeeds;
-        $scope.showEventDetails = !$scope.showEventDetails;
         return false;
     };
+
+    function postNeedRequest() {
+        var needRequestData = JSON.stringify($scope.helpRequest);
+        var webCall = $http({
+            method: 'POST',
+            url: '/api/resourcerequest',
+            async: true,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: needRequestData
+        });
+        webCall.then(function (response) {
+            alert("Request successfully submitted");
+        },
+        function (response) { // optional
+            alert("Error: ");
+        });
+    }
 
     /*$scope.initMap = function(map) {
 		map.on('click', function (e) {
