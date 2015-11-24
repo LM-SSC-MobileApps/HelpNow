@@ -1,13 +1,18 @@
 <div ng-controller="OrgEventCtrl">
 	<div id="map" ng-if="event" map map-center="{{event.EventLocations[0].LAT}},{{event.EventLocations[0].LONG}}" map-zoom="13" class="col-md-9" style="height: 512px; border: 1px solid #AAA;"></div>
 	<div  class="col-md-3">
-		<div id="eventInfo" ng-include="'views/fragments/event-info.html'"></div>
-		<div class="row">
+		<div id="eventInfo" ng-hide="showFilters" ng-include="'views/fragments/event-info.html'"></div>
+		<div class="row" ng-hide="showFilters">
+			<div class="col-md-12">
+				<a class="btn btn-primary" ng-click="toggleFilters()"><span class="glyphicon glyphicon-filter"></span> Show Filters</a>
+			</div>
+		</div>
+		<div class="row" ng-show="showFilters">
 			<div class="col-md-12">
 				<div class="well">
-					<a class="btn btn-primary pull-right" ng-click="toggleFilters()"><span ng-class="filterButtonClass()"></span> {{filterButtonText()}}</a>
+					<a class="btn btn-primary pull-right" ng-click="toggleFilters()"><span class="glyphicon glyphicon-eye-close"></span> Hide</a>
 					<h4><span class="glyphicon glyphicon-filter"></span> Filters</h4>
-					<div id="filter-section" ng-if="showFilters">
+					<div id="filter-section">
 						<hr class="separated"></hr>
 						<div class="row">
 							<div class="col-xs-4 text-center">

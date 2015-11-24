@@ -298,7 +298,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	
 	$scope.requests = [];
 	
-	$scope.showFilters = true; 
+	$scope.showFilters = false; 
 	
 	$scope.showMedical = true;
 	$scope.showShelter = true;
