@@ -28,7 +28,7 @@ angular.module("helpNow").directive('map', function () {
 			    attribution: '(c) <a href="http://microsites.digitalglobe.com/interactive/basemap_vivid/">DigitalGlobe</a>'
 			});
 
-			var streets = new L.tileLayer('https://{s}.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=' + api_key, {
+			var street = new L.tileLayer('https://{s}.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=' + api_key, {
 			    minZoom: 1,
 			    maxZoom: 19,
 			    attribution: '(c) OpenStreetMap , (c) Mapbox'
