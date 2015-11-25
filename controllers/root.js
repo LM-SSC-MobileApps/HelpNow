@@ -9,25 +9,15 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$http", "$resource"
 			$scope.events = data.json;
 			$scope.$broadcast("EventDataLoaded", {});
 		});
-	};
+	}; 
 	
-	$scope.getIcon = function(eventType) {
+	$scope.getEventIcon = function(eventType) {
 		if (eventType == "Flood") {
-			return "style/images/icons/FloodIcon.png";
+			return "style/images/Flood.png";
 		} else if (eventType == "Tsunami") {
-			return "style/images/icons/TsunamiIcon.png";
+			return "style/images/Tsunami.png";
 		} else {
-			return "style/images/icons/EarthquakeIcon.png";
-		}
-	};
-	
-	$scope.getGrayIcon = function(eventType) {
-		if (eventType == "Flood") {
-			return "style/images/icons/FloodGray.png";
-		} else if (eventType == "Tsunami") {
-			return "style/images/icons/TsunamiGray.png";
-		} else {
-			return "style/images/icons/EarthquakeGray.png";
+			return "style/images/Earthquake.png";
 		}
 	};
 	
@@ -81,8 +71,24 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$http", "$resource"
 			var event = $scope.events[i];
 			if (event.EventID == eventID) return event;
 		}
-		return {};
+		return {}; 
 	};
+	
+	$scope.getLocationIcon = function(resourceType) {
+		if (resourceType == "Water") {
+			return "style/images/Water-Diamond-Blue.png";
+		} else if (resourceType == "First Aid") {
+			return "style/images/First Aid-Diamond-Blue.png";
+		} else if (resourceType == "Shelter") {
+			return "style/images/Shelter-Diamond-Blue.png";
+		} else if (resourceType == "Evacuation") {
+			return "style/images/Evacuation-Hexagon.png";
+		} else if (resourceType == "Medicine") {
+			return "style/images/Medicine-Diamond-Blue.png";
+		} else {
+			return "style/images/Food-Diamond-Blue.png";
+		}
+	}
 	
 	$scope.loadEvents();
 	

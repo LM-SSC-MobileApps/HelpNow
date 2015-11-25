@@ -29,49 +29,33 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	
 	function getNeedsIcon(resourceType) {
 		if (resourceType == "Water") {
-			return "style/images/marker-blue.png";
+			return "style/images/markers/marker-blue.png";
 		} else if (resourceType == "First Aid") {
-			return "style/images/marker-red.png";
+			return "style/images/markers/marker-red.png";
 		} else if (resourceType == "Shelter") {
-			return "style/images/marker-orange.png";
+			return "style/images/markers/marker-orange.png";
 		} else if (resourceType == "Evacuation") {
-			return "style/images/marker-purple.png";
+			return "style/images/markers/marker-purple.png";
 		} else if (resourceType == "Medicine") {
-			return "style/images/marker-cyan.png";
+			return "style/images/markers/marker-cyan.png";
 		} else {
-			return "style/images/marker-green.png";
-		}
-	}
-	
-	function getLocationIcon(resourceType) {
-		if (resourceType == "Water") {
-			return "style/images/marker2-blue.png";
-		} else if (resourceType == "First Aid") {
-			return "style/images/marker2-red.png";
-		} else if (resourceType == "Shelter") {
-			return "style/images/marker2-orange.png";
-		} else if (resourceType == "Evacuation") {
-			return "style/images/marker2-purple.png";
-		} else if (resourceType == "Medicine") {
-			return "style/images/marker2-cyan.png";
-		} else {
-			return "style/images/marker2-green.png";
+			return "style/images/markers/marker-green.png";
 		}
 	}
 	
 	function getClusterIcon(resourceType) {
 		if (resourceType == "Water") {
-			return "style/images/marker-blue-lg.png";
+			return "style/images/Water-Circle-Red.png";
 		} else if (resourceType == "First Aid") {
-			return "style/images/marker-red-lg.png";
+			return "style/images/First Aid-Circle-Red.png";
 		} else if (resourceType == "Shelter") {
-			return "style/images/marker-orange-lg.png";
+			return "style/images/Shelter-Circle-Red.png";
 		} else if (resourceType == "Evacuation") {
-			return "style/images/marker-purple-lg.png";
+			return "style/images/Evacuation-Circle-Red.png";
 		} else if (resourceType == "Medicine") {
-			return "style/images/marker-cyan-lg.png";
+			return "style/images/Medicine-Circle-Red.png";
 		} else {
-			return "style/images/marker-green-lg.png";
+			return "style/images/Food-Circle-Red.png";
 		}
 	}
 	
@@ -85,7 +69,9 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 		angular.forEach(selectedRequests, function(request) {
 			var requestIcon = L.icon({
 				iconUrl: getNeedsIcon(request.ResourceType.Description),
-				iconSize: [27, 41]
+				iconSize: [27, 41],
+				iconAnchor: [13, 41],
+				popupAnchor:  [0, -20]
 			}); 
 			var marker = L.marker([request.LAT, request.LONG], { icon: requestIcon });
 			marker.bindPopup("<strong>" + request.ResourceType.Description + " (" + request.Quantity + ")</strong><br/>" + request.Notes);
@@ -103,7 +89,8 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 		angular.forEach(selectedClusters, function(cluster) {
 			var clusterIcon = L.icon({
 				iconUrl: getClusterIcon(cluster.ResourceType.Description),
-				iconSize: [40, 60]
+				iconSize: [50, 50],
+				iconAnchor: [25, 25]
 			}); 
 			var marker = L.marker([cluster.LAT, cluster.LONG], { icon: clusterIcon });
 			marker.bindPopup("<strong>" + cluster.ResourceType.Description + "</strong><br/>" + cluster.Notes);
@@ -137,8 +124,9 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 		
 		angular.forEach(selectedLocations, function(location) {
 			var locationIcon = L.icon({
-				iconUrl: getLocationIcon(location.ResourceType.Description),
-				iconSize: [27, 41]
+				iconUrl: $scope.getLocationIcon(location.ResourceType.Description),
+				iconSize: [60, 60],
+				iconAnchor: [30, 30]
 			}); 
 			var marker = L.marker([location.ResourceLocation.LAT, location.ResourceLocation.LONG], { icon: locationIcon });
 			marker.bindPopup("<strong>" + location.ResourceType.Description + " (" + location.Organization.Name + ")</strong><br/>" + location.Notes);

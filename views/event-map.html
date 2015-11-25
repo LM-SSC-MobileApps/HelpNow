@@ -1,91 +1,50 @@
 <div ng-controller="EventMapCtrl">
-    <h2 style="margin-bottom: -5px; margin-top: -20px;"><img src="style/images/icons/FloodGray.png" style="height: 66px; width: 66px; margin-right: 5px;" />{{event.EventLocations[0].Description}}</h2>
+    <h3><img id="event-header-icon" src="{{getEventIcon(event.EventType.Description)}}" />{{event.EventLocations[0].Description}}</h3>
     <div id="map" ng-if="event" map map-center="{{event.EventLocations[0].LAT}},{{event.EventLocations[0].LONG}}" map-zoom="13" class="col-md-9" style="height: 512px; border: 1px solid #AAA;"></div>
-    <!--div id="resourcePanel" class="col-md-3" hidden="hidden">
-        <table id="resourceTable">
-            <tr>
-                <td>
-                    <img src="style/images/icons/WaterIcon.png" style="height: 88px; width: 88px; margin-right: 5px;" />
-                </td>
-                <td>
-                    <h3 style="margin-top: -5px;">{{resource.resourceType}}</h3>
-                    <a href="#\event_map\1">
-                        ({{resource.lat}}, {{resource.long}})
-                    </a>
-                </td>
-                <td style="vertical-align: top;">
-                    <button style="border:none; background-color: none;" onclick="hideResourcePanel()">X</button>
-                </td>
-            </tr>
-            <tr id="providerRow">
-                <td>
-                    <h4 style="margin-top: 10px;">Provided By:</h4>
-                    <h5>{{resource.provider}}</h5>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <img src="style/images/icons/ClockIconGray.png" style="height: 44px; width: 44px;" />
-                </td>
-                <td>
-                    <h5 style="margin-left: -25px;">{{event.CreateDate | date : "short"}}</h5>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <img src="style/images/icons/PeopleIconGray.png" style="height: 44px; width: 44px;" />
-                </td>
-                <td>
-                    <h4 style="margin-left: -25px;">More Information</h4>
-                    <h5 style="margin-left: -25px;">{{event.contactPhone}}</h5>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="3">
-                    <h4>{{resource.message}}</h4>
-                </td>
-            </tr>
-        </table>
-    </div-->
     <div id="rightColumn" class="col-md-3" ng-if="showEventDetails">
-        <div id="eventInfo" ng-include="'views/fragments/event-info.html'"></div>
-        <div class="row">
+        <div id="eventInfo"  ng-hide="showFilters" ng-include="'views/fragments/event-info.html'"></div>
+		<div class="row" ng-hide="showFilters">
+			<div class="col-md-12">
+				<a class="btn btn-primary" ng-click="toggleFilters()"><span class="glyphicon glyphicon-filter"></span> Show Filters</a>
+			</div>
+		</div>
+        <div class="row" ng-if="showFilters">
             <div class="col-md-12">
                 <div class="well">
-                    <a class="btn btn-primary pull-right" ng-click="toggleFilters()"><span ng-class="filterButtonClass()"></span> {{filterButtonText()}}</a>
+                    <a class="btn btn-primary pull-right" ng-click="toggleFilters()"><span class="glyphicon glyphicon-eye-close"></span> Hide</a>
                     <h4><span class="glyphicon glyphicon-filter"></span> Filters</h4>
-                    <div id="filter-section" ng-if="showFilters">
+                    <div id="filter-section">
                         <hr class="separated"></hr>
                         <div class="row">
                             <div class="col-xs-4 text-center">
-                                <a id="showMedical" ng-class="toggleButtonClass('showMedical')" ng-click="toggleButton('showMedical')"><span class="glyphicon glyphicon-plus"></span></a>
+                                <a id="showMedical" ng-class="toggleButtonClass('showMedical')" ng-click="toggleButton('showMedical')"><span></span></a>
                                 <br />
                                 <span class="filter-caption">First Aid</span>
                             </div>
                             <div class="col-xs-4 text-center">
-                                <a id="showShelter" ng-class="toggleButtonClass('showShelter')" ng-click="toggleButton('showShelter')"><span class="glyphicon glyphicon-home"></span></a>
+                                <a id="showShelter" ng-class="toggleButtonClass('showShelter')" ng-click="toggleButton('showShelter')"><span></span></a>
                                 <br />
                                 <span class="filter-caption">Shelter</span>
                             </div>
                             <div class="col-xs-4 text-center">
-                                <a id="showFood" ng-class="toggleButtonClass('showFood')" ng-click="toggleButton('showFood')"><span class="glyphicon glyphicon-cutlery"></span></a>
+                                <a id="showFood" ng-class="toggleButtonClass('showFood')" ng-click="toggleButton('showFood')"><span></span></a>
                                 <br />
                                 <span class="filter-caption">Food</span>
                             </div>
                         </div>
                         <div class="row separated-small">
                             <div class="col-xs-4 text-center">
-                                <a id="showMedicine" ng-class="toggleButtonClass('showMedicine')" ng-click="toggleButton('showMedicine')"><span class="glyphicon glyphicon-erase"></span></a>
+                                <a id="showMedicine" ng-class="toggleButtonClass('showMedicine')" ng-click="toggleButton('showMedicine')"><span></span></a>
                                 <br />
                                 <span class="filter-caption">Medicine</span>
                             </div>
                             <div class="col-xs-4 text-center">
-                                <a id="showWater" ng-class="toggleButtonClass('showWater')" ng-click="toggleButton('showWater')"><span class="glyphicon glyphicon-tint"></span></a>
+                                <a id="showWater" ng-class="toggleButtonClass('showWater')" ng-click="toggleButton('showWater')"><span></span></a>
                                 <br />
                                 <span class="filter-caption">Water</span>
                             </div>
                             <div class="col-xs-4 text-center">
-                                <a id="showEvacuation" ng-class="toggleButtonClass('showEvacuation')" ng-click="toggleButton('showEvacuation')"><span class="glyphicon glyphicon-plane"></span></a>
+                                <a id="showEvacuation" ng-class="toggleButtonClass('showEvacuation')" ng-click="toggleButton('showEvacuation')"><span></span></a>
                                 <br />
                                 <span class="filter-caption">Evacuation</span>
                             </div>
@@ -94,7 +53,7 @@
                 </div>
             </div>
         </div>
-        <div>
+        <div class="separated-small" ng-hide="showFilters">
             <a id="btn-login" class="btn btn-primary" href="#/org_event/{{event.EventID}}"><span class="glyphicon glyphicon-globe"></span>Aid Organization View</a>
         </div>
     </div>

@@ -32,19 +32,31 @@ angular.module("helpNow", ["ngRoute", "ngResource"])
 			templateUrl: "views/events.html"
 		});
 	}]);
-angular.module("helpNow").controller("EventListCtrl", ["$scope", function($scope) {
+angular.module("helpNow").controller("EventListCtrl", ["$scope", "$location", function($scope, $location) {
 	var map;
+	
+	$scope.getMapEventIcon = function(eventType) {
+		if (eventType == "Flood") {
+			return "style/images/Flood-Circle-Red.png";
+		} else if (eventType == "Tsunami") {
+			return "style/images/Tsunami-Circle-Red.png";
+		} else {
+			return "style/images/Earthquake-Circle-Red.png";
+		}
+	};
 	
 	function addEventsToMap() {
 		if (!map || !$scope.events) return;
 		angular.forEach($scope.events, function(event) {
 			var eventIcon = L.icon({
-				iconUrl: $scope.getIcon(event.EventType.Description),
-				iconSize: [43, 44]
+				iconUrl: $scope.getMapEventIcon(event.EventType.Description),
+				iconSize: [43, 44] 
 			}); 
 			var marker = L.marker([event.EventLocations[0].LAT, event.EventLocations[0].LONG], { icon: eventIcon });
 			marker.on("click", function() {
-				window.location = "#event_map/" + event.EventID;
+				$scope.$apply(function() {
+					$location.url("event_map/" + event.EventID);
+				});
 			});
 			marker.addTo(map);
 		});
@@ -78,7 +90,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", 
 
     $scope.requests = [];
 
-    $scope.showFilters = true;
+    $scope.showFilters = false;
     $scope.showEventDetails = true;
     $scope.showHelp = false;
     $scope.showNeeds = false;
@@ -91,22 +103,6 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", 
     $scope.showMedicine = true;
 
     $scope.showLocationMarkers = true;
-
-    function getLocationIcon(resourceType) {
-        if (resourceType == "Water") {
-            return "style/images/icons/WaterResource.png";
-        } else if (resourceType == "First Aid") {
-            return "style/images/icons/FirstAidResource.png";
-        } else if (resourceType == "Shelter") {
-            return "style/images/marker2-orange.png";
-        } else if (resourceType == "Evacuation") {
-            return "style/images/icons/EvacuationIcon.png";
-        } else if (resourceType == "Medicine") {
-            return "style/images/marker2-cyan.png";
-        } else {
-            return "style/images/marker2-green.png";
-        }
-    }
 
     $scope.$on("EventDataLoaded", function () {
         $scope.event = $scope.getEvent($scope.eventID);
@@ -121,13 +117,10 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", 
         });
 
         angular.forEach(selectedLocations, function (location) {
-            var resourceIconSize = [0, 0];
-            if (location.ResourceType.Description == "Water" || location.ResourceType.Description == "Evacuation") resourceIconSize = [72, 73];
-            else if (location.ResourceType.Description == "First Aid") resourceIconSize = [128, 158.25];
-            else resourceIconSize = [27, 41];
             var locationIcon = L.icon({
-                iconUrl: getLocationIcon(location.ResourceType.Description),
-                iconSize: resourceIconSize
+                iconUrl: $scope.getLocationIcon(location.ResourceType.Description),
+				iconSize: [60, 60],
+				iconAnchor: [30, 30]
             });
             var marker = L.marker([location.ResourceLocation.LAT, location.ResourceLocation.LONG], { icon: locationIcon });
             marker.bindPopup("<strong>" + location.ResourceType.Description + " (" + location.Organization.Name + ")</strong><br/>" + location.Notes);
@@ -314,49 +307,33 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	
 	function getNeedsIcon(resourceType) {
 		if (resourceType == "Water") {
-			return "style/images/marker-blue.png";
+			return "style/images/markers/marker-blue.png";
 		} else if (resourceType == "First Aid") {
-			return "style/images/marker-red.png";
+			return "style/images/markers/marker-red.png";
 		} else if (resourceType == "Shelter") {
-			return "style/images/marker-orange.png";
+			return "style/images/markers/marker-orange.png";
 		} else if (resourceType == "Evacuation") {
-			return "style/images/marker-purple.png";
+			return "style/images/markers/marker-purple.png";
 		} else if (resourceType == "Medicine") {
-			return "style/images/marker-cyan.png";
+			return "style/images/markers/marker-cyan.png";
 		} else {
-			return "style/images/marker-green.png";
-		}
-	}
-	
-	function getLocationIcon(resourceType) {
-		if (resourceType == "Water") {
-			return "style/images/marker2-blue.png";
-		} else if (resourceType == "First Aid") {
-			return "style/images/marker2-red.png";
-		} else if (resourceType == "Shelter") {
-			return "style/images/marker2-orange.png";
-		} else if (resourceType == "Evacuation") {
-			return "style/images/marker2-purple.png";
-		} else if (resourceType == "Medicine") {
-			return "style/images/marker2-cyan.png";
-		} else {
-			return "style/images/marker2-green.png";
+			return "style/images/markers/marker-green.png";
 		}
 	}
 	
 	function getClusterIcon(resourceType) {
 		if (resourceType == "Water") {
-			return "style/images/marker-blue-lg.png";
+			return "style/images/Water-Circle-Red.png";
 		} else if (resourceType == "First Aid") {
-			return "style/images/marker-red-lg.png";
+			return "style/images/First Aid-Circle-Red.png";
 		} else if (resourceType == "Shelter") {
-			return "style/images/marker-orange-lg.png";
+			return "style/images/Shelter-Circle-Red.png";
 		} else if (resourceType == "Evacuation") {
-			return "style/images/marker-purple-lg.png";
+			return "style/images/Evacuation-Circle-Red.png";
 		} else if (resourceType == "Medicine") {
-			return "style/images/marker-cyan-lg.png";
+			return "style/images/Medicine-Circle-Red.png";
 		} else {
-			return "style/images/marker-green-lg.png";
+			return "style/images/Food-Circle-Red.png";
 		}
 	}
 	
@@ -370,7 +347,9 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 		angular.forEach(selectedRequests, function(request) {
 			var requestIcon = L.icon({
 				iconUrl: getNeedsIcon(request.ResourceType.Description),
-				iconSize: [27, 41]
+				iconSize: [27, 41],
+				iconAnchor: [13, 41],
+				popupAnchor:  [0, -20]
 			}); 
 			var marker = L.marker([request.LAT, request.LONG], { icon: requestIcon });
 			marker.bindPopup("<strong>" + request.ResourceType.Description + " (" + request.Quantity + ")</strong><br/>" + request.Notes);
@@ -388,7 +367,8 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 		angular.forEach(selectedClusters, function(cluster) {
 			var clusterIcon = L.icon({
 				iconUrl: getClusterIcon(cluster.ResourceType.Description),
-				iconSize: [40, 60]
+				iconSize: [50, 50],
+				iconAnchor: [25, 25]
 			}); 
 			var marker = L.marker([cluster.LAT, cluster.LONG], { icon: clusterIcon });
 			marker.bindPopup("<strong>" + cluster.ResourceType.Description + "</strong><br/>" + cluster.Notes);
@@ -422,8 +402,9 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 		
 		angular.forEach(selectedLocations, function(location) {
 			var locationIcon = L.icon({
-				iconUrl: getLocationIcon(location.ResourceType.Description),
-				iconSize: [27, 41]
+				iconUrl: $scope.getLocationIcon(location.ResourceType.Description),
+				iconSize: [60, 60],
+				iconAnchor: [30, 30]
 			}); 
 			var marker = L.marker([location.ResourceLocation.LAT, location.ResourceLocation.LONG], { icon: locationIcon });
 			marker.bindPopup("<strong>" + location.ResourceType.Description + " (" + location.Organization.Name + ")</strong><br/>" + location.Notes);
@@ -527,25 +508,15 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$http", "$resource"
 			$scope.events = data.json;
 			$scope.$broadcast("EventDataLoaded", {});
 		});
-	};
+	}; 
 	
-	$scope.getIcon = function(eventType) {
+	$scope.getEventIcon = function(eventType) {
 		if (eventType == "Flood") {
-			return "style/images/icons/FloodIcon.png";
+			return "style/images/Flood.png";
 		} else if (eventType == "Tsunami") {
-			return "style/images/icons/TsunamiIcon.png";
+			return "style/images/Tsunami.png";
 		} else {
-			return "style/images/icons/EarthquakeIcon.png";
-		}
-	};
-	
-	$scope.getGrayIcon = function(eventType) {
-		if (eventType == "Flood") {
-			return "style/images/icons/FloodGray.png";
-		} else if (eventType == "Tsunami") {
-			return "style/images/icons/TsunamiGray.png";
-		} else {
-			return "style/images/icons/EarthquakeGray.png";
+			return "style/images/Earthquake.png";
 		}
 	};
 	
@@ -599,8 +570,24 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$http", "$resource"
 			var event = $scope.events[i];
 			if (event.EventID == eventID) return event;
 		}
-		return {};
+		return {}; 
 	};
+	
+	$scope.getLocationIcon = function(resourceType) {
+		if (resourceType == "Water") {
+			return "style/images/Water-Diamond-Blue.png";
+		} else if (resourceType == "First Aid") {
+			return "style/images/First Aid-Diamond-Blue.png";
+		} else if (resourceType == "Shelter") {
+			return "style/images/Shelter-Diamond-Blue.png";
+		} else if (resourceType == "Evacuation") {
+			return "style/images/Evacuation-Hexagon.png";
+		} else if (resourceType == "Medicine") {
+			return "style/images/Medicine-Diamond-Blue.png";
+		} else {
+			return "style/images/Food-Diamond-Blue.png";
+		}
+	}
 	
 	$scope.loadEvents();
 	

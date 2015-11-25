@@ -15,7 +15,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", 
 
     $scope.requests = [];
 
-    $scope.showFilters = true;
+    $scope.showFilters = false;
     $scope.showEventDetails = true;
     $scope.showHelp = false;
     $scope.showNeeds = false;
@@ -28,22 +28,6 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", 
     $scope.showMedicine = true;
 
     $scope.showLocationMarkers = true;
-
-    function getLocationIcon(resourceType) {
-        if (resourceType == "Water") {
-            return "style/images/icons/WaterResource.png";
-        } else if (resourceType == "First Aid") {
-            return "style/images/icons/FirstAidResource.png";
-        } else if (resourceType == "Shelter") {
-            return "style/images/marker2-orange.png";
-        } else if (resourceType == "Evacuation") {
-            return "style/images/icons/EvacuationIcon.png";
-        } else if (resourceType == "Medicine") {
-            return "style/images/marker2-cyan.png";
-        } else {
-            return "style/images/marker2-green.png";
-        }
-    }
 
     $scope.$on("EventDataLoaded", function () {
         $scope.event = $scope.getEvent($scope.eventID);
@@ -58,13 +42,10 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$routeParams", 
         });
 
         angular.forEach(selectedLocations, function (location) {
-            var resourceIconSize = [0, 0];
-            if (location.ResourceType.Description == "Water" || location.ResourceType.Description == "Evacuation") resourceIconSize = [72, 73];
-            else if (location.ResourceType.Description == "First Aid") resourceIconSize = [128, 158.25];
-            else resourceIconSize = [27, 41];
             var locationIcon = L.icon({
-                iconUrl: getLocationIcon(location.ResourceType.Description),
-                iconSize: resourceIconSize
+                iconUrl: $scope.getLocationIcon(location.ResourceType.Description),
+				iconSize: [60, 60],
+				iconAnchor: [30, 30]
             });
             var marker = L.marker([location.ResourceLocation.LAT, location.ResourceLocation.LONG], { icon: locationIcon });
             marker.bindPopup("<strong>" + location.ResourceType.Description + " (" + location.Organization.Name + ")</strong><br/>" + location.Notes);

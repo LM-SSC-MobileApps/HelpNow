@@ -26,7 +26,7 @@
     <script src="http://cdn.jsdelivr.net/leaflet.esri/1.0.0/esri-leaflet.js"></script>
     <script src="http://labs.easyblog.it/maps/leaflet-search/src/leaflet-search.js"></script>
 
-	<script type="text/javascript" src="generated/all.min.js"></script>
+	<script type="text/javascript" src="generated/all.js"></script>
 </head>
 <body ng-controller="RootCtrl">
     <div class="container page-container">
@@ -53,8 +53,8 @@
 					<li class="dropdown">
 					  <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{text.menu_lang}} <span class="caret"></span></a>
 					  <ul class="dropdown-menu">
-						<li><a ng-click="setCurrentLanguage('Eng')" ng-class="getLanguageClass('Eng')"><img style="margin-bottom: 2px" height="10" width="20" src="style/images/uk_flag.png" /> English</a></li>
-						<li><a ng-click="setCurrentLanguage('Ben')" ng-class="getLanguageClass('Ben')"><img style="margin-bottom: 2px" height="10" width="20" src="style/images/bangladesh_flag.png" /> বাংলা</a></li>
+						<li><a ng-click="setCurrentLanguage('Eng')" ng-class="getLanguageClass('Eng')"><img class="lang-img" src="style/images/uk_flag.png" /> English</a></li>
+						<li><a ng-click="setCurrentLanguage('Ben')" ng-class="getLanguageClass('Ben')"><img class="lang-img" src="style/images/bangladesh_flag.png" /> বাংলা</a></li>
 					  </ul>
 					</li>
 				  </ul>
