@@ -18,18 +18,18 @@ angular.module("helpNow").directive('map', function () {
                 EsriImagery = L.esri.tiledMapLayer({ url: 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer', attribution: 'Esri 2015' });
 
 			var hybrid = new L.tileLayer('https://{s}.tiles.mapbox.com/v4/digitalglobe.n6nhclo2/{z}/{x}/{y}.png?access_token=' + api_key, {
-			    minZoom: 1,
+			    minZoom: 2,
 			    maxZoom: 19,
 			    attribution: '(c) <a href="http://microsites.digitalglobe.com/interactive/basemap_vivid/">DigitalGlobe</a> , (c) OpenStreetMap, (c) Mapbox'
 			});
 			var vivid = new L.tileLayer('https://{s}.tiles.mapbox.com/v4/digitalglobe.n6ngnadl/{z}/{x}/{y}.png?access_token=' + api_key, {
-			    minZoom: 1,
+			    minZoom: 2,
 			    maxZoom: 19,
 			    attribution: '(c) <a href="http://microsites.digitalglobe.com/interactive/basemap_vivid/">DigitalGlobe</a>'
 			});
 
 			var street = new L.tileLayer('https://{s}.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=' + api_key, {
-			    minZoom: 1,
+			    minZoom: 2,
 			    maxZoom: 19,
 			    attribution: '(c) OpenStreetMap , (c) Mapbox'
 			});
@@ -37,12 +37,15 @@ angular.module("helpNow").directive('map', function () {
 			var baseLayer = L.tileLayer(
               'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                   attribution: mbAttr,
+                  noWrap: true,
+                  minZoom: 2,
                   maxZoom: 18
               }
             );
 			
 			var map = new L.map('map', {
-                layers: [baseLayer]
+			    layers: [baseLayer],
+			    maxBounds: [[-90.0, -180], [90.0, 180.0]]
             }).setView(center, zoom);
 
 			L.control.scale().addTo(map);

@@ -1,6 +1,7 @@
 { "menu_help":"Help Me Now!",
   "menu_org":"Aid Organizations",
   "menu_ind":"Individuals",
-  "menu_gov":"Governments",
+  "menu_gov": "Governments",
+  "menu_inv":  "Inventory",
   "menu_lang":"Language",
   "events_title":"Select an Event"}
