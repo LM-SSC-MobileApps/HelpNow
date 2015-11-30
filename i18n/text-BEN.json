@@ -1,6 +1,7 @@
 { "menu_help":"সাহায্য",
   "menu_org":"এইড সংগঠন",
   "menu_ind":"ব্যক্তি",
-  "menu_gov":"সরকার",
+  "menu_gov": "সরকার",
+  "menu_inv": "জায়",
   "menu_lang":"ভাষা",
   "events_title":"একটি ইভেন্ট নির্বাচন"  }
