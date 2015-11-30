@@ -5,28 +5,40 @@ module.exports = function(sequelize, DataTypes) {
     ResourceRegistryID: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
-    },
-    OrganizationID: {
-      type: DataTypes.INTEGER(11),
-      allowNull: true,
       primaryKey: true,
       autoIncrement: true
     },
-    ResourceTypeID: {
+    OrganizationID: {
       type: DataTypes.INTEGER(11),
-      allowNull: true,
+      allowNull: false
     },
     Notes: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: true
     },
     ResourceLocationID: {
       type: DataTypes.INTEGER(11),
-      allowNull: true,
+      allowNull: false
     },
     EventID: {
       type: DataTypes.INTEGER(11),
-      allowNull: false,
+      allowNull: false
+    },
+    PrimaryPOCName: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    PrimaryPOCPhone: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    SecondaryPOCName: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    SecondaryPOCPhone: {
+      type: DataTypes.STRING,
+      allowNull: true
     }
   });
 };

@@ -3,32 +3,32 @@ var models  = require('../models'),
     express = require('express');
 
 
-//OrganizationGroup many-to-One on Organization
-models.Organization.hasMany(models.OrganizationGroup, {foreignKey: 'OrganizationID'});
-models.OrganizationGroup.belongsTo(models.Organization, {foreignKey: 'OrganizationID'});
+// //OrganizationGroup many-to-One on Organization
+// models.Organization.hasMany(models.OrganizationGroup, {foreignKey: 'OrganizationID'});
+// models.OrganizationGroup.belongsTo(models.Organization, {foreignKey: 'OrganizationID'});
 
-//ResourceRegistry one-to-many on ResourceRegistryInventory
-models.ResourceRegistry.hasMany(models.ResourceRegistryInventory, {foreignKey: 'ResourceRegistryID'});
-models.ResourceRegistryInventory.belongsTo(models.ResourceRegistry, {foreignKey: 'ResourceRegistryID'});
+// //ResourceRegistry one-to-many on ResourceRegistryInventory
+// models.ResourceRegistry.hasMany(models.ResourceRegistyInventory, {foreignKey: 'ResourceRegistryID'});
+// models.ResourceRegistyInventory.belongsTo(models.ResourceRegisty, {foreignKey: 'ResourceRegistryID'});
 
-//ResourceRegistry one-to-one on ResourceLocation
-models.ResourceRegistry.belongsTo(models.ResourceLocation, {foreignKey: 'ResourceLocationID'});
+// //ResourceRegistry one-to-one on ResourceLocation
+// models.ResourceRegistry.belongsTo(models.ResourceLocation, {foreignKey: 'ResourceLocationID'});
 
-//ResourceRegistry one-to-one on Organization
-models.ResourceRegistry.belongsTo(models.Organization, {foreignKey: 'OrganizationID'});
+// //ResourceRegistry one-to-one on Organization
+// models.ResourceRegistry.belongsTo(models.Organization, {foreignKey: 'OrganizationID'});
 
 var routes = function(){
   var router  = express.Router();
     router.get('/', function(req, res) {
-      models.ResourceRegistry.findAll()
-        .then(function(resourceRegistry) {
+      models.ResourceRegistryInventory.findAll()
+        .then(function(resourceRegistryInventory) {
           res.statusCode = 201;
           res.send(
             {
               result: 'success',
               err:    '',
-              json:  resourceRegistry,
-              length: resourceRegistry.length
+              json:  resourceRegistryInventory,
+              length: resourceRegistryInventory.length
             }
           );
         }
@@ -43,22 +43,22 @@ var routes = function(){
       });
     }
   )
-  //find ResourceRegistry by ID
+  //find ResourceRegistryInventory by ID
   .get('/:id', function(req, res) {
-      models.ResourceRegistry.findAll(
+      models.ResourceRegistryInventory.findAll(
         {
           where: {
-            ResourceRegistryID: req.params.id
+            ResourceRegistryInventoryID: req.params.id
           }
         }
-      ).then(function(resourceRegistry) {
+      ).then(function(resourceRegistryInventory) {
         res.statusCode = 200;
         res.send(
           {
             result: 'success',
             err:    '',
-            json:  resourceRegistry,
-            length: resourceRegistry.length
+            json:  resourceRegistryInventory,
+            length: resourceRegistryInventory.length
           }
         );
       }
@@ -72,17 +72,17 @@ var routes = function(){
       });
     }
   )
-  //insert into ResourceRegistry
+  //insert into ResourceRegistryInventory
   .post('/', function(req, res) {
-    models.ResourceRegistry.create(req.body)
-    .then(function(resourceRegistry) {
+    models.ResourceRegistryInventory.create(req.body)
+    .then(function(resourceRegistryInventory) {
         res.statusCode = 200;
         res.send(
           {
             result: 'success',
             err:    '',
-            json:  resourceRegistry,
-            length: resourceRegistry.length
+            json:  resourceRegistryInventory,
+            length: resourceRegistryInventory.length
           }
         );
       }
@@ -96,13 +96,13 @@ var routes = function(){
       });
     }
   )
-  //update into ResourceRegistry
+  //update into ResourceRegistryInventory
   .put('/:id', function(req, res) {
-    models.ResourceRegistry.update(
+    models.ResourceRegistryInventory.update(
       req.body,
       {
         where: {
-          ResourceRegistryID: req.params.id
+          ResourceRegistryInventoryID: req.params.id
         }
       }
     )
@@ -128,10 +128,10 @@ var routes = function(){
     }
   )
   .delete('/:id', function(req, res) {
-    models.ResourceRegistry.destroy(
+    models.ResourceRegistryInventory.destroy(
       {
         where: {
-          ResourceRegistryID: req.params.id
+          ResourceRegistryInventoryID: req.params.id
         }
       }
     )

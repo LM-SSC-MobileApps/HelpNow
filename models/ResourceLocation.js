@@ -10,15 +10,19 @@ module.exports = function(sequelize, DataTypes) {
     },
     Description: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: true
     },
     LAT: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: true
     },
     LONG: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: true
+    },
+    PhoneNumber: {
+      type: DataTypes.STRING,
+      allowNull: true
     }
   });
 };
