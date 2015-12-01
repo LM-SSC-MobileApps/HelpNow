@@ -5,6 +5,7 @@ var models  = require('../models'),
 //ResourceLocation one-to-many on ResourceLocationInventory
 models.ResourceLocation.hasMany(models.ResourceLocationInventory, {foreignKey: 'ResourceLocationID'});
 models.ResourceLocationInventory.belongsTo(models.ResourceLocation, {foreignKey: 'ResourceLocationID'});
+
 //ResourceLocation many-to-One on ResourceRegistry
 models.ResourceRegistry.hasMany(models.ResourceLocation, {foreignKey: 'ResourceRegistryID'});
 models.ResourceLocation.belongsTo(models.ResourceRegistry, {foreignKey: 'ResourceRegistryID'});
