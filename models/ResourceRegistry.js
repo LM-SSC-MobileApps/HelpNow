@@ -16,13 +16,9 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: true
     },
-    ResourceLocationID: {
-      type: DataTypes.INTEGER(11),
-      allowNull: false
-    },
     EventID: {
       type: DataTypes.INTEGER(11),
-      allowNull: false
+      allowNull: true
     },
     PrimaryPOCName: {
       type: DataTypes.STRING,

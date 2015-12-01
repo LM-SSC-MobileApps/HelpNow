@@ -8,6 +8,10 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
       autoIncrement: true
     },
+    ResourceRegistryID: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false
+    },
     Description: {
       type: DataTypes.STRING,
       allowNull: true

@@ -1,14 +1,14 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('ResourceRegistryInventory', { 
-    ResourceRegistryInventoryID: {
+  return sequelize.define('ResourceLocationInventory', { 
+    ResourceLocationInventoryID: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
       primaryKey: true,
       autoIncrement: true
     },
-    ResourceRegistryID: {
+    ResourceLocationID: {
       type: DataTypes.INTEGER(11),
       allowNull: false
     },
@@ -16,12 +16,12 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER(11),
       allowNull: false
     },
-    Qty: {
+    Quantity: {
       type: DataTypes.INTEGER(11),
       allowNull: false
     },
-    QtyUnitOfMeasure: {
-      type: DataTypes.STRING,
+    ResourceTypeUnitOfMeasureID: {
+      type: DataTypes.INTEGER(11),
       allowNull: true
     }
   });

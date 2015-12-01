@@ -21,10 +21,12 @@ var organizationRegulationRouter = require('./routes/organizationregulation')();
 var organizationTypeRouter = require('./routes/organizationtype')();
 var requestStateRouter = require('./routes/requeststate')();
 var resourceLocationRouter = require('./routes/resourcelocation')();
+var resourceLocationInventoryRouter = require('./routes/resourcelocationinventory')();
 var resourceRegistryRouter = require('./routes/resourceregistry')();
 var resourceRequestRouter = require('./routes/resourcerequest')();
 var resourceResponseRouter = require('./routes/resourceresponse')();
 var resourceTypeRouter = require('./routes/resourcetype')();
+var resourceTypeUnitOfMeasureRouter = require('./routes/resourcetypeunitofmeasure')();
 var responseStateRouter = require('./routes/responsestate')();
 var requestUrgencyRouter = require('./routes/requesturgency')();
 
@@ -49,10 +51,12 @@ app.use('/api/organizationregulation', organizationRegulationRouter);
 app.use('/api/organizationtype', organizationTypeRouter);
 app.use('/api/requeststate', requestStateRouter);
 app.use('/api/resourcelocation', resourceLocationRouter);
+app.use('/api/resourcelocationinventory', resourceLocationInventoryRouter);
 app.use('/api/resourceregistry', resourceRegistryRouter);
 app.use('/api/resourcerequest', resourceRequestRouter);
 app.use('/api/resourceresponse', resourceResponseRouter);
 app.use('/api/resourcetype', resourceTypeRouter);
+app.use('/api/resourcetypeunitofmeasure', resourceTypeUnitOfMeasureRouter);
 app.use('/api/responsestate', responseStateRouter);
 app.use('/api/requesturgency', requestUrgencyRouter);
 
