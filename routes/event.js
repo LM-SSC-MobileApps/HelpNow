@@ -23,6 +23,10 @@ models.ResourceRegistry.belongsTo(models.Event, {foreignKey: 'EventID'});
 models.Organization.hasMany(models.Event, {foreignKey: 'OrganizationID'});
 models.Event.belongsTo(models.Organization, {foreignKey: 'OrganizationID'});
 
+//ResourceLocation one-to-many on ResourceLocationInventory
+models.ResourceLocation.hasMany(models.ResourceLocationInventory, {foreignKey: 'ResourceLocationID'});
+models.ResourceLocationInventory.belongsTo(models.ResourceLocation, {foreignKey: 'ResourceLocationID'});
+
 var routes = function(){
   var router  = express.Router();
     router.get('/', function(req, res) {
@@ -86,13 +90,27 @@ var routes = function(){
 	  tasks[1] = models.ResourceRegistry.findAll(
 		{
 		  where: {
-			EventID: req.params.eventID
+			   EventID: req.params.eventID
 		  },
-		  include: [
-			{model: models.ResourceType},
-			{model: models.ResourceLocation},
-			{model: models.Organization}
-		  ]
+      include: [
+        {model: models.ResourceLocation,
+          include: [{
+            model: models.ResourceLocationInventory,
+              include: [
+                  {
+                    model: models.ResourceType,
+                    required: false
+                  },
+                  {
+                    model: models.ResourceTypeUnitOfMeasure,
+                    required: false
+                  }
+              ],
+            required: false
+          }]
+        },
+        {model: models.Organization}
+      ]
 	  });
 	  
 	  //when all data is loaded, send the response
