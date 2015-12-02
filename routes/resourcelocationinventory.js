@@ -2,40 +2,39 @@
 var models  = require('../models'),
     express = require('express');
 
+//ResourceLocationInventory many-to-one on ResourceLocation
+models.ResourceLocationInventory.belongsTo(models.ResourceLocation, {foreignKey: 'ResourceLocationID'});
+models.ResourceLocation.hasMany(models.ResourceLocationInventory, {foreignKey: 'ResourceLocationID'});
 
-//ResourceRegistry many-to-One on Organization
-models.Organization.hasMany(models.ResourceRegistry, {foreignKey: 'OrganizationID'});
-models.ResourceRegistry.belongsTo(models.Organization, {foreignKey: 'OrganizationID'});
+//ResourceLocationInventory many-to-one on ResourceType
+models.ResourceLocationInventory.belongsTo(models.ResourceType, {foreignKey: 'ResourceTypeID'});
+models.ResourceType.hasMany(models.ResourceLocationInventory, {foreignKey: 'ResourceTypeID'});
 
-//ResourceRegistry many-to-One on Event
-models.Event.hasMany(models.ResourceRegistry, {foreignKey: 'EventID'});
-models.ResourceRegistry.belongsTo(models.Event, {foreignKey: 'EventID'});
-
-//ResourceRegistry one-to-many on ResourceLocation
-models.ResourceRegistry.hasMany(models.ResourceLocation, {foreignKey: 'ResourceRegistryID'});
-models.ResourceLocation.belongsTo(models.ResourceRegistry, {foreignKey: 'ResourceRegistryID'});
+//ResourceLocationInventory many-to-one on ResourceTypeUnitOfMeasure
+models.ResourceLocationInventory.belongsTo(models.ResourceTypeUnitOfMeasure, {foreignKey: 'ResourceTypeUnitOfMeasureID'});
+models.ResourceTypeUnitOfMeasure.hasMany(models.ResourceLocationInventory, {foreignKey: 'ResourceTypeUnitOfMeasureID'});
 
 
 var routes = function(){
   var router  = express.Router();
     router.get('/', function(req, res) {
-      models.ResourceRegistry.findAll(
+      models.ResourceLocationInventory.findAll(
         {
           include: [
-            {model: models.Organization},
-            {model: models.Event},
-            {model: models.ResourceLocation}
+            {model: models.ResourceLocation},
+            {model: models.ResourceType},
+            {model: models.ResourceTypeUnitOfMeasure}
           ]
         }
       )
-        .then(function(resourceRegistry) {
+        .then(function(resourceLocationInventory) {
           res.statusCode = 201;
           res.send(
             {
               result: 'success',
               err:    '',
-              json:  resourceRegistry,
-              length: resourceRegistry.length
+              json:  resourceLocationInventory,
+              length: resourceLocationInventory.length
             }
           );
         }
@@ -50,27 +49,27 @@ var routes = function(){
       });
     }
   )
-  //find ResourceRegistry by ID
+  //find ResourceLocationInventory by ID
   .get('/:id', function(req, res) {
-      models.ResourceRegistry.findAll(
+      models.ResourceLocationInventory.findAll(
         {
           where: {
-            ResourceRegistryID: req.params.id
+            ResourceLocationInventoryID: req.params.id
           },
           include: [
-            {model: models.Organization},
-            {model: models.Event},
-            {model: models.ResourceLocation}
+            {model: models.ResourceLocation},
+            {model: models.ResourceType},
+            {model: models.ResourceTypeUnitOfMeasure}
           ]
         }
-      ).then(function(resourceRegistry) {
+      ).then(function(resourceLocationInventory) {
         res.statusCode = 200;
         res.send(
           {
             result: 'success',
             err:    '',
-            json:  resourceRegistry,
-            length: resourceRegistry.length
+            json:  resourceLocationInventory,
+            length: resourceLocationInventory.length
           }
         );
       }
@@ -84,17 +83,17 @@ var routes = function(){
       });
     }
   )
-  //insert into ResourceRegistry
+  //insert into ResourceLocationInventory
   .post('/', function(req, res) {
-    models.ResourceRegistry.create(req.body)
-    .then(function(resourceRegistry) {
+    models.ResourceLocationInventory.create(req.body)
+    .then(function(resourceLocationInventory) {
         res.statusCode = 200;
         res.send(
           {
             result: 'success',
             err:    '',
-            json:  resourceRegistry,
-            length: resourceRegistry.length
+            json:  resourceLocationInventory,
+            length: resourceLocationInventory.length
           }
         );
       }
@@ -108,13 +107,13 @@ var routes = function(){
       });
     }
   )
-  //update into ResourceRegistry
+  //update into ResourceLocationInventory
   .put('/:id', function(req, res) {
-    models.ResourceRegistry.update(
+    models.ResourceLocationInventory.update(
       req.body,
       {
         where: {
-          ResourceRegistryID: req.params.id
+          ResourceLocationInventoryID: req.params.id
         }
       }
     )
@@ -140,10 +139,10 @@ var routes = function(){
     }
   )
   .delete('/:id', function(req, res) {
-    models.ResourceRegistry.destroy(
+    models.ResourceLocationInventory.destroy(
       {
         where: {
-          ResourceRegistryID: req.params.id
+          ResourceLocationInventoryID: req.params.id
         }
       }
     )

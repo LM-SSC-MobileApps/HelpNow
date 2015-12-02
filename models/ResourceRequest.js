@@ -25,7 +25,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true,
     },
     Quantity: {
-      type: DataTypes.DECIMAL(10,0),
+      type: DataTypes.INTEGER(11),
       allowNull: true,
     },
     ResourceTypeID: {

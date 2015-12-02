@@ -1,11 +1,26 @@
 
 var models  = require('../models'),
     express = require('express');
+    
+//ResourceLocation one-to-many on ResourceLocationInventory
+models.ResourceLocation.hasMany(models.ResourceLocationInventory, {foreignKey: 'ResourceLocationID'});
+models.ResourceLocationInventory.belongsTo(models.ResourceLocation, {foreignKey: 'ResourceLocationID'});
+
+//ResourceLocation many-to-One on ResourceRegistry
+models.ResourceRegistry.hasMany(models.ResourceLocation, {foreignKey: 'ResourceRegistryID'});
+models.ResourceLocation.belongsTo(models.ResourceRegistry, {foreignKey: 'ResourceRegistryID'});
 
 var routes = function(){
   var router  = express.Router();
     router.get('/', function(req, res) {
-      models.ResourceLocation.findAll()
+      models.ResourceLocation.findAll(
+        {
+          include: [
+            {model: models.ResourceRegistry},
+            {model: models.ResourceLocationInventory}
+          ]
+        }
+      )
         .then(function(resourceLocation) {
           res.statusCode = 201;
           res.send(
@@ -34,7 +49,11 @@ var routes = function(){
         {
           where: {
             ResourceLocationID: req.params.id
-          }
+          },
+          include: [
+            {model: models.ResourceRegistry},
+            {model: models.ResourceLocationInventory}
+          ]
         }
       ).then(function(resourceLocation) {
         res.statusCode = 200;

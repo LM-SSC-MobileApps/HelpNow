@@ -1,41 +1,29 @@
 
 var models  = require('../models'),
     express = require('express');
-
-
-//ResourceRegistry many-to-One on Organization
-models.Organization.hasMany(models.ResourceRegistry, {foreignKey: 'OrganizationID'});
-models.ResourceRegistry.belongsTo(models.Organization, {foreignKey: 'OrganizationID'});
-
-//ResourceRegistry many-to-One on Event
-models.Event.hasMany(models.ResourceRegistry, {foreignKey: 'EventID'});
-models.ResourceRegistry.belongsTo(models.Event, {foreignKey: 'EventID'});
-
-//ResourceRegistry one-to-many on ResourceLocation
-models.ResourceRegistry.hasMany(models.ResourceLocation, {foreignKey: 'ResourceRegistryID'});
-models.ResourceLocation.belongsTo(models.ResourceRegistry, {foreignKey: 'ResourceRegistryID'});
-
+    
+//ResourceTypeUnitOfMeasure many-to-one on ResourceType
+models.ResourceTypeUnitOfMeasure.belongsTo(models.ResourceType, {foreignKey: 'ResourceTypeID'});
+models.ResourceType.hasMany(models.ResourceTypeUnitOfMeasure, {foreignKey: 'ResourceTypeID'});
 
 var routes = function(){
   var router  = express.Router();
     router.get('/', function(req, res) {
-      models.ResourceRegistry.findAll(
+      models.ResourceTypeUnitOfMeasure.findAll(
         {
           include: [
-            {model: models.Organization},
-            {model: models.Event},
-            {model: models.ResourceLocation}
+            {model: models.ResourceType}
           ]
         }
       )
-        .then(function(resourceRegistry) {
+        .then(function(resourceTypeUnitOfMeasure) {
           res.statusCode = 201;
           res.send(
             {
               result: 'success',
               err:    '',
-              json:  resourceRegistry,
-              length: resourceRegistry.length
+              json:  resourceTypeUnitOfMeasure,
+              length: resourceTypeUnitOfMeasure.length
             }
           );
         }
@@ -50,27 +38,25 @@ var routes = function(){
       });
     }
   )
-  //find ResourceRegistry by ID
+  //find ResourceTypeUnitOfMeasure by ID
   .get('/:id', function(req, res) {
-      models.ResourceRegistry.findAll(
+      models.ResourceTypeUnitOfMeasure.findAll(
         {
           where: {
-            ResourceRegistryID: req.params.id
+            ResourceTypeUnitOfMeasureID: req.params.id
           },
           include: [
-            {model: models.Organization},
-            {model: models.Event},
-            {model: models.ResourceLocation}
+            {model: models.ResourceType}
           ]
         }
-      ).then(function(resourceRegistry) {
+      ).then(function(resourceTypeUnitOfMeasure) {
         res.statusCode = 200;
         res.send(
           {
             result: 'success',
             err:    '',
-            json:  resourceRegistry,
-            length: resourceRegistry.length
+            json:  resourceTypeUnitOfMeasure,
+            length: resourceTypeUnitOfMeasure.length
           }
         );
       }
@@ -84,17 +70,17 @@ var routes = function(){
       });
     }
   )
-  //insert into ResourceRegistry
+  //insert into ResourceTypeUnitOfMeasure
   .post('/', function(req, res) {
-    models.ResourceRegistry.create(req.body)
-    .then(function(resourceRegistry) {
+    models.ResourceTypeUnitOfMeasure.create(req.body)
+    .then(function(resourceTypeUnitOfMeasure) {
         res.statusCode = 200;
         res.send(
           {
             result: 'success',
             err:    '',
-            json:  resourceRegistry,
-            length: resourceRegistry.length
+            json:  resourceTypeUnitOfMeasure,
+            length: resourceTypeUnitOfMeasure.length
           }
         );
       }
@@ -108,13 +94,13 @@ var routes = function(){
       });
     }
   )
-  //update into ResourceRegistry
+  //update into ResourceTypeUnitOfMeasure
   .put('/:id', function(req, res) {
-    models.ResourceRegistry.update(
+    models.ResourceTypeUnitOfMeasure.update(
       req.body,
       {
         where: {
-          ResourceRegistryID: req.params.id
+          ResourceTypeUnitOfMeasureID: req.params.id
         }
       }
     )
@@ -140,10 +126,10 @@ var routes = function(){
     }
   )
   .delete('/:id', function(req, res) {
-    models.ResourceRegistry.destroy(
+    models.ResourceTypeUnitOfMeasure.destroy(
       {
         where: {
-          ResourceRegistryID: req.params.id
+          ResourceTypeUnitOfMeasureID: req.params.id
         }
       }
     )

@@ -8,17 +8,25 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
       autoIncrement: true
     },
+    ResourceRegistryID: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false
+    },
     Description: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: true
     },
     LAT: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: true
     },
     LONG: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: true
+    },
+    PhoneNumber: {
+      type: DataTypes.STRING,
+      allowNull: true
     }
   });
 };

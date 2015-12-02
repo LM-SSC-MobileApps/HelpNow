@@ -15,6 +15,10 @@ angular.module("helpNow", ["ngRoute", "ngResource"])
 		$routeProvider.when("/event_map/:eventID", {
 			templateUrl: "views/event-map.html"
 		});
+
+		$routeProvider.when("/inventory", {
+		    templateUrl: "views/inventory.html"
+		});
 		
 		$routeProvider.when("/gov_login", {
 			templateUrl: "views/gov-login.html"
@@ -95,9 +99,9 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
 
     $scope.requests = [];
 
-    $scope.overlayRadius = 1000;
-    $scope.radiusRawVal = 1;
-    $scope.sliderLabel = "1 km";
+    $scope.overlayRadius = 250;
+    $scope.radiusRawVal = 0.25;
+    $scope.sliderLabel = "0.25 km";
     $scope.isMetric = true;
 
     $scope.showFilters = false;
@@ -115,9 +119,31 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     $scope.showLocationMarkers = true;
     $scope.locationPref = { value: 'Current' };
 
+    $scope.getLocation = function () {
+        if ($scope.locationPref.value == "Current"){
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            }
+        }
+        else {
+            map.removeLayer($scope.locationOutline);
+            $scope.helpRequest.LAT = "";
+            $scope.helpRequest.LONG = "";
+            $scope.$digest();
+        }
+    };
+
+    function showPosition(position) {
+        $scope.helpRequest.LAT =  position.coords.latitude;
+        $scope.helpRequest.LONG = position.coords.longitude;
+        map.removeLayer($scope.locationOutline);
+        $scope.locationOutline = L.circle([position.coords.latitude, position.coords.longitude], $scope.overlayRadius).addTo(map);
+        $scope.$digest();
+    }
+
     $scope.showValue = function () {
         if ($scope.radiusRawVal == 0)
-            $scope.radiusRawVal = 1;
+            $scope.radiusRawVal = 0.05;
 
         if ($scope.isMetric) {
             $scope.overlayRadius = $scope.radiusRawVal * 1000;
@@ -372,6 +398,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
                 postNeedRequest();
             }
             resetNeedsButtons();
+            map.removeLayer($scope.locationOutline);
             $scope.showNeeds = !$scope.showNeeds;
             $scope.showEventDetails = !$scope.showEventDetails;
         }
@@ -456,6 +483,127 @@ angular.module("helpNow").controller("GovLoginCtrl", ["$scope", function($scope)
 }]);
 angular.module("helpNow").controller("IndLoginCtrl", ["$scope", function($scope) {
 	$scope.setCurrentView("inds");
+}]);
+angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$routeParams", "$resource", function ($scope, $http, $routeParams, $resource) {
+
+    var map;
+    var mapLayers = [];
+
+    $scope.setCurrentView("inventory");
+
+    $scope.requestsResource = $resource("/api/event/mapitems/");
+    $scope.registryResource = $resource("/api/resourceregistry");
+
+    $scope.eventID = $routeParams.eventID * 1;
+    if ($scope.events) {
+        $scope.event = $scope.getEvent($scope.eventID);
+        loadRegistries();
+    }
+
+    $scope.userOrgID = 1;
+
+    $scope.overlayRadius = 250;
+    $scope.radiusRawVal = 0.25;
+    $scope.sliderLabel = "0.25 km";
+    $scope.isMetric = true;
+
+    $scope.showRegistries = true;
+    $scope.showNewForm = false;
+
+    $scope.$on("EventDataLoaded", function () {
+        $scope.event = $scope.getEvent($scope.eventID);
+        loadRegistries();
+        loadRequests();
+        resetNeedsButtons();
+        updateMap();
+    });
+
+    function updateMap() {
+        if (!map || !$scope.events) return;
+
+        for (var i = 0; i < mapLayers.length; i++) {
+            var layer = mapLayers[i];
+            map.removeLayer(layer);
+        }
+
+        mapLayers = [];
+        var selectedRequests = $scope.requests.filter(function (request) {
+            var type = request.ResourceType.Description;
+            return shouldDisplayMarker(type);
+        });
+
+        if ($scope.showLocationMarkers)
+            buildLocationMarkers();
+
+        angular.forEach(mapLayers, function (layer) {
+            map.addLayer(layer);
+        });
+    }
+
+    function loadRegistries() {
+        $scope.registryResource.get({}, function (data) {
+            $scope.registries = data.json;
+            var filteredRegistries = $scope.registries.filter(function (registry) {
+                return registry.OrganizationID == $scope.userOrgID;
+            });
+            $scope.registries = filteredRegistries;
+        })
+    }
+
+    function loadRequests() {
+        $scope.requestsResource.get({ eventID: $scope.eventID }, function (data) {
+            $scope.requests = data.json.requests;
+            $scope.locations = data.json.locations;
+            updateMap();
+        });
+    }
+
+    $scope.initMap = function (newMap) {
+        map = newMap;
+        map.on('click', function (e) {
+            if ($scope.locationPref.value == "Other") {
+                if ($scope.locationOutline !== undefined) {
+                    map.removeLayer($scope.locationOutline);
+                }
+                $scope.locationOutline = L.circle(e.latlng, $scope.overlayRadius).addTo(map);
+                $scope.helpRequest.LAT = e.latlng.lat.toFixed(3);
+                $scope.helpRequest.LONG = e.latlng.lng.toFixed(3);
+                $scope.$digest();
+            }
+        });
+        updateMap();
+    };
+
+    $scope.showNewSiteForm = function () {
+        $scope.showNewForm = !$scope.showNewForm;
+        $scope.showRegistries = !$scope.showRegistries;
+        return false;
+    };
+
+    $scope.validateNumber = function (evt) {
+        var e = evt || window.event;
+        var key = e.keyCode || e.which;
+
+        if (!e.shiftKey && !e.altKey && !e.ctrlKey &&
+            // numbers   
+        key >= 48 && key <= 57 ||
+            // Backspace and Tab and Enter
+        key == 8 || key == 9 || key == 13 ||
+            // left and right arrows
+        key == 37 || key == 39 ||
+            // Del and Ins
+        key == 46 || key == 45) {
+            // input is VALID
+            return false;
+        }
+        else {
+            // input is INVALID
+            e.returnValue = false;
+            if (e.preventDefault) e.preventDefault();
+            return true;
+        }
+        return false;
+    };
 }]);
 angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", "$resource", function ($scope, $routeParams, $resource) {
 	var map;
@@ -889,18 +1037,18 @@ angular.module("helpNow").directive('map', function () {
                 EsriImagery = L.esri.tiledMapLayer({ url: 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer', attribution: 'Esri 2015' });
 
 			var hybrid = new L.tileLayer('https://{s}.tiles.mapbox.com/v4/digitalglobe.n6nhclo2/{z}/{x}/{y}.png?access_token=' + api_key, {
-			    minZoom: 1,
+			    minZoom: 2,
 			    maxZoom: 19,
 			    attribution: '(c) <a href="http://microsites.digitalglobe.com/interactive/basemap_vivid/">DigitalGlobe</a> , (c) OpenStreetMap, (c) Mapbox'
 			});
 			var vivid = new L.tileLayer('https://{s}.tiles.mapbox.com/v4/digitalglobe.n6ngnadl/{z}/{x}/{y}.png?access_token=' + api_key, {
-			    minZoom: 1,
+			    minZoom: 2,
 			    maxZoom: 19,
 			    attribution: '(c) <a href="http://microsites.digitalglobe.com/interactive/basemap_vivid/">DigitalGlobe</a>'
 			});
 
 			var street = new L.tileLayer('https://{s}.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=' + api_key, {
-			    minZoom: 1,
+			    minZoom: 2,
 			    maxZoom: 19,
 			    attribution: '(c) OpenStreetMap , (c) Mapbox'
 			});
@@ -908,12 +1056,15 @@ angular.module("helpNow").directive('map', function () {
 			var baseLayer = L.tileLayer(
               'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                   attribution: mbAttr,
+                  noWrap: true,
+                  minZoom: 2,
                   maxZoom: 18
               }
             );
 			
 			var map = new L.map('map', {
-                layers: [baseLayer]
+			    layers: [baseLayer],
+			    maxBounds: [[-90.0, -180], [90.0, 180.0]]
             }).setView(center, zoom);
 
 			L.control.scale().addTo(map);

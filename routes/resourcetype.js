@@ -1,11 +1,21 @@
 
 var models  = require('../models'),
     express = require('express');
+    
+//ResourceType one-to-many on ResourceTypeUnitOfMeasure    
+models.ResourceType.hasMany(models.ResourceTypeUnitOfMeasure, {foreignKey: 'ResourceTypeID'});
+models.ResourceTypeUnitOfMeasure.belongsTo(models.ResourceType, {foreignKey: 'ResourceTypeID'});
 
 var routes = function(){
   var router  = express.Router();
     router.get('/', function(req, res) {
-      models.ResourceType.findAll()
+      models.ResourceType.findAll(
+        {
+          include: [
+            {model: models.ResourceTypeUnitOfMeasure}
+          ]
+        }
+      )
         .then(function(resourceType) {
           res.statusCode = 201;
           res.send(
@@ -34,7 +44,10 @@ var routes = function(){
         {
           where: {
             ResourceTypeID: req.params.id
-          }
+          },
+          include: [
+            {model: models.ResourceTypeUnitOfMeasure}
+          ]
         }
       ).then(function(resourceType) {
         res.statusCode = 200;

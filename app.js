@@ -15,6 +15,10 @@ angular.module("helpNow", ["ngRoute", "ngResource"])
 		$routeProvider.when("/event_map/:eventID", {
 			templateUrl: "views/event-map.html"
 		});
+
+		$routeProvider.when("/inventory", {
+		    templateUrl: "views/inventory.html"
+		});
 		
 		$routeProvider.when("/gov_login", {
 			templateUrl: "views/gov-login.html"

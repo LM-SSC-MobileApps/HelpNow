@@ -20,9 +20,9 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
 
     $scope.requests = [];
 
-    $scope.overlayRadius = 1000;
-    $scope.radiusRawVal = 1;
-    $scope.sliderLabel = "1 km";
+    $scope.overlayRadius = 250;
+    $scope.radiusRawVal = 0.25;
+    $scope.sliderLabel = "0.25 km";
     $scope.isMetric = true;
 
     $scope.showFilters = false;
@@ -40,9 +40,31 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     $scope.showLocationMarkers = true;
     $scope.locationPref = { value: 'Current' };
 
+    $scope.getLocation = function () {
+        if ($scope.locationPref.value == "Current"){
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            }
+        }
+        else {
+            map.removeLayer($scope.locationOutline);
+            $scope.helpRequest.LAT = "";
+            $scope.helpRequest.LONG = "";
+            $scope.$digest();
+        }
+    };
+
+    function showPosition(position) {
+        $scope.helpRequest.LAT =  position.coords.latitude;
+        $scope.helpRequest.LONG = position.coords.longitude;
+        map.removeLayer($scope.locationOutline);
+        $scope.locationOutline = L.circle([position.coords.latitude, position.coords.longitude], $scope.overlayRadius).addTo(map);
+        $scope.$digest();
+    }
+
     $scope.showValue = function () {
         if ($scope.radiusRawVal == 0)
-            $scope.radiusRawVal = 1;
+            $scope.radiusRawVal = 0.05;
 
         if ($scope.isMetric) {
             $scope.overlayRadius = $scope.radiusRawVal * 1000;
@@ -297,6 +319,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
                 postNeedRequest();
             }
             resetNeedsButtons();
+            map.removeLayer($scope.locationOutline);
             $scope.showNeeds = !$scope.showNeeds;
             $scope.showEventDetails = !$scope.showEventDetails;
         }
