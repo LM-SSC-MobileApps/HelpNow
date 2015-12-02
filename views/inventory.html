@@ -1,19 +1,13 @@
 ﻿<div ng-controller="InventoryCtrl">
-    <h2 style="margin-bottom: -5px; margin-top: -20px;"><img src="style/images/icons/FloodGray.png" style="height: 66px; width: 66px; margin-right: 5px;" />{{event.EventLocations[0].Description}}</h2>
     <div id="map" map map-center="20.0,0.0" map-zoom="2" class="col-md-9" style="height: 512px; border: 1px solid #AAA;"></div>
     <div id="registryList" class="col-md-3" ng-if="showRegistries">
         <table id="registryTable" style="margin-right: -10px;">
             <tr ng-repeat="registry in registries" style="border-bottom:2px solid;">
                 <td>
-                    <!--a href="#event_map/{{event.EventID}}"><img src="{{getIcon(event.EventType.Description)}}" /></a-->
-                    <!--a id="btn-help" class="btn btn-danger" href="#/event_map/{{event.id}}" style="margin-left: 0px; margin-bottom: -10px;"><span class="glyphicon glyphicon-warning-sign"></span>Help!</!--a>-->
-                </td>
-                <td>
                     <h5>{{registry.Notes}}</h5>
-                    <h6>{{registry.ResourceLocationID}}</h6>
-                    <!--a href="#event_map/{{event.EventID}}">
-                        ({{event.EventLocations[0].LAT}}, {{event.EventLocations[0].LONG}}, {{event.EventLocations[0].Radius}})
-                    </a-->
+                    <a href="#event_map/{{event.EventID}}">
+                        (23.713, 90.39)
+                    </a>
                 </td>
             </tr>
         </table>
@@ -25,10 +19,10 @@
                 <div class="well">
                     <div class="row">
                         <div class="col-xs-2">
-                            <img src="style/images/icons/PeopleIconGray.png" style="height: 30px; width: 30px; margin-right: 5px;" /><br />
+                            <img src="style/images/Team.png" style="height: 30px; width: 30px; margin-right: 5px;" /><br />
                         </div>
                         <div class="col-xs-10">
-                            Location Name:<br /><input ng-model="newSite.LocationName" type="text" name="locationName" style="width: 170px;" /><br />
+                            Location Name:<br /><input ng-model="newSite.LocationName" type="text" style="width: 170px;" /><br />
                         </div>
                     </div>
                     <div class="row">
@@ -41,24 +35,60 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-2">
-                            <img src="style/images/icons/PeopleIconGray.png" style="height: 30px; width: 30px; margin-right: 5px;" /><br />
+                            <img src="style/images/Team.png" style="height: 30px; width: 30px; margin-right: 5px; " /><br />
                         </div>
                         <div class="col-xs-10">
-                            Primary Contact:<br /><input ng-model="newSite.LocationName" type="text" name="locationName" style="width: 170px;" /><br />
+                            Primary Contact:<br /><input ng-model="newSite.LocationName" type="text" style="width: 170px; margin-bottom: 2px;" /><br />
                             <input ng-model="newSite.LocationName" type="text" name="locationName" style="width: 170px;" /><br />
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-2">
-                            <img src="style/images/icons/PeopleIconGray.png" style="height: 30px; width: 30px; margin-right: 5px;" /><br />
+                            <img src="style/images/Team.png" style="height: 30px; width: 30px; margin-right: 5px;" /><br />
                         </div>
                         <div class="col-xs-10">
-                            Secondary Contact:<br /><input ng-model="newSite.LocationName" type="text" name="locationName" style="width: 170px;" /><br />
+                            Secondary Contact:<br /><input ng-model="newSite.LocationName" type="text" style="width: 170px; margin-bottom: 2px;" /><br />
                             <input ng-model="newSite.LocationName" type="text" name="locationName" style="width: 170px;" /><br />
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="separated">
+            <a id="btn-back" class="btn btn-primary" ng-click="showNewSiteForm()"><span></span>Back</a>
+            <a id="btn-next" class="btn btn-primary pull-right" ng-click="showTransportation()"><span></span>Next</a>
+        </div>
+    </div>
+    <div id="rightColumn" class="col-md-3" ng-if="showTransportationOptions">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="well">
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <img src="style/images/Team.png" style="height: 30px; width: 30px; margin-right: 5px;" /><br />
+                        </div>
+                        <div class="col-xs-10">
+                            General Information:<br /><input ng-model="newSite.PhoneNumber" type="text" style="width: 170px;" /><br /><br />
+                        </div>
+                    </div>
+                    <div class="row">
+                        Transportation Options:<br /><br />
+                        <div class="col-xs-4">
+                            <img src="style/images/Transport-Ground-Transparent.png" ng-click="toggleTransport('showGround')" style="height: 30px; width: 50px; margin-right: 5px;" />
+                        </div>
+                        <div class="col-xs-4">
+                            <img src="style/images/Transport-Air-Transparent.png" ng-click="toggleTransport('showAir')" style="height: 30px; width: 50px; margin-right: 5px;" />
+                        </div>
+                        <div class="col-xs-4">
+                            <img src="style/images/Transport-Water-Transparent.png" ng-click="toggleTransport('showWater')" style="height: 30px; width: 50px; margin-right: 5px;" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="separated">
+            <a id="btn-back" class="btn btn-save pull-right" ng-click="showTransportation()"><span></span>Save</a><br /><br /><br />
+            <a id="btn-next" class="btn btn-danger pull-right" ng-click="removeLocation()"><span></span>Remove This Location</a>
         </div>
     </div>
     <div id="helpPanel" class="col-md-3" ng-if="showHelp">
@@ -133,7 +163,7 @@
                 <div class="well">
                     <div class="row">
                         <div class="col-xs-4">
-                            <img src="style/images/icons/PeopleIconGray.png" style="height: 66px; width: 66px; margin-right: 5px;" /><br />(Optional)
+                            <img src="style/images/Team.png" style="height: 66px; width: 66px; margin-right: 5px;" /><br />(Optional)
                         </div>
                         <div class="col-xs-8">
                             Name:<br /><input ng-model="helpRequest.RequestorName" type="text" name="name" style="width: 130px;" /><br />
