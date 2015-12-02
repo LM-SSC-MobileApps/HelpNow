@@ -6386,7 +6386,7 @@ h5 {
 }
 
 .navbar-inverse {
-  background-color: rgba(38, 58, 80, 0.8);
+  background-color: rgba(38, 58, 80, 0.85);
   border-color: #999;
   font-weight: bold;
 }
@@ -6614,7 +6614,7 @@ h5 {
 }
 
 .panel {
-  background-color: rgba(38, 58, 80, 0.8);
+  background-color: rgba(38, 58, 80, 0.85);
   border-color: #999;
 }
 

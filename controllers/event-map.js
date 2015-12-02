@@ -115,22 +115,24 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     });
 
     function buildLocationMarkers() {
-        var selectedLocations = $scope.locations.filter(function (location) {
-            var type = location.ResourceType.Description;
-            return shouldDisplayMarker(type);
-        });
-
-        angular.forEach(selectedLocations, function (location) {
-            var locationIcon = L.icon({
-                iconUrl: $scope.getLocationIcon(location.ResourceType.Description),
+		if (!$scope.locations) return;
+		var selectedLocations = $scope.locations.filter(function(location) {
+			var type = location.ResourceType.Description;
+			return shouldDisplayMarker(type);
+		});
+		
+		angular.forEach(selectedLocations, function(location) {
+			var locationIcon = L.icon({
+				iconUrl: $scope.getLocationIcon(location.ResourceType.Description),
 				iconSize: [60, 60],
 				iconAnchor: [30, 30]
-            });
-            var marker = L.marker([location.ResourceLocation.LAT, location.ResourceLocation.LONG], { icon: locationIcon });
-            marker.bindPopup("<strong>" + location.ResourceType.Description + " (" + location.Organization.Name + ")</strong><br/>" + location.Notes);
-            mapLayers.push(marker);
-        });
-    }
+			}); 
+			var marker = L.marker([location.ResourceLocation.LAT, location.ResourceLocation.LONG], { icon: locationIcon });
+			marker.bindPopup("<strong>" + location.ResourceType.Description + " (" + 
+				location.ResourceLocation.ResourceRegistry.Organization.Name + ")</strong><br/>" + location.ResourceLocation.PhoneNumber);
+			mapLayers.push(marker);
+		});
+	}
 
     function shouldDisplayMarker(type) {
         return (type == "Water" && $scope.showWater) ||

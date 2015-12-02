@@ -100,6 +100,36 @@ var routes = function(){
 	  .then(cluster.clusterRequests);
 	  
 	  //load resource locations
+	  tasks[1] = models.ResourceLocationInventory.findAll (
+		  {
+			include: [
+			{
+			  model: models.ResourceType,
+			  required: true
+			},
+			{
+			  model: models.ResourceTypeUnitOfMeasure,
+			  required: true
+			},
+			{
+			  model: models.ResourceLocation,
+			  required: true,
+			  include: [
+			  {
+				  model: models.ResourceRegistry,
+				  include: [
+				  {
+				    model: models.Organization,
+				    required: true
+				  }],
+				  where: {
+					EventID: req.params.eventID
+				  }
+			  }]
+			}]
+		  }
+	  );
+	  /*
 	  tasks[1] = models.ResourceRegistry.findAll(
 		{
 		  where: {
@@ -137,7 +167,7 @@ var routes = function(){
         {model: models.Organization}
       ]
 	  });
-	  
+	  */
 	  //when all data is loaded, send the response
 	  promise.all(tasks)
 	  .then(function(results) {
