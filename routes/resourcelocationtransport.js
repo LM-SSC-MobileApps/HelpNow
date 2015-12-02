@@ -1,39 +1,35 @@
 
 var models  = require('../models'),
     express = require('express');
-    
-//ResourceLocation one-to-many on ResourceLocationInventory
-models.ResourceLocation.hasMany(models.ResourceLocationInventory, {foreignKey: 'ResourceLocationID'});
-models.ResourceLocationInventory.belongsTo(models.ResourceLocation, {foreignKey: 'ResourceLocationID'});
 
-//ResourceLocation one-to-many on ResourceLocationTransport
-models.ResourceLocation.hasMany(models.ResourceLocationTransport, {foreignKey: 'ResourceLocationID'});
+//ResourceLocationTransport many-to-one on ResourceLocation
 models.ResourceLocationTransport.belongsTo(models.ResourceLocation, {foreignKey: 'ResourceLocationID'});
+models.ResourceLocation.hasMany(models.ResourceLocationTransport, {foreignKey: 'ResourceLocationID'});
 
-//ResourceLocation many-to-One on ResourceRegistry
-models.ResourceRegistry.hasMany(models.ResourceLocation, {foreignKey: 'ResourceRegistryID'});
-models.ResourceLocation.belongsTo(models.ResourceRegistry, {foreignKey: 'ResourceRegistryID'});
+//ResourceLocationTransport many-to-one on TransportType
+models.ResourceLocationTransport.belongsTo(models.TransportType, {foreignKey: 'TransportTypeID'});
+models.TransportType.hasMany(models.ResourceLocationTransport, {foreignKey: 'TransportTypeID'});
+
 
 var routes = function(){
   var router  = express.Router();
     router.get('/', function(req, res) {
-      models.ResourceLocation.findAll(
+      models.ResourceLocationTransport.findAll(
         {
           include: [
-            {model: models.ResourceRegistry},
-            {model: models.ResourceLocationInventory},
-            {model: models.ResourceLocationTransport}
+            {model: models.ResourceLocation},
+            {model: models.TransportType}
           ]
         }
       )
-        .then(function(resourceLocation) {
+        .then(function(resourceLocationTransport) {
           res.statusCode = 201;
           res.send(
             {
               result: 'success',
               err:    '',
-              json:  resourceLocation,
-              length: resourceLocation.length
+              json:  resourceLocationTransport,
+              length: resourceLocationTransport.length
             }
           );
         }
@@ -48,27 +44,26 @@ var routes = function(){
       });
     }
   )
-  //find ResourceLocation by ID
+  //find ResourceLocationTransport by ID
   .get('/:id', function(req, res) {
-      models.ResourceLocation.findAll(
+      models.ResourceLocationTransport.findAll(
         {
           where: {
-            ResourceLocationID: req.params.id
+            ResourceLocationTransportID: req.params.id
           },
           include: [
-            {model: models.ResourceRegistry},
-            {model: models.ResourceLocationInventory},
-            {model: models.ResourceLocationTransport}
+            {model: models.ResourceLocation},
+            {model: models.TransportType}
           ]
         }
-      ).then(function(resourceLocation) {
+      ).then(function(resourceLocationTransport) {
         res.statusCode = 200;
         res.send(
           {
             result: 'success',
             err:    '',
-            json:  resourceLocation,
-            length: resourceLocation.length
+            json:  resourceLocationTransport,
+            length: resourceLocationTransport.length
           }
         );
       }
@@ -82,17 +77,17 @@ var routes = function(){
       });
     }
   )
-  //insert into ResourceLocation
+  //insert into ResourceLocationTransport
   .post('/', function(req, res) {
-    models.ResourceLocation.create(req.body)
-    .then(function(resourceLocation) {
+    models.ResourceLocationTransport.create(req.body)
+    .then(function(resourceLocationTransport) {
         res.statusCode = 200;
         res.send(
           {
             result: 'success',
             err:    '',
-            json:  resourceLocation,
-            length: resourceLocation.length
+            json:  resourceLocationTransport,
+            length: resourceLocationTransport.length
           }
         );
       }
@@ -106,13 +101,13 @@ var routes = function(){
       });
     }
   )
-  //update into ResourceLocation
+  //update into ResourceLocationTransport
   .put('/:id', function(req, res) {
-    models.ResourceLocation.update(
+    models.ResourceLocationTransport.update(
       req.body,
       {
         where: {
-          ResourceLocationID: req.params.id
+          ResourceLocationTransportID: req.params.id
         }
       }
     )
@@ -138,10 +133,10 @@ var routes = function(){
     }
   )
   .delete('/:id', function(req, res) {
-    models.ResourceLocation.destroy(
+    models.ResourceLocationTransport.destroy(
       {
         where: {
-          ResourceLocationID: req.params.id
+          ResourceLocationTransportID: req.params.id
         }
       }
     )
