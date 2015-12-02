@@ -27,6 +27,19 @@ models.Event.belongsTo(models.Organization, {foreignKey: 'OrganizationID'});
 models.ResourceLocation.hasMany(models.ResourceLocationInventory, {foreignKey: 'ResourceLocationID'});
 models.ResourceLocationInventory.belongsTo(models.ResourceLocation, {foreignKey: 'ResourceLocationID'});
 
+//ResourceLocationInventory many-to-one on ResourceType
+models.ResourceLocationInventory.belongsTo(models.ResourceType, {foreignKey: 'ResourceTypeID'});
+models.ResourceType.hasMany(models.ResourceLocationInventory, {foreignKey: 'ResourceTypeID'});
+
+//ResourceLocationInventory many-to-one on ResourceTypeUnitOfMeasure
+models.ResourceLocationInventory.belongsTo(models.ResourceTypeUnitOfMeasure, {foreignKey: 'ResourceTypeUnitOfMeasureID'});
+models.ResourceTypeUnitOfMeasure.hasMany(models.ResourceLocationInventory, {foreignKey: 'ResourceTypeUnitOfMeasureID'});
+
+//ResourceLocationTransport many-to-one on TransportType
+models.ResourceLocationTransport.belongsTo(models.TransportType, {foreignKey: 'TransportTypeID'});
+models.TransportType.hasMany(models.ResourceLocationTransport, {foreignKey: 'TransportTypeID'});
+
+
 var routes = function(){
   var router  = express.Router();
     router.get('/', function(req, res) {
@@ -94,8 +107,9 @@ var routes = function(){
 		  },
       include: [
         {model: models.ResourceLocation,
-          include: [{
-            model: models.ResourceLocationInventory,
+          include: [
+            {
+              model: models.ResourceLocationInventory,
               include: [
                   {
                     model: models.ResourceType,
@@ -106,8 +120,19 @@ var routes = function(){
                     required: false
                   }
               ],
-            required: false
-          }]
+              required: false
+            },
+            {
+              model: models.ResourceLocationTransport,
+              include: [
+                  {
+                    model: models.TransportType,
+                    required: false
+                  }
+              ],
+              required: false
+            }
+          ]
         },
         {model: models.Organization}
       ]
