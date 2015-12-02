@@ -23,6 +23,11 @@
 
     $scope.showRegistries = true;
     $scope.showNewForm = false;
+    $scope.showTransportationOptions = false;
+
+    $scope.showAir = false;
+    $scope.showGround = false;
+    $scope.showWater = false;
 
     $scope.$on("EventDataLoaded", function () {
         $scope.event = $scope.getEvent($scope.eventID);
@@ -88,9 +93,25 @@
         updateMap();
     };
 
+    $scope.toggleTransportClass = function (id) {
+        var status = $scope[id];
+        return status ? "btn btn-toggle active" : "btn btn-toggle";
+    };
+
+    $scope.toggleTransport = function (id) {
+        $scope[id] = !$scope[id];
+        return false;
+    };
+
     $scope.showNewSiteForm = function () {
         $scope.showNewForm = !$scope.showNewForm;
         $scope.showRegistries = !$scope.showRegistries;
+        return false;
+    };
+
+    $scope.showTransportation = function () {
+        $scope.showTransportationOptions = !$scope.showTransportationOptions;
+        $scope.showNewForm = !$scope.showNewForm;
         return false;
     };
 

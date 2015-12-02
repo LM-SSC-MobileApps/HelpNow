@@ -305,6 +305,11 @@ h5 {
 	border-radius: 4px 4px 0px 0px;
 }
 
+.btn-save {
+    background-color: forestgreen;
+    color: white;
+}
+
 .btn-primary {
     background-image: var(--light-blue-grad);
     color: white;

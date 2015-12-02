@@ -6631,6 +6631,11 @@ h5 {
   border-radius: 4px 4px 0px 0px;
 }
 
+.btn-save {
+  background-color: forestgreen;
+  color: white;
+}
+
 .btn-primary {
   background-image: -webkit-linear-gradient(top, #3a95e7, rgb(35, 89, 139));
   background-image: linear-gradient(to bottom, #3a95e7, rgb(35, 89, 139));

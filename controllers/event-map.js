@@ -9,7 +9,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     $scope.urgencyResource = $resource("/api/requesturgency");
     $scope.needRequestResource = $resource("/api/resourcerequest");
     
-    $scope.helpRequest = { EventID: '', RequestStateID: '1', Notes: 'Reported from App', AreaSize: '', UnitOfMeasure: '', Quantity: '', RequestUrgencyID: '1' };
+    $scope.helpRequest = { EventID: '', RequestStateID: '1', Notes: 'Reported from App', AreaSize: '0.25 km', UnitOfMeasure: '', Quantity: '', RequestUrgencyID: '1' };
 
     $scope.eventID = $routeParams.eventID * 1;
     if ($scope.events) {
@@ -150,10 +150,6 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
         }
 
         mapLayers = [];
-        var selectedRequests = $scope.requests.filter(function (request) {
-            var type = request.ResourceType.Description;
-            return shouldDisplayMarker(type);
-        });
 
         if ($scope.showLocationMarkers)
             buildLocationMarkers();
@@ -295,27 +291,22 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
             }
             if ($scope.showShelterNeed) {
                 $scope.helpRequest.ResourceTypeID = '3';
-                alert("Needs Shelter");
                 postNeedRequest();
             }
             if ($scope.showFoodNeed) {
                 $scope.helpRequest.ResourceTypeID = '1';
-                alert("Needs Food");
                 postNeedRequest();
             }
             if ($scope.showMedicineNeed) {
                 $scope.helpRequest.ResourceTypeID = '6';
-                alert("Needs Medicine");
                 postNeedRequest();
             }
             if ($scope.showWaterNeed) {
                 $scope.helpRequest.ResourceTypeID = '2';
-                alert("Needs Water");
                 postNeedRequest();
             }
             if ($scope.showEvacuationNeed) {
                 $scope.helpRequest.ResourceTypeID = '5';
-                alert("Needs Evacuation");
                 postNeedRequest();
             }
             resetNeedsButtons();
