@@ -82,7 +82,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$http", "$resource"
 		} else if (resourceType == "Shelter") {
 			return "style/images/Shelter-Diamond-Blue.png";
 		} else if (resourceType == "Evacuation") {
-			return "style/images/Evacuation-Hexagon.png";
+			return "style/images/Evacuation-Diamond-Blue.png";
 		} else if (resourceType == "Medicine") {
 			return "style/images/Medicine-Diamond-Blue.png";
 		} else {

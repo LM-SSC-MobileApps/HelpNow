@@ -147,6 +147,8 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	function updateMap() {
 		if (!map || !$scope.events) return;
 		
+		var zoom = map.getZoom();
+		
 		for (var i = 0; i < mapLayers.length; i++) {
 			var layer = mapLayers[i];
 			map.removeLayer(layer);
@@ -161,7 +163,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 		if ($scope.showHeatmap)
 			buildHeatmap(selectedRequests);
 		
-		if ($scope.showNeedsMarkers)
+		if ($scope.showNeedsMarkers && zoom > 7)
 			buildNeedsMarkers(selectedRequests);
 		
 		if ($scope.showClusters)
@@ -197,6 +199,9 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	
 	$scope.initMap = function(newMap) {
 		map = newMap;
+		map.on("zoomend", function() {
+			updateMap();
+		})
 		updateMap();
 	};
 	
