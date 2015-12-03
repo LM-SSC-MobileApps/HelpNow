@@ -74,21 +74,21 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$http", "$resource"
 		return {}; 
 	};
 	
-	$scope.getLocationIcon = function(resourceType) {
-		if (resourceType == "Water") {
-			return "style/images/Water-Diamond-Blue.png";
-		} else if (resourceType == "First Aid") {
-			return "style/images/First Aid-Diamond-Blue.png";
-		} else if (resourceType == "Shelter") {
-			return "style/images/Shelter-Diamond-Blue.png";
-		} else if (resourceType == "Evacuation") {
-			return "style/images/Evacuation-Hexagon.png";
-		} else if (resourceType == "Medicine") {
-			return "style/images/Medicine-Diamond-Blue.png";
-		} else {
-			return "style/images/Food-Diamond-Blue.png";
-		}
-	}
+	$scope.getLocationIcon = function (resourceType) {
+	    if (resourceType == "Water") {
+	        return "style/images/Water-Diamond-Blue.png";
+	    } else if (resourceType == "First Aid") {
+	        return "style/images/First Aid-Diamond-Blue.png";
+	    } else if (resourceType == "Shelter") {
+	        return "style/images/Shelter-Diamond-Blue.png";
+	    } else if (resourceType == "Evacuation") {
+	        return "style/images/Evacuation-Hexagon.png";
+	    } else if (resourceType == "Medicine") {
+	        return "style/images/Medicine-Diamond-Blue.png";
+	    } else {
+	        return "style/images/Food-Diamond-Blue.png";
+	    }
+	};
 	
 	$scope.loadEvents();
 	
