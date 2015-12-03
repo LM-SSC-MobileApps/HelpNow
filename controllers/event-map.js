@@ -41,7 +41,11 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     $scope.locationPref = { value: 'Current' };
 
     $scope.getLocation = function () {
-        if ($scope.locationPref.value == "Current"){
+        requestLocation();
+    };
+
+    function requestLocation() {
+        if ($scope.locationPref.value == "Current") {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition);
             }
@@ -50,14 +54,16 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
             map.removeLayer($scope.locationOutline);
             $scope.helpRequest.LAT = "";
             $scope.helpRequest.LONG = "";
-            $scope.$digest();
+            $scope.digest();
         }
-    };
+    }
 
     function showPosition(position) {
         $scope.helpRequest.LAT =  position.coords.latitude;
         $scope.helpRequest.LONG = position.coords.longitude;
-        map.removeLayer($scope.locationOutline);
+        if ($scope.locationOutline !== undefined) {
+            map.removeLayer($scope.locationOutline);
+        }
         $scope.locationOutline = L.circle([position.coords.latitude, position.coords.longitude], $scope.overlayRadius).addTo(map);
         $scope.$digest();
     }
@@ -76,7 +82,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
         }
         $scope.helpRequest.AreaSize = $scope.sliderLabel;
 
-        if ($scope.locationOutline != undefined)
+        if ($scope.locationOutline !== undefined)
             $scope.locationOutline.setRadius($scope.overlayRadius);
     };
 
@@ -84,13 +90,13 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
         if ($scope.isMetric) {
             $scope.sliderLabel = $scope.radiusRawVal + " km";
             $scope.overlayRadius = $scope.overlayRadius / 0.62137119;
-            if ($scope.locationOutline != undefined)
+            if ($scope.locationOutline !== undefined)
                 $scope.locationOutline.setRadius($scope.overlayRadius);
         }
         else {
             $scope.sliderLabel = $scope.radiusRawVal + " mi";
             $scope.overlayRadius = $scope.overlayRadius * 0.62137119;
-            if ($scope.locationOutline != undefined)
+            if ($scope.locationOutline !== undefined)
                 $scope.locationOutline.setRadius($scope.overlayRadius);
         }
         $scope.helpRequest.AreaSize = $scope.sliderLabel;
@@ -223,19 +229,20 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     $scope.toggleHelp = function () {
         $scope.showEventDetails = !$scope.showEventDetails;
         $scope.showHelp = !$scope.showHelp;
+        requestLocation();
         return false;
     };
 
     $scope.toggleNeeds = function () {
         var hasError = false;
         if ($scope.showHelp) {
-            if ($scope.locationPref.value == "Other" && ($scope.helpRequest.LAT == undefined || $scope.helpRequest.LONG == undefined)) {
+            if ($scope.locationPref.value == "Other" && ($scope.helpRequest.LAT === undefined || $scope.helpRequest.LAT == "" || $scope.helpRequest.LONG === undefined || $scope.helpRequest.LONG == "")) {
                 hasError = true;
             }
-            if ($scope.helpRequest.AreaSize == undefined) {
+            if ($scope.helpRequest.AreaSize === undefined) {
                 hasError = true;
             }
-            if ($scope.helpRequest.Quantity == undefined || $scope.helpRequest.Quantity == 0) {
+            if ($scope.helpRequest.Quantity === undefined || $scope.helpRequest.Quantity == 0) {
                 hasError = true;
             }
         }

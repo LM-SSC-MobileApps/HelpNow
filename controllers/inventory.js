@@ -66,7 +66,7 @@
                 return registry.OrganizationID == $scope.userOrgID;
             });
             $scope.registries = filteredRegistries;
-        })
+        });
     }
 
     function loadRequests() {
