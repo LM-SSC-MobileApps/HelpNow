@@ -1,0 +1,40 @@
+<div ng-controller="RegulationAddCtrl">
+    <form class="form-horizontal" name="regulationAddForm" novalidate role="form" ng-submit="addRegulation(newReg)">
+        <div>
+            <div class="form-group"
+                 ng-class="{'has-error' : (regulationAddForm.policyTitle.$invalid  && regulationAddForm.policyTitle.$touched) || regulationAddForm.policyTitle.$error.maxlength  }">
+                <div class="row">
+                    <div class="col-xs-2 ">
+                        <img ng-src="style/images/Regulations.png" style="height: 87px; width: 87px;" alt="Regulations" />
+                    </div>
+                    <div class="col-xs-8">
+                            <h3>
+                                <input type="text" class="form-control" ng-model="newReg.Summary" ng-maxlength="50" id="policyTitle" name="policyTitle"
+                                       required
+                                       placeholder="Policy Title"/>
+                            <span class="help-block"
+                                  ng-if="regulationAddForm.policyTitle.$error.required && regulationAddForm.policyTitle.$touched ">Policy title is required</span>
+                                 <span class="help-block"
+                                 ng-if="regulationAddForm.policyTitle.$error.maxlength  ">Policy title is limited to 50 characters</span>
+                            </h3>
+                    </div>
+                    <div class="col-xs-2">
+                        <button type="button" class="close" style="" ng-click="go('/regulations')">&times;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group"  ng-class="{'has-error' : (regulationAddForm.policyText.$invalid   && regulationAddForm.policyText.$touched) || regulationAddForm.policyText.$error.maxlength }"  >
+
+                <textarea class="form-control" rows="5" ng-maxlength="1500"   id="policyText" name="policyText" ng-model="newReg.Narrative" required placeholder="Policy Text"/>
+            <span class="help-block"
+                  ng-if="regulationAddForm.policyText.$error.required && regulationAddForm.policyText.$touched ">Policy text is required</span>
+             <span class="help-block"
+                   ng-if="regulationAddForm.policyText.$error.maxlength  ">Policy text is limited to 1500 characters</span>
+
+        </div>
+        <div class="col-xs-2 col-xs-offset-10">
+            <input type="submit" class="btn btn-primary " ng-disabled="regulationAddForm.$invalid" value="Save"/>
+        </div>
+    </form>
+</div>
