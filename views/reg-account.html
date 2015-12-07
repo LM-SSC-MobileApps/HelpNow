@@ -1,0 +1,123 @@
+<div ng-controller="RegAccountCtrl">
+    <div class="row">
+        <div class="col-xs-3 ">
+            <h3><img src="style/images/Person.png" style="height: 50px; width: 20px;" />   Register Account</h3>
+        </div>
+    </div>
+    <div class="row" ng-show="showUsername">
+        <div class="well">
+            <div class="row">
+                <form name="usernamePassForm" novalidate role="form">
+                    <div class="form-group" ng-class="">
+                        <div class="col-xs-12">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-xs-12">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-xs-12">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                    </div>
+                </form>
+                <div class="col-xs-1 col-xs-offset-11">
+                    <a id="btn-showUser" class="btn btn-primary" ng-click="showUserForm()"><span></span>Next</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-show="showUser">
+        <div class="well">
+            <div class="row">
+                <form name="userInfoForm" novalidate role="form">
+                    <div class="form-group" ng-class="">
+                        <div class="col-xs-12">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" name="firstName" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-xs-12">
+                            <label for="middleInitial">Middle Initial</label>
+                            <input type="text" id="middleInitial" name="middleInitial" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-xs-12">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" name="lastName" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-xs-12">
+                            <label for="email">Email</label>
+                            <input type="text" id="email" name="email" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-xs-12">
+                            <label for="phone">Phone</label>
+                            <input type="text" id="phone" name="phone" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-xs-12">
+                            <label for="mobilePhone">Mobile Phone</label>
+                            <input type="text" id="mobilePhone" name="mobilePhone" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                    </div>
+                </form>
+                <div>
+                    <a id="btn-showUsername" class="btn btn-primary" ng-click="showUsernameForm()"><span></span>Back</a>
+                    <a id="btn-showAddress" class="btn btn-primary pull-right" ng-click="showUserForm()"><span></span>Next</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-show="showAddress">
+        <div class="well">
+            <div class="row">
+                <form name="userAddressForm" novalidate role="form">
+                    <div class="form-group" ng-class="">
+                        <div class="col-xs-12">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" name="firstName" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-xs-12">
+                            <label for="middleInitial">Middle Initial</label>
+                            <input type="text" id="middleInitial" name="middleInitial" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-xs-12">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" name="lastName" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-xs-12">
+                            <label for="email">Email</label>
+                            <input type="text" id="email" name="email" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-xs-12">
+                            <label for="phone">Phone</label>
+                            <input type="text" id="phone" name="phone" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-xs-12">
+                            <label for="mobilePhone">Mobile Phone</label>
+                            <input type="text" id="mobilePhone" name="mobilePhone" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                    </div>
+                </form>
+                <div>
+                    <a id="btn-showUsername" class="btn btn-primary" ng-click="showUsernameForm()"><span></span>Back</a>
+                    <a id="btn-showAddress" class="btn btn-primary pull-right" ng-click="showUserForm()"><span></span>Next</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

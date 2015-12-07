@@ -25,7 +25,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$http", "$resource"
 		return viewName == currentView ? "active" : "";
 	};
 	
-	$scope.setCurrentView = function(viewName) {
+	$scope.setCurrentView = function (viewName) {
 		currentView = viewName;
 	};
 	

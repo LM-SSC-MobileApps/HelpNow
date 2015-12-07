@@ -59,6 +59,10 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap" ])
 		$routeProvider.when("/invite/", {
 			templateUrl: "views/manage/team-invite.html"
 		});
+
+		$routeProvider.when("/reg_account/", {
+		    templateUrl: "views/reg-account.html"
+		});
 		
 		$routeProvider.otherwise({
 			templateUrl: "views/events.html"

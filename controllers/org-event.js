@@ -130,7 +130,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 			}); 
 			var marker = L.marker([location.ResourceLocation.LAT, location.ResourceLocation.LONG], { icon: locationIcon });
 			marker.bindPopup("<strong>" + location.ResourceType.Description + " (" + 
-				location.ResourceLocation.ResourceRegistry.Organization.Name + ")</strong><br/>" + location.ResourceLocation.PhoneNumber);
+				location.ResourceLocation.Organization.Name + ")</strong><br/>" + location.ResourceLocation.PrimaryPOCPhone);
 			mapLayers.push(marker);
 		});
 	}
