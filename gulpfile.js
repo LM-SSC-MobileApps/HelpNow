@@ -6,7 +6,7 @@ var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var myth = require('gulp-myth');
 
-var jsPaths = ['./app.js', './controllers/*.js', './directives/*.js'];
+var jsPaths = ['./app.js', './controllers/*.js', './directives/*.js', 'factories/*.js' ];
 var cssPaths = ['./style/bootstrap.css', './generated/help.myth.css'];
 
 gulp.task('myth', function() {
@@ -57,7 +57,7 @@ gulp.task('default', ['scripts-min', 'style', 'watch'], function () {
             ENABLE_REDIRECT: false,
             NODE_ENV: 'local-dev'
         },
-        ignore: ['./node_modules/**', 'generated/*', 'app.js', 'controllers/*.js', 'directives/*.js']
+        ignore: ['./node_modules/**', 'generated/*', 'app.js', 'controllers/*.js', 'directives/*.js', 'factories/*.js']
     })
 	.on('restart', function () {
 	    console.log('Changes Occured, Restarting');
