@@ -8,8 +8,8 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     $scope.requestsResource = $resource("/api/event/mapitems/:eventID");
     $scope.urgencyResource = $resource("/api/requesturgency");
     $scope.needRequestResource = $resource("/api/resourcerequest");
-    
-    $scope.helpRequest = { EventID: '', RequestStateID: '1', Notes: 'Reported from App', AreaSize: '0.25 km', UnitOfMeasure: '', Quantity: '', RequestUrgencyID: '1' };
+
+    $scope.helpRequest = { EventID: '', RequestStateID: '1', Notes: 'Reported from App', AreaSize: '0.25 km', UnitOfMeasure: '', Quantity: '' };
 
     $scope.eventID = $routeParams.eventID * 1;
     if ($scope.events) {
@@ -59,7 +59,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     }
 
     function showPosition(position) {
-        $scope.helpRequest.LAT =  position.coords.latitude;
+        $scope.helpRequest.LAT = position.coords.latitude;
         $scope.helpRequest.LONG = position.coords.longitude;
         if ($scope.locationOutline !== undefined) {
             map.removeLayer($scope.locationOutline);
@@ -67,6 +67,10 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
         $scope.locationOutline = L.circle([position.coords.latitude, position.coords.longitude], $scope.overlayRadius).addTo(map);
         $scope.$digest();
     }
+
+    $scope.getSelectedUrgency = function () {
+        $scope.helpRequest.RequestUrgencyID = $scope.selectedUrgency.RequestUrgencyID;
+    };
 
     $scope.showValue = function () {
         if ($scope.radiusRawVal == 0)
@@ -121,24 +125,24 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     });
 
     function buildLocationMarkers() {
-		if (!$scope.locations) return;
-		var selectedLocations = $scope.locations.filter(function(location) {
-			var type = location.ResourceType.Description;
-			return shouldDisplayMarker(type);
-		});
-		
-		angular.forEach(selectedLocations, function(location) {
-			var locationIcon = L.icon({
-				iconUrl: $scope.getLocationIcon(location.ResourceType.Description),
-				iconSize: [60, 60],
-				iconAnchor: [30, 30]
-			}); 
-			var marker = L.marker([location.ResourceLocation.LAT, location.ResourceLocation.LONG], { icon: locationIcon });
-			marker.bindPopup("<strong>" + location.ResourceType.Description + " (" + 
+        if (!$scope.locations) return;
+        var selectedLocations = $scope.locations.filter(function (location) {
+            var type = location.ResourceType.Description;
+            return shouldDisplayMarker(type);
+        });
+
+        angular.forEach(selectedLocations, function (location) {
+            var locationIcon = L.icon({
+                iconUrl: $scope.getLocationIcon(location.ResourceType.Description),
+                iconSize: [60, 60],
+                iconAnchor: [30, 30]
+            });
+            var marker = L.marker([location.ResourceLocation.LAT, location.ResourceLocation.LONG], { icon: locationIcon });
+            marker.bindPopup("<strong>" + location.ResourceType.Description + " (" +
 				location.ResourceLocation.ResourceRegistry.Organization.Name + ")</strong><br/>" + location.ResourceLocation.PhoneNumber);
-			mapLayers.push(marker);
-		});
-	}
+            mapLayers.push(marker);
+        });
+    }
 
     function shouldDisplayMarker(type) {
         return (type == "Water" && $scope.showWater) ||
@@ -178,6 +182,8 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     function loadUrgencyList() {
         $scope.urgencyResource.get({}, function (data) {
             $scope.urgencyList = data.json;
+            $scope.selectedUrgency = $scope.urgencyList[0];
+            $scope.helpRequest.RequestUrgencyID = $scope.selectedUrgency.RequestUrgencyID;
         });
     }
 

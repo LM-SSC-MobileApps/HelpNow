@@ -139,7 +139,7 @@ var routes = function(){
       req.body,
       {
         where: {
-          AccountID: req.params.id
+            OrganizationRegulationsID: req.params.id
         }
       }
     )
@@ -168,7 +168,7 @@ var routes = function(){
     models.OrganizationRegulations.destroy(
       {
         where: {
-          AccountID: req.params.id
+            OrganizationRegulationsID: req.params.id
         }
       }
     )

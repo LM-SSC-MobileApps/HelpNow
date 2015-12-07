@@ -353,13 +353,13 @@ a:hover {
 
 input.switch:empty
 {
-	margin-left: -999px;
+	margin-left: -1500px;
 }
 
 input.switch:empty ~ label
 {
 	position: relative;
-	float: left;
+	float: right;
 	line-height: 1.6em;
 	text-indent: 4em;
 	margin: 0.2em 0;
@@ -454,4 +454,17 @@ input.switch:checked ~ label:after
 	margin-bottom: 2px;
 	margin-right: 5px;
 	border: 1px solid var(--dark-gray);
+}
+
+.close {
+	color: #fff;
+	opacity: 1;
+}
+
+.panel-borderless {
+	border: 0;
+}
+
+.spacer {
+	margin-top: 20px;
 }

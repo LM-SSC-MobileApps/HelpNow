@@ -2,19 +2,19 @@
     <h3><img id="event-header-icon" src="{{getEventIcon(event.EventType.Description)}}" />{{event.EventLocations[0].Description}}</h3>
     <div id="map" ng-if="event" map map-center="{{event.EventLocations[0].LAT}},{{event.EventLocations[0].LONG}}" map-zoom="13" class="col-md-9" style="height: 512px; border: 1px solid #AAA;"></div>
     <div id="rightColumn" class="col-md-3" ng-if="showEventDetails">
-        <div id="eventInfo"  ng-hide="showFilters" ng-include="'views/fragments/event-info.html'"></div>
-		<div class="row" ng-hide="showFilters">
-			<div class="col-md-12">
-				<a class="btn btn-primary" ng-click="toggleFilters()"><span class="glyphicon glyphicon-filter"></span> Show Filters</a>
-			</div>
-		</div>
+        <div id="eventInfo" ng-hide="showFilters" ng-include="'views/fragments/event-info.html'"></div>
+        <div class="row" ng-hide="showFilters">
+            <div class="col-md-12">
+                <a class="btn btn-primary" ng-click="toggleFilters()"><span class="glyphicon glyphicon-filter"></span> Show Filters</a>
+            </div>
+        </div>
         <div class="row" ng-if="showFilters">
             <div class="col-md-12">
                 <div class="well">
                     <a class="btn btn-primary pull-right" ng-click="toggleFilters()"><span class="glyphicon glyphicon-eye-close"></span> Hide</a>
                     <h4><span class="glyphicon glyphicon-filter"></span> Filters</h4>
                     <div id="filter-section" ng-if="showFilters">
-                        <hr class="separated"/>
+                        <hr class="separated" />
                         <div class="row">
                             <div class="col-xs-4 text-center">
                                 <a id="showMedical" ng-class="toggleButtonClass('showMedical')" ng-click="toggleButton('showMedical')"><span></span></a>
@@ -57,7 +57,7 @@
             <a id="btn-login" class="btn btn-primary" href="#/org_event/{{event.EventID}}"><span class="glyphicon glyphicon-globe"></span>Aid Organization View</a>
         </div>
     </div>
-    <div id="helpPanel" class="col-md-3" ng-if="showHelp">
+    <div id="helpPanel" class="col-md-3" ng-show="showHelp">
         <div class="row">
             <div class="col-md-12">
                 <div class="well">
@@ -80,39 +80,38 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <hr class="separated" />
-                            <input ng-model="locationPref.value" type="radio" value="Current" ng-change="getLocation()"/>&nbsp;&nbsp;&nbsp;Use My Current Location<br />
-                            <input ng-model="locationPref.value" type="radio" value="Other" ng-change="getLocation()"/>&nbsp;&nbsp;&nbsp;Use The Following Location
+                            <input ng-model="locationPref.value" type="radio" value="Current" ng-change="getLocation()" /><span>  Use My Current Location</span><br />
+                            <input ng-model="locationPref.value" type="radio" value="Other" ng-change="getLocation()" /><span>  Use The Following Location:</span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
-                            Lat:&nbsp;<input ng-model="helpRequest.LAT" type="text" name="lat" style="width: 60px; margin-top: 10px; color: black;" />
-                            Long:&nbsp;<input ng-model="helpRequest.LONG" type="text" name="long" style="width: 60px; margin-top: 10px; color: black;" />
+                            <span>Lat: </span><input ng-model="helpRequest.LAT" type="text" name="lat" style="width: 30%; margin-top: 10px; color: black;" />
+                            <span>Long: </span><input ng-model="helpRequest.LONG" type="text" name="long" style="width: 30%; margin-top: 10px; color: black;" /><br /><br />
                             <h5 align="center" style="color: whitesmoke">OR</h5>
-                            <h5 style="vertical-align:top; color: whitesmoke">Address:<textarea rows="3" cols="25"></textarea></h5>
+                            <h5 style="vertical-align:top; color: whitesmoke">Address:</h5>
+                            <textarea style="width: 100%"></textarea>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xs-12">
-                            Impacted Area Size:&nbsp;&nbsp;<input ng-model="helpRequest.AreaSize" disabled="disabled" type="text" name="RegionSize" style="width: 60px; margin-top: 10px; color: black;" />
+                        <div id="slider" style="height: 100px; width: 100%; margin-top: 15px; margin-bottom: -15px;">
+                            <span>Impacted Area Size: </span>
+                            <input id="overlayRadiusSlider" ng-model="radiusRawVal" ng-click="showValue()" type="range" min="0" max="1" step="0.05" />
+                            <span id="range">{{sliderLabel}}  </span>
+                            <input type="checkbox" id="unitsToggle" ng-model="isMetric" name="unitsToggle" class="switch" checked="checked" ng-click="changeUnits()" />
+                            <label for="unitsToggle">Metric</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
                             <img src="style/images/Person.png" style="height: 30px; width: 7px;" />
-                            &nbsp;&nbsp;Number of People:&nbsp;&nbsp;&nbsp;<input ng-model="helpRequest.Quantity" type="text" ng-keypress="validateNumber($event)" name="NumPeople" style="width: 50px; margin-top: 10px; color: black;" /><br />
+                            <span>  Number of People:  <input ng-model="helpRequest.Quantity" type="text" ng-keypress="validateNumber($event)" name="NumPeople" style="width: 30%; margin-top: 10px; color: black;" /></span><br />
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
                             <img src="style/images/Exclamation Mark.png" style="height: 20px; width: 7px;" />
-                            &nbsp;&nbsp;Criticality:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select ng-model="helpRequest.RequestUrgencyID" style="margin-top: 10px; color: black;">
-                                <option value="1">Low</option>
-                                <option value="2">Medium</option>
-                                <option value="3">High</option>
-                                <option value="4">Critical</option>
-                                <option value="5">Danger</option>
-                            </select> 
+                            <span>  Criticality:  </span><select ng-model="selectedUrgency" ng-options="urgency.Description for urgency in urgencyList" ng-change="getSelectedUrgency()" style="margin-top: 7px; width: 58%; color: black;"></select>
                         </div>
                     </div>
                 </div>
@@ -132,14 +131,14 @@
                             <img src="style/images/Team.png" style="height: 66px; width: 66px; margin-right: 5px;" /><br />(Optional)
                         </div>
                         <div class="col-xs-8">
-                            Name:<br /><input ng-model="helpRequest.RequestorName" type="text" name="name" style="width: 130px; color: black;" /><br />
-                            Phone:<br /><input ng-model="helpRequest.RequestorPhone" type="text" name="phone" style="width: 130px; color: black;" /><br />
-                            Email:<br /><input ng-model="helpRequest.RequestorEmail" type="text" name="email" style="width: 130px; color: black;" />
+                            Name:<br /><input ng-model="helpRequest.RequestorName" type="text" name="name" style="width: 100%; color: black;" /><br />
+                            Phone:<br /><input ng-model="helpRequest.RequestorPhone" type="text" name="phone" style="width: 100%; color: black;" /><br />
+                            Email:<br /><input ng-model="helpRequest.RequestorEmail" type="text" name="email" style="width: 100%; color: black;" />
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
-                            <input ng-model="helpRequest.RequestorUpdatePref" type="checkbox" name="pinLocation" value="useCurrentLocation" checked="checked" />&nbsp;&nbsp;&nbsp;Send Email or Text Updates
+                            <input ng-model="helpRequest.RequestorUpdatePref" type="checkbox" name="pinLocation" value="useCurrentLocation" checked="checked" /><span>Send Email Updates</span>
                         </div>
                     </div>
                 </div>
@@ -200,60 +199,4 @@
             <a id="btn-next" class="btn btn-primary pull-right" ng-click="sendNeedRequest()"><span></span>Send Request</a>
         </div>
     </div>
-    <div id="slider" style="height: 100px; width: 200px;">
-        <span>Selection Radius: </span>
-        <input id="overlayRadiusSlider" ng-model="radiusRawVal" ng-click="showValue(this.value)" type="range" min="0" max="1" step="0.05" />
-        <span id="range">{{sliderLabel}}</span>
-        <br />
-        <br />
-        <input type="checkbox" id="unitsToggle" ng-model="isMetric" name="unitsToggle" class="switch" checked="checked" ng-click="changeUnits()" />
-        <label for="unitsToggle">Metric</label>
-    </div>
 </div>
-
-<!--script type="text/javascript">
-    if (document.getElementById("overlayRadiusSlider").value == 0) {
-        document.getElementById("range").innerHTML = 1 + " km";
-    }
-    document.getElementById("range").innerHTML = document.getElementById("overlayRadiusSlider").value + " km";
-    var overlayRadius = document.getElementById("overlayRadiusSlider").value * 1000;
-    var radiusRawVal = document.getElementById("overlayRadiusSlider").value;
-    var locationOutline;
-    var isMetric;
-
-    function showValue(newValue) {
-        if (newValue == 0)
-            newValue = 1;
-
-
-        radiusRawVal = newValue;
-        if (isMetric) {
-            overlayRadius = newValue * 1000 / 0.62137119;
-            document.getElementById("range").innerHTML = newValue + " km";
-        }
-        else {
-            overlayRadius = newValue * 1000 * 0.62137119;
-            document.getElementById("range").innerHTML = newValue + " mi";
-        }
-
-        if (locationOutline != undefined)
-            locationOutline.setRadius(overlayRadius);
-    }
-
-    function changeUnits(isChecked) {
-        if (isChecked) {
-            document.getElementById("range").innerHTML = radiusRawVal + " km";
-            isMetric = true;
-            overlayRadius = overlayRadius / 0.62137119;
-            if (locationOutline != undefined)
-                locationOutline.setRadius(overlayRadius);
-        }
-        else {
-            document.getElementById("range").innerHTML = radiusRawVal + " mi";
-            isMetric = false;
-            overlayRadius = overlayRadius * 0.62137119;
-            if (locationOutline != undefined)
-                locationOutline.setRadius(overlayRadius);
-        }
-    }
-</script-->
