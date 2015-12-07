@@ -455,3 +455,16 @@ input.switch:checked ~ label:after
 	margin-right: 5px;
 	border: 1px solid var(--dark-gray);
 }
+
+.close {
+	color: #fff;
+	opacity: 1;
+}
+
+.panel-borderless {
+	border: 0;
+}
+
+.spacer {
+	margin-top: 20px;
+}
