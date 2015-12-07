@@ -18,9 +18,9 @@ models.ResourceLocation.belongsTo(models.Organization, {foreignKey: 'Organizatio
 models.Event.hasMany(models.ResourceLocation, {foreignKey: 'EventID'});
 models.ResourceLocation.belongsTo(models.Event, {foreignKey: 'EventID'});
 
-// //ResourceLocation many-to-One on ResourceRegistry
-// models.ResourceRegistry.hasMany(models.ResourceLocation, {foreignKey: 'ResourceRegistryID'});
-// models.ResourceLocation.belongsTo(models.ResourceRegistry, {foreignKey: 'ResourceRegistryID'});
+//ResourceLocation many-to-one on ResourceLocationType
+models.ResourceLocation.belongsTo(models.ResourceLocationType, {foreignKey: 'ResourceLocationTypeID'});
+models.ResourceLocationType.hasMany(models.ResourceLocation, {foreignKey: 'ResourceLocationTypeID'});
 
 var routes = function(){
   var router  = express.Router();
@@ -31,7 +31,8 @@ var routes = function(){
             {model: models.Organization},
             {model: models.Event, required: false},
             {model: models.ResourceLocationInventory},
-            {model: models.ResourceLocationTransport}
+            {model: models.ResourceLocationTransport},
+            {model: models.ResourceLocationType}
           ]
         }
       )
@@ -68,7 +69,8 @@ var routes = function(){
             {model: models.Organization},
             {model: models.Event, required: false},
             {model: models.ResourceLocationInventory},
-            {model: models.ResourceLocationTransport}
+            {model: models.ResourceLocationTransport},
+            {model: models.ResourceLocationType}
           ]
         }
       ).then(function(resourceLocation) {

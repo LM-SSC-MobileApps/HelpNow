@@ -118,6 +118,9 @@ var routes = function(){
             {
               model: models.Organization,
               required: true
+            },
+            {
+              model: models.ResourceLocationType
             }],
           where: {
               EventID: req.params.eventID
