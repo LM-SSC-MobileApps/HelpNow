@@ -1,4 +1,4 @@
-angular.module("helpNow", ["ngRoute", "ngResource"])
+angular.module("helpNow", ["ngRoute", "ngResource", "ngAnimate", "ui.bootstrap" ])
 	.config(["$routeProvider", function ($routeProvider) {
 	    $routeProvider.when("/ind_login", {
 	        templateUrl: "views/ind-login.html"
@@ -30,6 +30,34 @@ angular.module("helpNow", ["ngRoute", "ngResource"])
 		
 		$routeProvider.when("/events", {
 			templateUrl: "views/events.html"
+		});
+
+		$routeProvider.when("/manage/", {
+			templateUrl: "views/manage/manage.html"
+		});
+
+		$routeProvider.when("/regulations/", {
+			templateUrl: "views/manage/regulations.html"
+		});
+
+		$routeProvider.when("/regulation_detail/:organizationRegulationsID", {
+			templateUrl: "views/manage/regulation-detail.html"
+		});
+
+		$routeProvider.when("/regulation_edit/:organizationRegulationsID", {
+			templateUrl: "views/manage/regulation-edit.html"
+		});
+
+		$routeProvider.when("/regulation_add/", {
+			templateUrl: "views/manage/regulation-add.html"
+		});
+
+		$routeProvider.when("/regulation_add/", {
+			templateUrl: "views/manage/regulation-add.html"
+		});
+
+		$routeProvider.when("/invite/", {
+			templateUrl: "views/manage/team-invite.html"
 		});
 		
 		$routeProvider.otherwise({
