@@ -15,9 +15,9 @@ models.EventType.belongsTo(models.Event, {foreignKey: 'EventTypeID'});
 models.Event.hasMany(models.ResourceRequest, {foreignKey: 'EventID'});
 models.ResourceRequest.belongsTo(models.Event, {foreignKey: 'EventID'});
 
-//Event one-to-many on ResourceRegistry
-models.Event.hasMany(models.ResourceRegistry, {foreignKey: 'EventID'});
-models.ResourceRegistry.belongsTo(models.Event, {foreignKey: 'EventID'});
+//Event one-to-many on ResourceLocation
+models.Event.hasMany(models.ResourceLocation, {foreignKey: 'EventID'});
+models.ResourceLocation.belongsTo(models.Event, {foreignKey: 'EventID'});
 
 //Event many-to-One on Organization
 models.Organization.hasMany(models.Event, {foreignKey: 'OrganizationID'});
@@ -55,7 +55,7 @@ var routes = function(){
             {model: models.EventType},
             {model: models.Organization},
             {model: models.ResourceRequest},
-            {model: models.ResourceRegistry}
+            {model: models.ResourceLocation, required: false}
             
           ]
         }
@@ -102,31 +102,28 @@ var routes = function(){
 	  //load resource locations
 	  tasks[1] = models.ResourceLocationInventory.findAll (
 		  {
-			include: [
-			{
-			  model: models.ResourceType,
-			  required: true
-			},
-			{
-			  model: models.ResourceTypeUnitOfMeasure,
-			  required: true
-			},
-			{
-			  model: models.ResourceLocation,
-			  required: true,
-			  include: [
-			  {
-				  model: models.ResourceRegistry,
-				  include: [
-				  {
-				    model: models.Organization,
-				    required: true
-				  }],
-				  where: {
-					EventID: req.params.eventID
-				  }
-			  }]
-			}]
+        include: [
+        {
+          model: models.ResourceType,
+          required: true
+        },
+        {
+          model: models.ResourceTypeUnitOfMeasure,
+          required: true
+        },
+        {
+          model: models.ResourceLocation,
+          required: true,
+          include: [
+            {
+              model: models.Organization,
+              required: true
+            }],
+          where: {
+              EventID: req.params.eventID
+          }
+        }
+        ]
 		  }
 	  );
 	  /*
@@ -203,7 +200,7 @@ var routes = function(){
             EventID: req.params.id
           },
           include: [
-            {model: models.ResourceRegistry},
+            {model: models.ResourceLocation},
             {model: models.EventLocation},
             {model: models.EventType},
             {model: models.Organization},

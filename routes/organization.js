@@ -11,9 +11,9 @@ models.OrganizationRegulations.belongsTo(models.Organization, {foreignKey: 'Orga
 models.Organization.hasOne(models.OrganizationType, {foreignKey: 'OrganizationTypeID'});
 models.OrganizationType.belongsTo(models.Organization, {foreignKey: 'OrganizationTypeID'});
 
-//Organization one-to-many on ResourceRegistry
-models.Organization.hasMany(models.ResourceRegistry, {foreignKey: 'OrganizationID'});
-models.ResourceRegistry.belongsTo(models.Organization, {foreignKey: 'OrganizationID'});
+//Organization one-to-many on ResourceLocation
+models.Organization.hasMany(models.ResourceLocation, {foreignKey: 'OrganizationID'});
+models.ResourceLocation.belongsTo(models.Organization, {foreignKey: 'OrganizationID'});
 
 //Organization many-to-One on Event
 models.Organization.hasMany(models.Event, {foreignKey: 'OrganizationID'});
@@ -29,7 +29,7 @@ var routes = function(){
             {model: models.OrganizationRegulations},
             {model: models.OrganizationType},
             {model: models.Event},
-            {model: models.ResourceRegistry}
+            {model: models.ResourceLocation}
           ]
         }
       )
@@ -66,7 +66,7 @@ var routes = function(){
             {model: models.OrganizationRegulations},
             {model: models.OrganizationType},
             {model: models.Event},
-            {model: models.ResourceRegistry}
+            {model: models.ResourceLocation}
           ]
         }
       ).then(function(organization) {

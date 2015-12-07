@@ -33,12 +33,14 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
     },
     LAT: {
-      type: DataTypes.STRING,
+      type: DataTypes.FLOAT(10,6),
       allowNull: false,
+      validate: { min: -90, max: 90 }
     },
     LONG: {
-      type: DataTypes.STRING,
+      type: DataTypes.FLOAT(10,6),
       allowNull: false,
+      validate: { min: -180, max: 1800 }
     },
     RequestUrgencyID: {
       type: DataTypes.INTEGER(11),

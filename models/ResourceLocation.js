@@ -17,12 +17,14 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     LAT: {
-      type: DataTypes.STRING,
-      allowNull: true
+      type: DataTypes.FLOAT(10,6),
+      allowNull: true,
+      validate: { min: -90, max: 90 }
     },
     LONG: {
-      type: DataTypes.STRING,
-      allowNull: true
+      type: DataTypes.FLOAT(10,6),
+      allowNull: true,
+      validate: { min: -180, max: 1800 }
     },
     PhoneNumber: {
       type: DataTypes.STRING,
