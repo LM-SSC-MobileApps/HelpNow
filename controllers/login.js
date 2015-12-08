@@ -12,6 +12,7 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$location", "$rout
 
     function login() {
         var creds = JSON.stringify($scope.userCreds);
+        alert(creds);
         var webCall = $http({
             method: 'POST',
             url: '/api/account/login',
