@@ -32,7 +32,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    Create_time: {
+    CreateDate: {
       type: DataTypes.DATE,
       allowNull: true,
       defaultValue: 'CURRENT_TIMESTAMP'
@@ -52,6 +52,14 @@ module.exports = function(sequelize, DataTypes) {
     AddressID: {
       type: DataTypes.INTEGER(11),
       allowNull: true,
+    },
+    OrganizationGroupID: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true,
+    },
+    Active: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
     }
   });
 };
