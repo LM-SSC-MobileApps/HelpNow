@@ -82,18 +82,8 @@ var routes = function(){
             }
             else
             {
-              // res.statusCode = 401;
               res.sendStatus(401)
             }
-          // res.statusCode = 200;
-          // res.send(
-          //   {
-          //       result: 'success',
-          //       err: '',
-          //       json: account,
-          //       length: account.length
-          //   }
-          // );
       }
      ).catch(function (err) {
          console.error(err);
