@@ -1,4 +1,4 @@
-angular.module("helpNow").controller("RootCtrl", ["$scope", "$http", "$resource", function($scope, $http, $resource) {
+angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http", "$resource", function($scope, $location, $http, $resource) {
 	var currentLanguage = "Eng";
 	var currentView = "";
 	
@@ -27,6 +27,10 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$http", "$resource"
 	
 	$scope.setCurrentView = function (viewName) {
 		currentView = viewName;
+	};
+
+	$scope.setCurrentUser = function (user) {
+	    $scope.currentUser = user;
 	};
 	
 	$scope.setCurrentLanguage = function(language) {
@@ -93,7 +97,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$http", "$resource"
 	$scope.loadEvents();
 
 
-	/* Hard coded until we figure out authentication */
+    /* Hard coded until we figure out authentication */
 	$scope.usersResource = $resource("/api/account/7");
 
 	$scope.loadCurrentUser = function() {
@@ -104,7 +108,11 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$http", "$resource"
 		});
 	};
 
-	$scope.loadCurrentUser();
+	$scope.redirectToLogin = function () {
+	    $scope.showLogin = true;
+	    $location.path('/login');
+	}
+	/*$scope.loadCurrentUser();*/
 
 
 	//TODO: Fix undefined error on currentUser. http://stackoverflow.com/questions/23848127/how-can-i-overcome-race-conditions-within-directives-without-a-timeout-function

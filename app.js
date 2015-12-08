@@ -4,8 +4,8 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap" ])
 	        templateUrl: "views/ind-login.html"
 	    });
 
-		$routeProvider.when("/org_login", {
-			templateUrl: "views/org-login.html"
+		$routeProvider.when("/login", {
+			templateUrl: "views/login.html"
 		});
 		
 		$routeProvider.when("/events", {
