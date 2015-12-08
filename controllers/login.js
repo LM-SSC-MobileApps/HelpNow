@@ -2,13 +2,28 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$location", "$rout
     $scope.setCurrentView("login");
 
     $scope.validateUser = function () {
-        if ($scope.username === undefined || $scope.password === undefined) {
+        if ($scope.userCreds.username === undefined || $scope.userCreds.password === undefined) {
             alert("Missing Username or Password");
         }
         else {
-            $scope.usersResource = $resource("/api/account/" + $scope.username + "/" + $scope.password);
-            $scope.usersResource.get({}, function (data) {
-                $scope.users = data.json;
+            login();
+        }
+    };
+
+    function login() {
+        var creds = JSON.stringify($scope.userCreds);
+        var webCall = $http({
+            method: 'POST',
+            url: '/api/account/login',
+            async: true,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: creds
+        });
+        webCall.then(function (response) {
+            alert("Success");
+                $scope.users = response.json;
                 $scope.currentUser = $scope.users[0];
                 if ($scope.currentUser === undefined) {
                     alert("Incorrect Username/Password combination.\nPlease try again");
@@ -18,7 +33,9 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$location", "$rout
                     $scope.$broadcast("CurrentUserLoaded", {});
                     $location.path('#');
                 }
-            });
-        }
-    };
+        },
+        function (response) { // optional
+            alert("Error: ");
+        });
+    }
 }]);

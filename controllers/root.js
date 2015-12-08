@@ -112,6 +112,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	    $scope.showLogin = true;
 	    $location.path('/login');
 	}
+
 	/*$scope.loadCurrentUser();*/
 
 
