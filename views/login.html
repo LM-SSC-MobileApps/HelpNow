@@ -1,0 +1,14 @@
+<div ng-controller="LoginCtrl">
+	<h2>Login</h2>
+	<div class="form-group detail-row">
+		<label>Username:</label>
+		<input name="Username" ng-model="username" type="text" class="form-control" />
+	</div>
+	<div class="form-group detail-row">
+		<label>Password:</label>
+		<input name="Password" ng-model="password" type="password" class="form-control" />
+	</div>
+	<div class="separated">
+		<a id="btn-login" class="btn btn-primary" ng-click="validateUser()"><span class="glyphicon glyphicon-ok-circle"></span>Login</a>
+	</div>
+</div>

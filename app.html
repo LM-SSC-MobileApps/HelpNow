@@ -68,9 +68,15 @@
 			</div>
 		</nav>
 
-        <div class="row">
+        <div class="row" ng-show="currentUser">
             <div class="col-lg-4 col-lg-offset-8  pull-right ">
                 <h5>Current User: {{currentUser.FirstName + " " + currentUser.LastName + ", " + currentOrg.Name }}</h5>
+            </div>
+        </div>
+
+        <div class="row" ng-hide="showLogin">
+            <div class="col-lg-3 col-lg-offset-8">
+                <a id="btn-login" class="btn btn-primary pull-right" ng-click="redirectToLogin()"><span></span>Login</a>
             </div>
         </div>
 

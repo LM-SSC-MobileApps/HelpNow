@@ -58,6 +58,36 @@ var routes = function(){
       });
     }
   )
+  //find Account by username and password
+  .get('/:username/:password', function (req, res) {
+      models.Account.findAll(
+        {
+            where: {
+                Username: req.params.username,
+                Password: req.params.password
+            }
+        }
+      ).then(function (account) {
+          res.statusCode = 200;
+          res.send(
+            {
+                result: 'success',
+                err: '',
+                json: account,
+                length: account.length
+            }
+          );
+      }
+     ).catch(function (err) {
+         console.error(err);
+         res.statusCode = 502;
+         res.send({
+             result: 'error',
+             err: err.message
+         });
+     });
+  }
+  )
   //insert into Account
   .post('/', function(req, res) {
     models.Account.create(req.body)
