@@ -68,15 +68,32 @@ var routes = function(){
             }
         }
       ).then(function (account) {
-          res.statusCode = 200;
-          res.send(
+          if (account.length>0)
             {
-                result: 'success',
-                err: '',
-                json: account,
-                length: account.length
+              res.statusCode = 200;
+              res.send(
+                {
+                    result: 'success',
+                    err: '',
+                    json: account,
+                    length: account.length
+                }
+              );
             }
-          );
+            else
+            {
+              // res.statusCode = 401;
+              res.sendStatus(401)
+            }
+          // res.statusCode = 200;
+          // res.send(
+          //   {
+          //       result: 'success',
+          //       err: '',
+          //       json: account,
+          //       length: account.length
+          //   }
+          // );
       }
      ).catch(function (err) {
          console.error(err);
@@ -87,6 +104,44 @@ var routes = function(){
          });
      });
   }
+  )
+  //find login which retrieves account
+  .post('/login/', function (req, res) {
+        models.Account.findAll(
+          {
+              where: {
+                  Username: req.body.username,
+                  Password: req.body.password
+              }
+          }
+        ).then(function (account) {
+            if (account.length>0)
+            {
+              res.statusCode = 200;
+              res.send(
+                {
+                    result: 'success',
+                    err: '',
+                    json: account,
+                    length: account.length
+                }
+              );
+            }
+            else
+            {
+              res.sendStatus(401)
+            }
+            
+        }
+      ).catch(function (err) {
+          console.error(err);
+          res.statusCode = 502;
+          res.send({
+              result: 'error',
+              err: err.message
+          });
+      });
+    }
   )
   //insert into Account
   .post('/', function(req, res) {
