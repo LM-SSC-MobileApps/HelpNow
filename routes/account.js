@@ -2,6 +2,14 @@
 var models  = require('../models'),
     express = require('express');
 
+//Account many-to-one on OrganizationGroup
+models.Account.belongsTo(models.OrganizationGroup, {foreignKey: 'OrganizationGroupID'});
+models.OrganizationGroup.hasMany(models.Account, {foreignKey: 'OrganizationGroupID'});
+
+//OrganizationGroup many-to-One on Organization
+models.Organization.hasMany(models.OrganizationGroup, {foreignKey: 'OrganizationID'});
+models.OrganizationGroup.belongsTo(models.Organization, {foreignKey: 'OrganizationID'});
+
 
 var routes = function(){
   var router  = express.Router();
@@ -99,6 +107,16 @@ var routes = function(){
   .post('/login/', function (req, res) {
         models.Account.findAll(
           {
+              include: [
+                {
+                  model: models.OrganizationGroup,
+                  include: [
+                    {
+                      model: models.Organization
+                    }
+                  ]
+                }
+              ],
               where: {
                   Username: req.body.username,
                   Password: req.body.password
