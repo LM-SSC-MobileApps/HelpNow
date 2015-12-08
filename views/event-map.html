@@ -86,11 +86,11 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
-                            <span>Lat: </span><input ng-model="helpRequest.LAT" type="text" name="lat" style="width: 30%; margin-top: 10px; color: black;" />
-                            <span>Long: </span><input ng-model="helpRequest.LONG" type="text" name="long" style="width: 30%; margin-top: 10px; color: black;" /><br /><br />
+                            <span>Lat </span><input ng-model="helpRequest.LAT" type="text" class="form-control" name="lat" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
+                            <span>Long </span><input ng-model="helpRequest.LONG" type="text" class="form-control" name="long" style="display:inline; width: 34%; margin-top: 10px; color: black;" /><br /><br />
                             <h5 align="center" style="color: whitesmoke">OR</h5>
                             <h5 style="vertical-align:top; color: whitesmoke">Address:</h5>
-                            <textarea style="width: 100%"></textarea>
+                            <textarea class="form-control" style="width: 100%"></textarea>
                         </div>
                     </div>
                     <div class="row">
@@ -105,13 +105,13 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <img src="style/images/Person.png" style="height: 30px; width: 7px;" />
-                            <span>  Number of People:  <input ng-model="helpRequest.Quantity" type="text" ng-keypress="validateNumber($event)" name="NumPeople" style="width: 30%; margin-top: 10px; color: black;" /></span><br />
+                            <span>  Number of People:  <input ng-model="helpRequest.Quantity" class="form-control" type="text" ng-keypress="validateNumber($event)" name="NumPeople" style="display:inline; width: 35%; margin-top: 10px; color: black;" /></span><br />
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
                             <img src="style/images/Exclamation Mark.png" style="height: 20px; width: 7px;" />
-                            <span>  Criticality:  </span><select ng-model="selectedUrgency" ng-options="urgency.Description for urgency in urgencyList" ng-change="getSelectedUrgency()" style="margin-top: 7px; width: 58%; color: black;"></select>
+                            <span>  Criticality:  </span><select class="form-control" ng-model="selectedUrgency" ng-options="urgency.Description for urgency in urgencyList" ng-change="getSelectedUrgency()" style="display:inline; margin-top: 7px; width: 62%; color: black;"></select>
                         </div>
                     </div>
                 </div>
@@ -131,9 +131,9 @@
                             <img src="style/images/Team.png" style="height: 66px; width: 66px; margin-right: 5px;" /><br />(Optional)
                         </div>
                         <div class="col-xs-8">
-                            Name:<br /><input ng-model="helpRequest.RequestorName" type="text" name="name" style="width: 100%; color: black;" /><br />
-                            Phone:<br /><input ng-model="helpRequest.RequestorPhone" type="text" name="phone" style="width: 100%; color: black;" /><br />
-                            Email:<br /><input ng-model="helpRequest.RequestorEmail" type="text" name="email" style="width: 100%; color: black;" />
+                            Name:<br /><input ng-model="helpRequest.RequestorName" type="text" class="form-control" name="name" style="display:inline; width: 100%; color: black;" /><br />
+                            Phone:<br /><input ng-model="helpRequest.RequestorPhone" type="text" class="form-control" name="phone" style="display: inline; width: 100%; color: black;" /><br />
+                            Email:<br /><input ng-model="helpRequest.RequestorEmail" type="text" class="form-control" name="email" style="display: inline; width: 100%; color: black;" />
                         </div>
                     </div>
                     <div class="row">
