@@ -31,6 +31,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 
 	$scope.setCurrentUser = function (user) {
 	    $scope.currentUser = user;
+	    $scope.currentOrg = user.OrganizationGroup.Organization;
 	};
 	
 	$scope.setCurrentLanguage = function(language) {
@@ -130,7 +131,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 		});
 	};
 
-	$scope.loadCurrentOrg();
+	//$scope.loadCurrentOrg();
 
 
 	$scope.resources = [
