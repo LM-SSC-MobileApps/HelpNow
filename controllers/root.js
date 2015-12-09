@@ -3,6 +3,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	var currentView = "";
 	
 	$scope.eventsResource = $resource("/api/event");
+	$scope.currentUser = JSON.parse(sessionStorage.getItem("user"));
 	
 	$scope.showMedical = true;
 	$scope.showShelter = true;
@@ -86,74 +87,74 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 		return {}; 
 	};
 
-	$scope.getLocationIcon = function(location) {
-		var inventories = location.ResourceLocationInventories;
-		if (inventories.length > 1)
-			return "style/images/resources.png";
-		
-		var resourceType = inventories[0].ResourceType.Description;
-		if (resourceType == "Water") {
-			return "style/images/Water-Diamond-Blue.png";
-		} else if (resourceType == "First Aid") {
-			return "style/images/First Aid-Diamond-Blue.png";
-		} else if (resourceType == "Shelter") {
-			return "style/images/Shelter-Diamond-Blue.png";
-		} else if (resourceType == "Evacuation") {
-			return "style/images/Evacuation-Diamond-Blue.png";
-		} else if (resourceType == "Medicine") {
-			return "style/images/Medicine-Diamond-Blue.png";
-		} else {
-			return "style/images/Food-Diamond-Blue.png";
-		}
-	}
+	$scope.getLocationIcon = function (location) {
+	    var inventories = location.ResourceLocationInventories;
+	    if (inventories.length > 1)
+	        return "style/images/resources.png";
+
+	    var resourceType = inventories[0].ResourceType.Description;
+	    if (resourceType == "Water") {
+	        return "style/images/Water-Diamond-Blue.png";
+	    } else if (resourceType == "First Aid") {
+	        return "style/images/First Aid-Diamond-Blue.png";
+	    } else if (resourceType == "Shelter") {
+	        return "style/images/Shelter-Diamond-Blue.png";
+	    } else if (resourceType == "Evacuation") {
+	        return "style/images/Evacuation-Diamond-Blue.png";
+	    } else if (resourceType == "Medicine") {
+	        return "style/images/Medicine-Diamond-Blue.png";
+	    } else {
+	        return "style/images/Food-Diamond-Blue.png";
+	    }
+	};
 	
-	$scope.buildLocationMarkers = function(locations, mapLayers) {
-		if (!locations) return;
-		var selectedLocations = locations.filter(function(location) {
-			return $scope.shouldDisplayLocationMarker(location);
-		});
-		
-		angular.forEach(selectedLocations, function(location) {
-			var locationIcon = L.icon({
-				iconUrl: $scope.getLocationIcon(location),
-				iconSize: [60, 60],
-				iconAnchor: [30, 30]
-			}); 
-			
-			var marker = L.marker([location.LAT, location.LONG], { icon: locationIcon });
-			var popupText = "<strong>" + location.Organization.Name + "</strong><br/>" + 
+	$scope.buildLocationMarkers = function (locations, mapLayers) {
+	    if (!locations) return;
+	    var selectedLocations = locations.filter(function (location) {
+	        return $scope.shouldDisplayLocationMarker(location);
+	    });
+
+	    angular.forEach(selectedLocations, function (location) {
+	        var locationIcon = L.icon({
+	            iconUrl: $scope.getLocationIcon(location),
+	            iconSize: [60, 60],
+	            iconAnchor: [30, 30]
+	        });
+
+	        var marker = L.marker([location.LAT, location.LONG], { icon: locationIcon });
+	        var popupText = "<strong>" + location.Organization.Name + "</strong><br/>" +
 				location.PrimaryPOCPhone + "<hr/>";
-			location.ResourceLocationInventories.forEach(function(inventory) {
-				popupText += inventory.ResourceType.Description + ": " + inventory.Quantity + " " + 
+	        location.ResourceLocationInventories.forEach(function (inventory) {
+	            popupText += inventory.ResourceType.Description + ": " + inventory.Quantity + " " +
 					inventory.ResourceTypeUnitOfMeasure.Description + "<br/>";
-			});
-			
-			marker.bindPopup(popupText);
-			mapLayers.push(marker);
-		});
-	}
+	        });
+
+	        marker.bindPopup(popupText);
+	        mapLayers.push(marker);
+	    });
+	};
 	
-	$scope.toggleFlag = function(flag) {
-		$scope[flag] = !$scope[flag];
-	}
+	$scope.toggleFlag = function (flag) {
+	    $scope[flag] = !$scope[flag];
+	};
 	
-	$scope.shouldDisplayMarker = function(type) {
-		return (type == "Water" && $scope.showWater) || 
-				(type == "Shelter" && $scope.showShelter) || 
-				(type == "Food" && $scope.showFood) || 
-				(type == "Evacuation" && $scope.showEvacuation) || 
-				(type == "First Aid" && $scope.showMedical) || 
+	$scope.shouldDisplayMarker = function (type) {
+	    return (type == "Water" && $scope.showWater) ||
+				(type == "Shelter" && $scope.showShelter) ||
+				(type == "Food" && $scope.showFood) ||
+				(type == "Evacuation" && $scope.showEvacuation) ||
+				(type == "First Aid" && $scope.showMedical) ||
 				(type == "Medicine" && $scope.showMedicine);
-	}
+	};
 	
-	$scope.shouldDisplayLocationMarker = function(location) {
-		var inventories = location.ResourceLocationInventories;
-		for (var i = 0; i < inventories.length; i++) {
-			if ($scope.shouldDisplayMarker(inventories[i].ResourceType.Description))
-				return true;
-		}
-		return false;
-	}
+	$scope.shouldDisplayLocationMarker = function (location) {
+	    var inventories = location.ResourceLocationInventories;
+	    for (var i = 0; i < inventories.length; i++) {
+	        if ($scope.shouldDisplayMarker(inventories[i].ResourceType.Description))
+	            return true;
+	    }
+	    return false;
+	};
 	
 	$scope.loadEvents();
 
