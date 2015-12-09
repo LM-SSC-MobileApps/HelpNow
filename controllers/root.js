@@ -20,11 +20,11 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	
 	$scope.getEventIcon = function(eventType) {
 		if (eventType == "Flood") {
-			return "style/images/flood.png";
+			return "style/images/Flood.png";
 		} else if (eventType == "Tsunami") {
 			return "style/images/Tsunami.png";
 		} else {
-			return "style/images/earthquake.png";
+			return "style/images/Earthquake.png";
 		}
 	};
 	
