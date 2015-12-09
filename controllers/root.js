@@ -79,21 +79,21 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 		return {}; 
 	};
 	
-	$scope.getLocationIcon = function(resourceType) {
-		if (resourceType == "Water") {
-			return "style/images/Water-Diamond-Blue.png";
-		} else if (resourceType == "First Aid") {
-			return "style/images/First Aid-Diamond-Blue.png";
-		} else if (resourceType == "Shelter") {
-			return "style/images/Shelter-Diamond-Blue.png";
-		} else if (resourceType == "Evacuation") {
-			return "style/images/Evacuation-Diamond-Blue.png";
-		} else if (resourceType == "Medicine") {
-			return "style/images/Medicine-Diamond-Blue.png";
-		} else {
-			return "style/images/Food-Diamond-Blue.png";
-		}
-	}
+	$scope.getLocationIcon = function (resourceType) {
+	    if (resourceType == "Water") {
+	        return "style/images/Water-Diamond-Blue.png";
+	    } else if (resourceType == "First Aid") {
+	        return "style/images/First Aid-Diamond-Blue.png";
+	    } else if (resourceType == "Shelter") {
+	        return "style/images/Shelter-Diamond-Blue.png";
+	    } else if (resourceType == "Evacuation") {
+	        return "style/images/Evacuation-Diamond-Blue.png";
+	    } else if (resourceType == "Medicine") {
+	        return "style/images/Medicine-Diamond-Blue.png";
+	    } else {
+	        return "style/images/Food-Diamond-Blue.png";
+	    }
+	};
 	
 	$scope.loadEvents();
 
@@ -112,7 +112,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	$scope.redirectToLogin = function () {
 	    $scope.showLogin = true;
 	    $location.path('/login');
-	}
+	};
 
 	/*$scope.loadCurrentUser();*/
 

@@ -1,10 +1,10 @@
-﻿angular.module("helpNow").controller("RegAccountCtrl", ["$scope", "$http", "$routeParams", "$resource", function ($scope, $http, $routeParams, $resource) {
+﻿angular.module("helpNow").controller("RegAccountCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function ($scope, $http, $location, $routeParams, $resource) {
     $scope.setCurrentView("reg-account");
 
     $scope.showUsername = true;
     $scope.showUser = false;
 
-    $scope.userAccount = {OrganizationGroupID: 1, Active: true, AccountRoleID: 3};
+    $scope.userAccount = {OrganizationGroupID: 1, Active: true, AccountRoleID: 3, CreateDate: new Date()};
 
     $scope.showUserForm = function () {
         var hasError = false;
@@ -35,18 +35,7 @@
             hasError = true;
         }
         if (!hasError) {
-            alert("Org Group ID: " + $scope.userAccount.OrganizationGroupID
-            + "\nUsername: " + $scope.userAccount.Username
-            + "\nPassword: " + $scope.userAccount.Password
-            + "\nFirst Name: " + $scope.userAccount.FirstName
-            + "\nMiddle Initial: " + $scope.userAccount.MiddleInitial
-            + "\nLast Name: " + $scope.userAccount.LastName
-            + "\nEmail: " + $scope.userAccount.Email
-            + "\nPhone: " + $scope.userAccount.Phone
-            + "\nMobile Phone: " + $scope.userAccount.MobilePhone
-            + "\nActive: " + $scope.userAccount.Active
-            + "\nAccount Role ID: " + $scope.userAccount.AccountRoleID);
-            //submitPost();
+            submitPost();
         }
     };
 
@@ -63,6 +52,7 @@
         });
         webCall.then(function (response) {
             alert("Account Successfully Created");
+            $location.path('#');
         },
         function (response) { // optional
             alert("Error: ");
