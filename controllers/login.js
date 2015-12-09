@@ -1,4 +1,4 @@
-angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function($scope, $http, $location, $routeParams, $resource) {
+angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function ($scope, $http, $location, $routeParams, $resource) {
     $scope.setCurrentView("login");
 
     $scope.validateUser = function () {
@@ -29,6 +29,7 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
             }
             else {
                 $scope.setCurrentUser($scope.currentUser);
+                sessionStorage.setItem("user", JSON.stringify($scope.currentUser));
                 $scope.$broadcast("CurrentUserLoaded", {});
                 $location.path('#');
             }

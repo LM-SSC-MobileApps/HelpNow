@@ -50,20 +50,18 @@
 				</div>
 				
 				<div id="navbar" class="navbar-collapse collapse">
-				  <ul class="nav navbar-nav">
-					<li ng-class="getMenuClass('inds')"><a href="#/ind_login">{{text.menu_ind}}</a></li>
-					<li ng-class="getMenuClass('orgs')"><a href="#/org_login">{{text.menu_org}}</a></li>
-					<li ng-class="getMenuClass('govs')"><a href="#/gov_login">{{text.menu_gov}}</a></li>
-                    <li ng-class="getMenuClass('inv')"><a href="#/inventory">{{text.menu_inv}}</a></li>
-                    <li ng-class="getMenuClass('mng')"><a href="#/manage">{{text.menu_manage}}</a></li>
-					<li class="dropdown">
-					  <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{text.menu_lang}} <span class="caret"></span></a>
-					  <ul class="dropdown-menu">
-						<li><a ng-click="setCurrentLanguage('Eng')" ng-class="getLanguageClass('Eng')"><img class="lang-img" src="style/images/uk_flag.png" /> English</a></li>
-						<li><a ng-click="setCurrentLanguage('Ben')" ng-class="getLanguageClass('Ben')"><img class="lang-img" src="style/images/bangladesh_flag.png" /> বাংলা</a></li>
-					  </ul>
-					</li>
-				  </ul>
+                    <ul class="nav navbar-nav">
+                        <li ng-class="getMenuClass('events')"><a href="#">{{text.menu_events}}</a></li>
+                        <li ng-class="getMenuClass('inv')"><a href="#/inventory">{{text.menu_inv}}</a></li>
+                        <li ng-class="getMenuClass('mng')"><a href="#/manage">{{text.menu_manage}}</a></li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{text.menu_lang}} <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a ng-click="setCurrentLanguage('Eng')" ng-class="getLanguageClass('Eng')"><img class="lang-img" src="style/images/uk_flag.png" /> English</a></li>
+                                <li><a ng-click="setCurrentLanguage('Ben')" ng-class="getLanguageClass('Ben')"><img class="lang-img" src="style/images/bangladesh_flag.png" /> বাংলা</a></li>
+                            </ul>
+                        </li>
+                    </ul>
 				</div>
 			</div>
 		</nav>
@@ -74,7 +72,7 @@
             </div>
         </div>
 
-        <div class="row" ng-hide="showLogin">
+        <div class="row" ng-hide="currentUser">
             <div class="col-lg-3 col-lg-offset-8">
                 <a id="btn-login" class="btn btn-primary pull-right" ng-click="redirectToLogin()"><span></span>Login</a>
             </div>
