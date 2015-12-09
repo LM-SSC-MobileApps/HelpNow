@@ -201,7 +201,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 		map = newMap;
 		map.on("zoomend", function() {
 			updateMap();
-		})
+		});
 		updateMap();
 	};
 	
