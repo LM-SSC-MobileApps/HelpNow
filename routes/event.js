@@ -99,7 +99,37 @@ var routes = function(){
       )
 	  .then(cluster.clusterRequests);
 	  
+	tasks[1] = models.ResourceLocation.findAll (
+	{
+		include: [
+			{
+				model: models.Organization,
+				required: true
+            },
+            {
+				model: models.ResourceLocationType,
+				where: {
+					Description: "Deployment"
+				}
+            },
+			{
+				model: models.ResourceLocationInventory,
+				required: true,
+				include: [
+				{
+					model: models.ResourceType
+				},
+				{
+					model: models.ResourceTypeUnitOfMeasure
+				}]
+			}
+		],
+		where: {
+			EventID: req.params.eventID
+        }
+	});
 	  //load resource locations
+	  /*
 	  tasks[1] = models.ResourceLocationInventory.findAll (
 		  {
         include: [
@@ -129,7 +159,7 @@ var routes = function(){
         ]
 		  }
 	  );
-	  /*
+	  
 	  tasks[1] = models.ResourceRegistry.findAll(
 		{
 		  where: {
