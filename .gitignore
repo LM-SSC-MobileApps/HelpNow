@@ -32,5 +32,3 @@ typings
 # config folder skip
 config
 
-# ignore generated folder
-generated
