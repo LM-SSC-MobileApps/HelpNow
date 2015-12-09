@@ -98,40 +98,11 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	$scope.loadEvents();
 
 
-    /* Hard coded until we figure out authentication */
-	$scope.usersResource = $resource("/api/account/7");
-
-	$scope.loadCurrentUser = function() {
-		$scope.usersResource.get({}, function(data) {
-			$scope.users = data.json;
-			$scope.currentUser = $scope.users[0];
-			$scope.$broadcast("CurrentUserLoaded", {});
-		});
-	};
 
 	$scope.redirectToLogin = function () {
 	    $scope.showLogin = true;
 	    $location.path('/login');
 	};
-
-	/*$scope.loadCurrentUser();*/
-
-
-	//TODO: Fix undefined error on currentUser. http://stackoverflow.com/questions/23848127/how-can-i-overcome-race-conditions-within-directives-without-a-timeout-function
-	//console.log("Current User" + $scope.currentUser.AccountID);  //get undefined
-	//$scope.orgAccountResource = $resource("api/organization/account/:accountId", {{accountId: $scope.currentUser.AccountID} );
-	$scope.orgAccountResource = $resource("api/organization/account/:accountId", {accountId: 7} );
-
-	$scope.loadCurrentOrg = function() {
-		$scope.orgAccountResource.get({}, function(data){
-			$scope.orgs = data.json;
-			$scope.org = $scope.orgs[0];
-			$scope.currentOrg = $scope.org[0];
-			$scope.$broadcast("CurrentOrgLoaded", {});
-		});
-	};
-
-	//$scope.loadCurrentOrg();
 
 
 	$scope.resources = [
