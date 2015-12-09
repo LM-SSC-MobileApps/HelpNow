@@ -38,6 +38,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 
 	$scope.setCurrentUser = function (user) {
 	    $scope.currentUser = user;
+	    $scope.currentOrg = user.OrganizationGroup.Organization;
 	};
 	
 	$scope.setCurrentLanguage = function(language) {
@@ -84,7 +85,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 		}
 		return {}; 
 	};
-	
+
 	$scope.getLocationIcon = function(location) {
 		var inventories = location.ResourceLocationInventories;
 		if (inventories.length > 1)
@@ -171,7 +172,8 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	$scope.redirectToLogin = function () {
 	    $scope.showLogin = true;
 	    $location.path('/login');
-	}
+	};
+
 	/*$scope.loadCurrentUser();*/
 
 
@@ -189,7 +191,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 		});
 	};
 
-	$scope.loadCurrentOrg();
+	//$scope.loadCurrentOrg();
 
 
 	$scope.resources = [

@@ -128,76 +128,7 @@ var routes = function(){
 			EventID: req.params.eventID
         }
 	});
-	  //load resource locations
-	  /*
-	  tasks[1] = models.ResourceLocationInventory.findAll (
-		  {
-        include: [
-        {
-          model: models.ResourceType,
-          required: true
-        },
-        {
-          model: models.ResourceTypeUnitOfMeasure,
-          required: true
-        },
-        {
-          model: models.ResourceLocation,
-          required: true,
-          include: [
-            {
-              model: models.Organization,
-              required: true
-            },
-            {
-              model: models.ResourceLocationType
-            }],
-          where: {
-              EventID: req.params.eventID
-          }
-        }
-        ]
-		  }
-	  );
-	  
-	  tasks[1] = models.ResourceRegistry.findAll(
-		{
-		  where: {
-			   EventID: req.params.eventID
-		  },
-      include: [
-        {model: models.ResourceLocation,
-          include: [
-            {
-              model: models.ResourceLocationInventory,
-              include: [
-                  {
-                    model: models.ResourceType,
-                    required: false
-                  },
-                  {
-                    model: models.ResourceTypeUnitOfMeasure,
-                    required: false
-                  }
-              ],
-              required: false
-            },
-            {
-              model: models.ResourceLocationTransport,
-              include: [
-                  {
-                    model: models.TransportType,
-                    required: false
-                  }
-              ],
-              required: false
-            }
-          ]
-        },
-        {model: models.Organization}
-      ]
-	  });
-	  */
+	
 	  //when all data is loaded, send the response
 	  promise.all(tasks)
 	  .then(function(results) {

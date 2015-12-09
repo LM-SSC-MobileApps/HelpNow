@@ -10,7 +10,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     Name: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     OrganizationTypeID: {
       type: DataTypes.INTEGER(11),

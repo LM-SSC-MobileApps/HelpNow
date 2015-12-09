@@ -666,29 +666,45 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
         return false;
     };
 }]);
-angular.module("helpNow").controller("LoginCtrl", ["$scope", "$location", "$routeParams", "$resource", function($scope, $location, $routeParams, $resource) {
+angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function($scope, $http, $location, $routeParams, $resource) {
     $scope.setCurrentView("login");
 
     $scope.validateUser = function () {
-        if ($scope.username === undefined || $scope.password === undefined) {
+        if ($scope.userCreds.username === undefined || $scope.userCreds.password === undefined) {
             alert("Missing Username or Password");
         }
         else {
-            $scope.usersResource = $resource("/api/account/" + $scope.username + "/" + $scope.password);
-            $scope.usersResource.get({}, function (data) {
-                $scope.users = data.json;
-                $scope.currentUser = $scope.users[0];
-                if ($scope.currentUser === undefined) {
-                    alert("Incorrect Username/Password combination.\nPlease try again");
-                }
-                else {
-                    $scope.setCurrentUser($scope.currentUser);
-                    $scope.$broadcast("CurrentUserLoaded", {});
-                    $location.path('#');
-                }
-            });
+            login();
         }
     };
+
+    function login() {
+        var creds = JSON.stringify($scope.userCreds);
+        var webCall = $http({
+            method: 'POST',
+            url: '/api/account/login',
+            async: true,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: creds
+        });
+        webCall.then(function (response) {
+            $scope.users = response.data.json;
+            $scope.currentUser = $scope.users[0];
+            if ($scope.currentUser === undefined) {
+                alert("Incorrect Username/Password combination.\nPlease try again");
+            }
+            else {
+                $scope.setCurrentUser($scope.currentUser);
+                $scope.$broadcast("CurrentUserLoaded", {});
+                $location.path('#');
+            }
+        },
+        function (response) { // optional
+            alert("Login Error - Please Try Again");
+        });
+    }
 }]);
 /**
  * ManageCtrl
@@ -878,7 +894,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 		map = newMap;
 		map.on("zoomend", function() {
 			updateMap();
-		})
+		});
 		updateMap();
 	};
 	
@@ -899,13 +915,13 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 }]);
 
 
-angular.module("helpNow").controller("RegAccountCtrl", ["$scope", "$http", "$routeParams", "$resource", function ($scope, $http, $routeParams, $resource) {
+angular.module("helpNow").controller("RegAccountCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function ($scope, $http, $location, $routeParams, $resource) {
     $scope.setCurrentView("reg-account");
 
     $scope.showUsername = true;
     $scope.showUser = false;
 
-    $scope.userAccount = {OrganizationGroupID: 1, Active: true, AccountRoleID: 3};
+    $scope.userAccount = {OrganizationGroupID: 1, Active: true, AccountRoleID: 3, CreateDate: new Date()};
 
     $scope.showUserForm = function () {
         var hasError = false;
@@ -936,18 +952,7 @@ angular.module("helpNow").controller("RegAccountCtrl", ["$scope", "$http", "$rou
             hasError = true;
         }
         if (!hasError) {
-            alert("Org Group ID: " + $scope.userAccount.OrganizationGroupID
-            + "\nUsername: " + $scope.userAccount.Username
-            + "\nPassword: " + $scope.userAccount.Password
-            + "\nFirst Name: " + $scope.userAccount.FirstName
-            + "\nMiddle Initial: " + $scope.userAccount.MiddleInitial
-            + "\nLast Name: " + $scope.userAccount.LastName
-            + "\nEmail: " + $scope.userAccount.Email
-            + "\nPhone: " + $scope.userAccount.Phone
-            + "\nMobile Phone: " + $scope.userAccount.MobilePhone
-            + "\nActive: " + $scope.userAccount.Active
-            + "\nAccount Role ID: " + $scope.userAccount.AccountRoleID);
-            //submitPost();
+            submitPost();
         }
     };
 
@@ -964,6 +969,7 @@ angular.module("helpNow").controller("RegAccountCtrl", ["$scope", "$http", "$rou
         });
         webCall.then(function (response) {
             alert("Account Successfully Created");
+            $location.path('#');
         },
         function (response) { // optional
             alert("Error: ");
@@ -1121,6 +1127,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 
 	$scope.setCurrentUser = function (user) {
 	    $scope.currentUser = user;
+	    $scope.currentOrg = user.OrganizationGroup.Organization;
 	};
 	
 	$scope.setCurrentLanguage = function(language) {
@@ -1167,7 +1174,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 		}
 		return {}; 
 	};
-	
+
 	$scope.getLocationIcon = function(location) {
 		var inventories = location.ResourceLocationInventories;
 		if (inventories.length > 1)
@@ -1254,7 +1261,8 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	$scope.redirectToLogin = function () {
 	    $scope.showLogin = true;
 	    $location.path('/login');
-	}
+	};
+
 	/*$scope.loadCurrentUser();*/
 
 
@@ -1272,7 +1280,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 		});
 	};
 
-	$scope.loadCurrentOrg();
+	//$scope.loadCurrentOrg();
 
 
 	$scope.resources = [

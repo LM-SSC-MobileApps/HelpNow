@@ -2,6 +2,14 @@
 var models  = require('../models'),
     express = require('express');
 
+//Account many-to-one on OrganizationGroup
+models.Account.belongsTo(models.OrganizationGroup, {foreignKey: 'OrganizationGroupID'});
+models.OrganizationGroup.hasMany(models.Account, {foreignKey: 'OrganizationGroupID'});
+
+//OrganizationGroup many-to-One on Organization
+models.Organization.hasMany(models.OrganizationGroup, {foreignKey: 'OrganizationID'});
+models.OrganizationGroup.belongsTo(models.Organization, {foreignKey: 'OrganizationID'});
+
 
 var routes = function(){
   var router  = express.Router();
@@ -68,15 +76,22 @@ var routes = function(){
             }
         }
       ).then(function (account) {
-          res.statusCode = 200;
-          res.send(
+          if (account.length>0)
             {
-                result: 'success',
-                err: '',
-                json: account,
-                length: account.length
+              res.statusCode = 200;
+              res.send(
+                {
+                    result: 'success',
+                    err: '',
+                    json: account,
+                    length: account.length
+                }
+              );
             }
-          );
+            else
+            {
+              res.sendStatus(401)
+            }
       }
      ).catch(function (err) {
          console.error(err);
@@ -87,6 +102,54 @@ var routes = function(){
          });
      });
   }
+  )
+  //find login which retrieves account
+  .post('/login/', function (req, res) {
+        models.Account.findAll(
+          {
+              include: [
+                {
+                  model: models.OrganizationGroup,
+                  include: [
+                    {
+                      model: models.Organization
+                    }
+                  ]
+                }
+              ],
+              where: {
+                  Username: req.body.username,
+                  Password: req.body.password
+              }
+          }
+        ).then(function (account) {
+            if (account.length>0)
+            {
+              res.statusCode = 200;
+              res.send(
+                {
+                    result: 'success',
+                    err: '',
+                    json: account,
+                    length: account.length
+                }
+              );
+            }
+            else
+            {
+              res.sendStatus(401)
+            }
+            
+        }
+      ).catch(function (err) {
+          console.error(err);
+          res.statusCode = 502;
+          res.send({
+              result: 'error',
+              err: err.message
+          });
+      });
+    }
   )
   //insert into Account
   .post('/', function(req, res) {

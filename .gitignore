@@ -32,3 +32,8 @@ typings
 # config folder skip
 config
 
+<<<<<<< HEAD
+=======
+# ignore generated folder
+# generated
+>>>>>>> 7e6d74ecc49ecbadad92b3a31b6a1e2e5c92b63d
