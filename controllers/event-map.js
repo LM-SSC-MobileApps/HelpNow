@@ -14,7 +14,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     $scope.eventID = $routeParams.eventID * 1;
     if ($scope.events) {
         $scope.event = $scope.getEvent($scope.eventID);
-        $scope.setTitle($scope.event.EventLocations[0].Description);
+        $scope.setTitle($scope.event.EventLocations[0].Description, $scope.getEventIcon($scope.event.EventType.Description));
         loadRequests();
         loadUrgencyList();
     }

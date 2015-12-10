@@ -39,8 +39,9 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 		currentView = viewName;
 	};
 
-	$scope.setTitle = function (title) {
+	$scope.setTitle = function (title, img) {
 	    $scope.title = title;
+	    $scope.imageSrc = img;
 	};
 
 	$scope.setCurrentUser = function (user) {

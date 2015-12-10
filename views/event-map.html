@@ -1,5 +1,4 @@
 <div ng-controller="EventMapCtrl">
-    <!--<h3><img id="event-header-icon" src="{{getEventIcon(event.EventType.Description)}}" />{{event.EventLocations[0].Description}}</h3>-->
     <div id="map" ng-if="event" map map-center="{{event.EventLocations[0].LAT}},{{event.EventLocations[0].LONG}}" map-zoom="13" class="col-md-9" style="height: 512px; border: 1px solid #AAA;"></div>
     <div id="rightColumn" class="col-md-3" ng-if="showEventDetails">
         <div id="eventInfo" ng-hide="showFilters" ng-include="'views/fragments/event-info.html'"></div>
