@@ -69,7 +69,9 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap" ])
 		});
 	}]);
 angular.module("helpNow").controller("EventListCtrl", ["$scope", "$location", function($scope, $location) {
-	var map;
+    var map;
+
+    $scope.setTitle("Worldwide Events")
 	
 	$scope.getMapEventIcon = function(eventType) {
 		if (eventType == "Flood") {
@@ -125,6 +127,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     $scope.eventID = $routeParams.eventID * 1;
     if ($scope.events) {
         $scope.event = $scope.getEvent($scope.eventID);
+        $scope.setTitle($scope.event.EventLocations[0].Description);
         loadRequests();
         loadUrgencyList();
     }
@@ -529,6 +532,8 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
     var map;
     var mapLayers = [];
 
+    $scope.setTitle("Inventory Management");
+
     $scope.setCurrentView("inventory");
 
     $scope.requestsResource = $resource("/api/event/mapitems/");
@@ -671,6 +676,7 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
 }]);
 angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function ($scope, $http, $location, $routeParams, $resource) {
     $scope.setCurrentView("login");
+    $scope.setTitle("Login");
 
     $scope.validateUser = function () {
         if ($scope.userCreds.username === undefined || $scope.userCreds.password === undefined) {
@@ -716,7 +722,7 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
 
 angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , function($scope, $location) {
 
-
+    $scope.setTitle("Organization Management");
 
 	$scope.go = function ( path ) {
 		$location.path( path );
@@ -734,7 +740,8 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	
     $scope.eventID = $routeParams.eventID * 1;
 	if ($scope.events) {
-		$scope.event = $scope.getEvent($scope.eventID);
+	    $scope.event = $scope.getEvent($scope.eventID);
+	    $scope.setTitle($scope.event.EventLocations[0].Description);
 		loadRequests();
 	} 
 	
@@ -921,6 +928,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 
 angular.module("helpNow").controller("RegAccountCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function ($scope, $http, $location, $routeParams, $resource) {
     $scope.setCurrentView("reg-account");
+    $scope.setTitle("Register an Account");
 
     $scope.showUsername = true;
     $scope.showUser = false;
@@ -1097,6 +1105,8 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	
 	$scope.eventsResource = $resource("/api/event");
 	$scope.currentUser = JSON.parse(sessionStorage.getItem("user"));
+
+	$scope.title = "Worldwide Events";
 	
 	$scope.showMedical = true;
 	$scope.showShelter = true;
@@ -1130,9 +1140,16 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 		currentView = viewName;
 	};
 
+	$scope.setTitle = function (title) {
+	    $scope.title = title;
+	};
+
 	$scope.setCurrentUser = function (user) {
 	    $scope.currentUser = user;
-	    $scope.currentOrg = user.OrganizationGroup.Organization;
+	};
+
+	$scope.setCurrentOrg = function (org) {
+	    $scope.currentOrg = org;
 	};
 	
 	$scope.setCurrentLanguage = function(language) {

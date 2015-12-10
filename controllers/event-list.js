@@ -1,5 +1,7 @@
 angular.module("helpNow").controller("EventListCtrl", ["$scope", "$location", function($scope, $location) {
-	var map;
+    var map;
+
+    $scope.setTitle("Worldwide Events")
 	
 	$scope.getMapEventIcon = function(eventType) {
 		if (eventType == "Flood") {

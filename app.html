@@ -66,22 +66,21 @@
 			</div>
 		</nav>
 
-        <div class="row" ng-show="currentUser">
-            <div class="col-lg-4 col-lg-offset-8  pull-right ">
-                <h5>Current User: {{currentUser.FirstName + " " + currentUser.LastName + ", " + currentUser.OrganizationGroup.Name }}</h5>
-            </div>
-        </div>
-
-        <div class="row" ng-hide="currentUser">
-            <div class="col-lg-3 col-lg-offset-8">
-                <a id="btn-login" class="btn btn-primary pull-right" ng-click="redirectToLogin()"><span></span>Login</a>
-            </div>
-        </div>
-
         <div class="row main-content">
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h3>{{title}}</h3>
+                            </div>
+                            <div class="col-md-4" ng-show="currentUser">
+                                <h5>Current User: {{currentUser.FirstName + " " + currentUser.LastName + ", " + currentUser.OrganizationGroupName }}</h5>
+                            </div>
+                            <div class="col-md-4" ng-hide="currentUser">
+                                <a id="btn-login" class="btn btn-primary pull-right" ng-click="redirectToLogin()"><span></span>Login</a>
+                            </div>
+                        </div>
                         <ng-view />
                     </div>
                 </div>

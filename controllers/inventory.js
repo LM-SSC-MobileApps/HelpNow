@@ -3,6 +3,8 @@
     var map;
     var mapLayers = [];
 
+    $scope.setTitle("Inventory Management");
+
     $scope.setCurrentView("inventory");
 
     $scope.requestsResource = $resource("/api/event/mapitems/");

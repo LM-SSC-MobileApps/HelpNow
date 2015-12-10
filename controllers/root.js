@@ -4,6 +4,8 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	
 	$scope.eventsResource = $resource("/api/event");
 	$scope.currentUser = JSON.parse(sessionStorage.getItem("user"));
+
+	$scope.title = "Worldwide Events";
 	
 	$scope.showMedical = true;
 	$scope.showShelter = true;
@@ -37,9 +39,16 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 		currentView = viewName;
 	};
 
+	$scope.setTitle = function (title) {
+	    $scope.title = title;
+	};
+
 	$scope.setCurrentUser = function (user) {
 	    $scope.currentUser = user;
-	    $scope.currentOrg = user.OrganizationGroup.Organization;
+	};
+
+	$scope.setCurrentOrg = function (org) {
+	    $scope.currentOrg = org;
 	};
 	
 	$scope.setCurrentLanguage = function(language) {

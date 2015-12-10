@@ -1,5 +1,6 @@
 ﻿angular.module("helpNow").controller("RegAccountCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function ($scope, $http, $location, $routeParams, $resource) {
     $scope.setCurrentView("reg-account");
+    $scope.setTitle("Register an Account");
 
     $scope.showUsername = true;
     $scope.showUser = false;
