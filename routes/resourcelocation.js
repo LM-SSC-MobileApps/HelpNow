@@ -94,6 +94,42 @@ var routes = function(){
       });
     }
   )
+  //find ResourceLocation by ID
+  .get('/organization/', function(req, res) {
+      models.ResourceLocation.findAll(
+        {
+          where: {
+            ResourceLocationID: req.session.organizationid
+          },
+          include: [
+            {model: models.Organization},
+            {model: models.Event, required: false},
+            {model: models.ResourceLocationInventory},
+            {model: models.ResourceLocationTransport},
+            {model: models.ResourceLocationType}
+          ]
+        }
+      ).then(function(resourceLocation) {
+        res.statusCode = 200;
+        res.send(
+          {
+            result: 'success',
+            err:    '',
+            json:  resourceLocation,
+            length: resourceLocation.length
+          }
+        );
+      }
+     ).catch(function (err) {
+       console.error(err);
+       res.statusCode = 502;
+       res.send({
+           result: 'error',
+           err:    err.message
+       });
+      });
+    }
+  )
   //insert into ResourceLocation
   .post('/', function(req, res) {
     models.ResourceLocation.create(req.body)
