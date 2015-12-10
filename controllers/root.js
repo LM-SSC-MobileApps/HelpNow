@@ -3,6 +3,14 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	var currentView = "";
 	
 	$scope.eventsResource = $resource("/api/event");
+	$scope.currentUser = JSON.parse(sessionStorage.getItem("user"));
+	
+	$scope.showMedical = true;
+	$scope.showShelter = true;
+	$scope.showFood = true;
+	$scope.showWater = true;
+	$scope.showEvacuation = true;
+	$scope.showMedicine = true;
 	
 	$scope.loadEvents = function() {
 		$scope.eventsResource.get({}, function(data) {
@@ -13,11 +21,11 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	
 	$scope.getEventIcon = function(eventType) {
 		if (eventType == "Flood") {
-			return "style/images/Flood.png";
+			return "style/images/flood.png";
 		} else if (eventType == "Tsunami") {
 			return "style/images/Tsunami.png";
 		} else {
-			return "style/images/Earthquake.png";
+			return "style/images/earthquake.png";
 		}
 	};
 	
@@ -78,8 +86,13 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 		}
 		return {}; 
 	};
-	
-	$scope.getLocationIcon = function (resourceType) {
+
+	$scope.getLocationIcon = function (location) {
+	    var inventories = location.ResourceLocationInventories;
+	    if (inventories.length > 1)
+	        return "style/images/resources.png";
+
+	    var resourceType = inventories[0].ResourceType.Description;
 	    if (resourceType == "Water") {
 	        return "style/images/Water-Diamond-Blue.png";
 	    } else if (resourceType == "First Aid") {
@@ -95,43 +108,62 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	    }
 	};
 	
+	$scope.buildLocationMarkers = function (locations, mapLayers) {
+	    if (!locations) return;
+	    var selectedLocations = locations.filter(function (location) {
+	        return $scope.shouldDisplayLocationMarker(location);
+	    });
+
+	    angular.forEach(selectedLocations, function (location) {
+	        var locationIcon = L.icon({
+	            iconUrl: $scope.getLocationIcon(location),
+	            iconSize: [60, 60],
+	            iconAnchor: [30, 30]
+	        });
+
+	        var marker = L.marker([location.LAT, location.LONG], { icon: locationIcon });
+	        var popupText = "<strong>" + location.Organization.Name + "</strong><br/>" +
+				location.PrimaryPOCPhone + "<hr/>";
+	        location.ResourceLocationInventories.forEach(function (inventory) {
+	            popupText += inventory.ResourceType.Description + ": " + inventory.Quantity + " " +
+					inventory.ResourceTypeUnitOfMeasure.Description + "<br/>";
+	        });
+
+	        marker.bindPopup(popupText);
+	        mapLayers.push(marker);
+	    });
+	};
+	
+	$scope.toggleFlag = function (flag) {
+	    $scope[flag] = !$scope[flag];
+	};
+	
+	$scope.shouldDisplayMarker = function (type) {
+	    return (type == "Water" && $scope.showWater) ||
+				(type == "Shelter" && $scope.showShelter) ||
+				(type == "Food" && $scope.showFood) ||
+				(type == "Evacuation" && $scope.showEvacuation) ||
+				(type == "First Aid" && $scope.showMedical) ||
+				(type == "Medicine" && $scope.showMedicine);
+	};
+	
+	$scope.shouldDisplayLocationMarker = function (location) {
+	    var inventories = location.ResourceLocationInventories;
+	    for (var i = 0; i < inventories.length; i++) {
+	        if ($scope.shouldDisplayMarker(inventories[i].ResourceType.Description))
+	            return true;
+	    }
+	    return false;
+	};
+	
 	$scope.loadEvents();
 
 
-    /* Hard coded until we figure out authentication */
-	$scope.usersResource = $resource("/api/account/7");
-
-	$scope.loadCurrentUser = function() {
-		$scope.usersResource.get({}, function(data) {
-			$scope.users = data.json;
-			$scope.currentUser = $scope.users[0];
-			$scope.$broadcast("CurrentUserLoaded", {});
-		});
-	};
 
 	$scope.redirectToLogin = function () {
 	    $scope.showLogin = true;
 	    $location.path('/login');
 	};
-
-	/*$scope.loadCurrentUser();*/
-
-
-	//TODO: Fix undefined error on currentUser. http://stackoverflow.com/questions/23848127/how-can-i-overcome-race-conditions-within-directives-without-a-timeout-function
-	//console.log("Current User" + $scope.currentUser.AccountID);  //get undefined
-	//$scope.orgAccountResource = $resource("api/organization/account/:accountId", {{accountId: $scope.currentUser.AccountID} );
-	$scope.orgAccountResource = $resource("api/organization/account/:accountId", {accountId: 7} );
-
-	$scope.loadCurrentOrg = function() {
-		$scope.orgAccountResource.get({}, function(data){
-			$scope.orgs = data.json;
-			$scope.org = $scope.orgs[0];
-			$scope.currentOrg = $scope.org[0];
-			$scope.$broadcast("CurrentOrgLoaded", {});
-		});
-	};
-
-	//$scope.loadCurrentOrg();
 
 
 	$scope.resources = [

@@ -1,7 +1,6 @@
 { "menu_help":"সাহায্য",
-  "menu_org":"এইড সংগঠন",
-  "menu_ind":"ব্যক্তি",
-  "menu_gov": "সরকার",
+  "menu_events":  "ঘটনাবলী",
   "menu_inv": "জায়",
+  "menu_manage":  "পরিচালনা করা",
   "menu_lang":"ভাষা",
   "events_title":"একটি ইভেন্ট নির্বাচন"  }

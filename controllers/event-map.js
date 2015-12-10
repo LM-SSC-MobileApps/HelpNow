@@ -30,12 +30,14 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     $scope.showHelp = false;
     $scope.showNeeds = false;
 
+	/*
     $scope.showMedical = true;
     $scope.showShelter = true;
     $scope.showFood = true;
     $scope.showWater = true;
     $scope.showEvacuation = true;
     $scope.showMedicine = true;
+	*/
 
     $scope.showLocationMarkers = true;
     $scope.locationPref = { value: 'Current' };
@@ -123,7 +125,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
         resetNeedsButtons();
         updateMap();
     });
-
+/*
     function buildLocationMarkers() {
         if (!$scope.locations) return;
         var selectedLocations = $scope.locations.filter(function (location) {
@@ -152,7 +154,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
 				(type == "First Aid" && $scope.showMedical) ||
 				(type == "Medicine" && $scope.showMedicine);
     }
-
+*/
     function updateMap() {
         if (!map || !$scope.events) return;
 
@@ -164,7 +166,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
         mapLayers = [];
 
         if ($scope.showLocationMarkers)
-            buildLocationMarkers();
+            $scope.buildLocationMarkers($scope.locations, mapLayers);
 
         angular.forEach(mapLayers, function (layer) {
             map.addLayer(layer);
@@ -193,7 +195,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     };
 
     $scope.toggleButton = function (id) {
-        $scope[id] = !$scope[id];
+        $scope.toggleFlag(id);
         updateMap();
         return false;
     };
