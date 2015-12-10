@@ -39,7 +39,10 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 
 	$scope.setCurrentUser = function (user) {
 	    $scope.currentUser = user;
-	    $scope.currentOrg = user.OrganizationGroup.Organization;
+	};
+
+	$scope.setCurrentOrg = function (org) {
+	    $scope.currentOrg = org;
 	};
 	
 	$scope.setCurrentLanguage = function(language) {
@@ -157,8 +160,6 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	};
 	
 	$scope.loadEvents();
-
-
 
 	$scope.redirectToLogin = function () {
 	    $scope.showLogin = true;

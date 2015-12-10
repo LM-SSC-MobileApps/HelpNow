@@ -28,8 +28,18 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
                 alert("Incorrect Username/Password combination.\nPlease try again");
             }
             else {
-                $scope.setCurrentUser($scope.currentUser);
-                sessionStorage.setItem("user", JSON.stringify($scope.currentUser));
+                $scope.userSessionObject = {
+                    AccountID: $scope.currentUser.AccountID,
+                    FirstName: $scope.currentUser.FirstName,
+                    LastName: $scope.currentUser.LastName,
+                    OrganizationGroupID: $scope.currentUser.OrganizationGroup.OrganizationGroupID,
+                    OrganizationGroupName: $scope.currentUser.OrganizationGroup.Name,
+                    OrganizationID: $scope.currentUser.OrganizationGroup.Organization.OrganizationID,
+                    OrganizationName: $scope.currentUser.OrganizationGroup.Organization.Name
+                };
+                $scope.setCurrentUser($scope.userSessionObject);
+                $scope.setCurrentOrg($scope.currentUser.OrganizationGroup.Organization);
+                sessionStorage.setItem("user", JSON.stringify($scope.userSessionObject));
                 $scope.$broadcast("CurrentUserLoaded", {});
                 $location.path('#');
             }

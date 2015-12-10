@@ -532,12 +532,13 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
     $scope.setCurrentView("inventory");
 
     $scope.requestsResource = $resource("/api/event/mapitems/");
-    $scope.registryResource = $resource("/api/resourceregistry");
+    $scope.resourceLocation = $resource("/api/resourcelocation");
 
     $scope.eventID = $routeParams.eventID * 1;
+    alert($scope.eventID);
     if ($scope.events) {
         $scope.event = $scope.getEvent($scope.eventID);
-        loadRegistries();
+        loadResourceLocations();
     }
 
     $scope.userOrgID = 1;
@@ -547,7 +548,7 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
     $scope.sliderLabel = "0.25 km";
     $scope.isMetric = true;
 
-    $scope.showRegistries = true;
+    $scope.showResourceLocations = true;
     $scope.showNewForm = false;
     $scope.showTransportationOptions = false;
 
@@ -557,14 +558,14 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
 
     $scope.$on("EventDataLoaded", function () {
         $scope.event = $scope.getEvent($scope.eventID);
-        loadRegistries();
-        loadRequests();
+        loadResourceLocations();
+        //loadRequests();
         resetNeedsButtons();
         updateMap();
     });
 
     function updateMap() {
-        if (!map || !$scope.events) return;
+        if (!map || !$scope.resourceLocations) return;
 
         for (var i = 0; i < mapLayers.length; i++) {
             var layer = mapLayers[i];
@@ -572,6 +573,8 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
         }
 
         mapLayers = [];
+
+
         var selectedRequests = $scope.requests.filter(function (request) {
             var type = request.ResourceType.Description;
             return shouldDisplayMarker(type);
@@ -585,23 +588,23 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
         });
     }
 
-    function loadRegistries() {
-        $scope.registryResource.get({}, function (data) {
-            $scope.registries = data.json;
-            var filteredRegistries = $scope.registries.filter(function (registry) {
-                return registry.OrganizationID == $scope.userOrgID;
+    function loadResourceLocations() {
+        $scope.resourceLocation.get({}, function (data) {
+            $scope.resourceLocations = data.json;
+            var filteredResourceLocations = $scope.resourceLocations.filter(function (resLocation) {
+                return resLocation.OrganizationID == $scope.userOrgID;
             });
-            $scope.registries = filteredRegistries;
+            $scope.resourceLocations = filteredResourceLocations;
         });
     }
 
-    function loadRequests() {
-        $scope.requestsResource.get({ eventID: $scope.eventID }, function (data) {
-            $scope.requests = data.json.requests;
-            $scope.locations = data.json.locations;
-            updateMap();
-        });
-    }
+    //function loadRequests() {
+    //    $scope.requestsResource.get({ eventID: $scope.eventID }, function (data) {
+    //        $scope.requests = data.json.requests;
+    //        $scope.locations = data.json.locations;
+    //        updateMap();
+    //    });
+    //}
 
     $scope.initMap = function (newMap) {
         map = newMap;
@@ -631,7 +634,7 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
 
     $scope.showNewSiteForm = function () {
         $scope.showNewForm = !$scope.showNewForm;
-        $scope.showRegistries = !$scope.showRegistries;
+        $scope.showResourceLocations = !$scope.showResourceLocations;
         return false;
     };
 
@@ -696,8 +699,18 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
                 alert("Incorrect Username/Password combination.\nPlease try again");
             }
             else {
-                $scope.setCurrentUser($scope.currentUser);
-                sessionStorage.setItem("user", JSON.stringify($scope.currentUser));
+                $scope.userSessionObject = {
+                    AccountID: $scope.currentUser.AccountID,
+                    FirstName: $scope.currentUser.FirstName,
+                    LastName: $scope.currentUser.LastName,
+                    OrganizationGroupID: $scope.currentUser.OrganizationGroup.OrganizationGroupID,
+                    OrganizationGroupName: $scope.currentUser.OrganizationGroup.Name,
+                    OrganizationID: $scope.currentUser.OrganizationGroup.Organization.OrganizationID,
+                    OrganizationName: $scope.currentUser.OrganizationGroup.Organization.Name
+                };
+                $scope.setCurrentUser($scope.userSessionObject);
+                $scope.setCurrentOrg($scope.currentUser.OrganizationGroup.Organization);
+                sessionStorage.setItem("user", JSON.stringify($scope.userSessionObject));
                 $scope.$broadcast("CurrentUserLoaded", {});
                 $location.path('#');
             }
@@ -1129,7 +1142,10 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 
 	$scope.setCurrentUser = function (user) {
 	    $scope.currentUser = user;
-	    $scope.currentOrg = user.OrganizationGroup.Organization;
+	};
+
+	$scope.setCurrentOrg = function (org) {
+	    $scope.currentOrg = org;
 	};
 	
 	$scope.setCurrentLanguage = function(language) {
@@ -1248,41 +1264,10 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	
 	$scope.loadEvents();
 
-
-    /* Hard coded until we figure out authentication */
-	$scope.usersResource = $resource("/api/account/7");
-
-	$scope.loadCurrentUser = function() {
-		$scope.usersResource.get({}, function(data) {
-			$scope.users = data.json;
-			$scope.currentUser = $scope.users[0];
-			$scope.$broadcast("CurrentUserLoaded", {});
-		});
-	};
-
 	$scope.redirectToLogin = function () {
 	    $scope.showLogin = true;
 	    $location.path('/login');
 	};
-
-	/*$scope.loadCurrentUser();*/
-
-
-	//TODO: Fix undefined error on currentUser. http://stackoverflow.com/questions/23848127/how-can-i-overcome-race-conditions-within-directives-without-a-timeout-function
-	//console.log("Current User" + $scope.currentUser.AccountID);  //get undefined
-	//$scope.orgAccountResource = $resource("api/organization/account/:accountId", {{accountId: $scope.currentUser.AccountID} );
-	$scope.orgAccountResource = $resource("api/organization/account/:accountId", {accountId: 7} );
-
-	$scope.loadCurrentOrg = function() {
-		$scope.orgAccountResource.get({}, function(data){
-			$scope.orgs = data.json;
-			$scope.org = $scope.orgs[0];
-			$scope.currentOrg = $scope.org[0];
-			$scope.$broadcast("CurrentOrgLoaded", {});
-		});
-	};
-
-	//$scope.loadCurrentOrg();
 
 
 	$scope.resources = [
