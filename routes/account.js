@@ -66,11 +66,11 @@ var routes = function(){
       });
     }
   )//find Accounts by organizationgroupid
-  .get('/organizationgroup/', function (req, res) {
+  .get('/organizationgroup/:id', function (req, res) {
       models.Account.findAll(
         {
             where: {
-                OrganizationGroupID: req.session.user.organizationgroupid
+                OrganizationGroupID: req.params.id
             }
         }
       ).then(function (account) {
