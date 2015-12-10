@@ -38,11 +38,11 @@ var routes = function(){
     }
   )
   //find Account by ID
-  .get('/:id', function(req, res) {
+  .get('/accountid/', function(req, res) {
       models.Account.findAll(
         {
           where: {
-            AccountID: req.params.id
+            AccountID: req.session.accountid
           }
         }
       ).then(function(account) {
@@ -65,14 +65,12 @@ var routes = function(){
        });
       });
     }
-  )
-  //find Account by username and password
-  .get('/:username/:password', function (req, res) {
+  )//find Accounts by organizationgroupid
+  .get('/organizationgroup/', function (req, res) {
       models.Account.findAll(
         {
             where: {
-                Username: req.params.username,
-                Password: req.params.password
+                OrganizationGroupID: req.session.user.organizationgroupid
             }
         }
       ).then(function (account) {
@@ -101,8 +99,44 @@ var routes = function(){
              err: err.message
          });
      });
-  }
+    }
   )
+  //find Accounts by organizationgroupid
+  // .get('/organizationgroup/:id', function (req, res) {
+  //     models.Account.findAll(
+  //       {
+  //           where: {
+  //               OrganizationGroupID: req.params.id
+  //           }
+  //       }
+  //     ).then(function (account) {
+  //         if (account.length>0)
+  //           {
+  //             res.statusCode = 200;
+  //             res.send(
+  //               {
+  //                   result: 'success',
+  //                   err: '',
+  //                   json: account,
+  //                   length: account.length
+  //               }
+  //             );
+  //           }
+  //           else
+  //           {
+  //             res.sendStatus(401)
+  //           }
+  //     }
+  //    ).catch(function (err) {
+  //        console.error(err);
+  //        res.statusCode = 502;
+  //        res.send({
+  //            result: 'error',
+  //            err: err.message
+  //        });
+  //    });
+  //   }
+  // )
   //find login which retrieves account
   .post('/login/', function (req, res) {
         models.Account.findAll(
