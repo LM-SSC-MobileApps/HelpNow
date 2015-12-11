@@ -11,42 +11,37 @@
         </div>
     </div>
     <div class="row">
-        <form class="form-horizontal" name="teamInviteForm" novalidate role="form" ng-submit="">
+        <form class="form-horizontal" name="teamInviteForm" novalidate role="form" ng-submit="sendInvite(newInvite)">
             <div class="form-group"
-                 ng-class="{'has-error' : (teamInviteForm.firstName.$invalid  && teamInviteForm.firstName.$touched) || teamInviteForm.firstName.$error.maxlength  }" >
+                 ng-class="{'has-error' : (teamInviteForm.firstName.$invalid  && teamInviteForm.firstName.$touched)  }" >
                 <label for="firstName" class="col-xs-3 control-label">First Name</label>
 
                 <div class="col-xs-9">
-                    <input type="text" id="firstName" name="firstName" class="form-control"   ng-required="true"   />
+                    <input type="text" id="firstName" name="firstName" class="form-control" ng-model="newInvite.FirstName"  ng-maxlength="50" required   />
                 <span class="help-block"
                       ng-if="teamInviteForm.firstName.$error.required">First Name is required</span>
-                <span class="help-block"
-                      ng-if="teamInviteForm.firstName.$error.pattern">First Name must start with A</span>
                 </div>
             </div>
-            <div class="form-group" >
+            <div class="form-group" ng-class="{'has-error' : (teamInviteForm.lastName.$invalid  && teamInviteForm.lastName.$touched) }" >
                 <label for="firstName" class="col-sm-3 control-label">Last Name</label>
 
                 <div class="col-xs-9">
-                    <input type="text" id="lastName" name="lastName" class="form-control" ng-required="true" />
+                    <input type="text" id="lastName" name="lastName" class="form-control"  ng-model="newInvite.LastName" required />
                 <span class="help-block"
                       ng-if="teamInviteForm.lastName.$error.required">Last Name is required</span>
-                <span class="help-block"
-                      ng-if="teamInviteForm.lastName.$error.pattern">Last Name must start with A</span>
                 </div>
             </div>
             <div class="form-group" >
                 <label for="email" class="col-xs-3 control-label">Email</label>
 
                 <div class="col-xs-9">
-                    <input type="email" id="email" name="email" class="form-control"
+                    <input type="email" id="email" name="email" ng-model="newInvite.Email" class="form-control"
                             ng-required="true"/>
                     <span class="help-block hide">A valid email is required</span>
                 </div>
             </div>
             <div class="col-xs-2 col-xs-offset-10">
-                <input type="submit" class="btn btn-primary " ng-disabled="teamInviteForm.$invalid"
-                       value="Send Invite"/>
+                <input type="submit" class="btn btn-primary "     value="Send Invite"/>
             </div>
         </form>
     </div>

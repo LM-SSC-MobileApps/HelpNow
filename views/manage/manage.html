@@ -9,30 +9,56 @@
                     </div>
                     <div class="row ">
                         <div class="panel-body text-nowrap">
-                            <div class="col-md-6  ">
-                                <h5>
-                                    <img ng-src="style/images/Person.png" style="height: 30px; width: 13px;"  alt="Team Invites"/>
-                                    {{currentUser.FirstName + " " + currentUser.LastName}}
-                                </h5>
-                            </div>
-                            <div class="col-md-6">
-                                <button class="btn btn-danger" ng-click="">
-                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                    Remove
-                                </button>
-                            </div>
+                            <ul class="list-unstyled list-inline" ng-repeat="teamMember in team">
+                                <div class="col-md-6  ">
+                                    <li>
+                                        <h5>
+                                            <img ng-src="style/images/Person.png" style="height: 30px; width: 13px;"
+                                                 alt="Team Invites"/>
+                                            {{teamMember.FirstName}}&nbsp;{{teamMember.LastName}}
+                                        </h5>
+                                    </li>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-danger" ng-click="deleteInvite(invite)">
+                                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                        Remove
+                                    </button>
+                                </div>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="panel text-center ">
-                    <div class="panel-title   spacer  ">
-                        <img ng-src="style/images/Invitation.png" style="height: 30px; width: 25px;"  alt="Team Invites"/>
+                <div class="panel  ">
+                    <div class="panel-title  text-center  spacer  ">
+                        <img ng-src="style/images/Invitation.png" style="height: 30px; width: 25px;"
+                             alt="Team Invites"/>
                         Invitations
                     </div>
-                     <div class="panel-body spacer">
-                        <p><a class="btn  btn-primary " href="#/invite">
+                    <div class="panel-body text-nowrap spacer">
+                        <ul class="list-unstyled list-inline" ng-repeat="invite in invites">
+                            <div class="col-md-6  ">
+                                <li>
+                                    <h5>
+                                        <img ng-src="style/images/Person.png" style="height: 30px; width: 13px;"
+                                             alt="Team Invites"/>
+                                        {{invite.FirstName}}&nbsp;{{invite.LastName}}
+                                    </h5>
+                                </li>
+                            </div>
+                            <div class="col-md-6">
+                                <button class="btn btn-danger" ng-click="deleteInvite(invite)">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                    Remove
+                                </button>
+                            </div>
+                        </ul>
+
+                    </div>
+                    <div class="panel-footer panel-borderless text-center">
+                        <a class="btn  btn-primary " href="#/invite">
                             <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
                             <span>Invite New Member</span>
                         </a>
