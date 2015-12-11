@@ -7,7 +7,7 @@
 
     $scope.setCurrentView("inventory");
 
-    $scope.requestsResource = $resource("/api/event/mapitems/");
+    //$scope.requestsResource = $resource("/api/event/mapitems/");
     $scope.resourceLocation = $resource("/api/resourcelocation");
 
     $scope.eventID = $routeParams.eventID * 1;

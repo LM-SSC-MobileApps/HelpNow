@@ -1,3 +1,13 @@
+angular.module("helpNow").directive("filters", function () {
+    return {
+		scope: {
+		  togglefunc: "=",
+		  classfunc: "="
+		},
+        templateUrl: 'views/fragments/resource-filters.html'
+	}
+});
+
 angular.module("helpNow").directive('map', function () {
     return {
         link: function (scope, element, attrs) {

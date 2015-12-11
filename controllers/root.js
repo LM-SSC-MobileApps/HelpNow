@@ -8,13 +8,6 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 
 	$scope.title = "Worldwide Events";
 	
-	$scope.showMedical = true;
-	$scope.showShelter = true;
-	$scope.showFood = true;
-	$scope.showWater = true;
-	$scope.showEvacuation = true;
-	$scope.showMedicine = true;
-	
 	$scope.loadEvents = function() {
 		$scope.eventsResource.get({}, function(data) {
 			$scope.events = data.json;
@@ -119,53 +112,57 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	    }
 	};
 	
-	$scope.buildLocationMarkers = function (locations, mapLayers) {
-	    if (!locations) return;
-	    var selectedLocations = locations.filter(function (location) {
-	        return $scope.shouldDisplayLocationMarker(location);
-	    });
-
-	    angular.forEach(selectedLocations, function (location) {
-	        var locationIcon = L.icon({
-	            iconUrl: $scope.getLocationIcon(location),
-	            iconSize: [60, 60],
-	            iconAnchor: [30, 30]
-	        });
-
-	        var marker = L.marker([location.LAT, location.LONG], { icon: locationIcon });
-	        var popupText = "<strong>" + location.Organization.Name + "</strong><br/>" +
-				location.PrimaryPOCPhone + "<hr/>";
-	        location.ResourceLocationInventories.forEach(function (inventory) {
-	            popupText += inventory.ResourceType.Description + ": " + inventory.Quantity + " " +
-					inventory.ResourceTypeUnitOfMeasure.Description + "<br/>";
-	        });
-
-	        marker.bindPopup(popupText);
-	        mapLayers.push(marker);
-	    });
-	};
+	$scope.buildLocationDetails = function(location) {
+		var popupText = "<strong>" + location.Organization.Name + "</strong><br/>" + 
+			location.PrimaryPOCPhone + "<hr/>";
+		location.ResourceLocationInventories.forEach(function(inventory) {
+			popupText += inventory.ResourceType.Description + ": " + inventory.Quantity + " " + 
+				inventory.ResourceTypeUnitOfMeasure.Description + "<br/>";
+		});
+		return popupText;
+	}
 	
-	$scope.toggleFlag = function (flag) {
-	    $scope[flag] = !$scope[flag];
-	};
+	$scope.buildLocationMarker = function(location, icon) {
+		var marker = L.marker([location.LAT, location.LONG], { icon: icon });
+		marker.bindPopup($scope.buildLocationDetails(location));
+		return marker;
+	}
 	
-	$scope.shouldDisplayMarker = function (type) {
-	    return (type == "Water" && $scope.showWater) ||
-				(type == "Shelter" && $scope.showShelter) ||
-				(type == "Food" && $scope.showFood) ||
-				(type == "Evacuation" && $scope.showEvacuation) ||
-				(type == "First Aid" && $scope.showMedical) ||
-				(type == "Medicine" && $scope.showMedicine);
-	};
+	$scope.buildLocationMarkers = function(locations, mapLayers, flags) {
+		if (!locations) return;
+		var selectedLocations = locations.filter(function(location) {
+			return $scope.shouldDisplayLocationMarker(location, flags);
+		});
+		
+		angular.forEach(selectedLocations, function(location) {
+			var locationIcon = L.icon({
+				iconUrl: $scope.getLocationIcon(location),
+				iconSize: [60, 60],
+				iconAnchor: [30, 30]
+			}); 
+			
+			var marker = $scope.buildLocationMarker(location, locationIcon);
+			mapLayers.push(marker);
+		});
+	}
 	
-	$scope.shouldDisplayLocationMarker = function (location) {
-	    var inventories = location.ResourceLocationInventories;
-	    for (var i = 0; i < inventories.length; i++) {
-	        if ($scope.shouldDisplayMarker(inventories[i].ResourceType.Description))
-	            return true;
-	    }
-	    return false;
-	};
+	$scope.shouldDisplayMarker = function(type, flags) {
+		return (type == "Water" && flags.showWater) || 
+				(type == "Shelter" && flags.showShelter) || 
+				(type == "Food" && flags.showFood) || 
+				(type == "Evacuation" && flags.showEvacuation) || 
+				(type == "First Aid" && flags.showMedical) || 
+				(type == "Medicine" && flags.showMedicine);
+	}
+	
+	$scope.shouldDisplayLocationMarker = function(location, flags) {
+		var inventories = location.ResourceLocationInventories;
+		for (var i = 0; i < inventories.length; i++) {
+			if ($scope.shouldDisplayMarker(inventories[i].ResourceType.Description, flags))
+				return true;
+		}
+		return false;
+	}
 	
 	$scope.loadEvents();
 

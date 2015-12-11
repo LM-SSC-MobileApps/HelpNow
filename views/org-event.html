@@ -1,12 +1,18 @@
 <div ng-controller="OrgEventCtrl">
 	<div id="map" ng-if="event" map map-center="{{event.EventLocations[0].LAT}},{{event.EventLocations[0].LONG}}" map-zoom="13" class="col-md-9" style="height: 512px; border: 1px solid #AAA;"></div>
 	<div  class="col-md-3">
-		<div id="eventInfo" ng-hide="showFilters" ng-include="'views/fragments/event-info.html'"></div>
-		<div class="row" ng-hide="showFilters">
+		<div id="eventInfo" ng-hide="popupIsOpen()" ng-include="'views/fragments/event-info.html'"></div>
+		<div class="row" ng-hide="popupIsOpen()">
 			<div class="col-md-12">
 				<a class="btn btn-primary" ng-click="toggleFilters()"><span class="glyphicon glyphicon-filter"></span> Show Filters</a>
 			</div>
 		</div>
+		<div class="row separated-small" ng-hide="popupIsOpen()">
+			<div class="col-md-12">
+				<a class="btn btn-primary" ng-click="toggleFindPanel()"><span class="glyphicon glyphicon-search"></span> Find Resources</a>
+			</div>
+		</div>
+		
 		<div class="row" ng-show="showFilters">
 			<div class="col-md-12">
 				<div class="well">
@@ -45,45 +51,111 @@
 								<br/>
 								<span class="filter-caption">Resources</span>
 							</div>
+							<div class="col-xs-4 text-center">
+								<a id="showDistCenterMarkers" ng-class="toggleButtonClass('showDistCenterMarkers')" ng-click="toggleButton('showDistCenterMarkers')">
+									<span></span>
+								</a>
+								<br/>
+								<span class="filter-caption">Dist Ctrs</span>
+							</div>
 						</div>
 						<hr></hr>
-						<div class="row">
-							<div class="col-xs-4 text-center">
-								<a id="showMedical" ng-class="toggleButtonClass('showMedical')" ng-click="toggleParentFlag('showMedical')" ><span></span></a>
-								<br/>
-								<span class="filter-caption">First Aid</span>
-							</div>
-							<div class="col-xs-4 text-center">
-								<a id="showShelter" ng-class="toggleButtonClass('showShelter')" ng-click="toggleParentFlag('showShelter')"><span></span></a>
-								<br/>
-								<span class="filter-caption">Shelter</span>
-							</div>
-							<div class="col-xs-4 text-center">
-								<a id="showFood" ng-class="toggleButtonClass('showFood')" ng-click="toggleParentFlag('showFood')"><span></span></a>
-								<br/>
-								<span class="filter-caption">Food</span>
-							</div>
-						</div>
-						<div class="row separated-small">
-							<div class="col-xs-4 text-center">
-								<a id="showMedicine" ng-class="toggleButtonClass('showMedicine')" ng-click="toggleParentFlag('showMedicine')"><span></span></a>
-								<br/>
-								<span class="filter-caption">Medicine</span>
-							</div>
-							<div class="col-xs-4 text-center">
-								<a id="showWater" ng-class="toggleButtonClass('showWater')" ng-click="toggleParentFlag('showWater')"><span></span></a>
-								<br/>
-								<span class="filter-caption">Water</span>
-							</div>
-							<div class="col-xs-4 text-center">
-								<a id="showEvacuation" ng-class="toggleButtonClass('showEvacuation')" ng-click="toggleParentFlag('showEvacuation')"><span></span></a>
-								<br/>
-								<span class="filter-caption">Evacuation</span>
-							</div>
-						</div>
+						<div filters classfunc="toggleResourceButtonClass" togglefunc="toggleResourceFilter" />
 					</div>
 				</div>
 			</div>
+		</div>
+		
+		<div class="row" ng-show="showFindPanel">
+			<div class="col-md-12">
+                <div class="well">
+				
+					<div ng-hide="showFindResults">
+						<div class="row">
+							<div class="col-xs-2">
+								<img width="30" height="30" src="style/images/Match.png" />
+							</div>
+							<div id="event-title" class="col-xs-10">
+								<h4 class="separated-tiny">Match Resources</h4>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<hr/>
+								<input ng-model="locationPref.value" type="radio" value="Current" ng-change="getLocation()" /><span>  Use My Current Location</span><br />
+								<input ng-model="locationPref.value" type="radio" value="Other" ng-change="getLocation()" /><span>  Use The Following Location:</span>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<span>Lat </span><input ng-model="mappingLoc.LAT" type="text" class="form-control" name="lat" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
+								<span>Long </span><input ng-model="mappingLoc.LONG" type="text" class="form-control" name="long" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
+							</div>
+						</div>
+						<div class="well separated-small">
+							<span class="glyphicon glyphicon-pushpin"></span> NOTE: You can select the latitude and longitude by clicking on the map.
+						</div>
+						<hr></hr>
+						<div filters classfunc="toggleMatchingButtonClass" togglefunc="toggleMatchingFilter" />
+						<hr></hr>
+						<div class="row separated" ng-show="showMappingError" >
+							<div class="col-sm-12">
+								<div class="alert alert-danger" role="alert">You must select a location and at least one resource type.</div>
+							</div>
+						</div>
+						<div class="row separated-small">
+							<div class="col-sm-12 btn-row">
+								<a id="btn-help" class="btn btn-primary" ng-click="findMatches()" ><span class="glyphicon glyphicon-search"></span>Match</a>
+								<a id="btn-help" class="btn btn-primary" ng-click="toggleFindPanel()" ><span class="glyphicon glyphicon-remove-sign"></span>Close</a>
+							</div>
+						</div>
+					</div>
+					
+					<div ng-show="showFindResults">
+						<div class="row">
+							<div class="col-xs-4">
+								<img width="50" height="50" src="style/images/Match.png" />
+							</div>
+							<div id="event-title" class="col-xs-8">
+								<h4>Match Results</h4>
+								<h5><a ng-click="showLocation(mappingLoc.LAT, mappingLoc.LONG)" href="">({{mappingLoc.LAT}}, {{mappingLoc.LONG}})</a></h5>
+							</div>
+						</div>
+						<div class="row separated-small">
+							<div class="col-xs-12">
+								Resource Types: {{getMatchResources()}}
+							</div>
+						</div>
+						<hr></hr>
+						<div ng-repeat="match in matches">
+							<div class="row separated-small">
+								<div class="col-xs-3">
+									<a ng-click="showLocation(match.center.LAT, match.center.LONG)" href=""><img width="40" src="style/images/Distribution-Center.png" /></a>
+								</div>
+								<div class="col-xs-9">
+									<h4><a ng-click="showLocation(match.center.LAT, match.center.LONG)" href="">{{match.center.Organization.Name}}</a></h4>
+									<h5>{{match.center.PrimaryPOCName}}</h5>
+									<h5>{{match.center.PrimaryPOCPhone}}</h5>
+									<div>
+										<a tabindex="0" class="btn btn-primary" uib-popover-html="'{{getCleanLocationText(match.center)}}'" popover-trigger="focus" ><span class="glyphicon glyphicon-list"></span>Inventory</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<h5 ng-hide="hasMatches">No matching distribution centers found.</h5>
+						<hr></hr>
+						<div class="row separated">
+							<div class="col-sm-12 btn-row">
+								<a id="btn-help" class="btn btn-primary" ng-click="backToFind()" ><span class="glyphicon glyphicon-arrow-left"></span>Back</a>
+								<a id="btn-help" class="btn btn-primary" ng-click="toggleFindPanel()" ><span class="glyphicon glyphicon-remove-sign"></span>Close</a>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+			
+			
 		</div>
 	</div>
 </div>
