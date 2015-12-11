@@ -34,10 +34,8 @@ var routes = function(){
       });
     }
   )
-  //find Account by ID on session
-  .get('/accountid/', function(req, res) {
-      console.log('here is our session account id: '+req.session.accountid);
-      console.log('here is the sessionid: '+req.sessionID);
+  //find Account by AccountID
+  .get('/:id', function(req, res) {
       models.Account.findAll(
         {
           include: [
@@ -46,7 +44,8 @@ var routes = function(){
             }
           ],
           where: {
-            AccountID: req.session.accountid
+            AccountID: req.params.id,
+            Active: true
           }
         }
       ).then(function(account) {
@@ -71,46 +70,48 @@ var routes = function(){
     }
   )
   //find Account by ID on session
-  .get('/accountid/', function(req, res) {
-      console.log('here is our session account id: '+req.session.accountid);
-      console.log('here is the sessionid: '+req.sessionID);
-      models.Account.findAll(
-        {
-          include: [
-            {
-              model: models.Organization,
-            }
-          ],
-          where: {
-            AccountID: req.session.accountid
-          }
-        }
-      ).then(function(account) {
-        res.statusCode = 200;
-        res.send(
-          {
-            result: 'success',
-            err:    '',
-            json:  account,
-            length: account.length
-          }
-        );
-      }
-     ).catch(function (err) {
-       console.error(err);
-       res.statusCode = 502;
-       res.send({
-           result: 'error',
-           err:    err.message
-       });
-      });
-    }
-  )//find Accounts by organizationid
+  // .get('/accountid/', function(req, res) {
+  //     console.log('here is our session account id: '+req.session.accountid);
+  //     console.log('here is the sessionid: '+req.sessionID);
+  //     models.Account.findAll(
+  //       {
+  //         include: [
+  //           {
+  //             model: models.Organization,
+  //           }
+  //         ],
+  //         where: {
+  //           AccountID: req.session.accountid
+  //         }
+  //       }
+  //     ).then(function(account) {
+  //       res.statusCode = 200;
+  //       res.send(
+  //         {
+  //           result: 'success',
+  //           err:    '',
+  //           json:  account,
+  //           length: account.length
+  //         }
+  //       );
+  //     }
+  //    ).catch(function (err) {
+  //      console.error(err);
+  //      res.statusCode = 502;
+  //      res.send({
+  //          result: 'error',
+  //          err:    err.message
+  //      });
+  //     });
+  //   }
+  // )
+  //find Accounts by organizationid
   .get('/organization/:id', function (req, res) {
       models.Account.findAll(
         {
             where: {
-                OrganizationID: req.params.id
+                OrganizationID: req.params.id,
+                Active: true
             }
         }
       ).then(function (account) {
@@ -128,7 +129,7 @@ var routes = function(){
             }
             else
             {
-              res.sendStatus(401)
+              res.sendStatus(401);
             }
       }
      ).catch(function (err) {
@@ -141,7 +142,66 @@ var routes = function(){
      });
     }
   )
-  
+  //find organzation team members by accountid (will not include account passed by parameter)
+  .get('/organizationmembers/:id', function (req, res) {
+      models.Account.findAll(
+        {
+          include: [
+            {
+              model: models.Organization
+            }
+          ],
+          where: {
+            AccountID: req.params.id,
+            Active: true
+          }
+        }
+      ).then(function (account) {
+          if (account.length>0)
+          {
+            models.Account.findAll({
+                where: {
+                  OrganizationID: account[0].OrganizationID,
+                  AccountID: {$ne: account[0].AccountID},
+                  Active: true
+                }
+              }
+            ).then(function (team) {
+                res.statusCode = 200;
+                res.send(
+                  {
+                      result: 'success',
+                      err: '',
+                      json: team,
+                      length: team.length
+                  }
+                );
+              }
+            );
+          }
+          else
+          {
+            res.statusCode = 200;
+                res.send(
+                  {
+                      result: 'success',
+                      err: '',
+                      json: account,
+                      length: account.length
+                  }
+                );
+          }
+        }
+      ).catch(function (err) {
+         console.error(err);
+         res.statusCode = 502;
+         res.send({
+             result: 'error',
+             err: err.message
+         });
+     });
+    }
+  )
   //find login which retrieves account
   .post('/login/', function (req, res) {
         models.Account.findAll(
