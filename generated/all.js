@@ -1115,6 +1115,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	
 	$scope.eventsResource = $resource("/api/event");
 	$scope.currentUser = JSON.parse(sessionStorage.getItem("user"));
+	$scope.currentOrg = JSON.parse(sessionStorage.getItem("user"));
 
 	$scope.title = "Worldwide Events";
 	
