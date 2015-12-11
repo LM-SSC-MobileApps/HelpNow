@@ -4,9 +4,9 @@
         <table id="resLocationTable" style="margin-right: -10px;">
             <tr ng-repeat="resourceLocation in resourceLocations" style="border-bottom:2px solid;">
                 <td>
-                    <h5>{{resourceLocation.Notes}}</h5>
-                    <a href="#event_map/{{event.EventID}}">
-                        (23.713, 90.39)
+                    <h5>{{resourceLocation.Description}}</h5>
+                    <a href="#location_inventory.html/{{resourceLocation.ResourceLocationID}}">
+                        ({{resourceLocation.LONG}}, {{resourceLocation.LAT}})
                     </a>
                 </td>
             </tr>
