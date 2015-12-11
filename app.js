@@ -1,4 +1,4 @@
-angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap" ])
+angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize" ])
 	.config(["$routeProvider", function ($routeProvider) {
 	    $routeProvider.when("/ind_login", {
 	        templateUrl: "views/ind-login.html"

@@ -15,40 +15,7 @@
                     <h4><span class="glyphicon glyphicon-filter"></span> Filters</h4>
                     <div id="filter-section" ng-if="showFilters">
                         <hr class="separated" />
-                        <div class="row">
-                            <div class="col-xs-4 text-center">
-                                <a id="showMedical" ng-class="toggleButtonClass('showMedical')" ng-click="toggleButton('showMedical')"><span></span></a>
-                                <br />
-                                <span class="filter-caption">First Aid</span>
-                            </div>
-                            <div class="col-xs-4 text-center">
-                                <a id="showShelter" ng-class="toggleButtonClass('showShelter')" ng-click="toggleButton('showShelter')"><span></span></a>
-                                <br />
-                                <span class="filter-caption">Shelter</span>
-                            </div>
-                            <div class="col-xs-4 text-center">
-                                <a id="showFood" ng-class="toggleButtonClass('showFood')" ng-click="toggleButton('showFood')"><span></span></a>
-                                <br />
-                                <span class="filter-caption">Food</span>
-                            </div>
-                        </div>
-                        <div class="row separated-small">
-                            <div class="col-xs-4 text-center">
-                                <a id="showMedicine" ng-class="toggleButtonClass('showMedicine')" ng-click="toggleButton('showMedicine')"><span></span></a>
-                                <br />
-                                <span class="filter-caption">Medicine</span>
-                            </div>
-                            <div class="col-xs-4 text-center">
-                                <a id="showWater" ng-class="toggleButtonClass('showWater')" ng-click="toggleButton('showWater')"><span></span></a>
-                                <br />
-                                <span class="filter-caption">Water</span>
-                            </div>
-                            <div class="col-xs-4 text-center">
-                                <a id="showEvacuation" ng-class="toggleButtonClass('showEvacuation')" ng-click="toggleButton('showEvacuation')"><span></span></a>
-                                <br />
-                                <span class="filter-caption">Evacuation</span>
-                            </div>
-                        </div>
+                        <div filters classfunc="toggleButtonClass" togglefunc="toggleButton" />
                     </div>
                 </div>
             </div>
@@ -155,40 +122,7 @@
                     </div>
                     <div class="row">
                         <div id="needs-section">
-                            <div class="row">
-                                <div class="col-xs-4 text-center">
-                                    <a id="showMedical" ng-class="toggleButtonClass('showMedicalNeed')" ng-click="toggleNeed('showMedicalNeed')"><span></span></a>
-                                    <br />
-                                    <span class="filter-caption">First Aid</span>
-                                </div>
-                                <div class="col-xs-4 text-center">
-                                    <a id="showShelter" ng-class="toggleButtonClass('showShelterNeed')" ng-click="toggleNeed('showShelterNeed')"><span></span></a>
-                                    <br />
-                                    <span class="filter-caption">Shelter</span>
-                                </div>
-                                <div class="col-xs-4 text-center">
-                                    <a id="showFood" ng-class="toggleButtonClass('showFoodNeed')" ng-click="toggleNeed('showFoodNeed')"><span></span></a>
-                                    <br />
-                                    <span class="filter-caption">Food</span>
-                                </div>
-                            </div>
-                            <div class="row separated-small">
-                                <div class="col-xs-4 text-center">
-                                    <a id="showMedicine" ng-class="toggleButtonClass('showMedicineNeed')" ng-click="toggleNeed('showMedicineNeed')"><span></span></a>
-                                    <br />
-                                    <span class="filter-caption">Medicine</span>
-                                </div>
-                                <div class="col-xs-4 text-center">
-                                    <a id="showWater" ng-class="toggleButtonClass('showWaterNeed')" ng-click="toggleNeed('showWaterNeed')"><span></span></a>
-                                    <br />
-                                    <span class="filter-caption">Water</span>
-                                </div>
-                                <div class="col-xs-4 text-center">
-                                    <a id="showEvacuation" ng-class="toggleButtonClass('showEvacuationNeed')" ng-click="toggleNeed('showEvacuationNeed')"><span></span></a>
-                                    <br />
-                                    <span class="filter-caption">Evacuation</span>
-                                </div>
-                            </div>
+							<div filters classfunc="toggleButtonClass" togglefunc="toggleNeed" />
                         </div>
                     </div>
                 </div>

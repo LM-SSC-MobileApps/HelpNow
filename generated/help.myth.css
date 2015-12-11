@@ -28,6 +28,13 @@ hr {
   border-color: #999;
 }
 
+.well .well {
+  background-color: #365271;
+  color: #deebf7;
+  padding: 10px;
+  margin-bottom: 5px;
+}
+
 h2 {
   margin-top: 10px;
   margin-bottom: 20px;
@@ -38,13 +45,18 @@ h3 {
   color: #deebf7;
 }
 
-h4 {
+h4,
+h4 a,
+h4 a:active,
+h4 a:visited {
   margin-top: 0px;
+  margin-bottom: 5px;
   color: #deebf7;
 }
 
 h5 {
   margin-top: 0px;
+  margin-bottom: 5px;
   color: #bdd7ee;
 }
 
@@ -133,6 +145,12 @@ h5 {
   background-position: 1px 3px;
 }
 
+#showDistCenterMarkers span {
+  background-image: url("../style/images/Distribution-Center.png");
+  background-size: 25px;
+  background-position: 4px 6px;
+}
+
 #showClusters span {
   background-image: url("../style/images/Circle-Red.png");
   background-position: 6px 5px;
@@ -179,7 +197,7 @@ h5 {
 }
 
 #showMedicine span {
-  background-image: url("../style/images/Medicine.png");
+  background-image: url("../style/images/medicine.png");
   background-size: 25px;
   background-position: 4px 5px;
 }
@@ -291,6 +309,11 @@ h5 {
   border-color: #999;
 }
 
+.panel .panel,
+.well {
+  border-color: #666;
+}
+
 .panel-body {
   padding: 25px;
 }
@@ -304,6 +327,10 @@ h5 {
   border-radius: 4px 4px 0px 0px;
 }
 
+.alert {
+  margin-bottom: 0px;
+}
+
 .btn-save {
   background-color: forestgreen;
   color: white;
@@ -313,6 +340,11 @@ h5 {
   background-image: -webkit-linear-gradient(top, #3a95e7, rgb(35, 89, 139));
   background-image: linear-gradient(to bottom, #3a95e7, rgb(35, 89, 139));
   color: white;
+}
+
+.btn-row .btn {
+  margin-right: 5px;
+  margin-top: 5px;
 }
 
 .btn-primary:hover {
@@ -332,7 +364,8 @@ h5 {
   border-color: #871c1c;
 }
 
-.btn .glyphicon {
+.btn .glyphicon,
+.well .well .glyphicon {
   margin-right: 7px;
 }
 
@@ -462,4 +495,9 @@ input.switch:checked ~ label:after {
 
 .spacer {
   margin-top: 20px;
+}
+
+.popover-content {
+  color: black;
+  font-size: 12px;
 }

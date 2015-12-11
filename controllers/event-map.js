@@ -30,14 +30,12 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     $scope.showHelp = false;
     $scope.showNeeds = false;
 
-	/*
     $scope.showMedical = true;
     $scope.showShelter = true;
     $scope.showFood = true;
     $scope.showWater = true;
     $scope.showEvacuation = true;
     $scope.showMedicine = true;
-	*/
 
     $scope.showLocationMarkers = true;
     $scope.locationPref = { value: 'Current' };
@@ -166,7 +164,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
         mapLayers = [];
 
         if ($scope.showLocationMarkers)
-            $scope.buildLocationMarkers($scope.locations, mapLayers);
+			$scope.buildLocationMarkers($scope.locations, mapLayers, $scope);
 
         angular.forEach(mapLayers, function (layer) {
             map.addLayer(layer);
@@ -190,18 +188,20 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     }
 
     $scope.toggleButtonClass = function (id) {
-        var status = $scope[id];
+		var status = $scope[id];
         return status ? "btn btn-toggle active" : "btn btn-toggle";
     };
 
     $scope.toggleButton = function (id) {
-        $scope.toggleFlag(id);
+        $scope[id] = !$scope[id];
         updateMap();
         return false;
     };
 
     $scope.toggleNeed = function (id) {
+		alert(id);
         $scope[id] = !$scope[id];
+		alert($scope[id]);
         return false;
     };
 

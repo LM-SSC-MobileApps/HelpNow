@@ -85,6 +85,7 @@ var routes = function(){
   //find Map Items for Event
   .get('/mapitems/:eventID', function(req, res) {
 	  var tasks = [];
+	  
 	  //load requests
 	  tasks[0] = models.ResourceRequest.findAll(
         {
@@ -98,7 +99,8 @@ var routes = function(){
         }
       )
 	  .then(cluster.clusterRequests);
-	  
+	
+	//load resource deployments for event
 	tasks[1] = models.ResourceLocation.findAll (
 	{
 		include: [
@@ -129,13 +131,44 @@ var routes = function(){
         }
 	});
 	
+	//load distribution centers
+	tasks[2] = models.ResourceLocation.findAll (
+	{
+		include: [
+			{
+				model: models.Organization,
+				required: true
+            },
+            {
+				model: models.ResourceLocationType,
+				where: {
+					Description: "Distribution Center"
+				}
+            },
+			{
+				model: models.ResourceLocationInventory,
+				required: true,
+				include: [
+				{
+					model: models.ResourceType
+				},
+				{
+					model: models.ResourceTypeUnitOfMeasure
+				}]
+			}
+		]
+	});
+	
+	
+	
 	  //when all data is loaded, send the response
 	  promise.all(tasks)
 	  .then(function(results) {
 		var data = {
 			requestClusters: results[0].requestClusters,
 			requests: results[0].requests,
-			locations: results[1]
+			locations: results[1],
+			distributionCenters: results[2]
 		};
 		res.statusCode = 200;
         res.send(

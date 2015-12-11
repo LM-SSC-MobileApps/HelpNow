@@ -2,6 +2,7 @@
   --black: #000;
   --light-gray: #eee;
   --dark-gray: #999;
+  --darkest-gray: #666;
   --dark-blue: rgba(38, 58, 80, 1.0);
   --dark-blue-trans: rgba(38, 58, 80, 0.85);
   --med-blue: #365271;
@@ -56,6 +57,13 @@ hr {
 	border-color: var(--dark-gray);
 }
 
+.well .well {
+	background-color: var(--med-blue);
+	color: var(--lightest-blue);
+	padding: 10px;
+	margin-bottom: 5px;
+}
+
 h2 {
 	margin-top: 10px;
 	margin-bottom: 20px;
@@ -66,13 +74,15 @@ h3 {
 	color: var(--lightest-blue);
 }
 
-h4 {
+h4, h4 a, h4 a:active, h4 a:visited {
 	margin-top: 0px;
+	margin-bottom: 5px;
 	color: var(--lightest-blue);
 }
 
 h5 {
 	margin-top: 0px;
+	margin-bottom: 5px;
 	color: var(--lighter-blue);
 } 
 
@@ -149,6 +159,12 @@ h5 {
 	background-image:  url("../style/images/markers.png");
 	background-size: 30px;	
 	background-position: 1px 3px;
+}
+
+#showDistCenterMarkers span {
+	background-image:  url("../style/images/Distribution-Center.png");
+	background-size: 25px;	
+	background-position: 4px 6px;
 }
 
 #showClusters span {
@@ -298,6 +314,10 @@ h5 {
 	border-color: var(--dark-gray);
 }
 
+.panel .panel, .well {
+	border-color: var(--darkest-gray);
+}
+
 .panel-body {
     padding: 25px;
 }
@@ -311,6 +331,10 @@ h5 {
 	border-radius: 4px 4px 0px 0px;
 }
 
+.alert {
+	margin-bottom: 0px;
+}
+
 .btn-save {
     background-color: forestgreen;
     color: white;
@@ -319,6 +343,11 @@ h5 {
 .btn-primary {
     background-image: var(--light-blue-grad);
     color: white;
+}
+
+.btn-row .btn {
+	margin-right: 5px;
+	margin-top: 5px;
 }
 
 .btn-primary:hover {
@@ -337,7 +366,7 @@ h5 {
     border-color: #871c1c;
 }
 
-.btn .glyphicon {
+.btn .glyphicon, .well .well .glyphicon {
 	margin-right: 7px;
 }
 
@@ -473,4 +502,9 @@ input.switch:checked ~ label:after
 
 .spacer {
 	margin-top: 20px;
+}
+
+.popover-content {
+	color: black;
+	font-size: 12px;
 }
