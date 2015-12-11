@@ -14,6 +14,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     $scope.eventID = $routeParams.eventID * 1;
     if ($scope.events) {
         $scope.event = $scope.getEvent($scope.eventID);
+        $scope.setTitle($scope.event.EventLocations[0].Description, $scope.getEventIcon($scope.event.EventType.Description));
         loadRequests();
         loadUrgencyList();
     }
@@ -29,13 +30,24 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     $scope.showEventDetails = true;
     $scope.showHelp = false;
     $scope.showNeeds = false;
-
-    $scope.showMedical = true;
-    $scope.showShelter = true;
-    $scope.showFood = true;
-    $scope.showWater = true;
-    $scope.showEvacuation = true;
-    $scope.showMedicine = true;
+	
+	$scope.filterFlags = {
+		showMedical: true,
+		showShelter: true,
+		showFood: true,
+		showWater:true,
+		showEvacuation: true,
+		showMedicine: true
+	};
+	
+	$scope.needFlags = {
+		showMedical: false,
+		showShelter: false,
+		showFood: false,
+		showWater:false,
+		showEvacuation: false,
+		showMedicine: false
+	};
 
     $scope.showLocationMarkers = true;
     $scope.locationPref = { value: 'Current' };
@@ -107,12 +119,13 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     };
 
     function resetNeedsButtons() {
-        $scope.showMedicalNeed = false;
-        $scope.showShelterNeed = false;
-        $scope.showFoodNeed = false;
-        $scope.showWaterNeed = false;
-        $scope.showEvacuationNeed = false;
-        $scope.showMedicineNeed = false;
+		var flags = $scope.needFlags;
+        flags.showMedical = false;
+        flags.showShelter = false;
+        flags.showFood = false;
+        flags.showWater = false;
+        flags.showEvacuation = false;
+        flags.showMedicine = false;
         return false;
     }
 
@@ -123,36 +136,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
         resetNeedsButtons();
         updateMap();
     });
-/*
-    function buildLocationMarkers() {
-        if (!$scope.locations) return;
-        var selectedLocations = $scope.locations.filter(function (location) {
-            var type = location.ResourceType.Description;
-            return shouldDisplayMarker(type);
-        });
 
-        angular.forEach(selectedLocations, function (location) {
-            var locationIcon = L.icon({
-                iconUrl: $scope.getLocationIcon(location.ResourceType.Description),
-                iconSize: [60, 60],
-                iconAnchor: [30, 30]
-            });
-            var marker = L.marker([location.ResourceLocation.LAT, location.ResourceLocation.LONG], { icon: locationIcon });
-            marker.bindPopup("<strong>" + location.ResourceType.Description + " (" +
-				location.ResourceLocation.Organization.Name + ")</strong><br/>" + location.ResourceLocation.PrimaryPOCPhone);
-            mapLayers.push(marker);
-        });
-    }
-
-    function shouldDisplayMarker(type) {
-        return (type == "Water" && $scope.showWater) ||
-				(type == "Shelter" && $scope.showShelter) ||
-				(type == "Food" && $scope.showFood) ||
-				(type == "Evacuation" && $scope.showEvacuation) ||
-				(type == "First Aid" && $scope.showMedical) ||
-				(type == "Medicine" && $scope.showMedicine);
-    }
-*/
     function updateMap() {
         if (!map || !$scope.events) return;
 
@@ -164,7 +148,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
         mapLayers = [];
 
         if ($scope.showLocationMarkers)
-			$scope.buildLocationMarkers($scope.locations, mapLayers, $scope);
+			$scope.buildLocationMarkers($scope.locations, mapLayers, $scope.filterFlags);
 
         angular.forEach(mapLayers, function (layer) {
             map.addLayer(layer);
@@ -193,15 +177,27 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     };
 
     $scope.toggleButton = function (id) {
-        $scope[id] = !$scope[id];
+		var flags = $scope.filterFlags;
+        flags[id] = !flags[id];
         updateMap();
         return false;
     };
+	
+	$scope.toggleFilterClass = function(id) {
+		var flags = $scope.filterFlags;
+		var status = flags[id];
+		return status ? "btn btn-toggle active" : "btn btn-toggle";
+	};
+	
+	$scope.toggleNeedsClass = function(id) {
+		var flags = $scope.needFlags;
+		var status = flags[id];
+		return status ? "btn btn-toggle active" : "btn btn-toggle";
+	};
 
     $scope.toggleNeed = function (id) {
-		alert(id);
-        $scope[id] = !$scope[id];
-		alert($scope[id]);
+		var flags = $scope.needFlags;
+        flags[id] = !flags[id];
         return false;
     };
 
@@ -291,9 +287,11 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
 
     $scope.sendNeedRequest = function () {
         var hasError = false;
+		var flags = $scope.needFlags;
+            
         if ($scope.showNeeds) {
-            if (!$scope.showMedicalNeed && !$scope.showShelterNeed && !$scope.showFoodNeed &&
-                !$scope.showMedicineNeed && !$scope.showWaterNeed && !$scope.showEvacuationNeed) {
+			if (!flags.showMedical && !flags.showShelter && !flags.showFood &&
+                !flags.showMedicine && !flags.showWater && !flags.showEvacuation) {
                 hasError = true;
             }
         }
@@ -302,27 +300,27 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
             var splitString = $scope.helpRequest.AreaSize.split(" ");
             $scope.helpRequest.AreaSize = splitString[0];
             $scope.helpRequest.UnitOfMeasure = splitString[1];
-            if ($scope.showMedicalNeed) {
+            if (flags.showMedicalNeed) {
                 $scope.helpRequest.ResourceTypeID = '4';
                 postNeedRequest();
             }
-            if ($scope.showShelterNeed) {
+            if (flags.showShelter) {
                 $scope.helpRequest.ResourceTypeID = '3';
                 postNeedRequest();
             }
-            if ($scope.showFoodNeed) {
+            if (flags.showFood) {
                 $scope.helpRequest.ResourceTypeID = '1';
                 postNeedRequest();
             }
-            if ($scope.showMedicineNeed) {
+            if (flags.showMedicine) {
                 $scope.helpRequest.ResourceTypeID = '6';
                 postNeedRequest();
             }
-            if ($scope.showWaterNeed) {
+            if (flags.showWater) {
                 $scope.helpRequest.ResourceTypeID = '2';
                 postNeedRequest();
             }
-            if ($scope.showEvacuationNeed) {
+            if (flags.showEvacuation) {
                 $scope.helpRequest.ResourceTypeID = '5';
                 postNeedRequest();
             }

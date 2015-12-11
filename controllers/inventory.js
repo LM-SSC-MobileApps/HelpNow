@@ -3,15 +3,18 @@
     var map;
     var mapLayers = [];
 
+    $scope.setTitle("Inventory Management");
+
     $scope.setCurrentView("inventory");
 
     $scope.requestsResource = $resource("/api/event/mapitems/");
-    $scope.registryResource = $resource("/api/resourceregistry");
+    $scope.resourceLocation = $resource("/api/resourcelocation");
 
     $scope.eventID = $routeParams.eventID * 1;
+    alert($scope.eventID);
     if ($scope.events) {
         $scope.event = $scope.getEvent($scope.eventID);
-        loadRegistries();
+        loadResourceLocations();
     }
 
     $scope.userOrgID = 1;
@@ -21,7 +24,7 @@
     $scope.sliderLabel = "0.25 km";
     $scope.isMetric = true;
 
-    $scope.showRegistries = true;
+    $scope.showResourceLocations = true;
     $scope.showNewForm = false;
     $scope.showTransportationOptions = false;
 
@@ -31,14 +34,14 @@
 
     $scope.$on("EventDataLoaded", function () {
         $scope.event = $scope.getEvent($scope.eventID);
-        loadRegistries();
-        loadRequests();
+        loadResourceLocations();
+        //loadRequests();
         resetNeedsButtons();
         updateMap();
     });
 
     function updateMap() {
-        if (!map || !$scope.events) return;
+        if (!map || !$scope.resourceLocations) return;
 
         for (var i = 0; i < mapLayers.length; i++) {
             var layer = mapLayers[i];
@@ -46,6 +49,8 @@
         }
 
         mapLayers = [];
+
+
         var selectedRequests = $scope.requests.filter(function (request) {
             var type = request.ResourceType.Description;
             return shouldDisplayMarker(type);
@@ -59,23 +64,23 @@
         });
     }
 
-    function loadRegistries() {
-        $scope.registryResource.get({}, function (data) {
-            $scope.registries = data.json;
-            var filteredRegistries = $scope.registries.filter(function (registry) {
-                return registry.OrganizationID == $scope.userOrgID;
+    function loadResourceLocations() {
+        $scope.resourceLocation.get({}, function (data) {
+            $scope.resourceLocations = data.json;
+            var filteredResourceLocations = $scope.resourceLocations.filter(function (resLocation) {
+                return resLocation.OrganizationID == $scope.userOrgID;
             });
-            $scope.registries = filteredRegistries;
+            $scope.resourceLocations = filteredResourceLocations;
         });
     }
 
-    function loadRequests() {
-        $scope.requestsResource.get({ eventID: $scope.eventID }, function (data) {
-            $scope.requests = data.json.requests;
-            $scope.locations = data.json.locations;
-            updateMap();
-        });
-    }
+    //function loadRequests() {
+    //    $scope.requestsResource.get({ eventID: $scope.eventID }, function (data) {
+    //        $scope.requests = data.json.requests;
+    //        $scope.locations = data.json.locations;
+    //        updateMap();
+    //    });
+    //}
 
     $scope.initMap = function (newMap) {
         map = newMap;
@@ -105,7 +110,7 @@
 
     $scope.showNewSiteForm = function () {
         $scope.showNewForm = !$scope.showNewForm;
-        $scope.showRegistries = !$scope.showRegistries;
+        $scope.showResourceLocations = !$scope.showResourceLocations;
         return false;
     };
 

@@ -1,5 +1,4 @@
 <div ng-controller="EventMapCtrl">
-    <h3><img id="event-header-icon" src="{{getEventIcon(event.EventType.Description)}}" />{{event.EventLocations[0].Description}}</h3>
     <div id="map" ng-if="event" map map-center="{{event.EventLocations[0].LAT}},{{event.EventLocations[0].LONG}}" map-zoom="13" class="col-md-9" style="height: 512px; border: 1px solid #AAA;"></div>
     <div id="rightColumn" class="col-md-3" ng-if="showEventDetails">
         <div id="eventInfo" ng-hide="showFilters" ng-include="'views/fragments/event-info.html'"></div>
@@ -15,7 +14,7 @@
                     <h4><span class="glyphicon glyphicon-filter"></span> Filters</h4>
                     <div id="filter-section" ng-if="showFilters">
                         <hr class="separated" />
-                        <div filters classfunc="toggleButtonClass" togglefunc="toggleButton" />
+                        <div filters classfunc="toggleFilterClass" togglefunc="toggleButton" />
                     </div>
                 </div>
             </div>
@@ -72,7 +71,7 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <img src="style/images/Person.png" style="height: 30px; width: 7px;" />
-                            <span>  Number of People:  <input ng-model="helpRequest.Quantity" class="form-control" type="text" ng-keypress="validateNumber($event)" name="NumPeople" style="display:inline; width: 35%; margin-top: 10px; color: black;" /></span><br />
+                            <span>  Number of People:  <input ng-model="helpRequest.Quantity" class="form-control" type="text" ng-keypress="validateNumber($event)" name="NumPeople" style="display:inline; width: 32%; margin-top: 10px; color: black;" /></span><br />
                         </div>
                     </div>
                     <div class="row">
@@ -122,7 +121,7 @@
                     </div>
                     <div class="row">
                         <div id="needs-section">
-							<div filters classfunc="toggleButtonClass" togglefunc="toggleNeed" />
+							<div filters classfunc="toggleNeedsClass" togglefunc="toggleNeed" />
                         </div>
                     </div>
                 </div>

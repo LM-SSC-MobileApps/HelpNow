@@ -1,6 +1,7 @@
 //this will set the database environemnt in the config.json file
 
 var express = require('express');
+var session = require('express-session');
 var path = require('path');
 var logger = require('morgan');
 var mysql = require('mysql');
@@ -16,7 +17,6 @@ var eventRouter = require('./routes/event')();
 var eventLocationRouter = require('./routes/eventlocation')();
 var eventTypeRouter = require('./routes/eventtype')();
 var organizationRouter = require('./routes/organization')();
-var organizationGroupRouter = require('./routes/organizationgroup')();
 var organizationRegulationRouter = require('./routes/organizationregulation')();
 var organizationTypeRouter = require('./routes/organizationtype')();
 var requestStateRouter = require('./routes/requeststate')();
@@ -42,6 +42,16 @@ var enable_redirect = process.env.ENABLE_REDIRECT || true;
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
+//for creating the session availability
+app.use(
+    session({
+        secret: 'H3LbN0M_LM',
+        resave: false,
+        saveUninitialized: false,
+        cookie: { maxAge: 600000 }  //max cookie age is 60 minutes
+    })
+);
+
 app.use('/api/account', accountRouter);
 app.use('/api/accountrole', accountRoleRouter);
 app.use('/api/address', addressRouter);
@@ -49,7 +59,6 @@ app.use('/api/event', eventRouter);
 app.use('/api/eventlocation', eventLocationRouter);
 app.use('/api/eventtype', eventTypeRouter);
 app.use('/api/organization', organizationRouter);
-app.use('/api/organizationgroup', organizationGroupRouter);
 app.use('/api/organizationregulation', organizationRegulationRouter);
 app.use('/api/organizationtype', organizationTypeRouter);
 app.use('/api/requeststate', requestStateRouter);
@@ -76,6 +85,8 @@ app.use(express.static('i18n'));
 app.use(express.static('fonts'));
 app.use(express.static('leaflet'));
 app.use('/', express.static( __dirname + '/'));
+
+
 
 app.get('/', function (req, res) {
     if (req.protocol == "http" && enable_redirect == "true") {

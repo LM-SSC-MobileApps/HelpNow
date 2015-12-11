@@ -7,7 +7,8 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	
     $scope.eventID = $routeParams.eventID * 1;
 	if ($scope.events) {
-		$scope.event = $scope.getEvent($scope.eventID);
+	    $scope.event = $scope.getEvent($scope.eventID);
+	    $scope.setTitle($scope.event.EventLocations[0].Description, $scope.getEventIcon($scope.event.EventType.Description));
 		loadRequests();
 	} 
 	

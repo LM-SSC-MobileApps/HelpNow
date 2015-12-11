@@ -58,6 +58,64 @@ var routes = function(){
       });
     }
   )
+  //find all InviteRequests in an Organization by AccountID
+  .get('/organizationinvites/:accountid', function (req, res) {
+      models.Account.findAll(
+        {
+          include: [
+            {
+              model: models.Organization,
+            }
+          ],
+          where: {
+            AccountID: req.params.accountid,
+            Active: true
+          }
+        }
+      ).then(function (account) {
+          if (account.length>0)
+          {
+            models.InviteRequest.findAll({
+                where: {
+                  OrganizationID: account[0].OrganizationID
+                }
+              }
+            ).then(function (invities) {
+                res.statusCode = 200;
+                res.send(
+                  {
+                      result: 'success',
+                      err: '',
+                      json: invities,
+                      length: invities.length
+                  }
+                );
+              }
+            );
+          }
+          else
+          {
+            res.statusCode = 200;
+                res.send(
+                  {
+                      result: 'success',
+                      err: '',
+                      json: account,
+                      length: account.length
+                  }
+                );
+          }
+        }
+      ).catch(function (err) {
+         console.error(err);
+         res.statusCode = 502;
+         res.send({
+             result: 'error',
+             err: err.message
+         });
+     });
+    }
+  )
   //insert into InviteRequest
   .post('/', function(req, res) {
     models.InviteRequest.create(req.body)

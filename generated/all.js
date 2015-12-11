@@ -69,7 +69,9 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 		});
 	}]);
 angular.module("helpNow").controller("EventListCtrl", ["$scope", "$location", function($scope, $location) {
-	var map;
+    var map;
+
+    $scope.setTitle("Worldwide Events")
 	
 	$scope.getMapEventIcon = function(eventType) {
 		if (eventType == "Flood") {
@@ -125,6 +127,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     $scope.eventID = $routeParams.eventID * 1;
     if ($scope.events) {
         $scope.event = $scope.getEvent($scope.eventID);
+        $scope.setTitle($scope.event.EventLocations[0].Description, $scope.getEventIcon($scope.event.EventType.Description));
         loadRequests();
         loadUrgencyList();
     }
@@ -140,13 +143,24 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     $scope.showEventDetails = true;
     $scope.showHelp = false;
     $scope.showNeeds = false;
-
-    $scope.showMedical = true;
-    $scope.showShelter = true;
-    $scope.showFood = true;
-    $scope.showWater = true;
-    $scope.showEvacuation = true;
-    $scope.showMedicine = true;
+	
+	$scope.filterFlags = {
+		showMedical: true,
+		showShelter: true,
+		showFood: true,
+		showWater:true,
+		showEvacuation: true,
+		showMedicine: true
+	};
+	
+	$scope.needFlags = {
+		showMedical: false,
+		showShelter: false,
+		showFood: false,
+		showWater:false,
+		showEvacuation: false,
+		showMedicine: false
+	};
 
     $scope.showLocationMarkers = true;
     $scope.locationPref = { value: 'Current' };
@@ -218,12 +232,13 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     };
 
     function resetNeedsButtons() {
-        $scope.showMedicalNeed = false;
-        $scope.showShelterNeed = false;
-        $scope.showFoodNeed = false;
-        $scope.showWaterNeed = false;
-        $scope.showEvacuationNeed = false;
-        $scope.showMedicineNeed = false;
+		var flags = $scope.needFlags;
+        flags.showMedical = false;
+        flags.showShelter = false;
+        flags.showFood = false;
+        flags.showWater = false;
+        flags.showEvacuation = false;
+        flags.showMedicine = false;
         return false;
     }
 
@@ -234,36 +249,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
         resetNeedsButtons();
         updateMap();
     });
-/*
-    function buildLocationMarkers() {
-        if (!$scope.locations) return;
-        var selectedLocations = $scope.locations.filter(function (location) {
-            var type = location.ResourceType.Description;
-            return shouldDisplayMarker(type);
-        });
 
-        angular.forEach(selectedLocations, function (location) {
-            var locationIcon = L.icon({
-                iconUrl: $scope.getLocationIcon(location.ResourceType.Description),
-                iconSize: [60, 60],
-                iconAnchor: [30, 30]
-            });
-            var marker = L.marker([location.ResourceLocation.LAT, location.ResourceLocation.LONG], { icon: locationIcon });
-            marker.bindPopup("<strong>" + location.ResourceType.Description + " (" +
-				location.ResourceLocation.Organization.Name + ")</strong><br/>" + location.ResourceLocation.PrimaryPOCPhone);
-            mapLayers.push(marker);
-        });
-    }
-
-    function shouldDisplayMarker(type) {
-        return (type == "Water" && $scope.showWater) ||
-				(type == "Shelter" && $scope.showShelter) ||
-				(type == "Food" && $scope.showFood) ||
-				(type == "Evacuation" && $scope.showEvacuation) ||
-				(type == "First Aid" && $scope.showMedical) ||
-				(type == "Medicine" && $scope.showMedicine);
-    }
-*/
     function updateMap() {
         if (!map || !$scope.events) return;
 
@@ -275,7 +261,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
         mapLayers = [];
 
         if ($scope.showLocationMarkers)
-			$scope.buildLocationMarkers($scope.locations, mapLayers, $scope);
+			$scope.buildLocationMarkers($scope.locations, mapLayers, $scope.filterFlags);
 
         angular.forEach(mapLayers, function (layer) {
             map.addLayer(layer);
@@ -304,15 +290,27 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     };
 
     $scope.toggleButton = function (id) {
-        $scope[id] = !$scope[id];
+		var flags = $scope.filterFlags;
+        flags[id] = !flags[id];
         updateMap();
         return false;
     };
+	
+	$scope.toggleFilterClass = function(id) {
+		var flags = $scope.filterFlags;
+		var status = flags[id];
+		return status ? "btn btn-toggle active" : "btn btn-toggle";
+	};
+	
+	$scope.toggleNeedsClass = function(id) {
+		var flags = $scope.needFlags;
+		var status = flags[id];
+		return status ? "btn btn-toggle active" : "btn btn-toggle";
+	};
 
     $scope.toggleNeed = function (id) {
-		alert(id);
-        $scope[id] = !$scope[id];
-		alert($scope[id]);
+		var flags = $scope.needFlags;
+        flags[id] = !flags[id];
         return false;
     };
 
@@ -402,9 +400,11 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
 
     $scope.sendNeedRequest = function () {
         var hasError = false;
+		var flags = $scope.needFlags;
+            
         if ($scope.showNeeds) {
-            if (!$scope.showMedicalNeed && !$scope.showShelterNeed && !$scope.showFoodNeed &&
-                !$scope.showMedicineNeed && !$scope.showWaterNeed && !$scope.showEvacuationNeed) {
+			if (!flags.showMedical && !flags.showShelter && !flags.showFood &&
+                !flags.showMedicine && !flags.showWater && !flags.showEvacuation) {
                 hasError = true;
             }
         }
@@ -413,27 +413,27 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
             var splitString = $scope.helpRequest.AreaSize.split(" ");
             $scope.helpRequest.AreaSize = splitString[0];
             $scope.helpRequest.UnitOfMeasure = splitString[1];
-            if ($scope.showMedicalNeed) {
+            if (flags.showMedicalNeed) {
                 $scope.helpRequest.ResourceTypeID = '4';
                 postNeedRequest();
             }
-            if ($scope.showShelterNeed) {
+            if (flags.showShelter) {
                 $scope.helpRequest.ResourceTypeID = '3';
                 postNeedRequest();
             }
-            if ($scope.showFoodNeed) {
+            if (flags.showFood) {
                 $scope.helpRequest.ResourceTypeID = '1';
                 postNeedRequest();
             }
-            if ($scope.showMedicineNeed) {
+            if (flags.showMedicine) {
                 $scope.helpRequest.ResourceTypeID = '6';
                 postNeedRequest();
             }
-            if ($scope.showWaterNeed) {
+            if (flags.showWater) {
                 $scope.helpRequest.ResourceTypeID = '2';
                 postNeedRequest();
             }
-            if ($scope.showEvacuationNeed) {
+            if (flags.showEvacuation) {
                 $scope.helpRequest.ResourceTypeID = '5';
                 postNeedRequest();
             }
@@ -529,15 +529,18 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
     var map;
     var mapLayers = [];
 
+    $scope.setTitle("Inventory Management");
+
     $scope.setCurrentView("inventory");
 
     $scope.requestsResource = $resource("/api/event/mapitems/");
-    $scope.registryResource = $resource("/api/resourceregistry");
+    $scope.resourceLocation = $resource("/api/resourcelocation");
 
     $scope.eventID = $routeParams.eventID * 1;
+    alert($scope.eventID);
     if ($scope.events) {
         $scope.event = $scope.getEvent($scope.eventID);
-        loadRegistries();
+        loadResourceLocations();
     }
 
     $scope.userOrgID = 1;
@@ -547,7 +550,7 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
     $scope.sliderLabel = "0.25 km";
     $scope.isMetric = true;
 
-    $scope.showRegistries = true;
+    $scope.showResourceLocations = true;
     $scope.showNewForm = false;
     $scope.showTransportationOptions = false;
 
@@ -557,14 +560,14 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
 
     $scope.$on("EventDataLoaded", function () {
         $scope.event = $scope.getEvent($scope.eventID);
-        loadRegistries();
-        loadRequests();
+        loadResourceLocations();
+        //loadRequests();
         resetNeedsButtons();
         updateMap();
     });
 
     function updateMap() {
-        if (!map || !$scope.events) return;
+        if (!map || !$scope.resourceLocations) return;
 
         for (var i = 0; i < mapLayers.length; i++) {
             var layer = mapLayers[i];
@@ -572,6 +575,8 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
         }
 
         mapLayers = [];
+
+
         var selectedRequests = $scope.requests.filter(function (request) {
             var type = request.ResourceType.Description;
             return shouldDisplayMarker(type);
@@ -585,23 +590,23 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
         });
     }
 
-    function loadRegistries() {
-        $scope.registryResource.get({}, function (data) {
-            $scope.registries = data.json;
-            var filteredRegistries = $scope.registries.filter(function (registry) {
-                return registry.OrganizationID == $scope.userOrgID;
+    function loadResourceLocations() {
+        $scope.resourceLocation.get({}, function (data) {
+            $scope.resourceLocations = data.json;
+            var filteredResourceLocations = $scope.resourceLocations.filter(function (resLocation) {
+                return resLocation.OrganizationID == $scope.userOrgID;
             });
-            $scope.registries = filteredRegistries;
+            $scope.resourceLocations = filteredResourceLocations;
         });
     }
 
-    function loadRequests() {
-        $scope.requestsResource.get({ eventID: $scope.eventID }, function (data) {
-            $scope.requests = data.json.requests;
-            $scope.locations = data.json.locations;
-            updateMap();
-        });
-    }
+    //function loadRequests() {
+    //    $scope.requestsResource.get({ eventID: $scope.eventID }, function (data) {
+    //        $scope.requests = data.json.requests;
+    //        $scope.locations = data.json.locations;
+    //        updateMap();
+    //    });
+    //}
 
     $scope.initMap = function (newMap) {
         map = newMap;
@@ -631,7 +636,7 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
 
     $scope.showNewSiteForm = function () {
         $scope.showNewForm = !$scope.showNewForm;
-        $scope.showRegistries = !$scope.showRegistries;
+        $scope.showResourceLocations = !$scope.showResourceLocations;
         return false;
     };
 
@@ -666,8 +671,9 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
         return false;
     };
 }]);
-angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function($scope, $http, $location, $routeParams, $resource) {
+angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function ($scope, $http, $location, $routeParams, $resource) {
     $scope.setCurrentView("login");
+    $scope.setTitle("Login");
 
     $scope.validateUser = function () {
         if ($scope.userCreds.username === undefined || $scope.userCreds.password === undefined) {
@@ -696,7 +702,18 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
                 alert("Incorrect Username/Password combination.\nPlease try again");
             }
             else {
-                $scope.setCurrentUser($scope.currentUser);
+                var userSessionObject = {
+                    AccountID: $scope.currentUser.AccountID,
+                    FirstName: $scope.currentUser.FirstName,
+                    LastName: $scope.currentUser.LastName,
+                    OrganizationGroupID: $scope.currentUser.OrganizationGroup.OrganizationGroupID,
+                    OrganizationGroupName: $scope.currentUser.OrganizationGroup.Name,
+                    OrganizationID: $scope.currentUser.OrganizationGroup.Organization.OrganizationID,
+                    OrganizationName: $scope.currentUser.OrganizationGroup.Organization.Name
+                }
+                $scope.setCurrentUser(userSessionObject);
+                $scope.setCurrentOrg($scope.currentUser.OrganizationGroup.Organization);
+                sessionStorage.setItem("user", JSON.stringify(userSessionObject));
                 $scope.$broadcast("CurrentUserLoaded", {});
                 $location.path('#');
             }
@@ -712,7 +729,7 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
 
 angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , function($scope, $location) {
 
-
+    $scope.setTitle("Organization Management");
 
 	$scope.go = function ( path ) {
 		$location.path( path );
@@ -730,7 +747,8 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	
     $scope.eventID = $routeParams.eventID * 1;
 	if ($scope.events) {
-		$scope.event = $scope.getEvent($scope.eventID);
+	    $scope.event = $scope.getEvent($scope.eventID);
+	    $scope.setTitle($scope.event.EventLocations[0].Description, $scope.getEventIcon($scope.event.EventType.Description));
 		loadRequests();
 	} 
 	
@@ -1108,6 +1126,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 
 angular.module("helpNow").controller("RegAccountCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function ($scope, $http, $location, $routeParams, $resource) {
     $scope.setCurrentView("reg-account");
+    $scope.setTitle("Register an Account");
 
     $scope.showUsername = true;
     $scope.showUser = false;
@@ -1283,6 +1302,10 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	var currentView = "";
 	
 	$scope.eventsResource = $resource("/api/event");
+	$scope.currentUser = JSON.parse(sessionStorage.getItem("user"));
+	$scope.currentOrg = JSON.parse(sessionStorage.getItem("user"));
+
+	$scope.title = "Worldwide Events";
 	
 	$scope.loadEvents = function() {
 		$scope.eventsResource.get({}, function(data) {
@@ -1309,9 +1332,17 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 		currentView = viewName;
 	};
 
+	$scope.setTitle = function (title, img) {
+	    $scope.title = title;
+	    $scope.imageSrc = img;
+	};
+
 	$scope.setCurrentUser = function (user) {
 	    $scope.currentUser = user;
-	    $scope.currentOrg = user.OrganizationGroup.Organization;
+	};
+
+	$scope.setCurrentOrg = function (org) {
+	    $scope.currentOrg = org;
 	};
 	
 	$scope.setCurrentLanguage = function(language) {
@@ -1359,26 +1390,26 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 		return {}; 
 	};
 
-	$scope.getLocationIcon = function(location) {
-		var inventories = location.ResourceLocationInventories;
-		if (inventories.length > 1)
-			return "style/images/resources.png";
-		
-		var resourceType = inventories[0].ResourceType.Description;
-		if (resourceType == "Water") {
-			return "style/images/Water-Diamond-Blue.png";
-		} else if (resourceType == "First Aid") {
-			return "style/images/First Aid-Diamond-Blue.png";
-		} else if (resourceType == "Shelter") {
-			return "style/images/Shelter-Diamond-Blue.png";
-		} else if (resourceType == "Evacuation") {
-			return "style/images/Evacuation-Diamond-Blue.png";
-		} else if (resourceType == "Medicine") {
-			return "style/images/Medicine-Diamond-Blue.png";
-		} else {
-			return "style/images/Food-Diamond-Blue.png";
-		}
-	}
+	$scope.getLocationIcon = function (location) {
+	    var inventories = location.ResourceLocationInventories;
+	    if (inventories.length > 1)
+	        return "style/images/resources.png";
+
+	    var resourceType = inventories[0].ResourceType.Description;
+	    if (resourceType == "Water") {
+	        return "style/images/Water-Diamond-Blue.png";
+	    } else if (resourceType == "First Aid") {
+	        return "style/images/First Aid-Diamond-Blue.png";
+	    } else if (resourceType == "Shelter") {
+	        return "style/images/Shelter-Diamond-Blue.png";
+	    } else if (resourceType == "Evacuation") {
+	        return "style/images/Evacuation-Diamond-Blue.png";
+	    } else if (resourceType == "Medicine") {
+	        return "style/images/Medicine-Diamond-Blue.png";
+	    } else {
+	        return "style/images/Food-Diamond-Blue.png";
+	    }
+	};
 	
 	$scope.buildLocationDetails = function(location) {
 		var popupText = "<strong>" + location.Organization.Name + "</strong><br/>" + 
@@ -1435,40 +1466,11 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	$scope.loadEvents();
 
 
-    /* Hard coded until we figure out authentication */
-	$scope.usersResource = $resource("/api/account/7");
-
-	$scope.loadCurrentUser = function() {
-		$scope.usersResource.get({}, function(data) {
-			$scope.users = data.json;
-			$scope.currentUser = $scope.users[0];
-			$scope.$broadcast("CurrentUserLoaded", {});
-		});
-	};
 
 	$scope.redirectToLogin = function () {
 	    $scope.showLogin = true;
 	    $location.path('/login');
 	};
-
-	/*$scope.loadCurrentUser();*/
-
-
-	//TODO: Fix undefined error on currentUser. http://stackoverflow.com/questions/23848127/how-can-i-overcome-race-conditions-within-directives-without-a-timeout-function
-	//console.log("Current User" + $scope.currentUser.AccountID);  //get undefined
-	//$scope.orgAccountResource = $resource("api/organization/account/:accountId", {{accountId: $scope.currentUser.AccountID} );
-	$scope.orgAccountResource = $resource("api/organization/account/:accountId", {accountId: 7} );
-
-	$scope.loadCurrentOrg = function() {
-		$scope.orgAccountResource.get({}, function(data){
-			$scope.orgs = data.json;
-			$scope.org = $scope.orgs[0];
-			$scope.currentOrg = $scope.org[0];
-			$scope.$broadcast("CurrentOrgLoaded", {});
-		});
-	};
-
-	//$scope.loadCurrentOrg();
 
 
 	$scope.resources = [

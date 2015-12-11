@@ -58,57 +58,114 @@ var routes = function(){
     }
   )
   //find OrgainzationsRegulations by AccountID
-  .get('/account/:id', function(req, res) {
-        //get the distinct organizatins where the account is either primary or secondary poc
-        var query = "select distinct(OrganizationID) from OrganizationGroup WHERE (PrimaryPOC = "+req.params.id+" OR SecondaryPOC = "+req.params.id+")";
-        models.sequelize.query(query, { type: models.sequelize.QueryTypes.SELECT}
-      ).then(function(orgIDs) {
-        var promises = [];
-        orgIDs.forEach(
-          function(element)
+  .get('/account/:id', function (req, res) {
+      models.Account.findAll(
+        {
+          include: [
+            {
+              model: models.Organization,
+            }
+          ],
+          where: {
+            AccountID: req.params.id,
+            Active: true
+          }
+        }
+      ).then(function (account) {
+          if (account.length>0)
           {
-            console.info("here is the org id: "+element.OrganizationID);
-            promises.push(
-              models.OrganizationRegulations.findAll(
-                {
-                  where: {
-                    OrganizationID: element.OrganizationID
-                  }
+            models.OrganizationRegulations.findAll({
+                where: {
+                  OrganizationID: account[0].OrganizationID
                 }
-              )  
+              }
+            ).then(function (orgreg) {
+                res.statusCode = 200;
+                res.send(
+                  {
+                      result: 'success',
+                      err: '',
+                      json: orgreg,
+                      length: orgreg.length
+                  }
+                );
+              }
             );
           }
-        );
-        return Promise.all(promises);
-      }
-     ).then(function(organizationRegulations) {
-       var orgRegs = [];
-       //instead of returning an array for each result, we combine them into one array or OrganizaitonRegulations
-       organizationRegulations.forEach(function(element) {
-         element.forEach(function(organizationReg) {
-           orgRegs.push(organizationReg);
-         }, this);
-       }, this);
-        res.statusCode = 200;
-        res.send(
+          else
           {
-            result: 'success',
-            err:    '',
-            json:  orgRegs,
-            length: orgRegs.length
+            res.statusCode = 200;
+                res.send(
+                  {
+                      result: 'success',
+                      err: '',
+                      json: account,
+                      length: account.length
+                  }
+                );
           }
-        );
-      }
-     ).catch(function (err) {
-       console.error(err);
-       res.statusCode = 502;
-       res.send({
-           result: 'error',
-           err:    err.message
-       });
-      });
+        }
+      ).catch(function (err) {
+         console.error(err);
+         res.statusCode = 502;
+         res.send({
+             result: 'error',
+             err: err.message
+         });
+     });
     }
   )
+  // .get('/account/:id', function(req, res) {
+  //       //get the distinct organizatins where the account is either primary or secondary poc
+  //       var query = "select distinct(OrganizationID) from OrganizationGroup WHERE (PrimaryPOC = "+req.params.id+" OR SecondaryPOC = "+req.params.id+")";
+  //       models.sequelize.query(query, { type: models.sequelize.QueryTypes.SELECT}
+  //     ).then(function(orgIDs) {
+  //       var promises = [];
+  //       orgIDs.forEach(
+  //         function(element)
+  //         {
+  //           console.info("here is the org id: "+element.OrganizationID);
+  //           promises.push(
+  //             models.OrganizationRegulations.findAll(
+  //               {
+  //                 where: {
+  //                   OrganizationID: element.OrganizationID
+  //                 }
+  //               }
+  //             )  
+  //           );
+  //         }
+  //       );
+  //       return Promise.all(promises);
+  //     }
+  //    ).then(function(organizationRegulations) {
+  //      var orgRegs = [];
+  //      //instead of returning an array for each result, we combine them into one array or OrganizaitonRegulations
+  //      organizationRegulations.forEach(function(element) {
+  //        element.forEach(function(organizationReg) {
+  //          orgRegs.push(organizationReg);
+  //        }, this);
+  //      }, this);
+  //       res.statusCode = 200;
+  //       res.send(
+  //         {
+  //           result: 'success',
+  //           err:    '',
+  //           json:  orgRegs,
+  //           length: orgRegs.length
+  //         }
+  //       );
+  //     }
+  //    ).catch(function (err) {
+  //      console.error(err);
+  //      res.statusCode = 502;
+  //      res.send({
+  //          result: 'error',
+  //          err:    err.message
+  //      });
+  //     });
+  //   }
+  // )
   //insert into OrganizationRegulations
   .post('/', function(req, res) {
     models.OrganizationRegulations.create(req.body)

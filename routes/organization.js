@@ -20,6 +20,19 @@ models.Organization.hasMany(models.Event, {foreignKey: 'OrganizationID'});
 models.Event.belongsTo(models.Organization, {foreignKey: 'OrganizationID'});
 
 
+//OrganizationGroup many-to-One on Address
+models.Address.hasMany(models.Organization, {foreignKey: 'AddressID'});
+models.Organization.belongsTo(models.Address, {foreignKey: 'AddressID'});
+
+//OrganizationGroup many-to-One on Account (PrimaryPOC attribute)
+// models.Account.hasMany(models.OrganizationGroup, {foreignKey: 'AccountID'});
+models.Organization.belongsTo(models.Account, {as: 'PrimaryPOCAccount', foreignKey: 'PrimaryPOC'});
+
+//OrganizationGroup many-to-One on Account (SecondaryPOC attribute)
+// models.Account.hasMany(models.OrganizationGroup, {foreignKey: 'AccountID'});
+models.Organization.belongsTo(models.Account, {as: 'SecondaryPOCAccount', foreignKey: 'SecondaryPOC'});
+
+
 var routes = function(){
   var router  = express.Router();
     router.get('/', function(req, res) {

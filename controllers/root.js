@@ -3,6 +3,10 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	var currentView = "";
 	
 	$scope.eventsResource = $resource("/api/event");
+	$scope.currentUser = JSON.parse(sessionStorage.getItem("user"));
+	$scope.currentOrg = JSON.parse(sessionStorage.getItem("user"));
+
+	$scope.title = "Worldwide Events";
 	
 	$scope.loadEvents = function() {
 		$scope.eventsResource.get({}, function(data) {
@@ -29,9 +33,17 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 		currentView = viewName;
 	};
 
+	$scope.setTitle = function (title, img) {
+	    $scope.title = title;
+	    $scope.imageSrc = img;
+	};
+
 	$scope.setCurrentUser = function (user) {
 	    $scope.currentUser = user;
-	    $scope.currentOrg = user.OrganizationGroup.Organization;
+	};
+
+	$scope.setCurrentOrg = function (org) {
+	    $scope.currentOrg = org;
 	};
 	
 	$scope.setCurrentLanguage = function(language) {
@@ -79,26 +91,26 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 		return {}; 
 	};
 
-	$scope.getLocationIcon = function(location) {
-		var inventories = location.ResourceLocationInventories;
-		if (inventories.length > 1)
-			return "style/images/resources.png";
-		
-		var resourceType = inventories[0].ResourceType.Description;
-		if (resourceType == "Water") {
-			return "style/images/Water-Diamond-Blue.png";
-		} else if (resourceType == "First Aid") {
-			return "style/images/First Aid-Diamond-Blue.png";
-		} else if (resourceType == "Shelter") {
-			return "style/images/Shelter-Diamond-Blue.png";
-		} else if (resourceType == "Evacuation") {
-			return "style/images/Evacuation-Diamond-Blue.png";
-		} else if (resourceType == "Medicine") {
-			return "style/images/Medicine-Diamond-Blue.png";
-		} else {
-			return "style/images/Food-Diamond-Blue.png";
-		}
-	}
+	$scope.getLocationIcon = function (location) {
+	    var inventories = location.ResourceLocationInventories;
+	    if (inventories.length > 1)
+	        return "style/images/resources.png";
+
+	    var resourceType = inventories[0].ResourceType.Description;
+	    if (resourceType == "Water") {
+	        return "style/images/Water-Diamond-Blue.png";
+	    } else if (resourceType == "First Aid") {
+	        return "style/images/First Aid-Diamond-Blue.png";
+	    } else if (resourceType == "Shelter") {
+	        return "style/images/Shelter-Diamond-Blue.png";
+	    } else if (resourceType == "Evacuation") {
+	        return "style/images/Evacuation-Diamond-Blue.png";
+	    } else if (resourceType == "Medicine") {
+	        return "style/images/Medicine-Diamond-Blue.png";
+	    } else {
+	        return "style/images/Food-Diamond-Blue.png";
+	    }
+	};
 	
 	$scope.buildLocationDetails = function(location) {
 		var popupText = "<strong>" + location.Organization.Name + "</strong><br/>" + 
@@ -155,40 +167,11 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	$scope.loadEvents();
 
 
-    /* Hard coded until we figure out authentication */
-	$scope.usersResource = $resource("/api/account/7");
-
-	$scope.loadCurrentUser = function() {
-		$scope.usersResource.get({}, function(data) {
-			$scope.users = data.json;
-			$scope.currentUser = $scope.users[0];
-			$scope.$broadcast("CurrentUserLoaded", {});
-		});
-	};
 
 	$scope.redirectToLogin = function () {
 	    $scope.showLogin = true;
 	    $location.path('/login');
 	};
-
-	/*$scope.loadCurrentUser();*/
-
-
-	//TODO: Fix undefined error on currentUser. http://stackoverflow.com/questions/23848127/how-can-i-overcome-race-conditions-within-directives-without-a-timeout-function
-	//console.log("Current User" + $scope.currentUser.AccountID);  //get undefined
-	//$scope.orgAccountResource = $resource("api/organization/account/:accountId", {{accountId: $scope.currentUser.AccountID} );
-	$scope.orgAccountResource = $resource("api/organization/account/:accountId", {accountId: 7} );
-
-	$scope.loadCurrentOrg = function() {
-		$scope.orgAccountResource.get({}, function(data){
-			$scope.orgs = data.json;
-			$scope.org = $scope.orgs[0];
-			$scope.currentOrg = $scope.org[0];
-			$scope.$broadcast("CurrentOrgLoaded", {});
-		});
-	};
-
-	//$scope.loadCurrentOrg();
 
 
 	$scope.resources = [
