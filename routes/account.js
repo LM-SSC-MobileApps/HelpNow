@@ -2,13 +2,10 @@
 var models  = require('../models'),
     express = require('express');
 
-//Account many-to-one on OrganizationGroup
-models.Account.belongsTo(models.OrganizationGroup, {foreignKey: 'OrganizationGroupID'});
-models.OrganizationGroup.hasMany(models.Account, {foreignKey: 'OrganizationGroupID'});
+//Account many-to-one on Organization
+models.Account.belongsTo(models.Organization, {foreignKey: 'OrganizationID'});
+models.Organization.hasMany(models.Account, {foreignKey: 'OrganizationID'});
 
-//OrganizationGroup many-to-One on Organization
-models.Organization.hasMany(models.OrganizationGroup, {foreignKey: 'OrganizationID'});
-models.OrganizationGroup.belongsTo(models.Organization, {foreignKey: 'OrganizationID'});
 
 
 var routes = function(){
@@ -37,10 +34,17 @@ var routes = function(){
       });
     }
   )
-  //find Account by ID
+  //find Account by ID on session
   .get('/accountid/', function(req, res) {
+      console.log('here is our session account id: '+req.session.accountid);
+      console.log('here is the sessionid: '+req.sessionID);
       models.Account.findAll(
         {
+          include: [
+            {
+              model: models.Organization,
+            }
+          ],
           where: {
             AccountID: req.session.accountid
           }
@@ -65,12 +69,48 @@ var routes = function(){
        });
       });
     }
-  )//find Accounts by organizationgroupid
-  .get('/organizationgroup/:id', function (req, res) {
+  )
+  //find Account by ID on session
+  .get('/accountid/', function(req, res) {
+      console.log('here is our session account id: '+req.session.accountid);
+      console.log('here is the sessionid: '+req.sessionID);
+      models.Account.findAll(
+        {
+          include: [
+            {
+              model: models.Organization,
+            }
+          ],
+          where: {
+            AccountID: req.session.accountid
+          }
+        }
+      ).then(function(account) {
+        res.statusCode = 200;
+        res.send(
+          {
+            result: 'success',
+            err:    '',
+            json:  account,
+            length: account.length
+          }
+        );
+      }
+     ).catch(function (err) {
+       console.error(err);
+       res.statusCode = 502;
+       res.send({
+           result: 'error',
+           err:    err.message
+       });
+      });
+    }
+  )//find Accounts by organizationid
+  .get('/organization/:id', function (req, res) {
       models.Account.findAll(
         {
             where: {
-                OrganizationGroupID: req.params.id
+                OrganizationID: req.params.id
             }
         }
       ).then(function (account) {
@@ -101,54 +141,14 @@ var routes = function(){
      });
     }
   )
-  //find Accounts by organizationgroupid
-  // .get('/organizationgroup/:id', function (req, res) {
-  //     models.Account.findAll(
-  //       {
-  //           where: {
-  //               OrganizationGroupID: req.params.id
-  //           }
-  //       }
-  //     ).then(function (account) {
-  //         if (account.length>0)
-  //           {
-  //             res.statusCode = 200;
-  //             res.send(
-  //               {
-  //                   result: 'success',
-  //                   err: '',
-  //                   json: account,
-  //                   length: account.length
-  //               }
-  //             );
-  //           }
-  //           else
-  //           {
-  //             res.sendStatus(401)
-  //           }
-  //     }
-  //    ).catch(function (err) {
-  //        console.error(err);
-  //        res.statusCode = 502;
-  //        res.send({
-  //            result: 'error',
-  //            err: err.message
-  //        });
-  //    });
-  //   }
-  // )
+  
   //find login which retrieves account
   .post('/login/', function (req, res) {
         models.Account.findAll(
           {
               include: [
                 {
-                  model: models.OrganizationGroup,
-                  include: [
-                    {
-                      model: models.Organization
-                    }
-                  ]
+                  model: models.Organization,
                 }
               ],
               where: {
@@ -159,6 +159,15 @@ var routes = function(){
         ).then(function (account) {
             if (account.length>0)
             {
+              // var userSessionObject = {
+              //       AccountID: account[0].AccountID,
+              //       FirstName: account[0].FirstName,
+              //       LastName: account[0].LastName,
+              //       OrganizationID: account[0].Organization.OrganizationID,
+              //       OrganizationName: account[0].Organization.Organization.Name
+              //   }
+              req.session.accountid =  account[0].AccountID;
+              req.session.organizationid =  account[0].OrganizationID;
               res.statusCode = 200;
               res.send(
                 {

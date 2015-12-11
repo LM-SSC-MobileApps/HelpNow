@@ -8,10 +8,6 @@ models.ResourceRequest.belongsTo(models.RequestState, {foreignKey: 'RequestState
 //ResourceRequest one-to-one on ResourceType
 models.ResourceRequest.belongsTo(models.ResourceType, {foreignKey: 'ResourceTypeID'});
 
-//ResourceRequest one-to-one on ResourceRegistry
-// models.ResourceRequest.hasOne(models.ResourceRegistry, {foreignKey: 'ResourceRegistryID'});
-// models.ResourceRegistry.belongsTo(models.ResourceRequest, {foreignKey: 'ResourceRegistryID'});
-
 //ResourceRequest one-to-many on ResourceResponse
 models.ResourceRequest.hasMany(models.ResourceResponse, {foreignKey: 'ResourceRequestID'});
 models.ResourceResponse.belongsTo(models.ResourceRequest, {foreignKey: 'ResourceRequestID'});

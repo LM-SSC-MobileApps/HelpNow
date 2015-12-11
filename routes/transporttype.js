@@ -2,10 +2,6 @@
 var models  = require('../models'),
     express = require('express');
     
-// //TransportType one-to-many on ResourceLocationTransport    
-// models.TransportType.hasMany(models.ResourceLocationTransport, {foreignKey: 'TransportTypeID'});
-// models.ResourceLocationTransport.belongsTo(models.TransportType, {foreignKey: 'TransportTypeID'});
-
 var routes = function(){
   var router  = express.Router();
     router.get('/', function(req, res) {

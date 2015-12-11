@@ -94,7 +94,7 @@ var routes = function(){
       });
     }
   )
-  //find ResourceLocation by ID
+  //find ResourceLocation by OrganiztionID on session
   .get('/organization/', function(req, res) {
       models.ResourceLocation.findAll(
         {
