@@ -10,7 +10,7 @@
     //$scope.requestsResource = $resource("/api/event/mapitems/");
     $scope.resourceLocation = $resource("/api/resourcelocation");
 
-    loadResourceLocations();
+    
 
     //$scope.eventID = $routeParams.eventID * 1;
     //alert($scope.eventID);
@@ -20,6 +20,7 @@
     //}
 
     $scope.userOrgID = 1;
+    loadResourceLocations();
 
     $scope.overlayRadius = 250;
     $scope.radiusRawVal = 0.25;
