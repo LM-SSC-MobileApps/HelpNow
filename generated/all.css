@@ -6834,3 +6834,18 @@ input.switch:checked ~ label:after {
   color: black;
   font-size: 12px;
 }
+
+.modal-content {
+  position: relative;
+  background-color: #4e5d6c;
+  border: 1px solid transparent;
+  border-radius: 0;
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+  background-clip: padding-box;
+  outline: 0;
+}
+
+.panel-footer {
+  background-color: rgba(38, 58, 80, 0.85);
+  border-color: #999;
+}

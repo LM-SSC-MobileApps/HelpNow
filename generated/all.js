@@ -533,15 +533,17 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
 
     $scope.setCurrentView("inventory");
 
-    $scope.requestsResource = $resource("/api/event/mapitems/");
+    //$scope.requestsResource = $resource("/api/event/mapitems/");
     $scope.resourceLocation = $resource("/api/resourcelocation");
 
-    $scope.eventID = $routeParams.eventID * 1;
-    alert($scope.eventID);
-    if ($scope.events) {
-        $scope.event = $scope.getEvent($scope.eventID);
-        loadResourceLocations();
-    }
+    loadResourceLocations();
+
+    //$scope.eventID = $routeParams.eventID * 1;
+    //alert($scope.eventID);
+    //if ($scope.events) {
+    //    $scope.event = $scope.getEvent($scope.eventID);
+    //    loadResourceLocations();
+    //}
 
     $scope.userOrgID = 1;
 
@@ -727,9 +729,61 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
  * ManageCtrl
  */
 
-angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , function($scope, $location) {
+angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$resource", "Invitation" ,  "$uibModal", function($scope, $location, $resource ,Invitation ,$uibModal) {
 
-    $scope.setTitle("Organization Management");
+
+	$scope.invitesResource  = $resource("/api/inviterequest/organizationinvites/:accountid",
+			{accountid: $scope.currentUser.AccountID});
+
+
+
+
+	$scope.loadInvites = function() {
+		$scope.invitesResource.get({}, function(data) {
+			$scope.invites = data.json;
+			$scope.$broadcast("InviteDataLoaded", {});
+		});
+	};
+
+	$scope.loadInvites();
+
+
+	$scope.deleteInvite = function (invitation) {
+		$scope.modalInstance = $uibModal.open(
+				{
+					templateUrl: '/manage/invite-modal-delete.html',
+					controller: function ($scope) {
+						this.invitation = invitation;
+						this.Invitation = Invitation;
+
+						$scope.deleteInvite = function (invitation) {
+							Invitation.delete({inviteid: invitation.InviteID});
+							$location.path("/manage");
+						};
+					},
+					controllerAs: "model"
+				});
+	};
+
+
+	///account/organizationmembers/:id (id = AccountID)
+
+	$scope.teamResource  = $resource("/api/account/organizationmembers/:accountid",
+			{accountid: $scope.currentUser.AccountID});
+
+
+	$scope.loadTeam = function() {
+		$scope.teamResource.get({}, function(data) {
+			$scope.team = data.json;
+			$scope.$broadcast("TeamDataLoaded", {});
+		});
+	};
+
+	$scope.loadTeam();
+
+
+
+
 
 	$scope.go = function ( path ) {
 		$location.path( path );
@@ -1574,7 +1628,35 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
  * TeamInviteCtrl
  */
 
-angular.module("helpNow").controller("TeamInviteCtrl", ["$scope", "$resource", "$routeParams", "$location", function ($scope, $resource, $routeParams, $location) {
+angular.module("helpNow").controller("TeamInviteCtrl", ["$scope", "$resource", "$routeParams", "Invitation" , "$location", "$uibModal", function ($scope, $resource, $routeParams, Invitation , $location, $uibModal) {
+
+    $scope.newInvite = new Invitation();
+
+    //TODO: Verify user is logged in before allowing submit
+    $scope.newInvite.OrganizationID = $scope.currentOrg.OrganizationID;
+    console.log("$scope.currentOrg.OrganizationID" + $scope.currentOrg.OrganizationID);
+    //$scope.newInvite.OrganizationID = 1;
+
+
+    $scope.sendInvite = function (invitation) {
+        Invitation.save(invitation);
+        $scope.confirmEmail(invitation);
+    };
+
+
+    $scope.confirmEmail = function (invitation) {
+        $scope.modalInstance = $uibModal.open(
+            {
+                templateUrl: '/manage/team-invite-modal-confirm.html',
+                controller: function ($scope) {
+                    this.invitation = invitation;
+                    $scope.confirm = function () {
+                        $location.path("/manage");
+                    };
+                },
+                controllerAs: "model"
+            });
+    };
 
 
     $scope.go = function (path) {
@@ -1676,6 +1758,19 @@ angular.module("helpNow").directive('map', function () {
         }
     };
 });
+angular.module('helpNow').factory('Invitation', function ($resource) {
+    return $resource('api/inviterequest/:inviteid', null ,{
+        update: {
+            method: 'PUT'
+        }
+    });
+});
+
+
+
+
+
+
 angular.module('helpNow').factory('Regulation', function ($resource) {
     return $resource('api/organizationregulation/:id', null ,{
      update: {
