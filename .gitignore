@@ -32,5 +32,11 @@ typings
 # config folder skip
 config
 
+#Visual Studio ignore
+*.sln
+.vs
+
+
 # ignore generated folder
 generated
+
