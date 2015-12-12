@@ -10,12 +10,14 @@
     //$scope.requestsResource = $resource("/api/event/mapitems/");
     $scope.resourceLocation = $resource("/api/resourcelocation");
 
-    $scope.eventID = $routeParams.eventID * 1;
-    alert($scope.eventID);
-    if ($scope.events) {
-        $scope.event = $scope.getEvent($scope.eventID);
-        loadResourceLocations();
-    }
+    loadResourceLocations();
+
+    //$scope.eventID = $routeParams.eventID * 1;
+    //alert($scope.eventID);
+    //if ($scope.events) {
+    //    $scope.event = $scope.getEvent($scope.eventID);
+    //    loadResourceLocations();
+    //}
 
     $scope.userOrgID = 1;
 
