@@ -7,7 +7,6 @@
 
     $scope.setCurrentView("inventory");
 
-    //$scope.requestsResource = $resource("/api/event/mapitems/");
     $scope.resourceLocation = $resource("/api/resourcelocation");
 
     
@@ -35,11 +34,7 @@
     $scope.showGround = false;
     $scope.showWater = false;
 
-    $scope.$on("EventDataLoaded", function () {
-        $scope.event = $scope.getEvent($scope.eventID);
-        loadResourceLocations();
-        //loadRequests();
-        resetNeedsButtons();
+    $scope.$on("ResourceLocationDataLoaded", function () {
         updateMap();
     });
 
@@ -53,14 +48,8 @@
 
         mapLayers = [];
 
-
-        var selectedRequests = $scope.requests.filter(function (request) {
-            var type = request.ResourceType.Description;
-            return shouldDisplayMarker(type);
-        });
-
-        if ($scope.showLocationMarkers)
-            buildLocationMarkers();
+        buildInventoryMarkers(mapLayers);
+    
 
         angular.forEach(mapLayers, function (layer) {
             map.addLayer(layer);
@@ -74,7 +63,33 @@
                 return resLocation.OrganizationID == $scope.userOrgID;
             });
             $scope.resourceLocations = filteredResourceLocations;
+            $scope.$broadcast("ResourceLocationDataLoaded", {});
         });
+    }
+
+    function buildInventoryMarkers(mapLayers) {  
+        angular.forEach($scope.resourceLocations, function (location) {
+            var locationIcon = L.icon({
+                iconUrl: "style/images/resources.png",
+                iconSize: [60, 60],
+                iconAnchor: [30, 30]
+            });
+
+            var marker = buildInventoryMarker(location, locationIcon);
+            mapLayers.push(marker);
+        });
+    }
+
+    function buildInventoryMarker(location, icon) {
+        var marker = L.marker([location.LAT, location.LONG], { icon: icon });
+        marker.bindPopup(buildInventoryLocationDetails(location));
+        return marker;
+    }
+
+    function buildInventoryLocationDetails(location) {
+        var popupText = "<strong>" + location.Description + "</strong><br/>" +
+			location.PrimaryPOC + "<hr/>";
+        return popupText;
     }
 
     //function loadRequests() {
@@ -99,6 +114,26 @@
             }
         });
         updateMap();
+    };
+
+    //function centerMapToLongLat(long, lat) {
+    //    alert("1");
+    //    if (!map || !$scope.resourceLocations) return;
+    //    alert("2");
+    //    map.center = long+","+lat;
+    //    map.zoom = 13;
+    //}
+
+    $scope.centerMapToLongLat = function (long, lat) {
+        if (!map) return;
+        alert("LAT: " + lat);
+        alert("LONG: " + long);
+        map.panTo(new L.LatLng(lat, long));
+        //var center = L.latlng([lat, long]);
+        //map.panTo([lat, long]);
+        //map.center = long + "," + lat;
+        //map.zoom = 13;
+        //map.updateMap;
     };
 
     $scope.toggleTransportClass = function (id) {

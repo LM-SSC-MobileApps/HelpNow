@@ -8,7 +8,11 @@ models.ResourceLocationInventory.belongsTo(models.ResourceLocation, {foreignKey:
 
 //ResourceLocation one-to-many on ResourceLocationTransport
 models.ResourceLocation.hasMany(models.ResourceLocationTransport, {foreignKey: 'ResourceLocationID'});
-models.ResourceLocationTransport.belongsTo(models.ResourceLocation, {foreignKey: 'ResourceLocationID'});
+models.ResourceLocationTransport.belongsTo(models.ResourceLocation, { foreignKey: 'ResourceLocationID' });
+
+//ResourceLocationTransport many-to-one on TransportType
+models.ResourceLocationTransport.belongsTo(models.TransportType, { foreignKey: 'TransportTypeID' });
+models.TransportType.hasMany(models.ResourceLocationTransport, { foreignKey: 'TransportTypeID' });
 
 // //ResourceLocation many-to-One on Organization
 models.Organization.hasMany(models.ResourceLocation, {foreignKey: 'OrganizationID'});
@@ -31,7 +35,14 @@ var routes = function(){
             {model: models.Organization},
             {model: models.Event, required: false},
             {model: models.ResourceLocationInventory},
-            {model: models.ResourceLocationTransport},
+            {
+                model: models.ResourceLocationTransport,
+                include: [
+                    {
+                        model: models.TransportType
+                    }
+                ]
+            },
             {model: models.ResourceLocationType}
           ]
         }

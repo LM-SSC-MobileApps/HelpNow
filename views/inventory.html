@@ -1,32 +1,36 @@
 ﻿<div ng-controller="InventoryCtrl">
     <div id="map" map map-center="20.0,0.0" map-zoom="2" class="col-md-9" style="height: 512px; border: 1px solid #AAA;"></div>
-    <div id="resLocationList" class="col-md-3" ng-if="showResourceLocations">
-        <table id="resLocationTable" style="margin-right: -10px;">
-            <tr ng-repeat="resourceLocation in resourceLocations" style="border-bottom:2px solid;">
-                <td>
-                    <br/>
-                    <h5>{{resourceLocation.Description}}</h5>
-                    <a href="#location_inventory.html/{{resourceLocation.ResourceLocationID}}">
-                        ({{resourceLocation.LONG | number:2}}, {{resourceLocation.LAT| number:2}})
-                    </a>
-                    <br/>
-                    <br/>
-                    <div class="row">
-                        <div class="col-xs-4">
-                            <img src="style/images/Transport-Ground-Transparent.png" ng-click="toggleTransport('showGround')" style="height: 30px; width: 50px; margin-right: 5px;" />
+    <div id="eventList" class="col-md-3">
+        <div id="eventsTable">
+            <div ng-repeat="resourceLocation in resourceLocations">
+                <div class="row">
+                    <div class="col-sm-9">
+                        <h4>{{resourceLocation.Description}}</h4>
+                    </div>
+                    <div class="col-sm-9" style="padding-bottom: 10px;">
+                        <!--<a href="#location_inventory.html/{{resourceLocation.ResourceLocationID}}">
+                            ({{resourceLocation.LONG | number:2}}, {{resourceLocation.LAT| number:2}})
+                        </a>-->
+                        <a href="" ng-click="centerMapToLongLat(resourceLocation.LONG,resourceLocation.LAT)">({{resourceLocation.LONG | number:2}}, {{resourceLocation.LAT| number:2}})</a>
+                    </div>
+                    <div ng-repeat="resourceLocationTransport in resourceLocation.ResourceLocationTransports">
+                        <div ng-if="resourceLocationTransport.TransportType.Description == 'Ground'" class="col-xs-4">
+                            <img src="style/images/Transport-Ground.png" style="height: 30px; width: 50px; margin-right: 5px;" />
                         </div>
-                        <div class="col-xs-4">
-                            <img src="style/images/Transport-Air-Transparent.png" ng-click="toggleTransport('showAir')" style="height: 30px; width: 50px; margin-right: 5px;" />
+                        <div ng-if="resourceLocationTransport.TransportType.Description == 'Air'" class="col-xs-4">
+                            <img src="style/images/Transport-Air.png" style="height: 30px; width: 50px; margin-right: 5px;" />
                         </div>
-                        <div class="col-xs-4">
-                            <img src="style/images/Transport-Water-Transparent.png" ng-click="toggleTransport('showWater')" style="height: 30px; width: 50px; margin-right: 5px;" />
+                        <div ng-if="resourceLocationTransport.TransportType.Description == 'Water'" class="col-xs-4">
+                            <img src="style/images/Transport-Water.png" style="height: 30px; width: 50px; margin-right: 5px;" />
                         </div>
                     </div>
-                </td>
-            </tr>
-        </table>
-        <a id="btn-login" class="btn btn-primary pull-right" ng-click="showNewSiteForm()"><span class="glyphicon glyphicon-globe"></span>Add New Site</a>
+                </div>
+                <hr />
+            </div>
+            <a id="btn-login" class="btn btn-primary pull-right" ng-click="showNewSiteForm()"><span class="glyphicon glyphicon-globe"></span>Add New Site</a>
+        </div>
     </div>
+    
     <div id="rightColumn" class="col-md-3" ng-if="showNewForm">
         <div class="row">
             <div class="col-md-12">
