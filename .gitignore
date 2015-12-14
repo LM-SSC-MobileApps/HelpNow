@@ -38,7 +38,3 @@ config
 
 # ignore generated folder
 generated
-all.js
-all.min.js
-all.css
-help.myth.css

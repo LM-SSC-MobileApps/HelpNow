@@ -33,13 +33,11 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
                     AccountID: $scope.currentUser.AccountID,
                     FirstName: $scope.currentUser.FirstName,
                     LastName: $scope.currentUser.LastName,
-                    OrganizationGroupID: $scope.currentUser.OrganizationGroup.OrganizationGroupID,
-                    OrganizationGroupName: $scope.currentUser.OrganizationGroup.Name,
-                    OrganizationID: $scope.currentUser.OrganizationGroup.Organization.OrganizationID,
-                    OrganizationName: $scope.currentUser.OrganizationGroup.Organization.Name
+                    OrganizationID: $scope.currentUser.Organization.OrganizationID,
+                    OrganizationName: $scope.currentUser.Organization.Name
                 }
                 $scope.setCurrentUser(userSessionObject);
-                $scope.setCurrentOrg($scope.currentUser.OrganizationGroup.Organization);
+                $scope.setCurrentOrg($scope.currentUser.Organization);
                 sessionStorage.setItem("user", JSON.stringify(userSessionObject));
                 $scope.$broadcast("CurrentUserLoaded", {});
                 $location.path('#');

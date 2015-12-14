@@ -8,15 +8,8 @@
     $scope.setCurrentView("inventory");
 
     $scope.resourceLocation = $resource("/api/resourcelocation");
+    $scope.currentResourceLocation = {};
 
-    
-
-    //$scope.eventID = $routeParams.eventID * 1;
-    //alert($scope.eventID);
-    //if ($scope.events) {
-    //    $scope.event = $scope.getEvent($scope.eventID);
-    //    loadResourceLocations();
-    //}
 
     $scope.userOrgID = 1;
     loadResourceLocations();
@@ -29,6 +22,7 @@
     $scope.showResourceLocations = true;
     $scope.showNewForm = false;
     $scope.showTransportationOptions = false;
+    $scope.showLocationInventory = false;
 
     $scope.showAir = false;
     $scope.showGround = false;
@@ -82,59 +76,63 @@
 
     function buildInventoryMarker(location, icon) {
         var marker = L.marker([location.LAT, location.LONG], { icon: icon });
-        marker.bindPopup(buildInventoryLocationDetails(location));
+        marker.id = location.ResourceLocationID;
+        marker.bindPopup(buildInventoryLocationDetails(location)).on('click', function () {
+            //add code for inventory marker click
+        });
         return marker;
     }
 
     function buildInventoryLocationDetails(location) {
         var popupText = "<strong>" + location.Description + "</strong><br/>" +
-			location.PrimaryPOC + "<hr/>";
+			location.PrimaryPOCPhone + "<hr/>";
+        location.ResourceLocationInventories.forEach(function (inventory) {
+            popupText += inventory.ResourceType.Description + ": " + inventory.Quantity + " " +
+				inventory.ResourceTypeUnitOfMeasure.Description + "<br/>";
+        });
         return popupText;
     }
 
-    //function loadRequests() {
-    //    $scope.requestsResource.get({ eventID: $scope.eventID }, function (data) {
-    //        $scope.requests = data.json.requests;
-    //        $scope.locations = data.json.locations;
-    //        updateMap();
-    //    });
-    //}
-
     $scope.initMap = function (newMap) {
         map = newMap;
-        map.on('click', function (e) {
-            if ($scope.locationPref.value == "Other") {
-                if ($scope.locationOutline !== undefined) {
-                    map.removeLayer($scope.locationOutline);
-                }
-                $scope.locationOutline = L.circle(e.latlng, $scope.overlayRadius).addTo(map);
-                $scope.helpRequest.LAT = e.latlng.lat.toFixed(3);
-                $scope.helpRequest.LONG = e.latlng.lng.toFixed(3);
-                $scope.$digest();
-            }
-        });
+        //map.on('click', function (e) {
+        //    if ($scope.locationPref.value == "Other") {
+        //        if ($scope.locationOutline !== undefined) {
+        //            map.removeLayer($scope.locationOutline);
+        //        }
+        //        $scope.locationOutline = L.circle(e.latlng, $scope.overlayRadius).addTo(map);
+        //        $scope.helpRequest.LAT = e.latlng.lat.toFixed(3);
+        //        $scope.helpRequest.LONG = e.latlng.lng.toFixed(3);
+        //        $scope.$digest();
+        //    }
+        //});
         updateMap();
     };
 
-    //function centerMapToLongLat(long, lat) {
-    //    alert("1");
-    //    if (!map || !$scope.resourceLocations) return;
-    //    alert("2");
-    //    map.center = long+","+lat;
-    //    map.zoom = 13;
-    //}
 
     $scope.centerMapToLongLat = function (long, lat) {
         if (!map) return;
-        alert("LAT: " + lat);
-        alert("LONG: " + long);
+        map.setZoom(12);
         map.panTo(new L.LatLng(lat, long));
-        //var center = L.latlng([lat, long]);
-        //map.panTo([lat, long]);
-        //map.center = long + "," + lat;
-        //map.zoom = 13;
-        //map.updateMap;
     };
+
+    $scope.resourceLocationClick = function (long, lat, resourceLocID) {
+        if (!map) return;
+        map.setZoom(12);
+        map.panTo(new L.LatLng(lat, long));
+        $scope.setCurrentResourceLocationByID(resourceLocID);
+        $scope.showInventory();
+    };
+
+    $scope.setCurrentResourceLocationByID = function (id) {
+        $scope.resourceLocations.forEach(function (resLoc)
+        {
+            if (resLoc.ResourceLocationID == id)
+            {
+                $scope.currentResourceLocation = resLoc;
+            }
+        });
+    }
 
     $scope.toggleTransportClass = function (id) {
         var status = $scope[id];
@@ -155,6 +153,35 @@
     $scope.showTransportation = function () {
         $scope.showTransportationOptions = !$scope.showTransportationOptions;
         $scope.showNewForm = !$scope.showNewForm;
+        return false;
+    };
+
+    $scope.showInventory = function () {
+        $scope.showResourceLocations = !$scope.showResourceLocations;
+        $scope.showLocationInventory = !$scope.showLocationInventory;
+        return false;
+    };
+
+    $scope.removeInventoryItem = function () {
+        alert("Coming Soon - In Developement");
+        return false;
+    };
+
+    $scope.saveResourceLocation = function () {
+        alert("Coming Soon - In Developement");
+        $scope.showTransportationOptions = !$scope.showTransportationOptions;
+        $scope.showResourceLocations = !$scope.showResourceLocations;
+        return false;
+    };
+
+    $scope.removeResourceLocation = function () {
+        $scope.showTransportationOptions = !$scope.showTransportationOptions;
+        $scope.showResourceLocations = !$scope.showResourceLocations;
+        return false;
+    };
+
+    $scope.comingSoon = function () {
+        alert("Coming Soon - In Developement");
         return false;
     };
 

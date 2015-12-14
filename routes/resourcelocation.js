@@ -24,7 +24,15 @@ models.ResourceLocation.belongsTo(models.Event, {foreignKey: 'EventID'});
 
 //ResourceLocation many-to-one on ResourceLocationType
 models.ResourceLocation.belongsTo(models.ResourceLocationType, {foreignKey: 'ResourceLocationTypeID'});
-models.ResourceLocationType.hasMany(models.ResourceLocation, {foreignKey: 'ResourceLocationTypeID'});
+models.ResourceLocationType.hasMany(models.ResourceLocation, { foreignKey: 'ResourceLocationTypeID' });
+
+//ResourceLocationInventory many-to-one on ResourceType
+models.ResourceLocationInventory.belongsTo(models.ResourceType, { foreignKey: 'ResourceTypeID' });
+models.ResourceType.hasMany(models.ResourceLocationInventory, { foreignKey: 'ResourceTypeID' });
+
+//ResourceLocationInventory many-to-one on ResourceTypeUnitOfMeasure
+models.ResourceLocationInventory.belongsTo(models.ResourceTypeUnitOfMeasure, { foreignKey: 'ResourceTypeUnitOfMeasureID' });
+models.ResourceTypeUnitOfMeasure.hasMany(models.ResourceLocationInventory, { foreignKey: 'ResourceTypeUnitOfMeasureID' });
 
 var routes = function(){
   var router  = express.Router();
@@ -34,7 +42,13 @@ var routes = function(){
           include: [
             {model: models.Organization},
             {model: models.Event, required: false},
-            {model: models.ResourceLocationInventory},
+            {
+                model: models.ResourceLocationInventory,
+                include: [
+                    { model: models.ResourceType },
+                    { model: models.ResourceTypeUnitOfMeasure },
+                ]
+            },
             {
                 model: models.ResourceLocationTransport,
                 include: [
@@ -79,8 +93,21 @@ var routes = function(){
           include: [
             {model: models.Organization},
             {model: models.Event, required: false},
-            {model: models.ResourceLocationInventory},
-            {model: models.ResourceLocationTransport},
+            {
+                model: models.ResourceLocationInventory,
+                include: [
+                    { model: models.ResourceType },
+                    { model: models.ResourceTypeUnitOfMeasure },
+                ]
+            },
+            {
+                model: models.ResourceLocationTransport,
+                include: [
+                    {
+                        model: models.TransportType
+                    }
+                ]
+            },
             {model: models.ResourceLocationType}
           ]
         }
@@ -115,8 +142,21 @@ var routes = function(){
           include: [
             {model: models.Organization},
             {model: models.Event, required: false},
-            {model: models.ResourceLocationInventory},
-            {model: models.ResourceLocationTransport},
+            {
+                model: models.ResourceLocationInventory,
+                include: [
+                    { model: models.ResourceType },
+                    { model: models.ResourceTypeUnitOfMeasure },
+                ]
+            },
+            {
+                model: models.ResourceLocationTransport,
+                include: [
+                    {
+                        model: models.TransportType
+                    }
+                ]
+            },
             {model: models.ResourceLocationType}
           ]
         }
