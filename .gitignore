@@ -37,4 +37,4 @@ config
 .vs
 
 # ignore generated folder
-#generated
+generated
