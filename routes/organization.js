@@ -191,19 +191,27 @@ var routes = function(){
       });
     }
   )
-  //insert into OrganizationType
+  //insert into Organization
   .post('/', function(req, res) {
     models.Organization.create(req.body)
-    .then(function(organization) {
-        res.statusCode = 200;
-        res.send(
+    .then(function(result) {
+        models.Organization.findAll(
           {
-            result: 'success',
-            err:    '',
-            json:  organization,
-            length: organization.length
+            where: {
+              OrganizationID: result.OrganizationID
+            }
           }
-        );
+        ).then(function(organization){
+          res.statusCode = 200;
+          res.send(
+            {
+              result: 'success',
+              err:    '',
+              json:  organization,
+              length: organization.length
+            }
+          );
+        })
       }
      ).catch(function (err) {
        console.error(err);
