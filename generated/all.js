@@ -32,6 +32,10 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 			templateUrl: "views/events.html"
 		});
 
+		$routeProvider.when("/administration/", {
+		    templateUrl: "views/administration.html"
+		});
+
 		$routeProvider.when("/manage/", {
 			templateUrl: "views/manage/manage.html"
 		});
@@ -68,6 +72,36 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 			templateUrl: "views/events.html"
 		});
 	}]);
+angular.module("helpNow").controller("AdministrationCtrl", ["$scope", "$location", "$resource", function ($scope, $location, $resource) {
+    $scope.setTitle("Government & Organization Administration");
+
+    $scope.governmentResource = $resource("/api/organization/type/:id",
+			{ id: 1 });
+    $scope.organizationResource = $resource("/api/organization/type/:id",
+			{ id: 2 });
+
+    $scope.loadGovernments = function () {
+        $scope.governmentResource.get({}, function (data) {
+            $scope.governmentList = data.json;
+            $scope.$broadcast("GovernmentDataLoaded", {});
+        });
+    };
+
+    $scope.loadOrganizations = function () {
+        $scope.organizationResource.get({}, function (data) {
+            $scope.organizationList = data.json;
+            $scope.$broadcast("OrganizationDataLoaded", {});
+        });
+    };
+
+    $scope.loadGovernments();
+    $scope.loadOrganizations();
+
+    $scope.manage = function (org) {
+        $scope.setCurrentOrg(org);
+        $location.path('/manage');
+    };
+}]);
 angular.module("helpNow").controller("EventListCtrl", ["$scope", "$location", function($scope, $location) {
     var map;
 
@@ -801,7 +835,7 @@ angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$re
 	$scope.invitesResource  = $resource("/api/inviterequest/organizationinvites/:accountid",
 			{accountid: $scope.currentUser.AccountID});
 
-
+	$scope.setTitle("Organization Management");
 
 
 	$scope.loadInvites = function() {

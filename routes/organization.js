@@ -103,6 +103,41 @@ var routes = function(){
       });
     }
   )
+  //find Organization by type
+  .get('/type/:id', function (req, res) {
+      models.Organization.findAll(
+        {
+            where: {
+                OrganizationTypeID: req.params.id
+            },
+            include: [
+              { model: models.OrganizationRegulations },
+              { model: models.OrganizationType },
+              { model: models.Event },
+              { model: models.ResourceLocation }
+            ]
+        }
+      ).then(function (organization) {
+          res.statusCode = 200;
+          res.send(
+            {
+                result: 'success',
+                err: '',
+                json: organization,
+                length: organization.length
+            }
+          );
+      }
+     ).catch(function (err) {
+         console.error(err);
+         res.statusCode = 502;
+         res.send({
+             result: 'error',
+             err: err.message
+         });
+     });
+  }
+  )
   //find Orgainzation by AccountID
   .get('/account/:id', function(req, res) {
         //get the distinct organizations where the account is either primary or secondary poc

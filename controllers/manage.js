@@ -8,7 +8,7 @@ angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$re
 	$scope.invitesResource  = $resource("/api/inviterequest/organizationinvites/:accountid",
 			{accountid: $scope.currentUser.AccountID});
 
-
+	$scope.setTitle("Organization Management");
 
 
 	$scope.loadInvites = function() {
