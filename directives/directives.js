@@ -64,10 +64,7 @@ angular.module("helpNow").directive('map', function () {
 			var overlays = {
                 "Base Open Street Maps": baseLayer,
 			    "DigitalGlobe Basemap +Vivid with Streets": hybrid,
-			    "DigitalGlobe Basemap +Vivid": vivid,
-			    "Mapbox + OSM Streets": streets,
-			    "DigitalGlobe Basemap: REST": GBMREST,
-			    "Esri World Imagery": EsriImagery
+			    "DigitalGlobe Basemap: REST": GBMREST
 			};
 
 			L.control.layers(overlays, null, {

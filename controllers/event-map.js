@@ -287,6 +287,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
 
     $scope.sendNeedRequest = function () {
         var hasError = false;
+        var hasSubmissionError = false;
 		var flags = $scope.needFlags;
             
         if ($scope.showNeeds) {
@@ -328,6 +329,9 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
             map.removeLayer($scope.locationOutline);
             $scope.showNeeds = !$scope.showNeeds;
             $scope.showEventDetails = !$scope.showEventDetails;
+            if (!$scope.hasSubmissionError) {
+                alert("Request(s) successfully submitted");
+            }
         }
         else {
             alert("Specify a Need");
@@ -347,10 +351,11 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
             data: needRequestData
         });
         webCall.then(function (response) {
-            alert("Request successfully submitted");
+            //alert("Request successfully submitted");
         },
         function (response) { // optional
             alert("Error: ");
+            $scope.hasSubmissionError = true;
         });
     }
 

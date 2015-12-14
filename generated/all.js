@@ -400,6 +400,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
 
     $scope.sendNeedRequest = function () {
         var hasError = false;
+        var hasSubmissionError = false;
 		var flags = $scope.needFlags;
             
         if ($scope.showNeeds) {
@@ -441,6 +442,9 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
             map.removeLayer($scope.locationOutline);
             $scope.showNeeds = !$scope.showNeeds;
             $scope.showEventDetails = !$scope.showEventDetails;
+            if (!$scope.hasSubmissionError) {
+                alert("Request(s) successfully submitted");
+            }
         }
         else {
             alert("Specify a Need");
@@ -460,10 +464,11 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
             data: needRequestData
         });
         webCall.then(function (response) {
-            alert("Request successfully submitted");
+            //alert("Request successfully submitted");
         },
         function (response) { // optional
             alert("Error: ");
+            $scope.hasSubmissionError = true;
         });
     }
 
@@ -773,7 +778,7 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
                     LastName: $scope.currentUser.LastName,
                     OrganizationID: $scope.currentUser.Organization.OrganizationID,
                     OrganizationName: $scope.currentUser.Organization.Name
-                }
+                };
                 $scope.setCurrentUser(userSessionObject);
                 $scope.setCurrentOrg($scope.currentUser.Organization);
                 sessionStorage.setItem("user", JSON.stringify(userSessionObject));
@@ -1427,7 +1432,16 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 			$scope.events = data.json;
 			$scope.$broadcast("EventDataLoaded", {});
 		});
-	}; 
+	};
+
+	$scope.setShowLogin = function () {
+	    if ($scope.currentUser) {
+	        $scope.showLogin = false;
+	    }
+	    else {
+	        $scope.showLogin = true;
+	    }
+	};
 	
 	$scope.getEventIcon = function(eventType) {
 		if (eventType == "Flood") {
@@ -1526,64 +1540,63 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	    }
 	};
 	
-	$scope.buildLocationDetails = function(location) {
-		var popupText = "<strong>" + location.Organization.Name + "</strong><br/>" + 
+	$scope.buildLocationDetails = function (location) {
+	    var popupText = "<strong>" + location.Organization.Name + "</strong><br/>" +
 			location.PrimaryPOCPhone + "<hr/>";
-		location.ResourceLocationInventories.forEach(function(inventory) {
-			popupText += inventory.ResourceType.Description + ": " + inventory.Quantity + " " + 
+	    location.ResourceLocationInventories.forEach(function (inventory) {
+	        popupText += inventory.ResourceType.Description + ": " + inventory.Quantity + " " +
 				inventory.ResourceTypeUnitOfMeasure.Description + "<br/>";
-		});
-		return popupText;
-	}
+	    });
+	    return popupText;
+	};
 	
-	$scope.buildLocationMarker = function(location, icon) {
-		var marker = L.marker([location.LAT, location.LONG], { icon: icon });
-		marker.bindPopup($scope.buildLocationDetails(location));
-		return marker;
-	}
+	$scope.buildLocationMarker = function (location, icon) {
+	    var marker = L.marker([location.LAT, location.LONG], { icon: icon });
+	    marker.bindPopup($scope.buildLocationDetails(location));
+	    return marker;
+	};
 	
-	$scope.buildLocationMarkers = function(locations, mapLayers, flags) {
-		if (!locations) return;
-		var selectedLocations = locations.filter(function(location) {
-			return $scope.shouldDisplayLocationMarker(location, flags);
-		});
-		
-		angular.forEach(selectedLocations, function(location) {
-			var locationIcon = L.icon({
-				iconUrl: $scope.getLocationIcon(location),
-				iconSize: [60, 60],
-				iconAnchor: [30, 30]
-			}); 
-			
-			var marker = $scope.buildLocationMarker(location, locationIcon);
-			mapLayers.push(marker);
-		});
-	}
+	$scope.buildLocationMarkers = function (locations, mapLayers, flags) {
+	    if (!locations) return;
+	    var selectedLocations = locations.filter(function (location) {
+	        return $scope.shouldDisplayLocationMarker(location, flags);
+	    });
+
+	    angular.forEach(selectedLocations, function (location) {
+	        var locationIcon = L.icon({
+	            iconUrl: $scope.getLocationIcon(location),
+	            iconSize: [60, 60],
+	            iconAnchor: [30, 30]
+	        });
+
+	        var marker = $scope.buildLocationMarker(location, locationIcon);
+	        mapLayers.push(marker);
+	    });
+	};
 	
-	$scope.shouldDisplayMarker = function(type, flags) {
-		return (type == "Water" && flags.showWater) || 
-				(type == "Shelter" && flags.showShelter) || 
-				(type == "Food" && flags.showFood) || 
-				(type == "Evacuation" && flags.showEvacuation) || 
-				(type == "First Aid" && flags.showMedical) || 
+	$scope.shouldDisplayMarker = function (type, flags) {
+	    return (type == "Water" && flags.showWater) ||
+				(type == "Shelter" && flags.showShelter) ||
+				(type == "Food" && flags.showFood) ||
+				(type == "Evacuation" && flags.showEvacuation) ||
+				(type == "First Aid" && flags.showMedical) ||
 				(type == "Medicine" && flags.showMedicine);
-	}
+	};
 	
-	$scope.shouldDisplayLocationMarker = function(location, flags) {
-		var inventories = location.ResourceLocationInventories;
-		for (var i = 0; i < inventories.length; i++) {
-			if ($scope.shouldDisplayMarker(inventories[i].ResourceType.Description, flags))
-				return true;
-		}
-		return false;
-	}
+	$scope.shouldDisplayLocationMarker = function (location, flags) {
+	    var inventories = location.ResourceLocationInventories;
+	    for (var i = 0; i < inventories.length; i++) {
+	        if ($scope.shouldDisplayMarker(inventories[i].ResourceType.Description, flags))
+	            return true;
+	    }
+	    return false;
+	};
 	
 	$scope.loadEvents();
-
-
+	$scope.setShowLogin();
 
 	$scope.redirectToLogin = function () {
-	    $scope.showLogin = true;
+	    $scope.showLogin = false;
 	    $location.path('/login');
 	};
 
@@ -1792,10 +1805,7 @@ angular.module("helpNow").directive('map', function () {
 			var overlays = {
                 "Base Open Street Maps": baseLayer,
 			    "DigitalGlobe Basemap +Vivid with Streets": hybrid,
-			    "DigitalGlobe Basemap +Vivid": vivid,
-			    "Mapbox + OSM Streets": streets,
-			    "DigitalGlobe Basemap: REST": GBMREST,
-			    "Esri World Imagery": EsriImagery
+			    "DigitalGlobe Basemap: REST": GBMREST
 			};
 
 			L.control.layers(overlays, null, {
