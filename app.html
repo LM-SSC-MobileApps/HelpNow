@@ -79,7 +79,7 @@
                                 <h3><img id="event-header-icon" ng-show="imageSrc" src="{{imageSrc}}" />{{title}}</h3>
                             </div>
                             <div class="col-md-4" ng-show="currentUser">
-                                <h5>Current User: {{currentUser.FirstName + " " + currentUser.LastName + ", " + currentUser.OrganizationGroupName }}</h5>
+                                <h5>Current User: {{currentUser.FirstName + " " + currentUser.LastName + ", " + currentUser.OrganizationName }}</h5>
                             </div>
                             <div class="col-md-4" ng-hide="currentUser">
                                 <a id="btn-login" class="btn btn-primary pull-right" ng-click="redirectToLogin()"><span></span>Login</a>
