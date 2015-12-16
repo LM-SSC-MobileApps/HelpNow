@@ -185,6 +185,25 @@
         return false;
     };
 
+
+    ///REST actions
+    $scope.deleteResourceLocationInventory = function (resourceLocationInventoryID) {
+        $scope.modalInstance = $uibModal.open(
+            {
+                templateUrl: '/manage/resourcelocationinvenotry-modal-delete.html',
+                controller: function ($scope) {
+                    this.resourcelocationinventory = resourcelocationinventory;
+                    this.ResourceLocationInventory = ResourceLocationInventory;
+
+                    $scope.deleteResourceLocationInventoryService = function () {
+                        ResourceLocationInventory.delete({ id: resourceLocationInventory.ResourceLocationInventoryID });
+                        $location.path("/regulations");
+                    };
+                },
+                controllerAs: "model"
+            });
+    };
+
     $scope.validateNumber = function (evt) {
         var e = evt || window.event;
         var key = e.keyCode || e.which;
