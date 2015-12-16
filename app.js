@@ -64,6 +64,10 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 			templateUrl: "views/manage/team-invite.html"
 		});
 
+		$routeProvider.when("/assign_poc/", {
+			templateUrl: "views/manage/assign-poc.html"
+		});
+
 		$routeProvider.when("/reg_account/", {
 		    templateUrl: "views/reg-account.html"
 		});

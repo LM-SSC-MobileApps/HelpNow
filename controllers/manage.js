@@ -2,7 +2,8 @@
  * ManageCtrl
  */
 
-angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$resource", "Invitation" ,  "$uibModal", function($scope, $location, $resource ,Invitation ,$uibModal) {
+angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$resource", "Invitation" ,  "$uibModal", "Account",
+	function($scope, $location, $resource ,Invitation ,$uibModal, Account) {
 
 
 	$scope.invitesResource  = $resource("/api/inviterequest/organizationinvites/:accountid",
@@ -55,7 +56,22 @@ angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$re
 	$scope.loadTeam();
 
 
+	$scope.deleteTeamMember = function (teamMember) {
+		$scope.modalInstance = $uibModal.open(
+				{
+					templateUrl: '/manage/teammember-modal-delete.html',
+					controller: function ($scope) {
+						this.teamMember = teamMember;
+						this.Account = Account;
 
+						$scope.deleteMember = function () {
+							Account.delete({id: teamMember.AccountID});
+							$location.path("/manage");
+						};
+					},
+					controllerAs: "model"
+				});
+	};
 
 
 	$scope.go = function ( path ) {

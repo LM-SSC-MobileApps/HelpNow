@@ -4,12 +4,13 @@
             <div class="col-md-4">
                 <div class="panel ">
                     <div class="panel-title text-center spacer">
-                        <img ng-src="style/images/Team.png" style="height: 44px; width: 44px;"  alt="Team Invites"/>
+                        <img ng-src="style/images/Team.png" style="height: 44px; width: 44px;" alt="Team Invites"/>
                         Registered Team Members
                     </div>
                     <div class="row ">
                         <div class="panel-body text-nowrap">
-                            <ul class="list-unstyled list-inline" ng-repeat="teamMember in team">
+                            <ul class="list-unstyled list-inline"
+                                ng-repeat="teamMember in team | orderBy: '+LastName' ">
                                 <div class="col-md-6  ">
                                     <li>
                                         <h5>
@@ -20,13 +21,22 @@
                                     </li>
                                 </div>
                                 <div class="col-md-6">
-                                    <button class="btn btn-danger" ng-click="deleteInvite(invite)">
+                                    <button class="btn btn-danger"
+                                            ng-disabled="teamMember.AccountID === currentUser.AccountID"
+                                            ng-click="deleteTeamMember(teamMember)">
                                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                                         Remove
                                     </button>
                                 </div>
                             </ul>
                         </div>
+                    </div>
+                    <div class="panel-footer panel-borderless text-center">
+                        <a class="btn  btn-primary " href="#/assign_poc">
+                            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                            <span>Assign Points of Contact</span>
+                        </a>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -38,7 +48,7 @@
                         Invitations
                     </div>
                     <div class="panel-body text-nowrap spacer">
-                        <ul class="list-unstyled list-inline" ng-repeat="invite in invites">
+                        <ul class="list-unstyled list-inline" ng-repeat="invite in invites | orderBy: '+LastName'  ">
                             <div class="col-md-6  ">
                                 <li>
                                     <h5>
