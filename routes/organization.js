@@ -1,6 +1,7 @@
 
 var models  = require('../models'),
-    express = require('express');
+    express = require('express'),
+    promise = require('bluebird');
 
 
 //Organization one-to-many on OrganizationRegulations    
@@ -254,14 +255,33 @@ var routes = function(){
       });
     }
   )
-  .delete('/:id', function(req, res) {
-    models.Organization.destroy(
+  .delete('/:id', function (req, res) {
+      var tasks = [];
+
+      tasks[0] = models.Account.destroy(
       {
-        where: {
-          OrganizationID: req.params.id
-        }
+          where: {
+              OrganizationID: req.params.id
+          }
+      });
+
+      tasks[1] = models.OrganizationRegulations.destroy(
+      {
+          where: {
+              OrganizationID: req.params.id
+          }
       }
-    )
+    );
+
+      tasks[2] = models.Organization.destroy(
+      {
+          where: {
+              OrganizationID: req.params.id
+          }
+      }
+    );
+
+    promise.all(tasks)
     .then(function(numDelete) {
         res.statusCode = 200;
         res.send(

@@ -17,7 +17,7 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 		});
 
 		$routeProvider.when("/inventory", {
-		    templateUrl: "views/inventory.html"
+		    templateUrl: "views/inventory/inventory.html"
 		});
 		
 		$routeProvider.when("/gov_login", {

@@ -1,4 +1,4 @@
-﻿angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$routeParams", "$resource", function ($scope, $http, $routeParams, $resource) {
+﻿angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$routeParams", "ResourceLocation", "ResourceLocationInventory", "$resource", function ($scope, $http, $routeParams, ResourceLocation, ResourceLocationInventory, $resource) {
 
     var map;
     var mapLayers = [];
@@ -7,12 +7,14 @@
 
     $scope.setCurrentView("inventory");
 
-    $scope.resourceLocation = $resource("/api/resourcelocation");
-    $scope.currentResourceLocation = {};
+    $scope.resourceLocationResource = $resource("/api/resourcelocation/organization/:orgid", { orgid: '@orgid' });
+    $scope.currentResourceLocation = new ResourceLocation();
+
+    $scope.currentResourceLocationInventory = new ResourceLocationInventory();
 
 
-    $scope.userOrgID = 1;
-    loadResourceLocations();
+    //$scope.userOrgID = 1;
+   
 
     $scope.overlayRadius = 250;
     $scope.radiusRawVal = 0.25;
@@ -28,9 +30,28 @@
     $scope.showGround = false;
     $scope.showWater = false;
 
+    loadResourceLocations();
+
     $scope.$on("ResourceLocationDataLoaded", function () {
+        $scope.showResourceLocations = true;
         updateMap();
     });
+
+    function loadResourceLocations() {
+        
+        if ($scope.currentUser != null)
+        {
+            $scope.resourceLocationResource.get({ orgid: $scope.currentUser.OrganizationID }, function (data) {
+                $scope.resourceLocations = data.json;
+                $scope.$broadcast("ResourceLocationDataLoaded", {});
+            });
+        }
+        else {
+            $scope.showResourceLocations = false;
+            updateMap();
+        }
+        
+    }
 
     function updateMap() {
         if (!map || !$scope.resourceLocations) return;
@@ -50,17 +71,6 @@
         });
     }
 
-    function loadResourceLocations() {
-        $scope.resourceLocation.get({}, function (data) {
-            $scope.resourceLocations = data.json;
-            var filteredResourceLocations = $scope.resourceLocations.filter(function (resLocation) {
-                return resLocation.OrganizationID == $scope.userOrgID;
-            });
-            $scope.resourceLocations = filteredResourceLocations;
-            $scope.$broadcast("ResourceLocationDataLoaded", {});
-        });
-    }
-
     function buildInventoryMarkers(mapLayers) {  
         angular.forEach($scope.resourceLocations, function (location) {
             var locationIcon = L.icon({
@@ -74,22 +84,31 @@
         });
     }
 
+    
+
     function buildInventoryMarker(location, icon) {
+
         var marker = L.marker([location.LAT, location.LONG], { icon: icon });
         marker.id = location.ResourceLocationID;
-        marker.bindPopup(buildInventoryLocationDetails(location)).on('click', function () {
-            //add code for inventory marker click
-        });
+        marker.bindPopup(buildInventoryLocationDetails(location));
+        //.on('click', function () {
+        //    alert('this is it!');
+        //    $scope.resourceLocationClick(location.LAT, location.LONG, location.ResourceLocationID)
+        //});
         return marker;
     }
 
     function buildInventoryLocationDetails(location) {
         var popupText = "<strong>" + location.Description + "</strong><br/>" +
 			location.PrimaryPOCPhone + "<hr/>";
-        location.ResourceLocationInventories.forEach(function (inventory) {
-            popupText += inventory.ResourceType.Description + ": " + inventory.Quantity + " " +
-				inventory.ResourceTypeUnitOfMeasure.Description + "<br/>";
-        });
+        if (typeof location.ResourceLocationInventories != 'undefined')
+        {
+            location.ResourceLocationInventories.forEach(function (inventory) {
+                popupText += inventory.ResourceType.Description + ": " + inventory.Quantity + " " +
+                    inventory.ResourceTypeUnitOfMeasure.Description + "<br/>";
+            });
+        }
+        
         return popupText;
     }
 
@@ -109,20 +128,19 @@
         updateMap();
     };
 
-
-    $scope.centerMapToLongLat = function (long, lat) {
+    $scope.centerMapToLongLat = function (lat, long) {
         if (!map) return;
         map.setZoom(12);
         map.panTo(new L.LatLng(lat, long));
     };
 
-    $scope.resourceLocationClick = function (long, lat, resourceLocID) {
+    $scope.resourceLocationClick = function (lat, long, resourceLocID) {
         if (!map) return;
-        map.setZoom(12);
-        map.panTo(new L.LatLng(lat, long));
+        $scope.centerMapToLongLat(lat, long);
         $scope.setCurrentResourceLocationByID(resourceLocID);
         $scope.showInventory();
     };
+    
 
     $scope.setCurrentResourceLocationByID = function (id) {
         $scope.resourceLocations.forEach(function (resLoc)

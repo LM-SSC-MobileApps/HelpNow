@@ -1,6 +1,7 @@
 
 var models  = require('../models'),
-    express = require('express');
+    express = require('express'),
+    promise = require('bluebird');
     
 //ResourceLocation one-to-many on ResourceLocationInventory
 models.ResourceLocation.hasMany(models.ResourceLocationInventory, {foreignKey: 'ResourceLocationID'});
@@ -92,7 +93,6 @@ var routes = function(){
           },
           include: [
             {model: models.Organization},
-            {model: models.Event, required: false},
             {
                 model: models.ResourceLocationInventory,
                 include: [
@@ -132,16 +132,15 @@ var routes = function(){
       });
     }
   )
-  //find ResourceLocation by OrganiztionID on session
-  .get('/organization/', function(req, res) {
+  //find ResourceLocation by OrganiztionID
+  .get('/organization/:orgid', function (req, res) {
       models.ResourceLocation.findAll(
         {
           where: {
-            ResourceLocationID: req.session.organizationid
+              OrganizationID: req.params.orgid
           },
           include: [
-            {model: models.Organization},
-            {model: models.Event, required: false},
+            { model: models.Organization },
             {
                 model: models.ResourceLocationInventory,
                 include: [
@@ -157,7 +156,7 @@ var routes = function(){
                     }
                 ]
             },
-            {model: models.ResourceLocationType}
+            { model: models.ResourceLocationType }
           ]
         }
       ).then(function(resourceLocation) {
@@ -236,14 +235,31 @@ var routes = function(){
       });
     }
   )
-  .delete('/:id', function(req, res) {
-    models.ResourceLocation.destroy(
-      {
+  .delete('/:id', function (req, res) {
+    var tasks = [];
+
+    tasks[0] = models.ResourceLocationTransport.destroy(
+    {
         where: {
-          ResourceLocationID: req.params.id
+            ResourceLocationID: req.params.id
         }
-      }
-    )
+    });
+
+    tasks[1] = models.ResourceLocationInventory.destroy(
+    {
+        where: {
+            ResourceLocationID: req.params.id
+        }
+    });
+
+    tasks[2] = models.ResourceLocation.destroy(
+    {
+        where: {
+            ResourceLocationID: req.params.id
+        }
+    });
+
+    promise.all(tasks)
     .then(function(numDelete) {
         res.statusCode = 200;
         res.send(
