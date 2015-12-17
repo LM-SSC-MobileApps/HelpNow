@@ -12,13 +12,22 @@
     };
 
     $scope.addOrg = function (org) {
-        Organization.save(org);
-        $location.path('/administration');
+        Organization.save(org).$promise.then(function (response) {
+            $location.path('/administration');
+        },
+        function (response) { // optional
+            alert("Error: ");
+        });;
     };
 
     $scope.enterAddress = function (org) {
-        //Organization.save(org);
-        $location.path('/org_address/' + org.OrganizationID);
+        Organization.save(org).$promise.then(function (response) {
+            var returnedOrg = response.json[0];
+            $location.path('/org_address/' + returnedOrg.OrganizationID);
+        },
+        function (response) { // optional
+            alert("Error: ");
+        });;;
     };
 
 }]);

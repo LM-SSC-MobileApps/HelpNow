@@ -73,11 +73,12 @@ angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$re
 				});
 	};
 
+	$scope.enterAddress = function () {
+	    $location.path('/org_address/' + $scope.currentOrg.OrganizationID);
+	};
 
 	$scope.go = function ( path ) {
 		$location.path( path );
 	};
-
-
 
 }]);
