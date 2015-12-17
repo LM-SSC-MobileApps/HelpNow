@@ -84,10 +84,14 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
         $scope.$digest();
     }
 	
-	function drawLocationMarker() {
+	function removeLocationMarker() {
 		if ($scope.locationOutline) {
             map.removeLayer($scope.locationOutline);
         }
+	}
+	
+	function drawLocationMarker() {
+		removeLocationMarker();
 		
 		if ($scope.mappingLoc.LAT && $scope.mappingLoc.LONG) {
 			$scope.locationOutline = L.circle([$scope.mappingLoc.LAT, $scope.mappingLoc.LONG], 250).addTo(map);
@@ -97,17 +101,17 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	
 	function getNeedsIcon(resourceType) {
 		if (resourceType == "Water") {
-			return "style/images/markers/marker-blue.png";
+			return "style/images/markers/dot-blue.png";
 		} else if (resourceType == "First Aid") {
-			return "style/images/markers/marker-red.png";
+			return "style/images/markers/dot-red.png";
 		} else if (resourceType == "Shelter") {
-			return "style/images/markers/marker-orange.png";
+			return "style/images/markers/dot-orange.png";
 		} else if (resourceType == "Evacuation") {
-			return "style/images/markers/marker-purple.png";
+			return "style/images/markers/dot-purple.png";
 		} else if (resourceType == "Medicine") {
-			return "style/images/markers/marker-cyan.png";
+			return "style/images/markers/dot-cyan.png";
 		} else {
-			return "style/images/markers/marker-green.png";
+			return "style/images/markers/dot-green.png";
 		}
 	}
 	
@@ -137,7 +141,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 		angular.forEach(selectedRequests, function(request) {
 			var requestIcon = L.icon({
 				iconUrl: getNeedsIcon(request.ResourceType.Description),
-				iconSize: [27, 41],
+				iconSize: [27, 27],
 				iconAnchor: [13, 41],
 				popupAnchor:  [0, -20]
 			}); 
@@ -185,14 +189,15 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	
 	function buildDistCenterMarkers() {
 		if (!$scope.distributionCenters) return;
-		
 		var selectedCenters = $scope.distributionCenters.filter(function(center) {
 			return $scope.shouldDisplayLocationMarker(center, $scope.filterFlags);
 		});
 		
 		angular.forEach(selectedCenters, function(center) {
+			var belongsToUser = center.OrganizationID == $scope.currentOrg.OrganizationID;
+			var url = belongsToUser ? "style/images/Distribution-Center-DBox-Blue.png" : "style/images/Distribution-Center-Box-Blue.png";
 			var centerIcon = L.icon({
-				iconUrl: "style/images/Distribution-Center-Box-Blue.png",
+				iconUrl: url,
 				iconSize: [60, 60],
 				iconAnchor: [30, 30]
 			}); 
@@ -315,26 +320,48 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	};
 	
 	$scope.toggleFindPanel = function() {
+		
 		$scope.showFindPanel = !$scope.showFindPanel;
-		if ($scope.showFindPanel) $scope.showDistCenterMarkers = true;
+		if ($scope.showFindPanel) {
+			$scope.showDistCenterMarkers = true;
+			updateMap();
+		} else {
+			removeLocationMarker();
+		}
 		return false;
 	};
+
+	function convertToRadians(degrees) {
+	  return degrees * (Math.PI/180)
+	}
+	
+	function calculateKmDistance(lat1, lng1, lat2, lng2) {
+		var earthRadius = 6371;
+		var dLat = convertToRadians(lat2 - lat1);
+		var dLng = convertToRadians(lng2 - lng1); 
+		var a = 
+			Math.sin(dLat/2) * Math.sin(dLat/2) +
+			Math.cos(convertToRadians(lat1)) * Math.cos(convertToRadians(lat2)) * 
+			Math.sin(dLng/2) * Math.sin(dLng/2); 
+		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 -a )); 
+		return earthRadius * c;
+	}
 	
 	function matchDistributionCenters() {
 		var maxDist = 0;
 		var minDist = Number.MAX_VALUE;
 		
 		var selectedCenters = $scope.distributionCenters.filter(function(center) {
-			return $scope.shouldDisplayLocationMarker(center, $scope.matchingFlags);
+			return $scope.shouldDisplayLocationMarker(center, $scope.matchingFlags) &&
+				center.OrganizationID == $scope.currentOrg.OrganizationID;
 		});
 		
 		var centersWithCompScores = selectedCenters.map(function(center) {
-			var distance = Math.sqrt(Math.pow(center.LAT - $scope.mappingLoc.LAT, 2) + 
-				Math.pow(center.LONG - $scope.mappingLoc.LONG, 2));
+			var distance = calculateKmDistance(center.LAT, center.LONG, $scope.mappingLoc.LAT, $scope.mappingLoc.LONG);
 			if (distance >= maxDist) maxDist = distance;
 			if (distance <= minDist) minDist = distance;
 			
-			return { center: center, dist: distance };
+			return { center: center, dist: distance.toFixed(3) };
 		});
 		
 		var centersWithScores = centersWithCompScores.map(function(center) {
@@ -347,8 +374,8 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 			return a.score - b.score;
 		});
 		
-		if (centersWithScores.length > 6)
-			centersWithScores = centersWithScores.slice(0, 6);
+		if (centersWithScores.length > 3)
+			centersWithScores = centersWithScores.slice(0, 3);
 		
 		$scope.hasMatches = centersWithScores.length > 0;
 		
@@ -368,7 +395,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	};
 	
 	$scope.showLocation = function(lat, lng) {
-		map.setView([lat, lng], 15);
+		map.setView([lat, lng], map.getZoom());
 	};
 	
 	$scope.backToFind = function() {

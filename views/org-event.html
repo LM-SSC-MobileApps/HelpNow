@@ -134,10 +134,10 @@
 								</div>
 								<div class="col-xs-9">
 									<h4><a ng-click="showLocation(match.center.LAT, match.center.LONG)" href="">{{match.center.Organization.Name}}</a></h4>
-									<h5>{{match.center.PrimaryPOCName}}</h5>
-									<h5>{{match.center.PrimaryPOCPhone}}</h5>
+									<h5>{{match.center.Description}}</h5>
+									<h5>{{match.dist}} kM</h5>
 									<div>
-										<a tabindex="0" class="btn btn-primary" uib-popover-html="'{{getCleanLocationText(match.center)}}'" popover-trigger="focus" ><span class="glyphicon glyphicon-list"></span>Inventory</a>
+										<a tabindex="0" class="btn btn-primary" uib-popover-html="'{{getCleanLocationText(match.center)}}'" popover-trigger="focus" ><span class="glyphicon glyphicon-list"></span>More Info</a>
 									</div>
 								</div>
 							</div>
