@@ -1,0 +1,21 @@
+﻿<div ng-controller="OrganizationAddCtrl">
+    <div class="row">
+        <div class="well">
+            <div class="row">
+                <form name="organizationForm" novalidate role="form">
+                    <div class="form-group" ng-class="">
+                        <div class="col-xs-12">
+                            <label for="orgName">{{orgType}} Name</label>
+                            <input type="text" ng-model="newOrg.Name" id="orgName" name="orgName" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="separated">
+        <a id="btn-showUser" class="btn btn-primary pull-right" ng-click="addOrg(newOrg)"><span></span>Submit</a>
+        <a id="btn-showUser" class="btn btn-primary pull-right" ng-click="enterAddress(newOrg)" style="margin-right: 10px;"><span></span>Enter Address (optional)</a>
+    </div>
+</div>

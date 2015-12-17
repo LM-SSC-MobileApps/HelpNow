@@ -33,7 +33,15 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 		});
 
 		$routeProvider.when("/administration/", {
-		    templateUrl: "views/administration.html"
+		    templateUrl: "views/admin/administration.html"
+		});
+
+		$routeProvider.when("/add_org/:orgTypeID", {
+		    templateUrl: "views/admin/add-organization.html"
+		});
+
+		$routeProvider.when("/org_address/:orgID", {
+		    templateUrl: "views/manage/org-address.html"
 		});
 
 		$routeProvider.when("/manage/", {
