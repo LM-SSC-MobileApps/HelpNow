@@ -1,0 +1,81 @@
+﻿<div ng-controller="OrgAddressCtrl">
+    <div class="row">
+        <div class="well">
+            <div class="row">
+                <form name="userInfoForm" novalidate role="form">
+                    <div class="form-group" ng-class="">
+                        <div class="col-md-2">
+                            <label for="streetPrefix">Street Number Prefix</label>
+                            <input type="text" ng-model="orgAddress.StreetNumberPrefix" id="streetPrefix" name="streetPrefix" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-md-2">
+                            <label for="streetNumber">Street Number</label>
+                            <input type="text" ng-model="orgAddress.StreetNumber" id="streetNumber" name="streetNumber" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-md-2">
+                            <label for="streetSuffix">Street Number Suffix</label>
+                            <input type="text" ng-model="orgAddress.StreetNumberSuffix" id="streetSuffix" name="streetSuffix" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-md-2">
+                            <label for="streetName">Street Name</label>
+                            <input type="text" ng-model="orgAddress.StreetName" id="streetName" name="streetName" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-md-2">
+                            <label for="streetType">Street Type</label>
+                            <input type="text" ng-model="orgAddress.StreetType" id="streetType" name="streetType" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-md-2">
+                            <label for="streetDirection">Street Direction</label>
+                            <input type="text" ng-model="orgAddress.StreetDirection" id="streetDirection" name="streetDirection" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-md-9">
+                            <label for="addressType">Address Type (Apartment/Suite/Office)</label>
+                            <input type="text" ng-model="orgAddress.AddressType" id="addressType" name="addressType" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="addressTypeID">Address Type Identifier</label>
+                            <input type="text" ng-model="orgAddress.AddressTypeID" id="addressTypeID" name="addressTypeID" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="minorMunicipality">Minor Municipality (Village/Hamlet)</label>
+                            <input type="text" ng-model="orgAddress.MinorMunicipality" id="minorMunicipality" name="minorMunicipality" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="majorMunicipality">Major Municipality (Town/City)</label>
+                            <input type="text" ng-model="orgAddress.MajorMunicipality" id="majorMunicipality" name="majorMunicipality" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="governingDistrict">Governing District (Province/State/County)</label>
+                            <input type="text" ng-model="orgAddress.GoverningDistrict" id="governingDistrict" name="governingDistrict" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="postalArea">Postal Area (Postal Code/Zip)</label>
+                            <input type="text" ng-model="orgAddress.PostalArea" id="postalArea" name="postalArea" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="country">Country</label>
+                            <input type="text" ng-model="orgAddress.Country" id="country" name="country" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="separated">
+            <a id="btn-showAddress" class="btn btn-primary pull-right" ng-click="submitOrgAddress()"><span></span>Submit</a>
+        </div>
+    </div>
+</div>
+

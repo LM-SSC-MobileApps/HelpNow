@@ -7,7 +7,8 @@ angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$re
 
 
 	$scope.invitesResource  = $resource("/api/inviterequest/organizationinvites/:accountid",
-			{accountid: $scope.currentUser.AccountID});
+			{ accountid: $scope.currentUser.AccountID });
+	$scope.orgResource = $resource("/api/organization/:id", { id: $scope.currentOrg.OrganizationID });
 
 	$scope.setTitle("Organization Management");
 
@@ -16,6 +17,10 @@ angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$re
 		$scope.invitesResource.get({}, function(data) {
 			$scope.invites = data.json;
 			$scope.$broadcast("InviteDataLoaded", {});
+		});
+		$scope.orgResource.get({}, function (data) {
+		    $scope.org = data.json[0];
+		    $scope.$broadcast("OrgLoaded", {});
 		});
 	};
 
@@ -73,11 +78,12 @@ angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$re
 				});
 	};
 
+	$scope.enterAddress = function () {
+	    $location.path('/org_address/' + $scope.currentOrg.OrganizationID);
+	};
 
 	$scope.go = function ( path ) {
 		$location.path( path );
 	};
-
-
 
 }]);
