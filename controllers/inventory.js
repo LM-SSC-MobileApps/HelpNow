@@ -1,4 +1,4 @@
-﻿angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$routeParams", "ResourceLocation", "ResourceLocationInventory", "$resource", function ($scope, $http, $routeParams, ResourceLocation, ResourceLocationInventory, $resource) {
+﻿angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$routeParams", "ResourceLocation", "ResourceLocationInventory", "$resource", "$uibModal", function ($scope, $http, $routeParams, ResourceLocation, ResourceLocationInventory, $resource, $uibModal) {
 
     var map;
     var mapLayers = [];
@@ -24,7 +24,7 @@
     $scope.showResourceLocations = true;
     $scope.showNewForm = false;
     $scope.showTransportationOptions = false;
-    $scope.showLocationInventory = false;
+    $scope.showResourceLocation = false;
 
     $scope.showAir = false;
     $scope.showGround = false;
@@ -138,7 +138,7 @@
         if (!map) return;
         $scope.centerMapToLongLat(lat, long);
         $scope.setCurrentResourceLocationByID(resourceLocID);
-        $scope.showInventory();
+        $scope.showLocation();
     };
     
 
@@ -174,16 +174,41 @@
         return false;
     };
 
-    $scope.showInventory = function () {
+    $scope.showLocation = function () {
         $scope.showResourceLocations = !$scope.showResourceLocations;
-        $scope.showLocationInventory = !$scope.showLocationInventory;
+        $scope.showResourceLocation = !$scope.showResourceLocation;
         return false;
     };
 
-    $scope.removeInventoryItem = function () {
+    $scope.deleteInventoryItem = function () {
         alert("Coming Soon - In Developement");
         return false;
     };
+
+    $scope.$on("ResourceLocationInventoryDeleted", function (event, args) {
+        var index = $scope.currentResourceLocation.ResourceLocationInventories.map(function (el) {
+            return el.ResourceLocationInventoryID;
+        }).indexOf(args.id);
+        $scope.currentResourceLocation.ResourceLocationInventories.splice(index, 1);
+    });
+
+    $scope.modalDeleteResourceLocationInventory = function (resourcelocationinventory) {
+        $scope.currentResourceLocationInventory = resourcelocationinventory;
+        $scope.modalInstance = $uibModal.open(
+            {
+                templateUrl: '/inventory/resource-inventory-modal-delete.html',
+                scope: $scope,
+                size: 'med'
+            });
+    };
+
+    $scope.deleteResourceLocationInventory = function () {
+        console.log("$scope.currentResourceLocationInventory.ResourceLocationInventoryID: " + $scope.currentResourceLocationInventory.ResourceLocationInventoryID);
+        ResourceLocationInventory.delete({ id: $scope.currentResourceLocationInventory.ResourceLocationInventoryID });
+        $scope.$broadcast("ResourceLocationInventoryDeleted", { id: $scope.currentResourceLocationInventory.ResourceLocationInventoryID });
+    };
+
+    
 
     $scope.saveResourceLocation = function () {
         alert("Coming Soon - In Developement");
@@ -192,7 +217,7 @@
         return false;
     };
 
-    $scope.removeResourceLocation = function () {
+    $scope.deleteResourceLocation = function () {
         $scope.showTransportationOptions = !$scope.showTransportationOptions;
         $scope.showResourceLocations = !$scope.showResourceLocations;
         return false;

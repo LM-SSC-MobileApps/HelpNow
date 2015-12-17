@@ -29,8 +29,9 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true,
     },
     CreateDate: {
-      type: DataTypes.DATE,
-      allowNull: true,
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue: 'CURRENT_TIMESTAMP'
     }
   });
 };

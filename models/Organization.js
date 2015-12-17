@@ -32,5 +32,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.CHAR(40),
       allowNull: true
     },
+    CreateDate: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue: 'CURRENT_TIMESTAMP'
+    }
   });
 };

@@ -125,7 +125,7 @@
             <a id="btn-next" class="btn btn-danger pull-right" ng-click="removeResourceLocation()"><span></span>Remove This Location</a>
         </div>
     </div>
-    <div id="rightColumn" class="col-md-3" ng-if="showLocationInventory">
+    <div id="rightColumn" class="col-md-3" ng-if="showResourceLocation">
         <div class="row">
             <div class="col-md-12">
                 <div class="well">
@@ -135,7 +135,7 @@
                             ({{currentResourceLocation.LAT | number:2}}, {{currentResourceLocation.LONG| number:2}})
                         </div>
                         <div class="col-sm-2">
-                            <img src="style/images/Close.png" ng-click="showInventory()" style="height: 15px; width: 15px; float:right" />
+                            <img src="style/images/Close.png" ng-click="showLocation()" style="height: 15px; width: 15px; float:right" />
                         </div>
                     </div>
                     <div class="row">
@@ -175,7 +175,7 @@
                                 {{inventory.Quantity}} - {{inventory.ResourceTypeUnitOfMeasure.Description}}
                             </div>
                             <div class="col-sm-1">
-                                <a id="btn-remove" class="btn btn-danger pull-right" ng-click="comingSoon()"><span class="glyphicon glyphicon-remove"></span></a>
+                                <a id="btn-remove" class="btn btn-danger pull-right" ng-click="modalDeleteResourceLocationInventory(inventory)"><span class="glyphicon glyphicon-remove"></span></a>
                             </div>
                         </div>
                         <hr/>
