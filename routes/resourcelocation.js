@@ -1,14 +1,14 @@
 
-var models  = require('../models'),
+var models = require('../models'),
     express = require('express'),
     promise = require('bluebird');
-    
+
 //ResourceLocation one-to-many on ResourceLocationInventory
-models.ResourceLocation.hasMany(models.ResourceLocationInventory, {foreignKey: 'ResourceLocationID'});
-models.ResourceLocationInventory.belongsTo(models.ResourceLocation, {foreignKey: 'ResourceLocationID'});
+models.ResourceLocation.hasMany(models.ResourceLocationInventory, { foreignKey: 'ResourceLocationID' });
+models.ResourceLocationInventory.belongsTo(models.ResourceLocation, { foreignKey: 'ResourceLocationID' });
 
 //ResourceLocation one-to-many on ResourceLocationTransport
-models.ResourceLocation.hasMany(models.ResourceLocationTransport, {foreignKey: 'ResourceLocationID'});
+models.ResourceLocation.hasMany(models.ResourceLocationTransport, { foreignKey: 'ResourceLocationID' });
 models.ResourceLocationTransport.belongsTo(models.ResourceLocation, { foreignKey: 'ResourceLocationID' });
 
 //ResourceLocationTransport many-to-one on TransportType
@@ -16,15 +16,15 @@ models.ResourceLocationTransport.belongsTo(models.TransportType, { foreignKey: '
 models.TransportType.hasMany(models.ResourceLocationTransport, { foreignKey: 'TransportTypeID' });
 
 // //ResourceLocation many-to-One on Organization
-models.Organization.hasMany(models.ResourceLocation, {foreignKey: 'OrganizationID'});
-models.ResourceLocation.belongsTo(models.Organization, {foreignKey: 'OrganizationID'});
+models.Organization.hasMany(models.ResourceLocation, { foreignKey: 'OrganizationID' });
+models.ResourceLocation.belongsTo(models.Organization, { foreignKey: 'OrganizationID' });
 
 // //ResourceLocation many-to-One on Event
-models.Event.hasMany(models.ResourceLocation, {foreignKey: 'EventID'});
-models.ResourceLocation.belongsTo(models.Event, {foreignKey: 'EventID'});
+models.Event.hasMany(models.ResourceLocation, { foreignKey: 'EventID' });
+models.ResourceLocation.belongsTo(models.Event, { foreignKey: 'EventID' });
 
 //ResourceLocation many-to-one on ResourceLocationType
-models.ResourceLocation.belongsTo(models.ResourceLocationType, {foreignKey: 'ResourceLocationTypeID'});
+models.ResourceLocation.belongsTo(models.ResourceLocationType, { foreignKey: 'ResourceLocationTypeID' });
 models.ResourceLocationType.hasMany(models.ResourceLocation, { foreignKey: 'ResourceLocationTypeID' });
 
 //ResourceLocationInventory many-to-one on ResourceType
@@ -35,253 +35,237 @@ models.ResourceType.hasMany(models.ResourceLocationInventory, { foreignKey: 'Res
 models.ResourceLocationInventory.belongsTo(models.ResourceTypeUnitOfMeasure, { foreignKey: 'ResourceTypeUnitOfMeasureID' });
 models.ResourceTypeUnitOfMeasure.hasMany(models.ResourceLocationInventory, { foreignKey: 'ResourceTypeUnitOfMeasureID' });
 
-var routes = function(){
-  var router  = express.Router();
-    router.get('/', function(req, res) {
-      models.ResourceLocation.findAll(
-        {
-          include: [
-            {model: models.Organization},
-            {model: models.Event, required: false},
-            {
-                model: models.ResourceLocationInventory,
-                include: [
-                    { model: models.ResourceType },
-                    { model: models.ResourceTypeUnitOfMeasure },
-                ]
-            },
-            {
-                model: models.ResourceLocationTransport,
-                include: [
-                    {
-                        model: models.TransportType
-                    }
-                ]
-            },
-            {model: models.ResourceLocationType}
-          ]
-        }
-      )
-        .then(function(resourceLocation) {
-          res.statusCode = 201;
-          res.send(
-            {
-              result: 'success',
-              err:    '',
-              json:  resourceLocation,
-              length: resourceLocation.length
-            }
-          );
-        }
-      )
-      .catch(function (err) {
-       console.error(err);
-       res.statusCode = 502;
-       res.send({
-           result: 'error',
-           err:    err.message
-       });
-      });
+var routes = function () {
+    var router = express.Router();
+    router.get('/', function (req, res) {
+        models.ResourceLocation.findAll(
+          {
+              include: [
+                { model: models.Organization },
+                { model: models.Event, required: false },
+                {
+                    model: models.ResourceLocationInventory,
+                    include: [
+                        { model: models.ResourceType },
+                        { model: models.ResourceTypeUnitOfMeasure },
+                    ]
+                },
+                {
+                    model: models.ResourceLocationTransport,
+                    include: [
+                        {
+                            model: models.TransportType
+                        }
+                    ]
+                },
+                { model: models.ResourceLocationType }
+              ]
+          }
+        )
+          .then(function (resourceLocation) {
+              res.statusCode = 201;
+              res.send(
+                {
+                    result: 'success',
+                    err: '',
+                    json: resourceLocation,
+                    length: resourceLocation.length
+                }
+              );
+          }
+        )
+        .catch(function (err) {
+            console.error(err);
+            res.statusCode = 502;
+            res.send({
+                result: 'error',
+                err: err.message
+            });
+        });
     }
   )
   //find ResourceLocation by ID
-  .get('/:id', function(req, res) {
+  .get('/:id', function (req, res) {
       models.ResourceLocation.findAll(
         {
-          where: {
-            ResourceLocationID: req.params.id
-          },
-          include: [
-            {model: models.Organization},
-            {
-                model: models.ResourceLocationInventory,
-                include: [
-                    { model: models.ResourceType },
-                    { model: models.ResourceTypeUnitOfMeasure },
-                ]
+            where: {
+                ResourceLocationID: req.params.id
             },
-            {
-                model: models.ResourceLocationTransport,
-                include: [
-                    {
-                        model: models.TransportType
-                    }
-                ]
-            },
-            {model: models.ResourceLocationType}
-          ]
+            include: [
+              { model: models.Organization },
+              {
+                  model: models.ResourceLocationInventory,
+                  include: [
+                      { model: models.ResourceType },
+                      { model: models.ResourceTypeUnitOfMeasure },
+                  ]
+              },
+              {
+                  model: models.ResourceLocationTransport,
+                  include: [
+                      {
+                          model: models.TransportType
+                      }
+                  ]
+              },
+              { model: models.ResourceLocationType }
+            ]
         }
-      ).then(function(resourceLocation) {
-        res.statusCode = 200;
-        res.send(
-          {
-            result: 'success',
-            err:    '',
-            json:  resourceLocation,
-            length: resourceLocation.length
-          }
-        );
+      ).then(function (resourceLocation) {
+          res.statusCode = 200;
+          res.send(
+            {
+                result: 'success',
+                err: '',
+                json: resourceLocation,
+                length: resourceLocation.length
+            }
+          );
       }
      ).catch(function (err) {
-       console.error(err);
-       res.statusCode = 502;
-       res.send({
-           result: 'error',
-           err:    err.message
-       });
-      });
-    }
+         console.error(err);
+         res.statusCode = 502;
+         res.send({
+             result: 'error',
+             err: err.message
+         });
+     });
+  }
   )
   //find ResourceLocation by OrganiztionID
   .get('/organization/:orgid', function (req, res) {
       models.ResourceLocation.findAll(
         {
-          where: {
-              OrganizationID: req.params.orgid
-          },
-          include: [
-            { model: models.Organization },
-            {
-                model: models.ResourceLocationInventory,
-                include: [
-                    { model: models.ResourceType },
-                    { model: models.ResourceTypeUnitOfMeasure },
-                ]
+            where: {
+                OrganizationID: req.params.orgid
             },
-            {
-                model: models.ResourceLocationTransport,
-                include: [
-                    {
-                        model: models.TransportType
-                    }
-                ]
-            },
-            { model: models.ResourceLocationType }
-          ]
+            include: [
+              { model: models.Organization },
+              {
+                  model: models.ResourceLocationInventory,
+                  include: [
+                      { model: models.ResourceType },
+                      { model: models.ResourceTypeUnitOfMeasure },
+                  ]
+              },
+              {
+                  model: models.ResourceLocationTransport,
+                  include: [
+                      {
+                          model: models.TransportType
+                      }
+                  ]
+              },
+              { model: models.ResourceLocationType }
+            ]
         }
-      ).then(function(resourceLocation) {
-        res.statusCode = 200;
-        res.send(
-          {
-            result: 'success',
-            err:    '',
-            json:  resourceLocation,
-            length: resourceLocation.length
-          }
-        );
+      ).then(function (resourceLocation) {
+          res.statusCode = 200;
+          res.send(
+            {
+                result: 'success',
+                err: '',
+                json: resourceLocation,
+                length: resourceLocation.length
+            }
+          );
       }
      ).catch(function (err) {
-       console.error(err);
-       res.statusCode = 502;
-       res.send({
-           result: 'error',
-           err:    err.message
-       });
-      });
-    }
+         console.error(err);
+         res.statusCode = 502;
+         res.send({
+             result: 'error',
+             err: err.message
+         });
+     });
+  }
   )
   //insert into ResourceLocation
-  .post('/', function(req, res) {
-    models.ResourceLocation.create(req.body)
-    .then(function(resourceLocation) {
-        res.statusCode = 200;
-        res.send(
-          {
-            result: 'success',
-            err:    '',
-            json:  resourceLocation,
-            length: resourceLocation.length
-          }
-        );
+  .post('/', function (req, res) {
+      models.ResourceLocation.create(req.body)
+      .then(function (resourceLocation) {
+          res.statusCode = 200;
+          res.send(
+            {
+                result: 'success',
+                err: '',
+                json: resourceLocation,
+                length: resourceLocation.length
+            }
+          );
       }
-     ).catch(function (err) {
-       console.error(err);
-       res.statusCode = 502;
-       res.send({
-           result: 'error',
-           err:    err.message
+       ).catch(function (err) {
+           console.error(err);
+           res.statusCode = 502;
+           res.send({
+               result: 'error',
+               err: err.message
+           });
        });
-      });
-    }
+  }
   )
   //update into ResourceLocation
-  .put('/:id', function(req, res) {
-    models.ResourceLocation.update(
-      req.body,
-      {
-        where: {
-          ResourceLocationID: req.params.id
+  .put('/:id', function (req, res) {
+      models.ResourceLocation.update(
+        req.body,
+        {
+            where: {
+                ResourceLocationID: req.params.id
+            }
         }
+      )
+      .then(function (rowsUpdated) {
+          res.statusCode = 200;
+          res.send(
+            {
+                result: 'success',
+                err: '',
+                json: { rows: rowsUpdated },
+                length: rowsUpdated.length
+            }
+          );
       }
-    )
-    .then(function(rowsUpdated) {
-        res.statusCode = 200;
-        res.send(
-          {
-            result: 'success',
-            err:    '',
-            json:  {rows: rowsUpdated},
-            length: rowsUpdated.length
-          }
-        );
-      }
-     ).catch(function (err) {
-       console.error(err);
-       res.statusCode = 502;
-       res.send({
-           result: 'error',
-           error:  err.message
+       ).catch(function (err) {
+           console.error(err);
+           res.statusCode = 502;
+           res.send({
+               result: 'error',
+               error: err.message
+           });
        });
-      });
-    }
+  }
   )
+        ///Cascade deletes in the database handle all references to the resource location id being deleted.
   .delete('/:id', function (req, res) {
-    var tasks = [];
-
-    tasks[0] = models.ResourceLocationTransport.destroy(
-    {
-        where: {
-            ResourceLocationID: req.params.id
-        }
-    });
-
-    tasks[1] = models.ResourceLocationInventory.destroy(
-    {
-        where: {
-            ResourceLocationID: req.params.id
-        }
-    });
-
-    tasks[2] = models.ResourceLocation.destroy(
-    {
-        where: {
-            ResourceLocationID: req.params.id
-        }
-    });
-
-    promise.all(tasks)
-    .then(function(numDelete) {
-        res.statusCode = 200;
-        res.send(
-          {
-            result: 'success',
-            err:    '',
-            json:  {rows: numDelete}
+      models.ResourceLocation.destroy(
+      {
+          where: {
+              ResourceLocationID: req.params.id
           }
-        );
       }
-     ).catch(function (err) {
-       console.error(err);
-       res.statusCode = 502;
-       res.send({
-           result: 'error',
-           err:    err.message
+      )
+      .then(function (numDelete) {
+          res.statusCode = 200;
+          res.send(
+            {
+                result: 'success',
+                err: '',
+                json: { rows: numDelete }
+            }
+          );
+      }
+       ).catch(function (err) {
+           console.error(err);
+           res.statusCode = 502;
+           res.send({
+               result: 'error',
+               err: err.message
+           });
        });
-      });
-    }
+  }
   );
-  
-  return router;
+
+    return router;
 }
 
 module.exports = routes;

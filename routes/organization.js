@@ -255,34 +255,15 @@ var routes = function(){
       });
     }
   )
-        ///!!!!!!!!!!!!This needs to be completed.  Either get cascade deletes to work or we have to delete ResourceLocation, etc.
+  ///Cascade deletes in the database handle all references to the org id being deleted.
   .delete('/:id', function (req, res) {
-    var tasks = [];
-
-    tasks[0] = models.Account.destroy(
-    {
-        where: {
-            OrganizationID: req.params.id
-        }
-    });
-
-    tasks[1] = models.OrganizationRegulations.destroy(
+    models.Organization.destroy(
         {
             where: {
                 OrganizationID: req.params.id
             }
         }
-    );
-
-    tasks[2] = models.Organization.destroy(
-      {
-          where: {
-              OrganizationID: req.params.id
-          }
-      }
-    );
-
-    promise.all(tasks)
+    )
     .then(function(numDelete) {
         res.statusCode = 200;
         res.send(
