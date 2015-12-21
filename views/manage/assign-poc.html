@@ -1,0 +1,43 @@
+<div ng-controller="AssignPocCtrl">
+    <div class="row">
+        <div class="col-xs-1 ">
+            <img ng-src="style/images/Team.png" style="height: 50px; width: 45px;" alt="Team Invite"/>
+        </div>
+        <div class="col-xs-2 ">
+            <h4>Points of Contact</h4>
+        </div>
+        <div class="col-xs-offset-7 col-xs-2">
+            <button type="button" class="close" style="" ng-click="go('/manage')">&times;</button>
+        </div>
+    </div>
+
+    <form class="form-horizontal" name="teamInviteForm" novalidate role="form" ng-submit="updateOrg(org)">
+        <div class="form-group">
+            <div class="col-xs-offset-2   col-xs-4 ">
+                <label for="primaryPOC">Primary Point of Contact:</label>
+            </div>
+            <div class="col-xs-6 ">
+                <select class="form-control" name="primaryPOCSelect"    id="primaryPOCSelect" ng-model="org.PrimaryPOC">
+                    <option ng-repeat="teamMember in team" ng-selected="teamMember.AccountID === org.PrimaryPOC"  value="{{teamMember.AccountID}}">{{teamMember.FirstName + " "
+                        + teamMember.LastName }}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-offset-2   col-xs-4 ">
+                <label for="secondPOC">Second Point of Contact:</label>
+            </div>
+            <div class="col-xs-6 ">
+                <select class="form-control" name="secondPOCSelect" id="secondPOCSelect" ng-model="org.SecondaryPOC">
+                    <option ng-repeat="teamMember in team"  ng-selected="teamMember.AccountID === org.SecondaryPOC"   value="{{teamMember.AccountID}}">{{teamMember.FirstName + " "
+                        + teamMember.LastName }}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class=" col-xs-offset-11 col-xs-1 ">
+            <input type="submit" class="btn btn-primary " value="Save"/>
+        </div>
+    </form>
+</div>

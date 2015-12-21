@@ -30,11 +30,11 @@ node_modules
 typings
 
 # config folder skip
-config
+# config
 
 #Visual Studio ignore
 *.sln
 .vs
 
 # ignore generated folder
-#generated
+generated

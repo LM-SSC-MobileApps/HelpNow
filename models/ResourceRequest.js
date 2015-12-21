@@ -65,6 +65,11 @@ module.exports = function(sequelize, DataTypes) {
     RequestorUpdatePref: {
       type: DataTypes.BOOLEAN,
       allowNull: true,
+    },
+    CreateDate: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue: 'CURRENT_TIMESTAMP'
     }
   });
 };

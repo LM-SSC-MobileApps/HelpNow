@@ -4,12 +4,15 @@
         <div id="resourceLocationTable">
             <div ng-repeat="resourceLocation in resourceLocations">
                 <div class="row">
-                    <div class="col-sm-9">
+                    <div class="col-sm-10">
                         
                         <h4>{{resourceLocation.Description}}</h4>
                     </div>
+                    <div class="col-sm-2">
+                        <img class="inventory-img" src="style/images/Edit.png" style="height: 22px; width: 22px;" />
+                    </div>
                     <div class="col-sm-9" style="padding-bottom: 10px;">
-                        <a href="" ng-click="resourceLocationClick(resourceLocation.LONG,resourceLocation.LAT, resourceLocation.ResourceLocationID)">({{resourceLocation.LONG | number:2}}, {{resourceLocation.LAT| number:2}})</a>
+                        <a href="" ng-click="resourceLocationClick(resourceLocation.LAT, resourceLocation.LONG,resourceLocation.ResourceLocationID)">({{resourceLocation.LONG | number:2}}, {{resourceLocation.LAT| number:2}})</a>
                     </div>
                     <div ng-repeat="resourceLocationTransport in resourceLocation.ResourceLocationTransports">
                         <div ng-if="resourceLocationTransport.TransportType.Description == 'Ground'" class="col-xs-4">
@@ -38,7 +41,7 @@
                             <img src="style/images/Team.png" style="height: 30px; width: 30px; margin-right: 5px;" /><br />
                         </div>
                         <div class="col-xs-10">
-                            Location Name:<br /><input ng-model="newSite.LocationName" class="form-control" type="text" style="width: 170px;  margin-bottom: 10px;" />
+                            Location Name:<br /><input ng-model="newResourceLocation.LocationName" class="form-control" type="text" style="width: 170px;  margin-bottom: 10px;" />
                         </div>
                     </div>
                     <!--<div class="row">
@@ -122,22 +125,17 @@
             <a id="btn-next" class="btn btn-danger pull-right" ng-click="removeResourceLocation()"><span></span>Remove This Location</a>
         </div>
     </div>
-    <div id="rightColumn" class="col-md-3" ng-if="showLocationInventory">
+    <div id="rightColumn" class="col-md-3" ng-if="showResourceLocation">
         <div class="row">
             <div class="col-md-12">
                 <div class="well">
-                    <div class="row separated-tiny">
-                        <div class="col-sm-12">
-                            <img src="style/images/Close.png" ng-click="showInventory()" style="height: 15px; width: 15px; float:right" />
-                        </div>
-                    </div>
                     <div class="row">
-                        <div class="col-sm-1">
-                            <img class="inventory-img" src="style/images/Edit.png" style="height: 22px; width: 22px;" />
-                        </div>
                         <div class="col-sm-10">
                             <h4>{{currentResourceLocation.Description}}</h4>
                             ({{currentResourceLocation.LAT | number:2}}, {{currentResourceLocation.LONG| number:2}})
+                        </div>
+                        <div class="col-sm-2">
+                            <img src="style/images/Close.png" ng-click="showLocation()" style="height: 15px; width: 15px; float:right" />
                         </div>
                     </div>
                     <div class="row">
@@ -177,7 +175,7 @@
                                 {{inventory.Quantity}} - {{inventory.ResourceTypeUnitOfMeasure.Description}}
                             </div>
                             <div class="col-sm-1">
-                                <a id="btn-remove" class="btn btn-danger pull-right" ng-click="comingSoon()"><span class="glyphicon glyphicon-remove"></span></a>
+                                <a id="btn-remove" class="btn btn-danger pull-right" ng-click="modalDeleteResourceLocationInventory(inventory)"><span class="glyphicon glyphicon-remove"></span></a>
                             </div>
                         </div>
                         <hr/>

@@ -1,6 +1,7 @@
 
 var models  = require('../models'),
-    express = require('express');
+    express = require('express'),
+    promise = require('bluebird');
 
 
 //Organization one-to-many on OrganizationRegulations    
@@ -254,13 +255,14 @@ var routes = function(){
       });
     }
   )
-  .delete('/:id', function(req, res) {
+  ///Cascade deletes in the database handle all references to the org id being deleted.
+  .delete('/:id', function (req, res) {
     models.Organization.destroy(
-      {
-        where: {
-          OrganizationID: req.params.id
+        {
+            where: {
+                OrganizationID: req.params.id
+            }
         }
-      }
     )
     .then(function(numDelete) {
         res.statusCode = 200;
