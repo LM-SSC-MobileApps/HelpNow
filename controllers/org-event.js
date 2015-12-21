@@ -18,6 +18,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	$scope.showFindPanel = false;
 	$scope.showFindResults = false;
 	$scope.showMappingError = false;
+	$scope.showDeployPanel = false;
 	
 	$scope.showHeatmap = false;
 	$scope.showClusters = false;
@@ -44,6 +45,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	};
 	
 	$scope.mappingLoc = {}
+	$scope.deployment = {}
 	
     $scope.locationPref = { value: 'Current' };
 	
@@ -73,7 +75,6 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
             $scope.mappingLoc.LAT = null;
             $scope.mappingLoc.LONG = null;
 			drawLocationMarker();
-            $scope.$digest();
         }
     }
 
@@ -93,8 +94,10 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	function drawLocationMarker() {
 		removeLocationMarker();
 		
-		if ($scope.mappingLoc.LAT && $scope.mappingLoc.LONG) {
+		if ($scope.showFindPanel && $scope.mappingLoc.LAT && $scope.mappingLoc.LONG) {
 			$scope.locationOutline = L.circle([$scope.mappingLoc.LAT, $scope.mappingLoc.LONG], 250).addTo(map);
+		} else if ($scope.showDeployPanel && $scope.deployment.LAT && $scope.deployment.LONG) {
+			$scope.locationOutline = L.circle([$scope.deployment.LAT, $scope.deployment.LONG], 250).addTo(map);
 		}
 			
 	}
@@ -133,6 +136,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	
 	$scope.$on("EventDataLoaded", function() {
 		$scope.event = $scope.getEvent($scope.eventID);
+	    $scope.setTitle($scope.event.EventLocations[0].Description, $scope.getEventIcon($scope.event.EventType.Description));
 		loadRequests();
 		updateMap();
 	});
@@ -305,7 +309,12 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
                 $scope.mappingLoc.LONG = e.latlng.lng.toFixed(3);
 				drawLocationMarker();
                 $scope.$digest();
-            }
+            } else if ($scope.showDeployPanel) {
+				$scope.deployment.LAT = e.latlng.lat.toFixed(3);
+                $scope.deployment.LONG = e.latlng.lng.toFixed(3);
+				drawLocationMarker();
+                $scope.$digest();
+			}
         });
 		updateMap();
 	};
@@ -316,20 +325,27 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	
 	$scope.toggleFilters = function() {
 		$scope.showFilters = !$scope.showFilters;
-		return false;
 	};
 	
-	$scope.toggleFindPanel = function() {
-		
+	$scope.toggleFindPanel = function() {	
 		$scope.showFindPanel = !$scope.showFindPanel;
 		if ($scope.showFindPanel) {
 			$scope.showDistCenterMarkers = true;
+			requestLocation();
 			updateMap();
 		} else {
 			removeLocationMarker();
 		}
-		return false;
 	};
+	
+	$scope.toggleDeployPanel = function() {
+		$scope.showDeployPanel = !$scope.showDeployPanel;
+		if ($scope.showDeployPanel) {
+			requestLocation();
+			$scope.showDistCenterMarkers = true;
+			updateMap();
+		}
+	}
 
 	function convertToRadians(degrees) {
 	  return degrees * (Math.PI/180)
@@ -403,8 +419,8 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 		return false;
 	};
 	
-	$scope.popupIsOpen = function() {
-		return $scope.showFindPanel || $scope.showFilters;
+	$scope.panelIsOpen = function() {
+		return $scope.showFindPanel || $scope.showFilters || $scope.showDeployPanel;
 	};
 	
 	$scope.setCurrentView("org-event");
