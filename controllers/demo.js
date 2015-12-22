@@ -14,14 +14,9 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Even
             var event = demoEvents[0];
             var eventResponse = Event.save(event);
 
-        }
 
-        $scope.createProduct = function (product) {
-            $http.post(baseUrl, product).success(function (newProduct) {
-                $scope.products.push(newProduct);
-                $scope.displayMode = "list";
-            });
-        }
+        };
+
 
         $scope.go = function (path) {
             $location.path(path);
