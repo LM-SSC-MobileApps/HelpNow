@@ -4,12 +4,12 @@
     </div>
     <div class="modal-body">
 
-        You are about delete:  {{model.resourcelocation.Description}} .  This will also delete all associated inventory items.
+        You are about delete:  {{currentResourceLocation.Description}} .  This will also delete all associated inventory items.
         Are you sure?
 
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="$close(deleteResourceLocation())">Yes!</button>
-        <button class="btn btn-warning" ng-click="$dismiss('cancel')">No</button>
+        <button class="btn btn-danger" ng-click="$close(deleteResourceLocation())">Yes!</button>
+        <button class="btn btn-primary" ng-click="$dismiss('cancel')">No</button>
     </div>
 </div>

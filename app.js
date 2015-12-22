@@ -87,6 +87,10 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 		$routeProvider.when("/reg_account/", {
 		    templateUrl: "views/reg-account.html"
 		});
+
+		$routeProvider.when("/demo/", {
+			templateUrl: "views/manage/demo.html"
+		});
 		
 		$routeProvider.otherwise({
 			templateUrl: "views/events.html"

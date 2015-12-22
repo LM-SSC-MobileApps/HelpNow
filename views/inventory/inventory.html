@@ -5,11 +5,10 @@
             <div ng-repeat="resourceLocation in resourceLocations">
                 <div class="row">
                     <div class="col-sm-10">
-                        
-                        <h4>{{resourceLocation.Description}}</h4>
-                    </div>
+                        <a href="" ng-click="resourceLocationClick(resourceLocation.LAT, resourceLocation.LONG,resourceLocation.ResourceLocationID)"><h4>{{resourceLocation.Description}}</h4></a>
+</div>
                     <div class="col-sm-2">
-                        <img class="inventory-img" src="style/images/Edit.png" style="height: 22px; width: 22px;" />
+                        <a href="" ng-click="showNewEditForm(resourceLocation.ResourceLocationID)"><img class="inventory-img" src="style/images/Edit.png" style="height: 22px; width: 22px;" /></a>
                     </div>
                     <div class="col-sm-9" style="padding-bottom: 10px;">
                         <a href="" ng-click="resourceLocationClick(resourceLocation.LAT, resourceLocation.LONG,resourceLocation.ResourceLocationID)">({{resourceLocation.LONG | number:2}}, {{resourceLocation.LAT| number:2}})</a>
@@ -28,20 +27,20 @@
                 </div>
                 <hr />
             </div>
-            <a id="btn-login" class="btn btn-primary pull-right" ng-click="showNewSiteForm()"><span class="glyphicon glyphicon-globe"></span>Add New Site</a>
+            <a id="btn-login" class="btn btn-primary pull-right" ng-click="showNewEditForm()"><span class="glyphicon glyphicon-globe"></span>Add New Site</a>
         </div>
     </div>
     
-    <div id="rightColumn" class="col-md-3" ng-if="showNewForm">
+    <div id="rightColumn" class="col-md-3" ng-if="showLocationForm">
         <div class="row">
             <div class="col-md-12">
                 <div class="well">
                     <div class="row">
                         <div class="col-xs-2">
-                            <img src="style/images/Team.png" style="height: 30px; width: 30px; margin-right: 5px;" /><br />
+                            <img src="style/images/Label.png" style="height: 25px; width: 30px; margin-top: 5px;"/>
                         </div>
                         <div class="col-xs-10">
-                            Location Name:<br /><input ng-model="newResourceLocation.LocationName" class="form-control" type="text" style="width: 170px;  margin-bottom: 10px;" />
+                            Location Name:<br /><input ng-model="currentResourceLocation.Description" class="form-control" type="text" style="width: 170px;  margin-bottom: 10px;" />
                         </div>
                     </div>
                     <!--<div class="row">
@@ -52,42 +51,65 @@
                             <h5 style="vertical-align:top">Address:<textarea rows="3" cols="25"></textarea></h5>
                         </div>
                     </div>-->
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <span>Lat </span><input ng-model="helpRequest.LAT" type="text" class="form-control" name="lat" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
-                            <span>Long </span><input ng-model="helpRequest.LONG" type="text" class="form-control" name="long" style="display:inline; width: 34%; margin-top: 10px; color: black;" /><br />
-                            <h5 align="center" style="color: whitesmoke">OR</h5>
-                            <h5 style="vertical-align:top; color: whitesmoke">Address:</h5>
-                            <textarea class="form-control" style="width: 100%"></textarea><br/>
+                    <div class="well">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <span>Lat </span><input ng-model="currentResourceLocation.LAT" type="text" class="form-control" name="lat" style="display:inline; width: 32%; margin-top: 10px; color: black;" />
+                                <span>Long </span><input ng-model="currentResourceLocation.LONG" type="text" class="form-control" name="long" style="display:inline; width: 32%; margin-top: 10px; color: black;" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <img src="style/images/Location.png" style="height: 30px; width: 20px; margin-top: 5px;" />
+                            </div>
+                            <div class="col-xs-10">
+                                <h5 align="center" style="color: whitesmoke; margin-top: 10px;">OR</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h5 style="vertical-align:top; color: whitesmoke; margin-top: 10px;">Address:</h5>
+                                <textarea class="form-control" style="width: 100%"></textarea><br />
+                            </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-2">
-                            <img src="style/images/Team.png" style="height: 30px; width: 30px; margin-right: 5px; " /><br />
+                            <img src="style/images/Team.png" style="height: 30px; width: 30px; margin-top: 10px;" />
                         </div>
                         <div class="col-xs-10">
                             Primary Contact:<br />
-                            <input ng-model="newSite.PrimaryPOCName" class="form-control" type="text" style="width: 170px; margin-bottom: 7px;" />
-                            <input ng-model="newSite.PrimaryPOCPhone" class="form-control" type="text" style="width: 170px; margin-bottom: 7px;" />
+                            <input ng-model="currentResourceLocation.PrimaryPOCName" class="form-control" type="text" style="width: 170px; margin-bottom: 7px;" />
+                        </div>
+                        <div class="col-xs-2">
+                            <img src="style/images/Phone.png" style="height: 30px; width: 30px" />
+                        </div>
+                        <div class="col-xs-10">
+                            <input ng-model="currentResourceLocation.PrimaryPOCPhone" class="form-control" type="text" style="width: 170px; margin-bottom: 7px;" />
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-2">
-                            <img src="style/images/Team.png" style="height: 30px; width: 30px; margin-right: 5px;" /><br />
+                            <img src="style/images/Team.png" style="height: 30px; width: 30px; margin-top: 10px;" />
                         </div>
                         <div class="col-xs-10">
                             Secondary Contact:<br />
-                            <input ng-model="newSite.SecondaryPOCName" class="form-control" type="text" style="width: 170px; margin-bottom: 7px;" />
-                            <input ng-model="newSite.SecondaryPOCPhone" class="form-control" type="text" style="width: 170px; margin-bottom: 7px;" />
+                            <input ng-model="currentResourceLocation.SecondaryPOCName" class="form-control" type="text" style="width: 170px; margin-bottom: 7px;" />
+                        </div>
+                        <div class="col-xs-2">
+                            <img src="style/images/Phone.png" style="height: 30px; width: 30px" />
+                        </div>
+                        <div class="col-xs-10">
+                            <input ng-model="currentResourceLocation.SecondaryPOCPhone" class="form-control" type="text" style="width: 170px; margin-bottom: 7px;" />
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <a id="btn-back" class="btn btn-primary" ng-click="showNewSiteForm()"><span></span>Back</a>
-        <a id="btn-next" class="btn btn-primary pull-right" ng-click="showTransportation()"><span></span>Next</a>
+        <a id="btn-back" class="btn btn-primary" ng-click="showLocationsDiv()"><span></span>Cancel</a>
+        <a id="btn-next" class="btn btn-primary pull-right" ng-click="showTransportationDiv()"><span></span>Next</a>
     </div>
-    <div id="rightColumn" class="col-md-3" ng-if="showTransportationOptions">
+    <div id="rightColumn" class="col-md-3" ng-if="showTransportationOptionsForm">
         <div class="row">
             <div class="col-md-12">
                 <div class="well">
@@ -100,29 +122,55 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xs-12">
+                        <div class="col-xs-12"  style="margin-bottom:5px;">
                             <!--<h5 style="vertical-align:top; color: whitesmoke">Note:</h5>-->
-                            <textarea class="form-control" style="width: 100%"></textarea><br />
+                            <textarea ng-model="currentResourceLocation.Notes" class="form-control" style="width: 100%" maxlength="1000"></textarea>
                         </div>
                     </div>
                     <div class="row">
-                        Transportation Options:<br /><br />
-                        <div class="col-xs-4">
-                            <img src="style/images/Transport-Ground-Transparent.png" ng-click="toggleTransport('showGround')" style="height: 30px; width: 50px; margin-right: 5px;" />
+                        <div class="col-xs-12"  style="margin-bottom:5px; margin-top: 5px;">
+                            Resource Location Type:
                         </div>
-                        <div class="col-xs-4">
-                            <img src="style/images/Transport-Air-Transparent.png" ng-click="toggleTransport('showAir')" style="height: 30px; width: 50px; margin-right: 5px;" />
+                        <div class="col-xs-12">
+                            <div class="btn-group" uib-dropdown is-open="status.isopen">
+                                <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle>
+                                    {{currentResourceLocation.ResourceLocationType.Description}} <span class="caret"></span>
+                                </button>
+                                <ul class="uib-dropdown-menu" role="menu" aria-labelledby="single-button">
+                                    <li role="menuitem" ng-repeat="choice in resourceLocationTypes">
+                                        <a ng-click="setResourceLocationType(choice)" style="color: whitesmoke;" >{{choice.Description}}</a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="col-xs-4">
-                            <img src="style/images/Transport-Water-Transparent.png" ng-click="toggleTransport('showWater')" style="height: 30px; width: 50px; margin-right: 5px;" />
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12" style="margin-bottom:5px; margin-top: 5px;">
+                            Transportation Options:
+                        </div>
+                        <div class="col-xs-4" ng-repeat="transport in transportTypes">
+                            <a href="" ng-click="toggleTransport(transport.TransportTypeID)" ng-if="showTransparentTransport(transport.Description)"><img src="style/images/Transport-{{transport.Description}}-Transparent.png" style="height: 30px; width: 45px; margin-right: 5px;" /></a>
+                            <a href="" ng-click="toggleTransport(transport.TransportTypeID)" ng-if="showTransport(transport.Description)"><img src="style/images/Transport-{{transport.Description}}.png" style="height: 30px; width: 45px; margin-right: 5px;" /></a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="separated">
-            <a id="btn-back" class="btn btn-save pull-right" ng-click="saveResourceLocation()"><span></span>Save</a><br /><br /><br />
-            <a id="btn-next" class="btn btn-danger pull-right" ng-click="removeResourceLocation()"><span></span>Remove This Location</a>
+        <div class="row">
+            <div class="col-sm-12">
+                <a id="btn-back" class="btn btn-primary pull-left" ng-click="showLocationDiv()">Back</a>
+                <a id="btn-save" class="btn btn-success pull-right" ng-click="saveResourceLocation()">Save</a>
+            </div>
+        </div>
+        <div class="row" ng-if="editMode">  
+            <div class="col-sm-12">
+                <a id="btn-delete" class="btn btn-danger pull-left" ng-click="modalDeleteResourceLocation()" style="margin-top: 10px;">Delete Location</a>
+            </div>
+        </div>
+        <div class="row" ng-if="!editMode">
+            <div class="col-sm-12">
+                <a id="btn-cancel" class="btn btn-primary pull-left" ng-click="showLocationsDiv()" style="margin-top: 10px;">Cancel</a>
+            </div>
         </div>
     </div>
     <div id="rightColumn" class="col-md-3" ng-if="showResourceLocation">
@@ -135,12 +183,12 @@
                             ({{currentResourceLocation.LAT | number:2}}, {{currentResourceLocation.LONG| number:2}})
                         </div>
                         <div class="col-sm-2">
-                            <img src="style/images/Close.png" ng-click="showLocation()" style="height: 15px; width: 15px; float:right" />
+                            <a id="btn-remove" class="close pull-right" ng-click="showLocationsDiv()"><span class="glyphicon glyphicon-remove"></span></a>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-2">
-                            <img src="style/images/Team.png" style="height: 22px; width: 22px;" />
+                            <img src="style/images/Team.png" style="height: 22px; width: 22px; margin-top:10px;" />
                         </div>
                         <div class="col-sm-10">
                             {{currentResourceLocation.PrimaryPOCName}}<br/>{{currentResourceLocation.PrimaryPOCPhone}}
@@ -167,14 +215,14 @@
                     </div>
                     <div ng-repeat="inventory in currentResourceLocation.ResourceLocationInventories">
                         <div class="row">
-                            <div class="col-sm-2">
-                                <img class="event-img" src="style/images/{{inventory.ResourceType.Description}}.png" style="height: 30px; width: 30px; " /></a>
+                            <div class="col-xs-2">
+                                <img class="event-img" src="style/images/{{inventory.ResourceType.Description}}.png" style="height: 22px; width: 22px; " /></a>
                             </div>
-                            <div class="col-sm-8">
+                            <div class="col-xs-8">
                                 {{inventory.ResourceType.Description}}<br/>
                                 {{inventory.Quantity}} - {{inventory.ResourceTypeUnitOfMeasure.Description}}
                             </div>
-                            <div class="col-sm-1">
+                            <div class="col-xs-2">
                                 <a id="btn-remove" class="btn btn-danger pull-right" ng-click="modalDeleteResourceLocationInventory(inventory)"><span class="glyphicon glyphicon-remove"></span></a>
                             </div>
                         </div>
