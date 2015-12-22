@@ -28,6 +28,14 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 			templateUrl: "views/org-event.html"
 		});
 		
+		$routeProvider.when("/create_deployment/:eventID/:lat/:long", {
+			templateUrl: "views/deployment.html"
+		});
+		
+		$routeProvider.when("/modify_deployment/:locationID", {
+			templateUrl: "views/deployment.html"
+		});
+		
 		$routeProvider.when("/events", {
 			templateUrl: "views/events.html"
 		});

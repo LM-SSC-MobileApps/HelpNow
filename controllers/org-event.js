@@ -1,4 +1,5 @@
-angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", "$resource", "$sce", function ($scope, $routeParams, $resource, $sce) {
+angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", "$resource", "$sce", "$location", 
+	function ($scope, $routeParams, $resource, $sce, $location) {
 	var map;
 	var mapLayers = [];
 	$scope.setCurrentView("org-events");
@@ -19,6 +20,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	$scope.showFindResults = false;
 	$scope.showMappingError = false;
 	$scope.showDeployPanel = false;
+	$scope.showDeploymentPanel = false;
 	
 	$scope.showHeatmap = false;
 	$scope.showClusters = false;
@@ -52,6 +54,15 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	$scope.getLocation = function () {
         requestLocation();
     };
+	
+	function closePanels() {
+		$scope.showFilters = false;
+		$scope.showFindPanel = false;
+		$scope.showFindResults = false;
+		$scope.showMappingError = false;
+		$scope.showDeployPanel = false;
+		$scope.showDeploymentPanel = false;
+	};
 	
 	$scope.getMatchResources = function() {
 		var resources = [];
@@ -99,7 +110,6 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 		} else if ($scope.showDeployPanel && $scope.deployment.LAT && $scope.deployment.LONG) {
 			$scope.locationOutline = L.circle([$scope.deployment.LAT, $scope.deployment.LONG], 250).addTo(map);
 		}
-			
 	}
 	
 	function getNeedsIcon(resourceType) {
@@ -237,7 +247,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 			buildClusterMarkers();
 		
 		if ($scope.showLocationMarkers)
-			$scope.buildLocationMarkers($scope.locations, mapLayers, $scope.filterFlags);
+			$scope.buildLocationMarkers($scope.locations, mapLayers, $scope.filterFlags, locationClicked);
 		
 		if ($scope.showDistCenterMarkers)
 			buildDistCenterMarkers();
@@ -245,6 +255,12 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 		angular.forEach(mapLayers, function(layer) {
 			map.addLayer(layer);
 		});
+	}
+	
+	function locationClicked(location) {
+		closePanels();
+		$scope.deployment = location;
+		$scope.showDeploymentPanel = true;
 	}
 
 	function loadRequests() {
@@ -419,9 +435,23 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 		return false;
 	};
 	
-	$scope.panelIsOpen = function() {
-		return $scope.showFindPanel || $scope.showFilters || $scope.showDeployPanel;
+	$scope.closeDeploymentPanel = function() {
+		$scope.showDeploymentPanel = false;
 	};
+	
+	$scope.panelIsOpen = function() {
+		return $scope.showFindPanel || $scope.showFilters || $scope.showDeployPanel || $scope.showDeploymentPanel;
+	};
+	
+	$scope.createDeployment = function() {
+		var url = "create_deployment/" + $scope.eventID + "/" + $scope.deployment.LAT + "/" + $scope.deployment.LONG;
+		$location.path(url);
+	};
+	
+	$scope.modifyDeployment = function() {
+		var url = "modify_deployment/" + $scope.deployment.ResourceLocationID;
+		$location.path(url);
+	}
 	
 	$scope.setCurrentView("org-event");
 }]);

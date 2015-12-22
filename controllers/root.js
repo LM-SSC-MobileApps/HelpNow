@@ -135,13 +135,20 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	    return popupText;
 	};
 	
-	$scope.buildLocationMarker = function (location, icon) {
+	$scope.buildLocationMarker = function (location, icon, onClick) {
 	    var marker = L.marker([location.LAT, location.LONG], { icon: icon });
-	    marker.bindPopup($scope.buildLocationDetails(location));
+		if (onClick)
+			marker.on("click", function() {
+				$scope.$apply(function() {
+					onClick(location);
+				});
+			});
+		else
+			marker.bindPopup($scope.buildLocationDetails(location));
 	    return marker;
 	};
 	
-	$scope.buildLocationMarkers = function (locations, mapLayers, flags) {
+	$scope.buildLocationMarkers = function (locations, mapLayers, flags, onClick) {
 	    if (!locations) return;
 	    var selectedLocations = locations.filter(function (location) {
 	        return $scope.shouldDisplayLocationMarker(location, flags);
@@ -154,7 +161,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	            iconAnchor: [30, 30]
 	        });
 
-	        var marker = $scope.buildLocationMarker(location, locationIcon);
+	        var marker = $scope.buildLocationMarker(location, locationIcon, onClick);
 	        mapLayers.push(marker);
 	    });
 	};
