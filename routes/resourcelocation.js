@@ -182,7 +182,13 @@ var routes = function () {
   )
   //insert into ResourceLocation
   .post('/', function (req, res) {
-      models.ResourceLocation.create(req.body)
+      //This will save a new ResourceLocation and any ResourceLocationTransports
+      models.ResourceLocation.create(
+          req.body
+         , {
+             include: [models.ResourceLocationTransport]
+         }
+      )
       .then(function (resourceLocation) {
           res.statusCode = 200;
           res.send(
@@ -193,7 +199,7 @@ var routes = function () {
                 length: resourceLocation.length
             }
           );
-      }
+        }
        ).catch(function (err) {
            console.error(err);
            res.statusCode = 502;
@@ -206,6 +212,7 @@ var routes = function () {
   )
   //update into ResourceLocation
   .put('/:id', function (req, res) {
+      //console.log("HERE IS OUR ResourceLocationTransports: " + req.body.ResourceLocationTransports);
       models.ResourceLocation.update(
         req.body,
         {
@@ -215,15 +222,34 @@ var routes = function () {
         }
       )
       .then(function (rowsUpdated) {
-          res.statusCode = 200;
-          res.send(
-            {
-                result: 'success',
-                err: '',
-                json: { rows: rowsUpdated },
-                length: rowsUpdated.length
-            }
-          );
+          //console.log("rows updated!: " + rowsUpdated);
+
+          models.ResourceLocationTransport.destroy(
+              {
+                  where: {
+                      ResourceLocationID: req.params.id
+                  }
+              }
+           ).then(function (numDelete) {
+               models.ResourceLocationTransport.bulkCreate(
+                   req.body.ResourceLocationTransports,
+                   {
+                       ignoreDuplicates: true
+                   }
+               )
+               .then(function (complete) {
+                   res.statusCode = 200;
+                   res.send(
+                     {
+                         result: 'success',
+                         err: '',
+                         json: { rows: rowsUpdated },
+                         length: rowsUpdated.length
+                     }
+                   );
+               });
+
+           });
       }
        ).catch(function (err) {
            console.error(err);
