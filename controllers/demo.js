@@ -10,13 +10,32 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Even
 
         $scope.startDemo = function () {
             $scope.started = true;
-            var event = demoData[0];
+            angular.forEach(demoData, function (item, key) {
+                switch (item.Type) {
+                    case "Event":
+                    {
+                        var event = angular.fromJson(item.Data);
+                        Event.save(event, function (data) {
+                            var newEvent = data.json;
+                            console.log(newEvent);
 
-            Event.save(event, function (data) {
-                $scope.newEvent = data.json;
-                console.log($scope.newEvent);
+                            angular.forEach(event.EventLocations, function (item, key) {
+                                console.log(key + ":" + item);
+                                var eventLocation = event.EventLocations[key];
+                                eventLocation.EventID = newEvent.EventID;
+
+                                EventLocation.save(eventLocation, function (data) {
+                                    var newEventLocation = data.json;
+                                    console.log(newEventLocation);
+                                });
+                            });
+                        });
+                        break;
+                    }
+                    default:
+                        console.log("I'm lost");
+                }
             });
-
         };
 
 
@@ -33,56 +52,20 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Even
                 "Type": "Event",
                 "WaitTime": 0,
                 "Data": {
-                    "EventTypeID": 1,
+                    "EventTypeID": 3,
                     "OrganizationID": 1,
-                    "Summary": "Flood",
+                    "Summary": "Denver, Colorado",
                     "Active": "true",
                     "CreateDate": "2015-12-22 00:00:00",
                     "EventLocations": [
                         {
-                            "Description": "Dhaka, Bangladesh",
-                            "LAT": "23.713",
-                            "LONG": "90.39",
+                            "Description": "Denver, Colorado",
+                            "LAT": "39.739",
+                            "LONG": "-104.990",
                             "Radius": 542
                         }
                     ]
                 }
             }
         ];
-
-
-        angular.forEach(demoData, function (item, key) {
-            console.log(item.ID);
-            console.log(item.Type);
-            console.log(item.Data);
-            switch (item.Type) {
-
-                case "Event":
-                {
-                    console.log("I'm an event");
-                    var event = angular.fromJson(item.Data);
-                    var eventLocation = event.EventLocations[0];
-                    Event.save(event, function (data) {
-                        var newEvent = data.json;
-                        console.log(newEvent);
-                        eventLocation.EventID = newEvent.EventID;
-
-                        EventLocation.save(eventLocation, function (data) {
-                            var newEventLocation = data.json;
-                            console.log(newEventLocation);
-                        });
-
-                    });
-
-
-                    break;
-                }
-                default:
-                    console.log("I'm lost");
-
-            }
-
-        });
-
-
     }]);
