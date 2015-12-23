@@ -102,27 +102,31 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 
 	$scope.getLocationIcon = function (location) {
 	    var inventories = location.ResourceLocationInventories;
+		var belongsToUser = $scope.currentOrg && location.OrganizationID == $scope.currentOrg.OrganizationID;
+		
 	    if (inventories.length > 1)
-	        return "style/images/resources.png";
+	        return belongsToUser ? "style/images/Resources-DBox-Blue.png" : "style/images/Resources-Box-Blue.png";
 
+		var iconType = belongsToUser ? "DDiamond-Blue" : "Diamond-Blue";
 	    var resourceType = inventories[0].ResourceType.Description;
 	    if (resourceType == "Water") {
-	        return "style/images/Water-Diamond-Blue.png";
+	        return "style/images/Water-" + iconType + ".png";
 	    } else if (resourceType == "First Aid") {
-	        return "style/images/First Aid-Diamond-Blue.png";
+	        return "style/images/First Aid-" + iconType + ".png";
 	    } else if (resourceType == "Shelter") {
-	        return "style/images/Shelter-Diamond-Blue.png";
+	        return "style/images/Shelter-" + iconType + ".png";
 	    } else if (resourceType == "Evacuation") {
-	        return "style/images/Evacuation-Diamond-Blue.png";
+	        return "style/images/Evacuation-" + iconType + ".png";
 	    } else if (resourceType == "Medicine") {
-	        return "style/images/Medicine-Diamond-Blue.png";
+	        return "style/images/Medicine-" + iconType + ".png";
 	    } else {
-	        return "style/images/Food-Diamond-Blue.png";
+	        return "style/images/Food-" + iconType + ".png";
 	    }
 	};
 	
 	$scope.buildLocationDetails = function (location) {
 	    var popupText = "<strong>" + location.Organization.Name + "</strong><br/>" +
+			location.PrimaryPOCName + "<br/>" +
 			location.PrimaryPOCPhone + "<hr/>";
 	    location.ResourceLocationInventories.forEach(function (inventory) {
 	        popupText += inventory.ResourceType.Description + ": " + inventory.Quantity + " " +
@@ -131,13 +135,20 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	    return popupText;
 	};
 	
-	$scope.buildLocationMarker = function (location, icon) {
+	$scope.buildLocationMarker = function (location, icon, onClick) {
 	    var marker = L.marker([location.LAT, location.LONG], { icon: icon });
-	    marker.bindPopup($scope.buildLocationDetails(location));
+		if (onClick)
+			marker.on("click", function() {
+				$scope.$apply(function() {
+					onClick(location);
+				});
+			});
+		else
+			marker.bindPopup($scope.buildLocationDetails(location));
 	    return marker;
 	};
 	
-	$scope.buildLocationMarkers = function (locations, mapLayers, flags) {
+	$scope.buildLocationMarkers = function (locations, mapLayers, flags, onClick) {
 	    if (!locations) return;
 	    var selectedLocations = locations.filter(function (location) {
 	        return $scope.shouldDisplayLocationMarker(location, flags);
@@ -150,7 +161,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	            iconAnchor: [30, 30]
 	        });
 
-	        var marker = $scope.buildLocationMarker(location, locationIcon);
+	        var marker = $scope.buildLocationMarker(location, locationIcon, onClick);
 	        mapLayers.push(marker);
 	    });
 	};

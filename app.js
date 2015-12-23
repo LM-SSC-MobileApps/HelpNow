@@ -28,6 +28,14 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 			templateUrl: "views/org-event.html"
 		});
 		
+		$routeProvider.when("/create_deployment/:eventID/:lat/:long", {
+			templateUrl: "views/deployment.html"
+		});
+		
+		$routeProvider.when("/modify_deployment/:locationID", {
+			templateUrl: "views/deployment.html"
+		});
+		
 		$routeProvider.when("/events", {
 			templateUrl: "views/events.html"
 		});
@@ -78,6 +86,10 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 
 		$routeProvider.when("/reg_account/", {
 		    templateUrl: "views/reg-account.html"
+		});
+
+		$routeProvider.when("/demo/", {
+			templateUrl: "views/manage/demo.html"
 		});
 		
 		$routeProvider.otherwise({
