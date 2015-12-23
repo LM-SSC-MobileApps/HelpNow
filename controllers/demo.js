@@ -2,8 +2,8 @@
  * DemoCtrl
  */
 
-angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Event", "$location",
-    function ($scope, DemoService, Event, $location) {
+angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Event", "EventLocation", "$location",
+    function ($scope, DemoService, Event, EventLocation, $location) {
 
         $scope.started = false;
 
@@ -37,41 +37,44 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Even
                     "OrganizationID": 1,
                     "Summary": "Flood",
                     "Active": "true",
-                    "CreateDate": "2015-12-22 00:00:00"
-                }
-            },
-            {
-                "ID": 2,
-                "Type": "EventLocation",
-                "WaitTime": 2,
-                "Data": {
-
-                    "Description": "Dhaka, Bangladesh",
-                    "LAT": "23.713",
-                    "LONG": "90.39",
-                    "Radius": 542
+                    "CreateDate": "2015-12-22 00:00:00",
+                    "EventLocations": [
+                        {
+                            "Description": "Dhaka, Bangladesh",
+                            "LAT": "23.713",
+                            "LONG": "90.39",
+                            "Radius": 542
+                        }
+                    ]
                 }
             }
-
         ];
 
 
         angular.forEach(demoData, function (item, key) {
             console.log(item.ID);
             console.log(item.Type);
+            console.log(item.Data);
             switch (item.Type) {
 
                 case "Event":
                 {
                     console.log("I'm an event");
-                    //TODO: Event.save goes here
+                    var event = angular.fromJson(item.Data);
+                    var eventLocation = event.EventLocations[0];
+                    Event.save(event, function (data) {
+                        var newEvent = data.json;
+                        console.log(newEvent);
+                        eventLocation.EventID = newEvent.EventID;
 
-                    break;
-                }
-                case "EventLocation":
-                {
-                    console.log("I'm an event location");
-                    //TODO: EventLocation.save goes here...
+                        EventLocation.save(eventLocation, function (data) {
+                            var newEventLocation = data.json;
+                            console.log(newEventLocation);
+                        });
+
+                    });
+
+
                     break;
                 }
                 default:
