@@ -12,21 +12,23 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
     };
 
     function login() {
-        var creds = JSON.stringify($scope.userCreds);
+        var postdata = 'username=' + $scope.userCreds.username + '&' + 'password=' + $scope.userCreds.password;
+
         var webCall = $http({
             method: 'POST',
-            url: '/api/account/login',
+            url: '/auth/login',
             async: true,
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/x-www-form-urlencoded'
             },
-            data: creds
+            data: postdata
         });
+
         webCall.then(function (response) {
             $scope.users = response.data.json;
             $scope.currentUser = $scope.users[0];
             if ($scope.currentUser === undefined) {
-                alert("Incorrect Username/Password combination.\nPlease try again");
+                alert("Incorrect username or password. Please try again.");
             }
             else {
                 var userSessionObject = {
@@ -44,7 +46,7 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
             }
         },
         function (response) { // optional
-            alert("Login Error - Please Try Again");
+            alert("Incorrect username or password. Please try again.");
         });
-    }
+    }    
 }]);

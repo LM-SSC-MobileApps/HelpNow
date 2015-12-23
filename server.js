@@ -6,6 +6,7 @@ var path = require('path');
 var logger = require('morgan');
 var mysql = require('mysql');
 var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
 var https = require('https');
 var fs = require('fs');
 
@@ -41,6 +42,7 @@ var enable_redirect = process.env.ENABLE_REDIRECT || true;
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 //for creating the session availability
 app.use(
@@ -51,6 +53,10 @@ app.use(
         cookie: { maxAge: 600000 }  //max cookie age is 60 minutes
     })
 );
+
+// Setup for authentication (must be after all body parsers, cookie parsers and session parsers)
+var auth = require('./auth');
+auth.setupAuthentication(app);
 
 app.use('/api/account', accountRouter);
 app.use('/api/accountrole', accountRoleRouter);
