@@ -9,12 +9,18 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Even
 
 
         $scope.startDemo = function () {
+
+            console.log("starting demo run");
             $scope.started = true;
             angular.forEach(demoData, function (item, key) {
+                console.log("Going into switch: " + item.Type +":"+ item.ID);
                 switch (item.Type) {
                     case "Event":
                     {
+                        console.log("In Event Switch: " + item.Type +":"+ item.ID);
+
                         var event = angular.fromJson(item.Data);
+                        console.log ("event data:" + event);
                         Event.save(event, function (data) {
                             var newEvent = data.json;
                             console.log(newEvent);
@@ -30,6 +36,14 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Even
                                 });
                             });
                         });
+                        break;
+                    }
+                    case "ResourceRequest":
+                    {
+
+                        console.log("In Request Switch: " + item.Type +":"+ item.ID);
+                        //var request = angular.fromJson(item.Data);
+                        //console.log("Made it into resource request." + request);
                         break;
                     }
                     default:
@@ -65,6 +79,20 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Even
                             "Radius": 542
                         }
                     ]
+                }
+            },
+            {
+                "ID": 2,
+                "Type": "ResourceRequest",
+                "WaitTime": 0,
+                "Data": {
+                    "RequestStateID": 1,
+                    "Notes": "Please help!",
+                    "Quantity": 17,
+                    "ResourceTypeID": 2,
+                    "LAT": "39.739",
+                    "LONG": "-104.990",
+                    "RequestUrgencyID": 2
                 }
             }
         ];
