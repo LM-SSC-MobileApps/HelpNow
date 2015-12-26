@@ -2,8 +2,8 @@
  * DemoCtrl
  */
 
-angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Event", "EventLocation", "ResourceRequest", "$location",
-    function ($scope, DemoService, Event, EventLocation, ResourceRequest , $location) {
+angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Event", "EventLocation", "ResourceRequest", "ResourceLocation" , "$location",
+    function ($scope, DemoService, Event, EventLocation, ResourceRequest , ResourceLocation , $location) {
 
         $scope.started = false;
 
@@ -48,6 +48,19 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Even
                                     console.log(newResourceRequest);
                                 });
                             });
+
+                            angular.forEach(event.ResourceLocations, function (item, key) {
+                                console.log(key + ":" + item);
+                                var resourceLocation = event.ResourceLocations[key];
+                                resourceLocation.EventID = newEvent.EventID;
+
+                                ResourceLocation.save(resourceLocation, function (data) {
+                                    var newResourceLocation = data.json;
+                                    console.log(newResourceLocation);
+                                });
+
+                            });
+
                         });
                         break;
                     }
@@ -106,8 +119,31 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Even
                             "RequestUrgencyID": 2,
                             "CreateDate": "2015-12-22 00:00:00",
                         }
+                    ],
+                    "ResourceLocations": [
+                        {
+                            "OrganizationID": 2,
+                            "ResourceLocationTypeID": 1,
+                            "ResourceLocationStatusID": 1,
+                             "Description": "Distribution Center A",
+                            "Notes": "Note 1",
+                            "LAT": 23.719999,
+                            "LONG": 90.400002,
+                        },
+                        {
+                            "OrganizationID": 2,
+                            "ResourceLocationTypeID": 2,
+                            "ResourceLocationStatusID": 2,
+                            "Description": "Deployment A",
+                            "Notes": "Note 2",
+                            "LAT": 23.700001,
+                            "LONG": 90.400002
+                        }
                     ]
                 }
             }
         ];
     }]);
+
+
+
