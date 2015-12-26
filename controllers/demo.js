@@ -2,8 +2,8 @@
  * DemoCtrl
  */
 
-angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Event", "EventLocation", "$location",
-    function ($scope, DemoService, Event, EventLocation, $location) {
+angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Event", "EventLocation", "ResourceRequest", "$location",
+    function ($scope, DemoService, Event, EventLocation, ResourceRequest , $location) {
 
         $scope.started = false;
 
@@ -22,8 +22,9 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Even
                         var event = angular.fromJson(item.Data);
                         console.log ("event data:" + event);
                         Event.save(event, function (data) {
-                            var newEvent = data.json;
+                              var newEvent = data.json;
                             console.log(newEvent);
+
 
                             angular.forEach(event.EventLocations, function (item, key) {
                                 console.log(key + ":" + item);
@@ -35,17 +36,22 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Even
                                     console.log(newEventLocation);
                                 });
                             });
+
+
+                            angular.forEach(event.ResourceRequests, function (item, key) {
+                                console.log(key + ":" + item);
+                                var resourceRequest = event.ResourceRequests[key];
+                                resourceRequest.EventID = newEvent.EventID;
+
+                                ResourceRequest.save(resourceRequest, function (data) {
+                                    var newResourceRequest = data.json;
+                                    console.log(newResourceRequest);
+                                });
+                            });
                         });
                         break;
                     }
-                    case "ResourceRequest":
-                    {
 
-                        console.log("In Request Switch: " + item.Type +":"+ item.ID);
-                        //var request = angular.fromJson(item.Data);
-                        //console.log("Made it into resource request." + request);
-                        break;
-                    }
                     default:
                         console.log("I'm lost");
                 }
@@ -78,21 +84,29 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Even
                             "LONG": "-104.990",
                             "Radius": 542
                         }
+                    ],
+                    "ResourceRequests": [
+                        {
+                            "RequestStateID": 1,
+                            "Notes": "Please help!",
+                            "Quantity": 17,
+                            "ResourceTypeID": 2,
+                            "LAT": "39.739",
+                            "LONG": "-104.990",
+                            "RequestUrgencyID": 2,
+                            "CreateDate": "2015-12-22 00:00:00",
+                        },
+                        {
+                            "RequestStateID": 1,
+                            "Notes": "Please help!",
+                            "Quantity": 17,
+                            "ResourceTypeID": 2,
+                            "LAT": "39.739",
+                            "LONG": "-104.990",
+                            "RequestUrgencyID": 2,
+                            "CreateDate": "2015-12-22 00:00:00",
+                        }
                     ]
-                }
-            },
-            {
-                "ID": 2,
-                "Type": "ResourceRequest",
-                "WaitTime": 0,
-                "Data": {
-                    "RequestStateID": 1,
-                    "Notes": "Please help!",
-                    "Quantity": 17,
-                    "ResourceTypeID": 2,
-                    "LAT": "39.739",
-                    "LONG": "-104.990",
-                    "RequestUrgencyID": 2
                 }
             }
         ];
