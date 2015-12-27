@@ -2,8 +2,8 @@
  * DemoCtrl
  */
 
-angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Event", "EventLocation", "ResourceRequest", "ResourceLocation" , "$location",
-    function ($scope, DemoService, Event, EventLocation, ResourceRequest , ResourceLocation , $location) {
+angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Event", "EventLocation", "ResourceRequest", "ResourceLocation", "$location",
+    function ($scope, DemoService, Event, EventLocation, ResourceRequest, ResourceLocation, $location) {
 
         $scope.started = false;
 
@@ -13,58 +13,49 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Even
             console.log("starting demo run");
             $scope.started = true;
             angular.forEach(demoData, function (item, key) {
-                console.log("Going into switch: " + item.Type +":"+ item.ID);
                 switch (item.Type) {
                     case "Event":
                     {
-                        console.log("In Event Switch: " + item.Type +":"+ item.ID);
-
                         var event = angular.fromJson(item.Data);
                         console.log ("event data:" + event);
                         Event.save(event, function (data) {
-                              var newEvent = data.json;
-                            console.log(newEvent);
-
-
+                            var newEvent = data.json;
                             angular.forEach(event.EventLocations, function (item, key) {
-                                console.log(key + ":" + item);
                                 var eventLocation = event.EventLocations[key];
                                 eventLocation.EventID = newEvent.EventID;
-
-                                EventLocation.save(eventLocation, function (data) {
-                                    var newEventLocation = data.json;
-                                    console.log(newEventLocation);
-                                });
+                                setTimeout(function () {
+                                    EventLocation.save(eventLocation, function (data) {
+                                        var newEventLocation = data.json;
+                                        console.log(newEventLocation);
+                                    });
+                                }, event.WaitTime);
                             });
-
 
                             angular.forEach(event.ResourceRequests, function (item, key) {
                                 console.log(key + ":" + item);
                                 var resourceRequest = event.ResourceRequests[key];
                                 resourceRequest.EventID = newEvent.EventID;
-
-                                ResourceRequest.save(resourceRequest, function (data) {
-                                    var newResourceRequest = data.json;
-                                    console.log(newResourceRequest);
-                                });
+                                setTimeout(function () {
+                                    ResourceRequest.save(resourceRequest, function (data) {
+                                        var newResourceRequest = data.json;
+                                        console.log(newResourceRequest);
+                                    });
+                                }, resourceRequest.WaitTime);
                             });
 
                             angular.forEach(event.ResourceLocations, function (item, key) {
-                                console.log(key + ":" + item);
                                 var resourceLocation = event.ResourceLocations[key];
                                 resourceLocation.EventID = newEvent.EventID;
-
-                                ResourceLocation.save(resourceLocation, function (data) {
-                                    var newResourceLocation = data.json;
-                                    console.log(newResourceLocation);
-                                });
-
+                                setTimeout(function () {
+                                    ResourceLocation.save(resourceLocation, function (data) {
+                                        var newResourceLocation = data.json;
+                                        console.log(newResourceLocation);
+                                    });
+                                }, resourceLocation.WaitTime);
                             });
-
                         });
                         break;
                     }
-
                     default:
                         console.log("I'm lost");
                 }
@@ -83,8 +74,8 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Even
             {
                 "ID": 1,
                 "Type": "Event",
-                "WaitTime": 0,
                 "Data": {
+                    "WaitTime": 0,
                     "EventTypeID": 3,
                     "OrganizationID": 1,
                     "Summary": "Denver, Colorado",
@@ -100,6 +91,7 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Even
                     ],
                     "ResourceRequests": [
                         {
+                            "WaitTime": 3000,
                             "RequestStateID": 1,
                             "Notes": "Please help!",
                             "Quantity": 17,
@@ -107,9 +99,10 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Even
                             "LAT": "39.739",
                             "LONG": "-104.990",
                             "RequestUrgencyID": 2,
-                            "CreateDate": "2015-12-22 00:00:00",
+                            "CreateDate": "2015-12-22 00:00:00"
                         },
                         {
+                            "WaitTime": 3000,
                             "RequestStateID": 1,
                             "Notes": "Please help!",
                             "Quantity": 17,
@@ -117,20 +110,22 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Even
                             "LAT": "39.739",
                             "LONG": "-104.990",
                             "RequestUrgencyID": 2,
-                            "CreateDate": "2015-12-22 00:00:00",
+                            "CreateDate": "2015-12-22 00:00:00"
                         }
                     ],
                     "ResourceLocations": [
                         {
+                            "WaitTime": 6000,
                             "OrganizationID": 2,
                             "ResourceLocationTypeID": 1,
                             "ResourceLocationStatusID": 1,
-                             "Description": "Distribution Center A",
+                            "Description": "Distribution Center A",
                             "Notes": "Note 1",
                             "LAT": 23.719999,
-                            "LONG": 90.400002,
+                            "LONG": 90.400002
                         },
                         {
+                            "WaitTime": 9000,
                             "OrganizationID": 2,
                             "ResourceLocationTypeID": 2,
                             "ResourceLocationStatusID": 2,
@@ -144,6 +139,3 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Even
             }
         ];
     }]);
-
-
-
