@@ -11,15 +11,15 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Even
         $scope.startDemo = function () {
 
             console.log("starting demo run");
-            $scope.started = true;
+            $scope.demoRunning = true;
             angular.forEach(demoData, function (item, key) {
                 switch (item.Type) {
                     case "Event":
                     {
                         var event = angular.fromJson(item.Data);
-                        console.log ("event data:" + event);
                         Event.save(event, function (data) {
                             var newEvent = data.json;
+                            console.log(newEvent);
                             angular.forEach(event.EventLocations, function (item, key) {
                                 var eventLocation = event.EventLocations[key];
                                 eventLocation.EventID = newEvent.EventID;
@@ -60,6 +60,8 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Even
                         console.log("I'm lost");
                 }
             });
+
+            $scope.demoRunning = false;
         };
 
 
@@ -69,8 +71,6 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Even
 
 
         var demoData = [
-
-
             {
                 "ID": 1,
                 "Type": "Event",
@@ -121,8 +121,8 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Even
                             "ResourceLocationStatusID": 1,
                             "Description": "Distribution Center A",
                             "Notes": "Note 1",
-                            "LAT": 23.719999,
-                            "LONG": 90.400002
+                            "LAT": "39.739",
+                            "LONG": "-104.990"
                         },
                         {
                             "WaitTime": 9000,
@@ -131,8 +131,8 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Even
                             "ResourceLocationStatusID": 2,
                             "Description": "Deployment A",
                             "Notes": "Note 2",
-                            "LAT": 23.700001,
-                            "LONG": 90.400002
+                            "LAT": "39.739",
+                            "LONG": "-104.990"
                         }
                     ]
                 }
