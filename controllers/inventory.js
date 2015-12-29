@@ -119,7 +119,7 @@
     function buildInventoryMarkers(mapLayers) {  
         angular.forEach($scope.resourceLocations, function (location) {
             var locationIcon = L.icon({
-                iconUrl: "style/images/resources.png",
+                iconUrl: "style/images/Resources-Box-Blue.png",
                 iconSize: [60, 60],
                 iconAnchor: [30, 30]
             });
@@ -247,9 +247,19 @@
 
     $scope.setResourceLocationInventoryType = function (resourceTypeID) {
         $scope.currentResourceLocationInventory.ResourceTypeID = resourceTypeID;
-        $scope.currentResourceTypeUnitOfMeasuresFiltered;
+        $scope.resourceTypesFiltered = $scope.resourceTypes.filter(function (el) {
+            return el.ResourceTypeID = resourceTypeID;
+        });
+        $scope.resourceTypesFiltered.forEach(function (resType) {
+            alert("ResourceType: " + resType.Description);
+        });
+        $scope.resourceTypeUnitOfMeasuresFiltered = $scope.resourceTypeUnitOfMeasures.filter(function (el) {
+            return el.ResourceTypeID == resourceTypeID;
+        });
         return false;
     };
+
+
 
     /********************************* UI FUNCTIONS ****************************************************/
     $scope.showNewEditForm = function (id) {
@@ -339,6 +349,10 @@
     };
 
     $scope.showResourceTypesDiv = function () {
+        $scope.resourceTypesFiltered = $scope.resourceTypes;
+        var resLocInv = new ResourceLocationInventory();
+        resLocInv.ResourceLocationID = $scope.currentResourceLocation.ResourceLocationID;
+        $scope.currentResourceLocationInventory = resLocInv;
         $scope.showLocationForm = false;
         $scope.showResourceLocations = false;
         $scope.showResourceLocation = false;

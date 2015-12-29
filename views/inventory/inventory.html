@@ -251,9 +251,9 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-4" ng-repeat="resourceType in resourceTypes">
+                        <div class="col-sm-4" ng-repeat="resourceType in resourceTypesFiltered">
                             <div>
-                                <a href="" ng-click="setResourceLicationInventoryType(resourceType.ResourceTypeID)"><img src="style/images/{{resourceType.Description}}-Circle-Blue.png" alt="{{resourceType.Description}}" style="height: 50px; width: 50px;  margin-bottom: 5px;" /></a>
+                                <a href="" ng-click="setResourceLocationInventoryType(resourceType.ResourceTypeID)"><img src="style/images/{{resourceType.Description}}-Circle-Blue.png" alt="{{resourceType.Description}}" ng-disabled="resourceDisabled" style="height: 50px; width: 50px;  margin-bottom: 5px;" /></a>
                             </div>
                             <div class="text-center">
                                 <span style="margin-bottom: 5px; display: block; width: 54px;">{{resourceType.Description}}</span>
@@ -270,7 +270,7 @@
                                     {{currentResourceTypeUnitOfMeasure.Description}} <span class="caret"></span>
                                 </button>
                                 <ul class="uib-dropdown-menu" role="menu" aria-labelledby="single-button">
-                                    <li role="menuitem" ng-repeat="choice in resourceTypeUnitOfMeasures">
+                                    <li role="menuitem" ng-repeat="choice in resourceTypeUnitOfMeasuresFiltered">
                                         <a ng-click="setResourceTypeUnitOfMeasure(choice)" style="color: whitesmoke;">{{choice.Description}}</a>
                                     </li>
                                 </ul>
