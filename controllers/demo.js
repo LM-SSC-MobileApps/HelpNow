@@ -2,18 +2,31 @@
  * DemoCtrl
  */
 
-angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Event", "EventLocation", "ResourceRequest", "ResourceLocation", "$location",
-    function ($scope, DemoService, Event, EventLocation, ResourceRequest, ResourceLocation, $location) {
+angular.module("helpNow").controller("DemoCtrl", ["$scope", "$http", "Event", "EventLocation", "ResourceRequest", "ResourceLocation",
+    function ($scope, $http, Event, EventLocation, ResourceRequest, ResourceLocation) {
 
-        $scope.started = false;
+        $scope.demoRunning = false;
+
+
+        $http.get("data/scenario.json")
+            .success(function (data) {
+                $scope.scenarioData = data;
+                console.log("Success loading scenario data: " + data);
+
+            }).error(function (data) {
+            console.log("Error loading scenario data:  " + data);
+        });
 
 
         $scope.startDemo = function () {
 
             console.log("starting demo run");
             $scope.demoRunning = true;
-            angular.forEach(demoData, function (item, key) {
+
+            angular.forEach($scope.scenarioData, function (item, key) {
+                console.log("item.Type : " + item.Type);
                 switch (item.Type) {
+
                     case "Event":
                     {
                         var event = angular.fromJson(item.Data);
@@ -64,78 +77,4 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Even
             $scope.demoRunning = false;
         };
 
-
-        $scope.go = function (path) {
-            $location.path(path);
-        };
-
-
-        var demoData = [
-            {
-                "ID": 1,
-                "Type": "Event",
-                "Data": {
-                    "WaitTime": 0,
-                    "EventTypeID": 3,
-                    "OrganizationID": 1,
-                    "Summary": "Denver, Colorado",
-                    "Active": "true",
-                    "CreateDate": "2015-12-22 00:00:00",
-                    "EventLocations": [
-                        {
-                            "Description": "Denver, Colorado",
-                            "LAT": "39.739",
-                            "LONG": "-104.990",
-                            "Radius": 542
-                        }
-                    ],
-                    "ResourceRequests": [
-                        {
-                            "WaitTime": 3000,
-                            "RequestStateID": 1,
-                            "Notes": "Please help!",
-                            "Quantity": 17,
-                            "ResourceTypeID": 2,
-                            "LAT": "39.739",
-                            "LONG": "-104.990",
-                            "RequestUrgencyID": 2,
-                            "CreateDate": "2015-12-22 00:00:00"
-                        },
-                        {
-                            "WaitTime": 3000,
-                            "RequestStateID": 1,
-                            "Notes": "Please help!",
-                            "Quantity": 17,
-                            "ResourceTypeID": 2,
-                            "LAT": "39.739",
-                            "LONG": "-104.990",
-                            "RequestUrgencyID": 2,
-                            "CreateDate": "2015-12-22 00:00:00"
-                        }
-                    ],
-                    "ResourceLocations": [
-                        {
-                            "WaitTime": 6000,
-                            "OrganizationID": 2,
-                            "ResourceLocationTypeID": 1,
-                            "ResourceLocationStatusID": 1,
-                            "Description": "Distribution Center A",
-                            "Notes": "Note 1",
-                            "LAT": "39.739",
-                            "LONG": "-104.990"
-                        },
-                        {
-                            "WaitTime": 9000,
-                            "OrganizationID": 2,
-                            "ResourceLocationTypeID": 2,
-                            "ResourceLocationStatusID": 2,
-                            "Description": "Deployment A",
-                            "Notes": "Note 2",
-                            "LAT": "39.739",
-                            "LONG": "-104.990"
-                        }
-                    ]
-                }
-            }
-        ];
     }]);
