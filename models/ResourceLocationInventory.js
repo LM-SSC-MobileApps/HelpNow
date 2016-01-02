@@ -23,6 +23,10 @@ module.exports = function(sequelize, DataTypes) {
     ResourceTypeUnitOfMeasureID: {
       type: DataTypes.INTEGER(11),
       allowNull: true
+    },
+    SourceLocationID: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true
     }
   });
 };

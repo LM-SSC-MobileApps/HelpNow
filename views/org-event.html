@@ -210,6 +210,15 @@
 							<h4 class="separated-tiny">{{deployment.Description}}</h4>
 						</div>
 					</div>
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="separated-small"><strong>Primary POC: </strong>{{deployment.PrimaryPOCName}}</div>
+							<div class="separated-small"><strong>Primary POC Phone: </strong>{{deployment.PrimaryPOCPhone}}</div>
+							<div ng-repeat="inventory in deployment.ResourceLocationInventories" class="separated-small">
+								<strong>{{inventory.ResourceType.Description}}: </strong> {{inventory.Quantity}} {{inventory.ResourceTypeUnitOfMeasure.Description}}
+							</div>
+						</div>
+					</div>
 					<hr></hr>
 					<div class="row separated">
 						<div class="col-sm-12 btn-row">
