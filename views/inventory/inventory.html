@@ -27,7 +27,7 @@
                 </div>
                 <hr />
             </div>
-            <a id="btn-login" class="btn btn-primary pull-right" ng-click="showNewEditForm()"><span class="glyphicon glyphicon-globe"></span>Add New Site</a>
+            <a id="btn-login" class="btn btn-primary pull-left" ng-click="showNewEditForm()"><span class="glyphicon glyphicon-globe"></span>Add New Site</a>
         </div>
     </div>
 
@@ -106,8 +106,8 @@
                 </div>
             </div>
         </div>
-        <a id="btn-back" class="btn btn-primary" ng-click="showLocationsDiv()"><span></span>Cancel</a>
-        <a id="btn-next" class="btn btn-primary pull-right" ng-click="showTransportationDiv()"><span></span>Next</a>
+        <a id="btn-back" class="btn btn-primary" ng-click="showLocationsDiv()"><span class="glyphicon glyphicon-remove"></span>Cancel</a>
+        <a id="btn-next" class="btn btn-primary pull-right" ng-click="showTransportationDiv()">Next&nbsp;<span class="glyphicon glyphicon-chevron-right"></span></a>
     </div>
     <div id="rightColumn" class="col-md-3" ng-if="showTransportationOptionsForm">
         <div class="row">
@@ -158,8 +158,8 @@
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <a id="btn-back" class="btn btn-primary pull-left" ng-click="showLocationDiv()">Back</a>
-                <a id="btn-save" class="btn btn-success pull-right" ng-click="saveResourceLocation()">Save</a>
+                <a id="btn-back" class="btn btn-primary pull-left" ng-click="showLocationDiv()"><span class="glyphicon glyphicon-chevron-left"></span>Back</a>
+                <a id="btn-save" class="btn btn-success pull-right" ng-click="saveResourceLocation()"><span class="glyphicon glyphicon-save"></span>Save</a>
             </div>
         </div>
         <div class="row" ng-if="editMode">
@@ -169,7 +169,7 @@
         </div>
         <div class="row" ng-if="!editMode">
             <div class="col-sm-12">
-                <a id="btn-cancel" class="btn btn-primary pull-left" ng-click="showLocationsDiv()" style="margin-top: 10px;">Cancel</a>
+                <a id="btn-cancel" class="btn btn-primary pull-left" ng-click="showLocationsDiv()" style="margin-top: 10px;"><span class="glyphicon glyphicon-remove"></span>Cancel</a>
             </div>
         </div>
     </div>
@@ -215,22 +215,25 @@
                     </div>
                     <div ng-repeat="inventory in currentResourceLocation.ResourceLocationInventories">
                         <div class="row">
-                            <div class="col-xs-2">
-                                <img class="event-img" src="style/images/{{inventory.ResourceType.Description}}.png" style="height: 22px; width: 22px; " /></a>
+                            <div class="col-sm-2">
+                                <img class="event-img" src="style/images/{{inventory.ResourceType.Description}}.png" style="height: 22px; width: 22px; " />
                             </div>
-                            <div class="col-xs-8">
+                            <div class="col-sm-8">
                                 {{inventory.ResourceType.Description}}<br />
                                 {{inventory.Quantity}} - {{inventory.ResourceTypeUnitOfMeasure.Description}}
                             </div>
-                            <div class="col-xs-2">
-                                <a id="btn-remove" class="btn btn-danger pull-right" ng-click="modalDeleteResourceLocationInventory(inventory)"><span class="glyphicon glyphicon-remove"></span></a>
+                            <div class="col-sm-2">
+                                <a href="" ng-click="showResourceLocationInventoryEditForm(inventory)" ><img class="glyphicon-edit" src="style/images/Edit.png" style="margin-top: 7px; margin-right: 7px; height: 22px; width: 22px;" /></a>
                             </div>
+                            <!--<div class="col-sm-2">
+                                <a id="btn-remove" class="btn btn-danger pull-right" ng-click="modalDeleteResourceLocationInventory(inventory)" style="margin-top: 7px;"><span class="glyphicon glyphicon-remove"></span></a>
+                            </div>-->
                         </div>
                         <hr />
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
-                            <a id="btn-remove" class="btn btn-primary pull-right" ng-click="showResourceTypesDiv()" style="margin-top: 7px;"><span class="glyphicon glyphicon-plus-sign"></span>Add Services</a>
+                            <a id="btn-add" class="btn btn-primary pull-left" ng-click="showResourceLocationInventoryNewForm()" style="margin-top: 7px;"><span class="glyphicon glyphicon-plus-sign"></span>Add Services</a>
                         </div>
                     </div>
                 </div>
@@ -244,42 +247,63 @@
                 <div class="well">
                     <div class="row">
                         <div class="col-sm-10">
-                            <h3 style="margin-bottom: 20px;">Services</h3>
+                            <h3 style="margin-bottom: 20px;">{{currentResourceLocation.Description}}</h3>
                         </div>
                         <div class="col-sm-2">
                             <a id="btn-remove" class="close pull-right" ng-click="showResourceLocationDiv()"><span class="glyphicon glyphicon-remove"></span></a>
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-sm-12">
+                            <h4 style="margin-bottom: 20px;">Services</h4>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-sm-4" ng-repeat="resourceType in resourceTypesFiltered">
                             <div>
-                                <a href="" ng-click="setResourceLocationInventoryType(resourceType.ResourceTypeID)"><img src="style/images/{{resourceType.Description}}-Circle-Blue.png" alt="{{resourceType.Description}}" ng-disabled="resourceDisabled" style="height: 50px; width: 50px;  margin-bottom: 5px;" /></a>
+                                <a href="" ng-click="setResourceLocationInventoryType(resourceType)"><img src="style/images/{{resourceType.Description}}-Circle-Blue.png" alt="{{resourceType.Description}}" ng-disabled="resourceDisabled" style="height: 50px; width: 50px;  margin-bottom: 5px;" /></a>
                             </div>
                             <div class="text-center">
                                 <span style="margin-bottom: 5px; display: block; width: 54px;">{{resourceType.Description}}</span>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-xs-12" style="margin-bottom:5px; margin-top: 5px;">
-                            <span style="display:inline;">Quantity #:</span><input ng-model="currentResourceLocationInventory.Quantity" type="number" class="form-control pull-right" name="qty" style="display:inline; width: 60%; margin-top: 10px; color: black;" />
+                    <div class="row" ng-show="resourcesFiltered">
+                        <div class="row" style="margin-top: 15px;">
+                            <div class="col-xs-5">
+                                <span>Quantity:</span>
+                            </div>
+                            <div class="col-xs-7">
+                                <input ng-model="currentResourceLocationInventory.Quantity" type="number" class="form-control pull-left" name="qty" style="margin-bottom: 7px;" />
+                            </div>
+                            <div class="col-xs-5">
+                                <span>Unit Type:</span>
+                            </div>
+                            <div class="col-xs-7">
+                                <div class="btn-group pull-left" uib-dropdown is-open="status.isopen">
+                                    <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle>
+                                        {{currentResourceTypeUnitOfMeasure.Description}} <span class="caret"></span>
+                                    </button>
+                                    <ul class="uib-dropdown-menu" role="menu" aria-labelledby="single-button">
+                                        <li role="menuitem" ng-repeat="choice in resourceTypeUnitOfMeasuresFiltered">
+                                            <a ng-click="setResourceTypeUnitOfMeasure(choice)" style="color: whitesmoke;">{{choice.Description}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>                       
                         </div>
-                        <div class="col-xs-12" style="margin-bottom:5px; margin-top: 5px;">
-                            <div class="btn-group pull-right" uib-dropdown is-open="status.isopen">
-                                <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle>
-                                    {{currentResourceTypeUnitOfMeasure.Description}} <span class="caret"></span>
-                                </button>
-                                <ul class="uib-dropdown-menu" role="menu" aria-labelledby="single-button">
-                                    <li role="menuitem" ng-repeat="choice in resourceTypeUnitOfMeasuresFiltered">
-                                        <a ng-click="setResourceTypeUnitOfMeasure(choice)" style="color: whitesmoke;">{{choice.Description}}</a>
-                                    </li>
-                                </ul>
+                        <div class="row" style="margin-bottom:5px; margin-top: 15px;">
+                            <div class="col-xs-6" ng-if="!resourceLocationInventoryEdit">
+                                <a id="btn-clear" class="btn btn-primary pull-left" ng-click="showResourceLocationInventoryNewForm()"><span class="glyphicon glyphicon-refresh"></span>Reset</a>
+                            </div>
+                            <div class="col-xs-6" ng-if="resourceLocationInventoryEdit">
+                                <a id="btn-clear" class="btn btn-danger pull-left" ng-click="modalDeleteResourceLocationInventory()"><span class="glyphicon glyphicon-remove"></span>Delete</a>
+                            </div>
+                            <div class="col-xs-6">
+                                <a id="btn-save" class="btn btn-success pull-right" ng-click="saveResourceLocationInventory()"><span class="glyphicon glyphicon-save"></span>Save</a>
                             </div>
                         </div>
-                        <div class="col-xs-12" style="margin-bottom:5px; margin-top: 5px;">
-                            <a id="btn-save" class="btn btn-success pull-right" ng-click="saveResourceLocationInventory()">Save</a>
-                        </div>                        
-                    </div>
+                        </div>
                 </div>
             </div>
         </div>

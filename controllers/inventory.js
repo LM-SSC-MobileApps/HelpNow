@@ -43,6 +43,9 @@
     $scope.showGround = false;
     $scope.showWater = false;
 
+    $scope.resourcesFiltered = false;
+    $scope.resourceLocationInventoryEdit = false;
+
     loadTransportTypes();
     loadResourceLocationTypes();
     loadResourceLocations();
@@ -54,9 +57,6 @@
         updateMap();
     });
 
-    //$scope.$on("ResourceLocationDataUpdated", function () {
-    //    loadResourceLocations();
-    //});
 
     function loadResourceLocations() {
         
@@ -187,20 +187,6 @@
     };
     
 
-    
-
-    //$scope.toggleTransportClass = function (id) {
-    //    var status = $scope[id];
-    //    return status ? "btn btn-toggle active" : "btn btn-toggle";
-    //};
-
-    //$scope.toggleTransport = function (id) {
-    //    $scope[id] = !$scope[id];
-    //    return false;
-    //};
-
-    
-
     /********************************* DATA FUNCTIONS ****************************************************/
 
     $scope.setCurrentResourceLocationByID = function (id) {
@@ -245,19 +231,7 @@
         return $scope.resourceLocationTypes[index];
     };
 
-    $scope.setResourceLocationInventoryType = function (resourceTypeID) {
-        $scope.currentResourceLocationInventory.ResourceTypeID = resourceTypeID;
-        $scope.resourceTypesFiltered = $scope.resourceTypes.filter(function (el) {
-            return el.ResourceTypeID = resourceTypeID;
-        });
-        $scope.resourceTypesFiltered.forEach(function (resType) {
-            alert("ResourceType: " + resType.Description);
-        });
-        $scope.resourceTypeUnitOfMeasuresFiltered = $scope.resourceTypeUnitOfMeasures.filter(function (el) {
-            return el.ResourceTypeID == resourceTypeID;
-        });
-        return false;
-    };
+    
 
 
 
@@ -349,10 +323,7 @@
     };
 
     $scope.showResourceTypesDiv = function () {
-        $scope.resourceTypesFiltered = $scope.resourceTypes;
-        var resLocInv = new ResourceLocationInventory();
-        resLocInv.ResourceLocationID = $scope.currentResourceLocation.ResourceLocationID;
-        $scope.currentResourceLocationInventory = resLocInv;
+        
         $scope.showLocationForm = false;
         $scope.showResourceLocations = false;
         $scope.showResourceLocation = false;
@@ -411,11 +382,71 @@
         return false;
     };
 
+    $scope.showResourceLocationInventoryEditForm = function (inventory) {
+        $scope.currentResourceLocationInventory = inventory;
+        $scope.resourceLocationInventoryEdit = true;
+
+        $scope.showResourceTypesDiv();
+        $scope.setResourceLocationInventoryType(inventory.ResourceType);
+
+        return false;
+    };
+
+    $scope.showResourceLocationInventoryNewForm = function () {
+        $scope.resourceLocationInventoryEdit = false;
+
+        $scope.resourcesFiltered = false;
+        $scope.resourceTypesFiltered = $scope.resourceTypes;
+        var resLocInv = new ResourceLocationInventory();
+        resLocInv.ResourceLocationID = $scope.currentResourceLocation.ResourceLocationID;
+        $scope.currentResourceLocationInventory = resLocInv;
+
+        $scope.showResourceTypesDiv();
+       
+        return false;
+    };
+
+    $scope.setResourceLocationInventoryType = function (resourceType) {
+        $scope.resourcesFiltered = true;
+        $scope.currentResourceLocationInventory.ResourceTypeID = resourceType.ResourceTypeID;
+        $scope.currentResourceLocationInventory.ResourceType = resourceType;
+
+        $scope.resourceTypesFiltered = $scope.resourceTypes.filter(function (el) {
+            return el.ResourceTypeID == resourceType.ResourceTypeID;
+        });
+
+        $scope.resourceTypeUnitOfMeasuresFiltered = $scope.resourceTypeUnitOfMeasures.filter(function (el) {
+            return el.ResourceTypeID == resourceType.ResourceTypeID;
+        });
+
+        var uom = $scope.currentResourceLocationInventory.ResourceTypeUnitOfMeasure;
+        if (uom)
+        {
+            $scope.setResourceTypeUnitOfMeasure(uom);
+        }
+        else
+        {
+            $scope.setResourceTypeUnitOfMeasure($scope.resourceTypeUnitOfMeasuresFiltered[0]);
+        }
+        
+        return false;
+    };
+
+    $scope.clearResourceTypeFiltered = function () {
+        $scope.resourcesFiltered = false;
+        $scope.resourceTypesFiltered = $scope.resourceTypes;
+    };
+
+    $scope.setResourceTypeUnitOfMeasure = function (resourceTypeUOM) {
+        $scope.currentResourceTypeUnitOfMeasure = resourceTypeUOM;
+        $scope.currentResourceLocationInventory.ResourceTypeUnitOfMeasureID = resourceTypeUOM.ResourceTypeUnitOfMeasureID;
+        $scope.currentResourceLocationInventory.ResourceTypeUnitOfMeasure = resourceTypeUOM;
+    };
+
 
     /********************************* DELETE FUNCTIONS ****************************************************/
 
-    $scope.modalDeleteResourceLocationInventory = function (resourcelocationinventory) {
-        $scope.currentResourceLocationInventory = resourcelocationinventory;
+    $scope.modalDeleteResourceLocationInventory = function () {
         $scope.modalInstance = $uibModal.open(
             {
                 templateUrl: '/inventory/resource-inventory-modal-delete.html',
@@ -424,12 +455,17 @@
             });
     };
 
+
     $scope.deleteResourceLocationInventory = function () {
-        ResourceLocationInventory.delete({ id: $scope.currentResourceLocationInventory.ResourceLocationInventoryID });
-        var index = $scope.currentResourceLocation.ResourceLocationInventories.map(function (el) {
-            return el.ResourceLocationInventoryID;
-        }).indexOf($scope.currentResourceLocationInventory.ResourceLocationInventoryID);
-        $scope.currentResourceLocation.ResourceLocationInventories.splice(index, 1);
+        ResourceLocationInventory.delete({ id: $scope.currentResourceLocationInventory.ResourceLocationInventoryID })
+        .$promise.then(function (value) {
+            var index = $scope.currentResourceLocation.ResourceLocationInventories.map(function (el) {
+                return el.ResourceLocationInventoryID;
+            }).indexOf($scope.currentResourceLocationInventory.ResourceLocationInventoryID);
+            $scope.currentResourceLocation.ResourceLocationInventories.splice(index, 1);
+
+            $scope.showResourceLocationDiv();
+        });
     };
 
     $scope.modalDeleteResourceLocation = function () {
@@ -484,12 +520,37 @@
             });
     };
 
-
-    $scope.comingSoon = function () {
-        alert("Coming Soon - In Developement");
+    $scope.saveResourceLocationInventory = function () {
+        if ($scope.resourceLocationInventoryEdit) {
+            $scope.updateResourceLocationInventory();
+        }
+        else {
+            $scope.saveNewResourceLocationInventory();
+        }
         return false;
     };
 
+    $scope.saveNewResourceLocationInventory = function () {
+        ResourceLocationInventory.save($scope.currentResourceLocationInventory)
+            .$promise.then(function (value) {
+                $scope.currentResourceLocation.ResourceLocationInventories.push($scope.currentResourceLocationInventory);
+                //$scope.currentResourceLocationInventory = new ResourceLocationInventory();
+                $scope.showResourceLocationDiv();
+            });
+        return false;
+    };
+
+    $scope.updateResourceLocationInventory = function () {
+        ResourceLocationInventory.update({ id: $scope.currentResourceLocationInventory.ResourceLocationInventoryID }, $scope.currentResourceLocationInventory)
+            .$promise.then(function (value) {
+                //$scope.currentResourceLocationInventory = new ResourceLocationInventory();
+                $scope.showResourceLocationDiv();
+            });
+        return false;
+    };
+
+
+    /********************************* VALIDATE FUNCTIONS ****************************************************/
     $scope.validateNumber = function (evt) {
         var e = evt || window.event;
         var key = e.keyCode || e.which;
