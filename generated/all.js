@@ -87,6 +87,10 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 		$routeProvider.when("/reg_account/", {
 		    templateUrl: "views/reg-account.html"
 		});
+
+		$routeProvider.when("/demo/", {
+			templateUrl: "views/manage/demo.html"
+		});
 		
 		$routeProvider.otherwise({
 			templateUrl: "views/events.html"
@@ -300,39 +304,97 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Even
 
 
         $scope.startDemo = function () {
-            // console.log($scope.started);
             $scope.started = true;
-            var event = demoEvents[0];
-            var eventResponse = Event.save(event);
+            var event = demoData[0];
 
-        }
-
-        $scope.createProduct = function (product) {
-            $http.post(baseUrl, product).success(function (newProduct) {
-                $scope.products.push(newProduct);
-                $scope.displayMode = "list";
+            Event.save(event, function (data) {
+                $scope.newEvent = data.json;
+                console.log($scope.newEvent);
             });
-        }
+
+        };
+
 
         $scope.go = function (path) {
             $location.path(path);
         };
 
-        var demoEvents = [
+
+        var demoData = [
+
 
             {
-                "EventTypeID": 1,
-                "OrganizationID": 1,
-                "Summary": "Flood",
-                "Active": "true"
+                "ID": 1,
+                "Type": "Event",
+                "WaitTime": 0,
+                "Data": {
+                    "EventTypeID": 1,
+                    "OrganizationID": 1,
+                    "Summary": "Flood",
+                    "Active": "true",
+                    "CreateDate": "2015-12-22 00:00:00"
+                }
+            },
+            {
+                "ID": 2,
+                "Type": "EventLocation",
+                "WaitTime": 2,
+                "Data": {
+
+                    "Description": "Dhaka, Bangladesh",
+                    "LAT": "23.713",
+                    "LONG": "90.39",
+                    "Radius": 542
+                }
             }
+
         ];
+
+
+        angular.forEach(demoData, function (item, key) {
+            console.log(item.ID);
+            console.log(item.Type);
+            switch (item.Type) {
+
+                case "Event":
+                {
+                    console.log("I'm an event");
+                    //TODO: Event.save goes here
+
+                    break;
+                }
+                case "EventLocation":
+                {
+                    console.log("I'm an event location");
+                    //TODO: EventLocation.save goes here...
+                    break;
+                }
+                default:
+                    console.log("I'm lost");
+
+            }
+
+        });
+
 
     }]);
 angular.module("helpNow").controller("DeploymentCtrl", ["$scope", "$routeParams", "$resource", "$sce", "$location", "$http", 
 	function ($scope, $routeParams, $resource, $sce, $location, $http) {
 	
+	$scope.showDistributionCenters = false;
+	
 	$scope.deploymentsResource = $resource("/api/resourcelocation/:id");
+	$scope.distCenterResource = $resource("/api/resourcelocation/dist-center/all");
+	
+	$scope.setTitle("Resource Deployment", "style/images/Distribution-Center.png");
+	
+	$scope.distCenterResource.get({}, function (data) {
+		var centers = data.json;
+		centers = centers.filter(function(center) {
+			return center.OrganizationID == $scope.currentOrg.OrganizationID;
+		});
+		$scope.distCenters = centers;
+	});
 	
 	if ($routeParams.locationID) {
 		$scope.deployment = {};
@@ -365,11 +427,39 @@ angular.module("helpNow").controller("DeploymentCtrl", ["$scope", "$routeParams"
 	
 	$scope.cancel = function() {
 		var url = "org_event/" + $scope.deployment.EventID;
-		alert(url);
 		$location.path(url);
 	};
 	
-	$scope.saveDeployment = function() {
+	$scope.removeInventory = function(resource) {
+		var request = $http({
+            method: 'DELETE',
+            url: '/api/resourcelocationinventory/' + resource.ResourceLocationInventoryID,
+            async: true,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+		
+		request.then(
+			function successCallback(response) {
+				var resources = $scope.deployment.ResourceLocationInventories;
+				var index = 0;
+				for (var i = 0; i < resources.length; i++) {
+					var currentResource = resources[i];
+					if (resource.ResourceLocationInventoryID == currentResource.ResourceLocationInventoryID) {
+						index = i;
+						break;
+					}
+				}
+				$scope.deployment.ResourceLocationInventories.splice(index, 1);
+			}, 
+			function errorCallback(response) {
+				alert(response.data.err);
+			}
+		);
+	};
+	
+	function createDeployment() {
 		var deploymentData = JSON.stringify($scope.deployment);
 		var request = $http({
             method: 'POST',
@@ -383,7 +473,7 @@ angular.module("helpNow").controller("DeploymentCtrl", ["$scope", "$routeParams"
 		
 		request.then(
 			function successCallback(response) {
-				alert(response.data.json.ResourceLocationID);
+				$scope.deployment.ResourceLocationID = response.data.json.ResourceLocationID;
 			}, 
 			function errorCallback(response) {
 				alert(response.data.err);
@@ -391,23 +481,87 @@ angular.module("helpNow").controller("DeploymentCtrl", ["$scope", "$routeParams"
 		);
 	}
 	
+	function updateDeployment() {
+		var deploymentData = JSON.stringify($scope.deployment);
+		var request = $http({
+            method: 'PUT',
+            url: '/api/resourcelocation/' + $scope.deployment.ResourceLocationID,
+            async: true,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: deploymentData
+        });
+		
+		request.then(
+			function successCallback(response) {
+				//alert("success");
+			}, 
+			function errorCallback(response) {
+				console.log(response);
+				alert("error: " + response.data.err);
+			}
+		);
+	}
+	
+	$scope.saveDeployment = function() {
+		if ($scope.deployment.ResourceLocationID) {
+			updateDeployment();
+		} else {
+			createDeployment();
+		}
+	};
+	
+	$scope.addResources = function(inventory) {
+		delete inventory.ResourceLocationInventoryID;
+		inventory.SourceLocationID = inventory.ResourceLocationID;
+		inventory.ResourceLocationID = $scope.deployment.ResourceLocationID;
+		var inventoryData = JSON.stringify(inventory);
+		alert(inventoryData);
+		var request = $http({
+            method: 'POST',
+            url: '/api/resourcelocationinventory',
+            async: true,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: inventoryData
+        });
+		
+		request.then(
+			function successCallback(response) {
+				inventory.ResourceLocationInventoryID = response.data.json.ResourceLocationInventoryID;
+				$scope.deployment.ResourceLocationInventories.push(inventory);
+				$scope.showDistributionCenters = false;
+			}, 
+			function errorCallback(response) {
+				console.log(response.data);
+				alert("error: " + response.data.err);
+			}
+		);
+	};
+	
 	$scope.getResourceIcon = function (inventory) {
 	    var resourceType = inventory.ResourceType.Description;
 		
 	    if (resourceType == "Water") {
-	        return "style/images/Water.png";
+	        return "style/images/Water-Diamond-Blue.png";
 	    } else if (resourceType == "First Aid") {
-	        return "style/images/First Aid.png";
+	        return "style/images/First Aid-Diamond-Blue.png";
 	    } else if (resourceType == "Shelter") {
-	        return "style/images/Shelter.png";
+	        return "style/images/Shelter-Diamond-Blue.png";
 	    } else if (resourceType == "Evacuation") {
-	        return "style/images/Evacuation.png";
+	        return "style/images/Evacuation-Diamond-Blue.png";
 	    } else if (resourceType == "Medicine") {
-	        return "style/images/Medicine-.png";
+	        return "style/images/Medicine-Diamond-Blue.png";
 	    } else {
-	        return "style/images/Food.png";
+	        return "style/images/Food-Diamond-Blue.png";
 	    }
 	};
+	
+	$scope.toggleDistributionCenters = function() {
+		$scope.showDistributionCenters = !$scope.showDistributionCenters;
+	}
 }]);
 angular.module("helpNow").controller("EventListCtrl", ["$scope", "$location", function($scope, $location) {
     var map;
@@ -870,7 +1024,7 @@ angular.module("helpNow").controller("GovLoginCtrl", ["$scope", function($scope)
 angular.module("helpNow").controller("IndLoginCtrl", ["$scope", function($scope) {
 	$scope.setCurrentView("inds");
 }]);
-angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$routeParams", "ResourceLocation", "ResourceLocationInventory", "$resource", "$uibModal", function ($scope, $http, $routeParams, ResourceLocation, ResourceLocationInventory, $resource, $uibModal) {
+angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$routeParams", "ResourceLocation", "ResourceLocationInventory", "ResourceLocationTransport", "$resource", "$uibModal", function ($scope, $http, $routeParams, ResourceLocation, ResourceLocationInventory, ResourceLocationTransport, $resource, $uibModal) {
 
     var map;
     var mapLayers = [];
@@ -880,9 +1034,16 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
     $scope.setCurrentView("inventory");
 
     $scope.resourceLocationResource = $resource("/api/resourcelocation/organization/:orgid", { orgid: '@orgid' });
+
+    $scope.locationTypeResource = $resource("/api/resourcelocationtype/", {});
+
+    $scope.transportTypeResource = $resource("/api/transporttype/", {});
+
     $scope.currentResourceLocation = new ResourceLocation();
 
     $scope.currentResourceLocationInventory = new ResourceLocationInventory();
+    
+    $scope.transportTypes = [];
 
 
     //$scope.userOrgID = 1;
@@ -894,19 +1055,26 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
     $scope.isMetric = true;
 
     $scope.showResourceLocations = true;
-    $scope.showNewForm = false;
-    $scope.showTransportationOptions = false;
+    $scope.showLocationForm = false;
+    $scope.showTransportationOptionsForm = false;
     $scope.showResourceLocation = false;
+    $scope.editMode = false;
 
     $scope.showAir = false;
     $scope.showGround = false;
     $scope.showWater = false;
 
+    loadTransportTypes();
+    loadResourceLocationTypes();
     loadResourceLocations();
 
     $scope.$on("ResourceLocationDataLoaded", function () {
-        $scope.showResourceLocations = true;
+        $scope.showLocationsDiv();
         updateMap();
+    });
+
+    $scope.$on("ResourceLocationDataUpdated", function () {
+        loadResourceLocations();
     });
 
     function loadResourceLocations() {
@@ -923,6 +1091,18 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
             updateMap();
         }
         
+    }
+
+    function loadResourceLocationTypes() {
+        $scope.locationTypeResource.get({}, function (data) {
+            $scope.resourceLocationTypes = data.json;
+        });
+    }
+
+    function loadTransportTypes() {
+        $scope.transportTypeResource.get({}, function (data) {
+            $scope.transportTypes = data.json;
+        });
     }
 
     function updateMap() {
@@ -1010,59 +1190,204 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
         if (!map) return;
         $scope.centerMapToLongLat(lat, long);
         $scope.setCurrentResourceLocationByID(resourceLocID);
-        $scope.showLocation();
+        $scope.showResourceLocationDiv();
     };
     
 
+    
+
+    //$scope.toggleTransportClass = function (id) {
+    //    var status = $scope[id];
+    //    return status ? "btn btn-toggle active" : "btn btn-toggle";
+    //};
+
+    //$scope.toggleTransport = function (id) {
+    //    $scope[id] = !$scope[id];
+    //    return false;
+    //};
+
+    
+
+    /********************************* DATA FUNCTIONS ****************************************************/
+
     $scope.setCurrentResourceLocationByID = function (id) {
-        $scope.resourceLocations.forEach(function (resLoc)
-        {
-            if (resLoc.ResourceLocationID == id)
-            {
+        $scope.resourceLocations.forEach(function (resLoc) {
+            if (resLoc.ResourceLocationID == id) {
                 $scope.currentResourceLocation = resLoc;
             }
         });
     }
 
-    $scope.toggleTransportClass = function (id) {
-        var status = $scope[id];
-        return status ? "btn btn-toggle active" : "btn btn-toggle";
-    };
-
-    $scope.toggleTransport = function (id) {
-        $scope[id] = !$scope[id];
+    $scope.setTransportationType = function (transportTypeID) {
+        var index = $scope.currentResourceLocation.ResourceLocationTransports.map(function (el) {
+            return el.TransportTypeID;
+        }).indexOf(transportTypeID);
+        //alert('Transport count before: ' + $scope.currentResourceLocation.ResourceLocationTransports.length + ' and index: '+index);
+        if (index != -1)
+        {
+            $scope.currentResourceLocation.ResourceLocationTransports.splice(index, 1);
+        }
+        else
+        {
+            var resLocType = new ResourceLocationTransport();
+            resLocType.TransportTypeID = transportTypeID;
+            resLocType.ResourceLocationID = $scope.currentResourceLocation.ResourceLocationID;
+            $scope.currentResourceLocation.ResourceLocationTransports.push(resLocType);
+        }
+        //alert('Transport count: ' + $scope.currentResourceLocation.ResourceLocationTransports.length);
         return false;
     };
 
-    $scope.showNewSiteForm = function () {
-        $scope.showNewForm = !$scope.showNewForm;
-        $scope.showResourceLocations = !$scope.showResourceLocations;
+    $scope.setResourceLocationType = function (resourceLocationType) {
+        $scope.currentResourceLocation.ResourceLocationType = resourceLocationType;
+        $scope.currentResourceLocation.ResourceLocationTypeID = resourceLocationType.ResourceLocationTypeID
         return false;
     };
 
-    $scope.showTransportation = function () {
-        $scope.showTransportationOptions = !$scope.showTransportationOptions;
-        $scope.showNewForm = !$scope.showNewForm;
+    $scope.setDefaultResourceLocationType = function()
+    {
+        var index = $scope.resourceLocationTypes.map(function (el) {
+            return el.Description;
+        }).indexOf("Distribution Center");
+
+        return $scope.resourceLocationTypes[index];
+    }
+
+    /********************************* UI FUNCTIONS ****************************************************/
+    $scope.showNewEditForm = function (id) {
+        //reset the transport icons
+        $scope.showAir = false;
+        $scope.showGround = false;
+        $scope.showWater = false;
+
+        if (!id)
+        {
+            //new ResourceLocation mode
+            $scope.editMode = false;
+            var newResLoc = new ResourceLocation();
+            newResLoc.ResourceLocationTransports = [];
+            newResLoc.OrganizationID = $scope.currentUser.OrganizationID;
+            //We default each new location to Distribution Center, user can change on UI.
+            var defaultResLocType = $scope.setDefaultResourceLocationType();
+            newResLoc.ResourceLocationType = defaultResLocType;
+            newResLoc.ResourceLocationTypeID = defaultResLocType.ResourceLocationTypeID
+            $scope.currentResourceLocation = newResLoc;
+        }
+        else
+        {
+            //edit mode
+            $scope.editMode = true;
+            var index = $scope.resourceLocations.map(function (el) {
+                return el.ResourceLocationID;
+            }).indexOf(id);
+            $scope.currentResourceLocation = $scope.resourceLocations[index];
+
+            //set the transport icons
+            $scope.currentResourceLocation.ResourceLocationTransports.forEach(function (transport) {
+                var transportTypeIdx = $scope.transportTypes.map(function (object) {
+                    return object.TransportTypeID;
+                }).indexOf(transport.TransportTypeID);
+                var transportType = $scope.transportTypes[transportTypeIdx];
+                if (transportType.Description == "Ground") {
+                    $scope.showGround = true;
+                }
+                else if (transportType.Description == "Air") {
+                    $scope.showAir = true;
+                }
+                else if (transportType.Description == "Water") {
+                    $scope.showWater = true;
+                }
+            });
+            
+        }
+        $scope.showLocationDiv();
         return false;
     };
 
-    $scope.showLocation = function () {
-        $scope.showResourceLocations = !$scope.showResourceLocations;
-        $scope.showResourceLocation = !$scope.showResourceLocation;
+    $scope.showLocationDiv = function () {
+        $scope.showLocationForm = true;
+        $scope.showResourceLocation = false;
+        $scope.showResourceLocations = false;
+        $scope.showTransportationOptionsForm = false;
         return false;
     };
 
-    $scope.deleteInventoryItem = function () {
-        alert("Coming Soon - In Developement");
+    $scope.showTransportationDiv = function () {
+        $scope.showLocationForm = false;
+        $scope.showResourceLocation = false;
+        $scope.showResourceLocations = false;
+        $scope.showTransportationOptionsForm = true;
         return false;
     };
 
-    $scope.$on("ResourceLocationInventoryDeleted", function (event, args) {
-        var index = $scope.currentResourceLocation.ResourceLocationInventories.map(function (el) {
-            return el.ResourceLocationInventoryID;
-        }).indexOf(args.id);
-        $scope.currentResourceLocation.ResourceLocationInventories.splice(index, 1);
-    });
+    $scope.showLocationsDiv = function () {
+        $scope.showLocationForm = false;
+        $scope.showResourceLocation = false;
+        $scope.showResourceLocations = true;
+        $scope.showTransportationOptionsForm = false;
+        return false;
+    };
+
+    $scope.showResourceLocationDiv = function () {
+        $scope.showLocationForm = false;
+        $scope.showResourceLocations = false;
+        $scope.showResourceLocation = true;
+        $scope.showTransportationOptionsForm = false;
+        return false;
+    };
+
+    $scope.showTransport = function (transport) {
+        if (transport == "Ground") {
+            return $scope.showGround;
+        }
+        else if (transport == "Air") {
+            return $scope.showAir;
+        }
+        else if (transport == "Water") {
+            return $scope.showWater;
+        }
+        else {
+            return false;
+        }
+    }
+
+    $scope.showTransparentTransport = function (transport) {
+        if (transport == "Ground") {
+            return !$scope.showGround;
+        }
+        else if (transport == "Air") {
+            return !$scope.showAir;
+        }
+        else if (transport == "Water") {
+            return !$scope.showWater;
+        }
+        else {
+            return false;
+        }
+    }
+
+    $scope.toggleTransport = function (transportTypeID) {
+        var transportTypeIdx = $scope.transportTypes.map(function (object) {
+            return object.TransportTypeID;
+        }).indexOf(transportTypeID);
+        var transportType = $scope.transportTypes[transportTypeIdx];
+        if (transportType.Description == "Ground") {
+            $scope.showGround = !$scope.showGround;
+            $scope.setTransportationType(transportTypeID);
+        }
+        else if (transportType.Description == "Air") {
+            $scope.showAir = !$scope.showAir;
+            $scope.setTransportationType(transportTypeID);
+        }
+        else if (transportType.Description == "Water") {
+            $scope.showWater = !$scope.showWater;
+            $scope.setTransportationType(transportTypeID);
+        }
+        return false;
+    }
+
+
+    /********************************* DELETE FUNCTIONS ****************************************************/
 
     $scope.modalDeleteResourceLocationInventory = function (resourcelocationinventory) {
         $scope.currentResourceLocationInventory = resourcelocationinventory;
@@ -1075,25 +1400,70 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
     };
 
     $scope.deleteResourceLocationInventory = function () {
-        console.log("$scope.currentResourceLocationInventory.ResourceLocationInventoryID: " + $scope.currentResourceLocationInventory.ResourceLocationInventoryID);
         ResourceLocationInventory.delete({ id: $scope.currentResourceLocationInventory.ResourceLocationInventoryID });
-        $scope.$broadcast("ResourceLocationInventoryDeleted", { id: $scope.currentResourceLocationInventory.ResourceLocationInventoryID });
+        var index = $scope.currentResourceLocation.ResourceLocationInventories.map(function (el) {
+            return el.ResourceLocationInventoryID;
+        }).indexOf($scope.currentResourceLocationInventory.ResourceLocationInventoryID);
+        $scope.currentResourceLocation.ResourceLocationInventories.splice(index, 1);
     };
 
-    
-
-    $scope.saveResourceLocation = function () {
-        alert("Coming Soon - In Developement");
-        $scope.showTransportationOptions = !$scope.showTransportationOptions;
-        $scope.showResourceLocations = !$scope.showResourceLocations;
-        return false;
+    $scope.modalDeleteResourceLocation = function () {
+        $scope.modalInstance = $uibModal.open(
+            {
+                templateUrl: '/inventory/resource-location-modal-delete.html',
+                scope: $scope,
+                size: 'med'
+            });
     };
 
     $scope.deleteResourceLocation = function () {
-        $scope.showTransportationOptions = !$scope.showTransportationOptions;
-        $scope.showResourceLocations = !$scope.showResourceLocations;
+        ResourceLocation.delete({ id: $scope.currentResourceLocation.ResourceLocationID });
+        var index = $scope.resourceLocations.map(function (el) {
+            return el.ResourceLocationID;
+        }).indexOf($scope.currentResourceLocation.ResourceLocationID);
+        $scope.resourceLocations.splice(index, 1);
+        $scope.currentResourceLocation = new ResourceLocation();
+        $scope.showLocationsDiv();
+    };
+
+    
+    /********************************* SAVE FUNCTIONS ****************************************************/
+
+    $scope.saveResourceLocation = function () {
+        if ($scope.editMode)
+        {
+            $scope.updateResourceLocation();
+        }
+        else
+        {
+            $scope.saveNewResourceLocation()
+        }
         return false;
     };
+
+    $scope.saveNewResourceLocation = function () {
+        ResourceLocation.save($scope.currentResourceLocation)
+            .$promise.then(function (value) {
+                loadResourceLocations();
+            });
+    };
+
+    $scope.updateResourceLocation = function () {
+        ResourceLocation.update({ id: $scope.currentResourceLocation.ResourceLocationID }, $scope.currentResourceLocation)
+            .$promise.then(function(value)
+            {
+                loadResourceLocations();
+            });
+    };
+
+
+
+
+    //$scope.deleteResourceLocation = function () {
+    //    $scope.showTransportationOptions = !$scope.showTransportationOptions;
+    //    $scope.showResourceLocations = !$scope.showResourceLocations;
+    //    return false;
+    //};
 
     $scope.comingSoon = function () {
         alert("Coming Soon - In Developement");
@@ -1396,7 +1766,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	$scope.showHeatmap = false;
 	$scope.showClusters = false;
 	$scope.showNeedsMarkers = true;
-	$scope.showLocationMarkers = false;
+	$scope.showLocationMarkers = true;
 	$scope.showDistCenterMarkers = false;
 	
 	$scope.filterFlags = {
@@ -2555,6 +2925,20 @@ angular.module('helpNow').factory('ResourceLocation', function ($resource) {
 });
 angular.module('helpNow').factory('ResourceLocationInventory', function ($resource) {
     return $resource('api/resourcelocationinventory/:id', null, {
+        update: {
+            method: 'PUT'
+        }
+    });
+});
+angular.module('helpNow').factory('ResourceLocationTransport', function ($resource) {
+    return $resource('api/resourcelocationtransport/:id', null, {
+        update: {
+            method: 'PUT'
+        }
+    });
+});
+angular.module('helpNow').factory('ResourceLocationType', function ($resource) {
+    return $resource('api/resourcelocationtype/:id', null, {
         update: {
             method: 'PUT'
         }

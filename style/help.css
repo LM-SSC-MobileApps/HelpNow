@@ -96,6 +96,11 @@ h5 {
     margin-top: 10px;
 }
 
+.resource-img {
+	margin-right: 10px;
+	width: 50px;
+}
+
 .navbar-inverse {
     background-color: var(--dark-blue-trans);
     border-color: var(--dark-gray);
@@ -449,6 +454,10 @@ input.switch:checked ~ label:after
 
 .separated {
     margin-top: 20px;
+}
+
+.separated-large {
+    margin-top: 40px;
 }
 
 .separated-small {

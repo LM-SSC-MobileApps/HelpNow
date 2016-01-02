@@ -25,7 +25,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	$scope.showHeatmap = false;
 	$scope.showClusters = false;
 	$scope.showNeedsMarkers = true;
-	$scope.showLocationMarkers = false;
+	$scope.showLocationMarkers = true;
 	$scope.showDistCenterMarkers = false;
 	
 	$scope.filterFlags = {

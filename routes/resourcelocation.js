@@ -132,6 +132,52 @@ var routes = function () {
      });
   }
   )
+  
+	//find Distribution Centers
+	.get('/dist-center/all', function(req, res) {
+		models.ResourceLocation.findAll(
+		{
+			include: [
+			{
+				model: models.Organization,
+				required: true
+            },
+            {
+				model: models.ResourceLocationType,
+				where: {
+					Description: "Distribution Center"
+				}
+            },
+			{
+				model: models.ResourceLocationInventory,
+				required: false,
+				include: [
+				{
+					model: models.ResourceType
+				},
+				{
+					model: models.ResourceTypeUnitOfMeasure
+				}]
+			}]
+        }).then(function (centers) {
+			res.statusCode = 200;
+			res.send(
+            {
+                result: 'success',
+                err: '',
+                json: centers,
+                length: centers.length
+            });
+		}).catch(function (err) {
+			console.error(err);
+			res.statusCode = 502;
+			res.send({
+				result: 'error',
+				err: err.message
+			});
+		});
+	})
+  
   //find ResourceLocation by OrganiztionID
   .get('/organization/:orgid', function (req, res) {
       models.ResourceLocation.findAll(

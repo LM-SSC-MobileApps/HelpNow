@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="separated-small" ng-hide="showFilters">
-            <a id="btn-login" class="btn btn-primary" href="#/org_event/{{event.EventID}}"><span class="glyphicon glyphicon-globe"></span>Aid Organization View</a>
+            <a ng-show="currentOrg" id="btn-login" class="btn btn-primary" href="#/org_event/{{event.EventID}}"><span class="glyphicon glyphicon-globe"></span>Aid Organization View</a>
         </div>
     </div>
     <div id="helpPanel" class="col-md-3" ng-show="showHelp">
