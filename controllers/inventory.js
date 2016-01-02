@@ -13,6 +13,10 @@
 
     $scope.transportTypeResource = $resource("/api/transporttype/", {});
 
+    $scope.resourceTypeResource = $resource("/api/resourcetype/", {});
+
+    $scope.resourceTypeUnitOfMeasureResource = $resource("/api/resourcetypeunitofmeasure/", {});
+
     $scope.currentResourceLocation = new ResourceLocation();
 
     $scope.currentResourceLocationInventory = new ResourceLocationInventory();
@@ -32,6 +36,7 @@
     $scope.showLocationForm = false;
     $scope.showTransportationOptionsForm = false;
     $scope.showResourceLocation = false;
+    $scope.showResourceTypes = false;
     $scope.editMode = false;
 
     $scope.showAir = false;
@@ -41,19 +46,21 @@
     loadTransportTypes();
     loadResourceLocationTypes();
     loadResourceLocations();
+    loadResourceTypes();
+    loadResourceTypeUnitOfMeasures();
 
     $scope.$on("ResourceLocationDataLoaded", function () {
         $scope.showLocationsDiv();
         updateMap();
     });
 
-    $scope.$on("ResourceLocationDataUpdated", function () {
-        loadResourceLocations();
-    });
+    //$scope.$on("ResourceLocationDataUpdated", function () {
+    //    loadResourceLocations();
+    //});
 
     function loadResourceLocations() {
         
-        if ($scope.currentUser != null)
+        if ($scope.currentUser !== null)
         {
             $scope.resourceLocationResource.get({ orgid: $scope.currentUser.OrganizationID }, function (data) {
                 $scope.resourceLocations = data.json;
@@ -79,6 +86,18 @@
         });
     }
 
+    function loadResourceTypes() {
+        $scope.resourceTypeResource.get({}, function (data) {
+            $scope.resourceTypes = data.json;
+        });
+    }
+
+    function loadResourceTypeUnitOfMeasures() {
+        $scope.resourceTypeUnitOfMeasureResource.get({}, function (data) {
+            $scope.resourceTypeUnitOfMeasures = data.json;
+        });
+    }
+
     function updateMap() {
         if (!map || !$scope.resourceLocations) return;
 
@@ -100,7 +119,7 @@
     function buildInventoryMarkers(mapLayers) {  
         angular.forEach($scope.resourceLocations, function (location) {
             var locationIcon = L.icon({
-                iconUrl: "style/images/resources.png",
+                iconUrl: "style/images/Resources-Box-Blue.png",
                 iconSize: [60, 60],
                 iconAnchor: [30, 30]
             });
@@ -190,7 +209,7 @@
                 $scope.currentResourceLocation = resLoc;
             }
         });
-    }
+    };
 
     $scope.setTransportationType = function (transportTypeID) {
         var index = $scope.currentResourceLocation.ResourceLocationTransports.map(function (el) {
@@ -214,18 +233,33 @@
 
     $scope.setResourceLocationType = function (resourceLocationType) {
         $scope.currentResourceLocation.ResourceLocationType = resourceLocationType;
-        $scope.currentResourceLocation.ResourceLocationTypeID = resourceLocationType.ResourceLocationTypeID
+        $scope.currentResourceLocation.ResourceLocationTypeID = resourceLocationType.ResourceLocationTypeID;
         return false;
     };
 
-    $scope.setDefaultResourceLocationType = function()
-    {
+    $scope.setDefaultResourceLocationType = function () {
         var index = $scope.resourceLocationTypes.map(function (el) {
             return el.Description;
         }).indexOf("Distribution Center");
 
         return $scope.resourceLocationTypes[index];
-    }
+    };
+
+    $scope.setResourceLocationInventoryType = function (resourceTypeID) {
+        $scope.currentResourceLocationInventory.ResourceTypeID = resourceTypeID;
+        $scope.resourceTypesFiltered = $scope.resourceTypes.filter(function (el) {
+            return el.ResourceTypeID = resourceTypeID;
+        });
+        $scope.resourceTypesFiltered.forEach(function (resType) {
+            alert("ResourceType: " + resType.Description);
+        });
+        $scope.resourceTypeUnitOfMeasuresFiltered = $scope.resourceTypeUnitOfMeasures.filter(function (el) {
+            return el.ResourceTypeID == resourceTypeID;
+        });
+        return false;
+    };
+
+
 
     /********************************* UI FUNCTIONS ****************************************************/
     $scope.showNewEditForm = function (id) {
@@ -244,7 +278,7 @@
             //We default each new location to Distribution Center, user can change on UI.
             var defaultResLocType = $scope.setDefaultResourceLocationType();
             newResLoc.ResourceLocationType = defaultResLocType;
-            newResLoc.ResourceLocationTypeID = defaultResLocType.ResourceLocationTypeID
+            newResLoc.ResourceLocationTypeID = defaultResLocType.ResourceLocationTypeID;
             $scope.currentResourceLocation = newResLoc;
         }
         else
@@ -283,6 +317,7 @@
         $scope.showResourceLocation = false;
         $scope.showResourceLocations = false;
         $scope.showTransportationOptionsForm = false;
+        $scope.showResourceTypes = false;
         return false;
     };
 
@@ -291,6 +326,7 @@
         $scope.showResourceLocation = false;
         $scope.showResourceLocations = false;
         $scope.showTransportationOptionsForm = true;
+        $scope.showResourceTypes = false;
         return false;
     };
 
@@ -299,6 +335,7 @@
         $scope.showResourceLocation = false;
         $scope.showResourceLocations = true;
         $scope.showTransportationOptionsForm = false;
+        $scope.showResourceTypes = false;
         return false;
     };
 
@@ -307,6 +344,20 @@
         $scope.showResourceLocations = false;
         $scope.showResourceLocation = true;
         $scope.showTransportationOptionsForm = false;
+        $scope.showResourceTypes = false;
+        return false;
+    };
+
+    $scope.showResourceTypesDiv = function () {
+        $scope.resourceTypesFiltered = $scope.resourceTypes;
+        var resLocInv = new ResourceLocationInventory();
+        resLocInv.ResourceLocationID = $scope.currentResourceLocation.ResourceLocationID;
+        $scope.currentResourceLocationInventory = resLocInv;
+        $scope.showLocationForm = false;
+        $scope.showResourceLocations = false;
+        $scope.showResourceLocation = false;
+        $scope.showTransportationOptionsForm = false;
+        $scope.showResourceTypes = true;
         return false;
     };
 
@@ -323,7 +374,7 @@
         else {
             return false;
         }
-    }
+    };
 
     $scope.showTransparentTransport = function (transport) {
         if (transport == "Ground") {
@@ -338,7 +389,7 @@
         else {
             return false;
         }
-    }
+    };
 
     $scope.toggleTransport = function (transportTypeID) {
         var transportTypeIdx = $scope.transportTypes.map(function (object) {
@@ -358,7 +409,7 @@
             $scope.setTransportationType(transportTypeID);
         }
         return false;
-    }
+    };
 
 
     /********************************* DELETE FUNCTIONS ****************************************************/
@@ -391,13 +442,16 @@
     };
 
     $scope.deleteResourceLocation = function () {
-        ResourceLocation.delete({ id: $scope.currentResourceLocation.ResourceLocationID });
-        var index = $scope.resourceLocations.map(function (el) {
-            return el.ResourceLocationID;
-        }).indexOf($scope.currentResourceLocation.ResourceLocationID);
-        $scope.resourceLocations.splice(index, 1);
-        $scope.currentResourceLocation = new ResourceLocation();
-        $scope.showLocationsDiv();
+        ResourceLocation.delete({ id: $scope.currentResourceLocation.ResourceLocationID })
+            .$promise.then(function (value) {
+                var index = $scope.resourceLocations.map(function (el) {
+                    return el.ResourceLocationID;
+                }).indexOf($scope.currentResourceLocation.ResourceLocationID);
+                $scope.resourceLocations.splice(index, 1);
+                $scope.currentResourceLocation = new ResourceLocation();
+                $scope.showLocationsDiv();
+                updateMap();
+            });
     };
 
     
@@ -410,7 +464,7 @@
         }
         else
         {
-            $scope.saveNewResourceLocation()
+            $scope.saveNewResourceLocation();
         }
         return false;
     };
@@ -430,14 +484,6 @@
             });
     };
 
-
-
-
-    //$scope.deleteResourceLocation = function () {
-    //    $scope.showTransportationOptions = !$scope.showTransportationOptions;
-    //    $scope.showResourceLocations = !$scope.showResourceLocations;
-    //    return false;
-    //};
 
     $scope.comingSoon = function () {
         alert("Coming Soon - In Developement");

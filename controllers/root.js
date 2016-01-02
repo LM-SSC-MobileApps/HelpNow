@@ -192,6 +192,30 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	    $location.path('/login');
 	};
 
+	$scope.redirectToLogout = function () {
+        // Logout client
+	    $scope.showLogin = true;
+	    $scope.currentUser = false;
+	    sessionStorage.removeItem("user");
+
+        // Logout server
+	    var webCall = $http({
+	        method: 'POST',
+	        url: '/auth/logout',
+	        async: true,
+	        headers: {
+	            'Content-Type': 'application/x-www-form-urlencoded'
+	        }
+	    });
+	    webCall.then(function (response) {
+	        //alert("You have been successfully logged out.");
+	    },
+        function (response) {
+            alert("Logout Error - " + response);
+        });
+
+	    $location.path('#');
+	};
 
 	$scope.resources = [
         {

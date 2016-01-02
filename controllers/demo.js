@@ -2,84 +2,79 @@
  * DemoCtrl
  */
 
-angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Event", "$location",
-    function ($scope, DemoService, Event, $location) {
+angular.module("helpNow").controller("DemoCtrl", ["$scope", "$http", "Event", "EventLocation", "ResourceRequest", "ResourceLocation",
+    function ($scope, $http, Event, EventLocation, ResourceRequest, ResourceLocation) {
 
-        $scope.started = false;
+        $scope.demoRunning = false;
+
+
+        $http.get("data/scenario.json")
+            .success(function (data) {
+                $scope.scenarioData = data;
+                console.log("Success loading scenario data: " + data);
+
+            }).error(function (data) {
+            console.log("Error loading scenario data:  " + data);
+        });
 
 
         $scope.startDemo = function () {
-            $scope.started = true;
-            var event = demoData[0];
 
-            Event.save(event, function (data) {
-                $scope.newEvent = data.json;
-                console.log($scope.newEvent);
+            console.log("starting demo run");
+            $scope.demoRunning = true;
+
+            angular.forEach($scope.scenarioData, function (item, key) {
+                console.log("item.Type : " + item.Type);
+                switch (item.Type) {
+
+                    case "Event":
+                    {
+                        var event = angular.fromJson(item.Data);
+                        Event.save(event, function (data) {
+                            var newEvent = data.json;
+                            console.log(newEvent);
+                            angular.forEach(event.EventLocations, function (item, key) {
+                                var eventLocation = event.EventLocations[key];
+                                eventLocation.EventID = newEvent.EventID;
+                                setTimeout(function () {
+                                    EventLocation.save(eventLocation, function (data) {
+                                        var newEventLocation = data.json;
+                                        console.log(newEventLocation);
+                                    });
+                                }, event.WaitTime);
+                            });
+
+                            angular.forEach(event.ResourceRequests, function (item, key) {
+                                console.log(key + ":" + item);
+                                var resourceRequest = event.ResourceRequests[key];
+                                resourceRequest.EventID = newEvent.EventID;
+                                setTimeout(function () {
+                                    ResourceRequest.save(resourceRequest, function (data) {
+                                        var newResourceRequest = data.json;
+                                        console.log(newResourceRequest);
+                                    });
+                                }, resourceRequest.WaitTime);
+                            });
+
+                            angular.forEach(event.ResourceLocations, function (item, key) {
+                                var resourceLocation = event.ResourceLocations[key];
+                                resourceLocation.EventID = newEvent.EventID;
+                                setTimeout(function () {
+                                    ResourceLocation.save(resourceLocation, function (data) {
+                                        var newResourceLocation = data.json;
+                                        console.log(newResourceLocation);
+                                    });
+                                }, resourceLocation.WaitTime);
+                            });
+                        });
+                        break;
+                    }
+                    default:
+                        console.log("I'm lost");
+                }
             });
 
+            $scope.demoRunning = false;
         };
-
-
-        $scope.go = function (path) {
-            $location.path(path);
-        };
-
-
-        var demoData = [
-
-
-            {
-                "ID": 1,
-                "Type": "Event",
-                "WaitTime": 0,
-                "Data": {
-                    "EventTypeID": 1,
-                    "OrganizationID": 1,
-                    "Summary": "Flood",
-                    "Active": "true",
-                    "CreateDate": "2015-12-22 00:00:00"
-                }
-            },
-            {
-                "ID": 2,
-                "Type": "EventLocation",
-                "WaitTime": 2,
-                "Data": {
-
-                    "Description": "Dhaka, Bangladesh",
-                    "LAT": "23.713",
-                    "LONG": "90.39",
-                    "Radius": 542
-                }
-            }
-
-        ];
-
-
-        angular.forEach(demoData, function (item, key) {
-            console.log(item.ID);
-            console.log(item.Type);
-            switch (item.Type) {
-
-                case "Event":
-                {
-                    console.log("I'm an event");
-                    //TODO: Event.save goes here
-
-                    break;
-                }
-                case "EventLocation":
-                {
-                    console.log("I'm an event location");
-                    //TODO: EventLocation.save goes here...
-                    break;
-                }
-                default:
-                    console.log("I'm lost");
-
-            }
-
-        });
-
 
     }]);

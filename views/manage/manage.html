@@ -11,7 +11,7 @@
                         <div class="panel-body text-nowrap">
                             <ul class="list-unstyled list-inline"
                                 ng-repeat="teamMember in team | orderBy: '+LastName' ">
-                                <div class="col-md-6  ">
+                                <div class="col-md-7  ">
                                     <li>
                                         <h5>
                                             <img ng-src="style/images/Person.png" style="height: 30px; width: 13px;"
@@ -20,8 +20,8 @@
                                         </h5>
                                     </li>
                                 </div>
-                                <div class="col-md-6">
-                                    <button class="btn btn-danger"
+                                <div class="col-md-5">
+                                    <button class="btn btn-danger btn-sm  "
                                             ng-disabled="teamMember.AccountID === currentUser.AccountID"
                                             ng-click="deleteTeamMember(teamMember)">
                                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
@@ -59,7 +59,7 @@
                                 </li>
                             </div>
                             <div class="col-md-6">
-                                <button class="btn btn-danger" ng-click="deleteInvite(invite)">
+                                <button class="btn btn-danger btn-sm" ng-click="deleteInvite(invite)">
                                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                                     Remove
                                 </button>
@@ -82,18 +82,18 @@
                         <h4>&nbsp;</h4>
                     </div>
                     <div class="panel-primary spacer">
-                        <a class="btn btn-primary btn-lg" href="#/regulations">
+                        <a class="btn btn-primary " href="#/regulations">
                             <span>Regulations &amp; Policies</span>
                         </a>
 
                         <div class="spacer">
-                            <a class="btn btn-danger btn-lg" href="#/events">
+                            <a class="btn btn-danger " href="#/events">
                                 <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
                                 <span>Begin New Event</span>
                             </a>
                         </div>
                         <div class="panel-footer panel-borderless text-center">
-                            <a class="btn btn-primary btn-lg" href="#/demo">
+                            <a class="btn btn-primary " href="#/demo">
                                 <span>&nbsp;&nbsp;Demo&nbsp;&nbsp;</span>
                             </a>
                         </div>
