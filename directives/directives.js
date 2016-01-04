@@ -5,7 +5,7 @@ angular.module("helpNow").directive("filters", function () {
             classfunc: "="
         },
         templateUrl: 'views/fragments/resource-filters.html'
-    }
+    };
 });
 
 angular.module("helpNow").directive('map', function () {

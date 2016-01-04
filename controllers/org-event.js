@@ -106,9 +106,9 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 		removeLocationMarker();
 		
 		if ($scope.showFindPanel && $scope.mappingLoc.LAT && $scope.mappingLoc.LONG) {
-			$scope.locationOutline = L.circle([$scope.mappingLoc.LAT, $scope.mappingLoc.LONG], 250).addTo(map);
+		    $scope.locationOutline = L.circle([$scope.mappingLoc.LAT, $scope.mappingLoc.LONG], 250, { color: "#00ff00", opacity: 1, fillOpacity: 0.7 }).addTo(map);
 		} else if ($scope.showDeployPanel && $scope.deployment.LAT && $scope.deployment.LONG) {
-			$scope.locationOutline = L.circle([$scope.deployment.LAT, $scope.deployment.LONG], 250).addTo(map);
+		    $scope.locationOutline = L.circle([$scope.deployment.LAT, $scope.deployment.LONG], 250, { color: "#00ff00", opacity: 1, fillOpacity: 0.7 }).addTo(map);
 		}
 	}
 	
