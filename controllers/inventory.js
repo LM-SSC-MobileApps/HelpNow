@@ -7,9 +7,11 @@
 
     $scope.setCurrentView("inventory");
 
-    $scope.resourceLocationResource = $resource("/api/resourcelocation/organization/:orgid", { orgid: '@orgid' });
+    $scope.resourceLocationResource = $resource("/api/resourcelocation/dist-center/organization/:orgid", { orgid: '@orgid' });
 
     $scope.locationTypeResource = $resource("/api/resourcelocationtype/", {});
+
+    $scope.locationStatusResource = $resource("/api/resourcelocationstatus/", {});
 
     $scope.transportTypeResource = $resource("/api/transporttype/", {});
 
@@ -48,6 +50,7 @@
 
     loadTransportTypes();
     loadResourceLocationTypes();
+    loadResourceLocationStatuses();
     loadResourceLocations();
     loadResourceTypes();
     loadResourceTypeUnitOfMeasures();
@@ -77,6 +80,12 @@
     function loadResourceLocationTypes() {
         $scope.locationTypeResource.get({}, function (data) {
             $scope.resourceLocationTypes = data.json;
+        });
+    }
+
+    function loadResourceLocationStatuses() {
+        $scope.locationStatusResource.get({}, function (data) {
+            $scope.resourceLocationStatuses = data.json;
         });
     }
 
@@ -231,6 +240,14 @@
         return $scope.resourceLocationTypes[index];
     };
 
+    $scope.setDefaultResourceLocationStatus = function () {
+        var index = $scope.resourceLocationStatuses.map(function (el) {
+            return el.Status;
+        }).indexOf("Active");
+
+        return $scope.resourceLocationStatuses[index];
+    };
+
     
 
 
@@ -249,10 +266,15 @@
             var newResLoc = new ResourceLocation();
             newResLoc.ResourceLocationTransports = [];
             newResLoc.OrganizationID = $scope.currentUser.OrganizationID;
-            //We default each new location to Distribution Center, user can change on UI.
+            //We default each new location to Distribution Center as Inventory is only for Distribution Center Management.
             var defaultResLocType = $scope.setDefaultResourceLocationType();
             newResLoc.ResourceLocationType = defaultResLocType;
             newResLoc.ResourceLocationTypeID = defaultResLocType.ResourceLocationTypeID;
+            //We default each new lcoation to Active Status
+            var defaultResLocStatus = $scope.setDefaultResourceLocationStatus();
+            newResLoc.ResourceLocationStatus = defaultResLocStatus;
+            newResLoc.ResourceLocationStatusID = defaultResLocStatus.ResourceLocationStatusID;
+
             $scope.currentResourceLocation = newResLoc;
         }
         else

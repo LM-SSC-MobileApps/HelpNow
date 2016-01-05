@@ -38,7 +38,7 @@ var routes = function(){
       });
     }
   )
-  //find ResourceType by ID
+  //find ResourceLocationType by ID - included ResourceLocations
   .get('/:id', function(req, res) {
       models.ResourceLocationType.findAll(
         {
