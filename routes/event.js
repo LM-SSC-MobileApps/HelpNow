@@ -147,7 +147,7 @@ var routes = function(){
             },
 			{
 				model: models.ResourceLocationInventory,
-				required: true,
+				required: false,
 				include: [
 				{
 					model: models.ResourceType

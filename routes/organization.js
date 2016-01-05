@@ -1,6 +1,7 @@
 
 var models  = require('../models'),
-    express = require('express');
+    express = require('express'),
+    promise = require('bluebird');
 
 
 //Organization one-to-many on OrganizationRegulations    
@@ -103,6 +104,41 @@ var routes = function(){
       });
     }
   )
+  //find Organization by type
+  .get('/type/:id', function (req, res) {
+      models.Organization.findAll(
+        {
+            where: {
+                OrganizationTypeID: req.params.id
+            },
+            include: [
+              { model: models.OrganizationRegulations },
+              { model: models.OrganizationType },
+              { model: models.Event },
+              { model: models.ResourceLocation }
+            ]
+        }
+      ).then(function (organization) {
+          res.statusCode = 200;
+          res.send(
+            {
+                result: 'success',
+                err: '',
+                json: organization,
+                length: organization.length
+            }
+          );
+      }
+     ).catch(function (err) {
+         console.error(err);
+         res.statusCode = 502;
+         res.send({
+             result: 'error',
+             err: err.message
+         });
+     });
+  }
+  )
   //find Orgainzation by AccountID
   .get('/account/:id', function(req, res) {
         //get the distinct organizations where the account is either primary or secondary poc
@@ -156,19 +192,27 @@ var routes = function(){
       });
     }
   )
-  //insert into OrganizationType
+  //insert into Organization
   .post('/', function(req, res) {
     models.Organization.create(req.body)
-    .then(function(organization) {
-        res.statusCode = 200;
-        res.send(
+    .then(function(result) {
+        models.Organization.findAll(
           {
-            result: 'success',
-            err:    '',
-            json:  organization,
-            length: organization.length
+            where: {
+              OrganizationID: result.OrganizationID
+            }
           }
-        );
+        ).then(function(organization){
+          res.statusCode = 200;
+          res.send(
+            {
+              result: 'success',
+              err:    '',
+              json:  organization,
+              length: organization.length
+            }
+          );
+        })
       }
      ).catch(function (err) {
        console.error(err);
@@ -211,13 +255,14 @@ var routes = function(){
       });
     }
   )
-  .delete('/:id', function(req, res) {
+  ///Cascade deletes in the database handle all references to the org id being deleted.
+  .delete('/:id', function (req, res) {
     models.Organization.destroy(
-      {
-        where: {
-          OrganizationID: req.params.id
+        {
+            where: {
+                OrganizationID: req.params.id
+            }
         }
-      }
     )
     .then(function(numDelete) {
         res.statusCode = 200;

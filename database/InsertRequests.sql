@@ -1,3 +1,4 @@
+SET foreign_key_checks=0;
 TRUNCATE helpnow.ResourceRequest;
 INSERT INTO `helpnow`.`ResourceRequest` (`ResourceRequestID`, `EventID`, `RequestStateID`, `Notes`, `Quantity`, `ResourceTypeID`, `LAT`, `LONG`, `RequestUrgencyID`) VALUES ('11', '1', '1', 'Please help!', '17', '2', '24.077', '89.971', '2');
 INSERT INTO `helpnow`.`ResourceRequest` (`ResourceRequestID`, `EventID`, `RequestStateID`, `Notes`, `Quantity`, `ResourceTypeID`, `LAT`, `LONG`, `RequestUrgencyID`) VALUES ('12', '1', '1', 'Please help!', '6', '5', '23.592', '90.755', '2');
@@ -99,3 +100,4 @@ INSERT INTO `helpnow`.`ResourceRequest` (`ResourceRequestID`, `EventID`, `Reques
 INSERT INTO `helpnow`.`ResourceRequest` (`ResourceRequestID`, `EventID`, `RequestStateID`, `Notes`, `Quantity`, `ResourceTypeID`, `LAT`, `LONG`, `RequestUrgencyID`) VALUES ('108', '1', '1', 'Reported via Facebook', '6', '3', '23.608', '90.328', '2');
 INSERT INTO `helpnow`.`ResourceRequest` (`ResourceRequestID`, `EventID`, `RequestStateID`, `Notes`, `Quantity`, `ResourceTypeID`, `LAT`, `LONG`, `RequestUrgencyID`) VALUES ('109', '1', '1', 'Please help!', '9', '2', '24.141', '90.547', '5');
 INSERT INTO `helpnow`.`ResourceRequest` (`ResourceRequestID`, `EventID`, `RequestStateID`, `Notes`, `Quantity`, `ResourceTypeID`, `LAT`, `LONG`, `RequestUrgencyID`) VALUES ('110', '1', '1', 'Reported via Facebook', '6', '6', '23.569', '90.596', '2');
+SET foreign_key_checks=1;

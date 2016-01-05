@@ -162,7 +162,6 @@ var routes = function(){
             models.Account.findAll({
                 where: {
                   OrganizationID: account[0].OrganizationID,
-                  AccountID: {$ne: account[0].AccountID},
                   Active: true
                 }
               }

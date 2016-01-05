@@ -17,7 +17,7 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 		});
 
 		$routeProvider.when("/inventory", {
-		    templateUrl: "views/inventory.html"
+		    templateUrl: "views/inventory/inventory.html"
 		});
 		
 		$routeProvider.when("/gov_login", {
@@ -28,8 +28,28 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 			templateUrl: "views/org-event.html"
 		});
 		
+		$routeProvider.when("/create_deployment/:eventID/:lat/:long", {
+			templateUrl: "views/deployment.html"
+		});
+		
+		$routeProvider.when("/modify_deployment/:locationID", {
+			templateUrl: "views/deployment.html"
+		});
+		
 		$routeProvider.when("/events", {
 			templateUrl: "views/events.html"
+		});
+
+		$routeProvider.when("/administration/", {
+		    templateUrl: "views/admin/administration.html"
+		});
+
+		$routeProvider.when("/add_org/:orgTypeID", {
+		    templateUrl: "views/admin/add-organization.html"
+		});
+
+		$routeProvider.when("/org_address/:orgID", {
+		    templateUrl: "views/manage/org-address.html"
 		});
 
 		$routeProvider.when("/manage/", {
@@ -60,8 +80,16 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 			templateUrl: "views/manage/team-invite.html"
 		});
 
+		$routeProvider.when("/assign_poc/", {
+			templateUrl: "views/manage/assign-poc.html"
+		});
+
 		$routeProvider.when("/reg_account/", {
 		    templateUrl: "views/reg-account.html"
+		});
+
+		$routeProvider.when("/demo/", {
+			templateUrl: "views/manage/demo.html"
 		});
 		
 		$routeProvider.otherwise({

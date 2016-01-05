@@ -4,13 +4,14 @@
             <div class="col-md-4">
                 <div class="panel ">
                     <div class="panel-title text-center spacer">
-                        <img ng-src="style/images/Team.png" style="height: 44px; width: 44px;"  alt="Team Invites"/>
+                        <img ng-src="style/images/Team.png" style="height: 44px; width: 44px;" alt="Team Invites"/>
                         Registered Team Members
                     </div>
                     <div class="row ">
                         <div class="panel-body text-nowrap">
-                            <ul class="list-unstyled list-inline" ng-repeat="teamMember in team">
-                                <div class="col-md-6  ">
+                            <ul class="list-unstyled list-inline"
+                                ng-repeat="teamMember in team | orderBy: '+LastName' ">
+                                <div class="col-md-7  ">
                                     <li>
                                         <h5>
                                             <img ng-src="style/images/Person.png" style="height: 30px; width: 13px;"
@@ -19,14 +20,23 @@
                                         </h5>
                                     </li>
                                 </div>
-                                <div class="col-md-6">
-                                    <button class="btn btn-danger" ng-click="deleteInvite(invite)">
+                                <div class="col-md-5">
+                                    <button class="btn btn-danger btn-sm  "
+                                            ng-disabled="teamMember.AccountID === currentUser.AccountID"
+                                            ng-click="deleteTeamMember(teamMember)">
                                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                                         Remove
                                     </button>
                                 </div>
                             </ul>
                         </div>
+                    </div>
+                    <div class="panel-footer panel-borderless text-center">
+                        <a class="btn  btn-primary " href="#/assign_poc">
+                            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                            <span>Assign Points of Contact</span>
+                        </a>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -38,7 +48,7 @@
                         Invitations
                     </div>
                     <div class="panel-body text-nowrap spacer">
-                        <ul class="list-unstyled list-inline" ng-repeat="invite in invites">
+                        <ul class="list-unstyled list-inline" ng-repeat="invite in invites | orderBy: '+LastName'  ">
                             <div class="col-md-6  ">
                                 <li>
                                     <h5>
@@ -49,7 +59,7 @@
                                 </li>
                             </div>
                             <div class="col-md-6">
-                                <button class="btn btn-danger" ng-click="deleteInvite(invite)">
+                                <button class="btn btn-danger btn-sm" ng-click="deleteInvite(invite)">
                                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                                     Remove
                                 </button>
@@ -71,19 +81,28 @@
                     <div class="panel-title">
                         <h4>&nbsp;</h4>
                     </div>
-                    <div class="panel-primary">
-                        <p><a class="btn btn-primary btn-lg" href="#/regulations">
+                    <div class="panel-primary spacer">
+                        <a class="btn btn-primary " href="#/regulations">
                             <span>Regulations &amp; Policies</span>
                         </a>
-                        </p>
+
+                        <div class="spacer">
+                            <a class="btn btn-danger " href="#/events">
+                                <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                                <span>Begin New Event</span>
+                            </a>
+                        </div>
+                        <div class="panel-footer panel-borderless text-center">
+                            <a class="btn btn-primary " href="#/demo">
+                                <span>&nbsp;&nbsp;Demo&nbsp;&nbsp;</span>
+                            </a>
+                        </div>
                     </div>
-                    <p><a class="btn btn-danger btn-lg" href="#/events">
-                        <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-                        <span>Begin New Event</span>
-                    </a>
-                    </p>
                 </div>
             </div>
+        </div>
+        <div class="separated">
+            <h5>API Key: {{org.APIKey}}<a id="btn-showUser" class="btn btn-primary pull-right" ng-click="enterAddress()" style="margin-right: 10px;"><span></span>Manage Address</a></h5>
         </div>
     </div>
 </div>

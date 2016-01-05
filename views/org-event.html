@@ -1,15 +1,20 @@
 <div ng-controller="OrgEventCtrl">
 	<div id="map" ng-if="event" map map-center="{{event.EventLocations[0].LAT}},{{event.EventLocations[0].LONG}}" map-zoom="13" class="col-md-9" style="height: 512px; border: 1px solid #AAA;"></div>
 	<div  class="col-md-3">
-		<div id="eventInfo" ng-hide="popupIsOpen()" ng-include="'views/fragments/event-info.html'"></div>
-		<div class="row" ng-hide="popupIsOpen()">
+		<div id="eventInfo" ng-hide="panelIsOpen()" ng-include="'views/fragments/event-info.html'"></div>
+		<div class="row" ng-hide="panelIsOpen()">
 			<div class="col-md-12">
 				<a class="btn btn-primary" ng-click="toggleFilters()"><span class="glyphicon glyphicon-filter"></span> Show Filters</a>
 			</div>
 		</div>
-		<div class="row separated-small" ng-hide="popupIsOpen()">
+		<div class="row separated-small" ng-hide="panelIsOpen()">
 			<div class="col-md-12">
 				<a class="btn btn-primary" ng-click="toggleFindPanel()"><span class="glyphicon glyphicon-search"></span> Find Resources</a>
+			</div>
+		</div>
+		<div class="row separated-small" ng-hide="panelIsOpen()">
+			<div class="col-md-12">
+				<a class="btn btn-primary" ng-click="toggleDeployPanel()"><span class="glyphicon glyphicon-plus-sign"></span> Deploy Resources</a>
 			</div>
 		</div>
 		
@@ -105,8 +110,8 @@
 						</div>
 						<div class="row separated-small">
 							<div class="col-sm-12 btn-row">
-								<a id="btn-help" class="btn btn-primary" ng-click="findMatches()" ><span class="glyphicon glyphicon-search"></span>Match</a>
-								<a id="btn-help" class="btn btn-primary" ng-click="toggleFindPanel()" ><span class="glyphicon glyphicon-remove-sign"></span>Close</a>
+								<a class="btn btn-primary" ng-click="findMatches()" ><span class="glyphicon glyphicon-search"></span>Match</a>
+								<a class="btn btn-primary" ng-click="toggleFindPanel()" ><span class="glyphicon glyphicon-remove-sign"></span>Close</a>
 							</div>
 						</div>
 					</div>
@@ -134,10 +139,10 @@
 								</div>
 								<div class="col-xs-9">
 									<h4><a ng-click="showLocation(match.center.LAT, match.center.LONG)" href="">{{match.center.Organization.Name}}</a></h4>
-									<h5>{{match.center.PrimaryPOCName}}</h5>
-									<h5>{{match.center.PrimaryPOCPhone}}</h5>
+									<h5>{{match.center.Description}}</h5>
+									<h5>{{match.dist}} km</h5>
 									<div>
-										<a tabindex="0" class="btn btn-primary" uib-popover-html="'{{getCleanLocationText(match.center)}}'" popover-trigger="focus" ><span class="glyphicon glyphicon-list"></span>Inventory</a>
+										<a tabindex="0" class="btn btn-primary" uib-popover-html="'{{getCleanLocationText(match.center)}}'" popover-trigger="focus" ><span class="glyphicon glyphicon-list"></span>More Info</a>
 									</div>
 								</div>
 							</div>
@@ -146,16 +151,84 @@
 						<hr></hr>
 						<div class="row separated">
 							<div class="col-sm-12 btn-row">
-								<a id="btn-help" class="btn btn-primary" ng-click="backToFind()" ><span class="glyphicon glyphicon-arrow-left"></span>Back</a>
-								<a id="btn-help" class="btn btn-primary" ng-click="toggleFindPanel()" ><span class="glyphicon glyphicon-remove-sign"></span>Close</a>
+								<a class="btn btn-primary" ng-click="backToFind()" ><span class="glyphicon glyphicon-arrow-left"></span>Back</a>
+								<a class="btn btn-primary" ng-click="toggleFindPanel()" ><span class="glyphicon glyphicon-remove-sign"></span>Close</a>
 							</div>
 						</div>
 					</div>
 					
 				</div>
 			</div>
-			
-			
 		</div>
+		
+		<div class="row" ng-show="showDeployPanel">
+			<div class="col-md-12">
+                <div class="well">
+					<div class="row">
+						<div class="col-xs-2">
+							<img width="30" src="style/images/Distribution-Center.png" />
+						</div>
+						<div id="event-title" class="col-xs-10">
+							<h4 class="separated-tiny">Deploy Resources</h4>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-12">
+							<hr/>
+							<input ng-model="locationPref.value" type="radio" value="Current" ng-change="getLocation()" /><span>  Use My Current Location</span><br />
+							<input ng-model="locationPref.value" type="radio" value="Other" ng-change="getLocation()" /><span>  Use The Following Location:</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-12">
+							<span>Lat </span><input ng-model="deployment.LAT" type="text" class="form-control" name="lat" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
+							<span>Long </span><input ng-model="deployment.LONG" type="text" class="form-control" name="long" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
+						</div>
+					</div>
+					<div class="well separated-small">
+						<span class="glyphicon glyphicon-pushpin"></span> NOTE: You can select the latitude and longitude by clicking on the map.
+					</div>
+					<hr></hr>
+					<div class="row separated">
+						<div class="col-sm-12 btn-row">
+							<a class="btn btn-primary" ng-click="createDeployment()" ><span class="glyphicon glyphicon-plus-sign"></span>Deploy</a>
+							<a class="btn btn-primary" ng-click="toggleDeployPanel()" ><span class="glyphicon glyphicon-remove-sign"></span>Close</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+		<div class="row" ng-show="showDeploymentPanel">
+			<div class="col-md-12">
+                <div class="well">
+					<div class="row">
+						<div class="col-xs-2">
+							<img width="30" src="style/images/Distribution-Center.png" />
+						</div>
+						<div id="event-title" class="col-xs-10">
+							<h4 class="separated-tiny">{{deployment.Description}}</h4>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="separated-small"><strong>Primary POC: </strong>{{deployment.PrimaryPOCName}}</div>
+							<div class="separated-small"><strong>Primary POC Phone: </strong>{{deployment.PrimaryPOCPhone}}</div>
+							<div ng-repeat="inventory in deployment.ResourceLocationInventories" class="separated-small">
+								<strong>{{inventory.ResourceType.Description}}: </strong> {{inventory.Quantity}} {{inventory.ResourceTypeUnitOfMeasure.Description}}
+							</div>
+						</div>
+					</div>
+					<hr></hr>
+					<div class="row separated">
+						<div class="col-sm-12 btn-row">
+							<a class="btn btn-primary" ng-click="modifyDeployment()" ><span class="glyphicon glyphicon-pencil"></span>Modify</a>
+							<a class="btn btn-primary" ng-click="closeDeploymentPanel()" ><span class="glyphicon glyphicon-remove-sign"></span>Close</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
 	</div>
 </div>

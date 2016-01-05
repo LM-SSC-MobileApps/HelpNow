@@ -76,7 +76,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
         if ($scope.locationOutline !== undefined) {
             map.removeLayer($scope.locationOutline);
         }
-        $scope.locationOutline = L.circle([position.coords.latitude, position.coords.longitude], $scope.overlayRadius).addTo(map);
+        $scope.locationOutline = L.circle([position.coords.latitude, position.coords.longitude], $scope.overlayRadius, { color: "#00ff00", opacity: 1, fillOpacity: 0.7 }).addTo(map);
         $scope.$digest();
     }
 
@@ -208,7 +208,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
                 if ($scope.locationOutline !== undefined) {
                     map.removeLayer($scope.locationOutline);
                 }
-                $scope.locationOutline = L.circle(e.latlng, $scope.overlayRadius).addTo(map);
+                $scope.locationOutline = L.circle(e.latlng, $scope.overlayRadius, { color: "#00ff00", opacity: 1, fillOpacity: 0.7 }).addTo(map);
                 $scope.helpRequest.LAT = e.latlng.lat.toFixed(3);
                 $scope.helpRequest.LONG = e.latlng.lng.toFixed(3);
                 $scope.$digest();

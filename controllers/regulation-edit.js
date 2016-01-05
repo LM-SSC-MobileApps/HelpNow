@@ -23,6 +23,7 @@ angular.module("helpNow").controller("RegulationEditCtrl", ["$scope", "$resource
                     this.Regulation = Regulation;
 
                     $scope.deleteReg = function () {
+                        console.log("regulation.OrganizationRegulationsID" + regulation.OrganizationRegulationsID);
                         Regulation.delete({id: regulation.OrganizationRegulationsID});
                         $location.path("/regulations");
                     };
