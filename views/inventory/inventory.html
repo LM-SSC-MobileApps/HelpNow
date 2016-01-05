@@ -27,7 +27,7 @@
                 </div>
                 <hr />
             </div>
-            <a id="btn-login" class="btn btn-primary pull-left" ng-click="showNewEditForm()"><span class="glyphicon glyphicon-globe"></span>Add New Site</a>
+            <a id="btn-login" class="btn btn-primary pull-left" ng-click="showNewEditForm()"><span class="glyphicon glyphicon-globe"></span>{{text.add_new_site}}</a>
         </div>
     </div>
 
@@ -106,8 +106,8 @@
                 </div>
             </div>
         </div>
-        <a id="btn-back" class="btn btn-primary" ng-click="showLocationsDiv()"><span class="glyphicon glyphicon-remove"></span>Cancel</a>
-        <a id="btn-next" class="btn btn-primary pull-right" ng-click="showTransportationDiv()">Next&nbsp;<span class="glyphicon glyphicon-chevron-right"></span></a>
+        <a id="btn-back" class="btn btn-primary" ng-click="showLocationsDiv()"><span class="glyphicon glyphicon-remove"></span>{{text.cancel}}</a>
+        <a id="btn-next" class="btn btn-primary pull-right" ng-click="showTransportationDiv()">{{text.next}}&nbsp;<span class="glyphicon glyphicon-chevron-right"></span></a>
     </div>
     <div id="rightColumn" class="col-md-3" ng-if="showTransportationOptionsForm">
         <div class="row">
@@ -158,18 +158,18 @@
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <a id="btn-back" class="btn btn-primary pull-left" ng-click="showLocationDiv()"><span class="glyphicon glyphicon-chevron-left"></span>Back</a>
-                <a id="btn-save" class="btn btn-success pull-right" ng-click="saveResourceLocation()"><span class="glyphicon glyphicon-save"></span>Save</a>
+                <a id="btn-back" class="btn btn-primary pull-left" ng-click="showLocationDiv()"><span class="glyphicon glyphicon-chevron-left"></span>{{text.back}}</a>
+                <a id="btn-save" class="btn btn-success pull-right" ng-click="saveResourceLocation()"><span class="glyphicon glyphicon-save"></span>{{text.save}}</a>
             </div>
         </div>
         <div class="row" ng-if="editMode">
             <div class="col-sm-12">
-                <a id="btn-delete" class="btn btn-danger pull-left" ng-click="modalDeleteResourceLocation()" style="margin-top: 10px;">Delete Location</a>
+                <a id="btn-delete" class="btn btn-danger pull-left" ng-click="modalDeleteResourceLocation()" style="margin-top: 10px;">{{text.delete_location}}</a>
             </div>
         </div>
         <div class="row" ng-if="!editMode">
             <div class="col-sm-12">
-                <a id="btn-cancel" class="btn btn-primary pull-left" ng-click="showLocationsDiv()" style="margin-top: 10px;"><span class="glyphicon glyphicon-remove"></span>Cancel</a>
+                <a id="btn-cancel" class="btn btn-primary pull-left" ng-click="showLocationsDiv()" style="margin-top: 10px;"><span class="glyphicon glyphicon-remove"></span>{{text.cancel}}</a>
             </div>
         </div>
     </div>
@@ -233,7 +233,7 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
-                            <a id="btn-add" class="btn btn-primary pull-left" ng-click="showResourceLocationInventoryNewForm()" style="margin-top: 7px;"><span class="glyphicon glyphicon-plus-sign"></span>Add Services</a>
+                            <a id="btn-add" class="btn btn-primary pull-left" ng-click="showResourceLocationInventoryNewForm()" style="margin-top: 7px;"><span class="glyphicon glyphicon-plus-sign"></span>{{text.add_service}}</a>
                         </div>
                     </div>
                 </div>
@@ -294,13 +294,13 @@
                         </div>
                         <div class="row" style="margin-bottom:5px; margin-top: 15px;">
                             <div class="col-xs-6" ng-if="!resourceLocationInventoryEdit">
-                                <a id="btn-clear" class="btn btn-primary pull-left" ng-click="showResourceLocationInventoryNewForm()"><span class="glyphicon glyphicon-refresh"></span>Reset</a>
+                                <a id="btn-clear" class="btn btn-primary pull-left" ng-click="showResourceLocationInventoryNewForm()"><span class="glyphicon glyphicon-refresh"></span>{{text.reset}}</a>
                             </div>
                             <div class="col-xs-6" ng-if="resourceLocationInventoryEdit">
-                                <a id="btn-clear" class="btn btn-danger pull-left" ng-click="modalDeleteResourceLocationInventory()"><span class="glyphicon glyphicon-remove"></span>Delete</a>
+                                <a id="btn-clear" class="btn btn-danger pull-left" ng-click="modalDeleteResourceLocationInventory()"><span class="glyphicon glyphicon-remove"></span>{{text.delete}}</a>
                             </div>
                             <div class="col-xs-6">
-                                <a id="btn-save" class="btn btn-success pull-right" ng-click="saveResourceLocationInventory()"><span class="glyphicon glyphicon-save"></span>Save</a>
+                                <a id="btn-save" class="btn btn-success pull-right" ng-click="saveResourceLocationInventory()"><span class="glyphicon glyphicon-save"></span>{{text.save}}</a>
                             </div>
                         </div>
                         </div>

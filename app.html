@@ -89,12 +89,12 @@
                                         <td><h5>Current User: {{currentUser.FirstName + " " + currentUser.LastName + ", " + currentUser.OrganizationName}}</h5></td>
                                         <td><br /></td>
                                         <td>&nbsp;</td>
-                                        <td><a id="btn-logout" class="btn btn-primary pull-right" ng-click="redirectToLogout()"><span></span>Logout</a></td>
+                                        <td><a id="btn-logout" class="btn btn-primary pull-right" ng-click="redirectToLogout()"><span></span>{{text.logout}}</a></td>
                                     </tr>                                    
                                 </table>                                                                
                             </div>
                             <div class="col-md-4" ng-show="showLogin">
-                                <a id="btn-login" class="btn btn-primary pull-right" ng-click="redirectToLogin()"><span></span>Login</a>
+                                <a id="btn-login" class="btn btn-primary pull-right" ng-click="redirectToLogin()"><span></span>{{text.login}}</a>
                             </div>
                         </div>
                         <ng-view autoscroll="true" />

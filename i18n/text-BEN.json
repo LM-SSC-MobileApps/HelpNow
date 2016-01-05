@@ -3,4 +3,20 @@
   "menu_inv": "জায়",
   "menu_manage":  "পরিচালনা করা",
   "menu_lang":"ভাষা",
-  "events_title":"একটি ইভেন্ট নির্বাচন"  }
+  "events_title": "একটি ইভেন্ট নির্বাচন",
+  "inventory_title": "ইনভেন্টরি ম্যানেজমেন্ট",
+  "delete_location": "অবস্থান মুছে",
+  "add_service": "পরিষেবা করো",
+  "add_new_site": "নতুন সাইট যুক্ত করুন",
+  "transportation_options": "পরিবহন বিকল্প",
+  "general_information": "সাধারণ জ্ঞাতব্য",
+  "delete": "মুছে",
+  "remove": "অপসারণ",
+  "save": "সংরক্ষণ",
+  "next": "পরবর্তী",
+  "back": "পিছনে",
+  "cancel": "বাতিল",
+  "reset": "রিসেট",
+  "logout": "ত্যাগ করুন",
+  "login":  "লগইন"
+}

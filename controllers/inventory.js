@@ -2,7 +2,7 @@
 
     var map;
     var mapLayers = [];
-
+  
     $scope.setTitle("Inventory Management");
 
     $scope.setCurrentView("inventory");
