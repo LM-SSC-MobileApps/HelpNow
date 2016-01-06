@@ -4,12 +4,14 @@
   "menu_manage":  "পরিচালনা করা",
   "menu_lang":"ভাষা",
   "events_title": "একটি ইভেন্ট নির্বাচন",
+  //// inventory stuff
   "inventory_title": "ইনভেন্টরি ম্যানেজমেন্ট",
   "delete_location": "অবস্থান মুছে",
   "add_service": "পরিষেবা করো",
   "add_new_site": "নতুন সাইট যুক্ত করুন",
   "transportation_options": "পরিবহন বিকল্প",
   "general_information": "সাধারণ জ্ঞাতব্য",
+  //// general stuff
   "delete": "মুছে",
   "remove": "অপসারণ",
   "save": "সংরক্ষণ",
