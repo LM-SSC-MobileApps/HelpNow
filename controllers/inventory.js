@@ -168,17 +168,17 @@
 
     $scope.initMap = function (newMap) {
         map = newMap;
-        //map.on('click', function (e) {
-        //    if ($scope.locationPref.value == "Other") {
-        //        if ($scope.locationOutline !== undefined) {
-        //            map.removeLayer($scope.locationOutline);
-        //        }
-        //        $scope.locationOutline = L.circle(e.latlng, $scope.overlayRadius, { color: "#00ff00", opacity: 1, fillOpacity: 0.7 }).addTo(map);
-        //        $scope.helpRequest.LAT = e.latlng.lat.toFixed(3);
-        //        $scope.helpRequest.LONG = e.latlng.lng.toFixed(3);
-        //        $scope.$digest();
-        //    }
-        //});
+        map.on('click', function (e) {
+            if ($scope.locationPref.value == "Other") {
+                if ($scope.locationOutline !== undefined) {
+                    map.removeLayer($scope.locationOutline);
+                }
+                $scope.locationOutline = L.circle(e.latlng, $scope.overlayRadius, { color: "#00ff00", opacity: 1, fillOpacity: 0.7 }).addTo(map);
+                $scope.currentResourceLocation.LAT = e.latlng.lat.toFixed(3);
+                $scope.currentResourceLocation.LONG = e.latlng.lng.toFixed(3);
+                $scope.$digest();
+            }
+        });
         updateMap();
     };
 
