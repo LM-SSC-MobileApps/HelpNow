@@ -63,7 +63,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 					$scope.text = data;
 				})
 				.error(function (data) {
-					alert(data);
+					alert("setCurrentLanguage: "+data);
 				});
 		else {
 			$http.get("i18n/text-ENG.json")
@@ -71,7 +71,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 					$scope.text = data;
 				})
 				.error(function (data) {
-					alert(data);
+				    alert("setCurrentLanguage: " + data);
 				});
 		}	
 	};
