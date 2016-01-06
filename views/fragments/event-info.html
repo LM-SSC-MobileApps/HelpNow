@@ -12,7 +12,7 @@
             </div>
             <div class="row separated-small">
                 <div class="col-sm-12">
-                    <a href="#\event_map\{{event.EventID}}">
+                    <a href="" ng-click="centerMapToLongLat(event.EventLocations[0].LAT, event.EventLocations[0].LONG)">
                         ({{event.EventLocations[0].LAT}}, {{event.EventLocations[0].LONG}}, {{event.EventLocations[0].Radius}} km<sup>2</sup>)
                     </a>
                 </div>

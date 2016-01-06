@@ -52,6 +52,10 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	    $scope.currentUser = user;
 	};
 
+	$scope.getCurrentUser = function () {
+	    return $scope.currentUser;
+	}
+
 	$scope.setCurrentOrg = function (org) {
 	    $scope.currentOrg = org;
 	};
@@ -103,12 +107,12 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 
 	$scope.getLocationIcon = function (location) {
 	    var inventories = location.ResourceLocationInventories;
-		var belongsToUser = $scope.currentOrg && location.OrganizationID == $scope.currentOrg.OrganizationID;
-		
+	    var belongsToUser = $scope.currentOrg && location.OrganizationID == $scope.currentOrg.OrganizationID;
+
 	    if (inventories.length > 1)
 	        return belongsToUser ? "style/images/Resources-DBox-Blue.png" : "style/images/Resources-Box-Blue.png";
 
-		var iconType = belongsToUser ? "DDiamond-Blue" : "Diamond-Blue";
+	    var iconType = belongsToUser ? "DDiamond-Blue" : "Diamond-Blue";
 	    var resourceType = inventories[0].ResourceType.Description;
 	    if (resourceType == "Water") {
 	        return "style/images/Water-" + iconType + ".png";
@@ -118,6 +122,8 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	        return "style/images/Shelter-" + iconType + ".png";
 	    } else if (resourceType == "Evacuation") {
 	        return "style/images/Evacuation-" + iconType + ".png";
+	    } else if (resourceType == "Clothing") {
+	        return "style/images/Clothing-" + iconType + ".png";
 	    } else if (resourceType == "Medicine") {
 	        return "style/images/Medicine-" + iconType + ".png";
 	    } else {
@@ -171,6 +177,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	    return (type == "Water" && flags.showWater) ||
 				(type == "Shelter" && flags.showShelter) ||
 				(type == "Food" && flags.showFood) ||
+                (type == "Clothing" && flags.showClothing) ||
 				(type == "Evacuation" && flags.showEvacuation) ||
 				(type == "First Aid" && flags.showMedical) ||
 				(type == "Medicine" && flags.showMedicine);
@@ -222,6 +229,8 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
         function (response) {
             alert("Logout Error - " + response);
         });
+
+	    $location.path('#');
 	};
 
 	$scope.resources = [
