@@ -40,18 +40,31 @@
                             <img src="style/images/Label.png" style="height: 25px; width: 30px; margin-top: 5px;" />
                         </div>
                         <div class="col-xs-10">
-                            Location Name:<br /><input ng-model="currentResourceLocation.Description" class="form-control" type="text" style="width: 170px;  margin-bottom: 10px;" />
+                            {{text.location_name}}<br /><input ng-model="currentResourceLocation.Description" class="form-control" type="text" style="width: 170px;  margin-bottom: 10px;" />
                         </div>
                     </div>
-                    <!--<div class="row">
+
+
+                    <div class="row">
                         <div class="col-xs-12">
-                            Lat:&nbsp;<input ng-model="helpRequest.LAT" type="text" name="lat" style="width: 60px; margin-top: 10px;" />
-                            Long:&nbsp;<input ng-model="helpRequest.LONG" type="text" name="long" style="width: 60px; margin-top: 10px;" />
-                            <h5 align="center">OR</h5>
-                            <h5 style="vertical-align:top">Address:<textarea rows="3" cols="25"></textarea></h5>
+                            <hr class="separated" />
+                            <input ng-model="locationPref.value" type="radio" value="Current" ng-change="getLocation()" /><span>  Use My Current Location</span><br />
+                            <input ng-model="locationPref.value" type="radio" value="Other" ng-change="getLocation()" /><span>  Use The Following Location:</span>
                         </div>
-                    </div>-->
-                    <div class="well">
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <span>{{text.lat}}</span><input ng-model="currentResourceLocation.LAT" type="text" class="form-control" name="lat" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
+                            <span>{{text.long}}</span><input ng-model="currentResourceLocation.LONG" type="text" class="form-control" name="long" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
+                        </div>
+                    </div>
+
+                    <div class="well separated-small">
+                        <span class="glyphicon glyphicon-pushpin"></span> NOTE: You can select the latitude and longitude by clicking on the map.
+                    </div>
+
+
+                    <!--<div class="well">
                         <div class="row">
                             <div class="col-xs-12">
                                 <span>Lat </span><input ng-model="currentResourceLocation.LAT" type="text" class="form-control" name="lat" style="display:inline; width: 32%; margin-top: 10px; color: black;" />
@@ -72,13 +85,13 @@
                                 <textarea class="form-control" style="width: 100%"></textarea><br />
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="row">
                         <div class="col-xs-2">
                             <img src="style/images/Team.png" style="height: 30px; width: 30px; margin-top: 10px;" />
                         </div>
                         <div class="col-xs-10">
-                            Primary Contact:<br />
+                            {{text.primary_contact}}<br />
                             <input ng-model="currentResourceLocation.PrimaryPOCName" class="form-control" type="text" style="width: 170px; margin-bottom: 7px;" />
                         </div>
                         <div class="col-xs-2">
@@ -93,7 +106,7 @@
                             <img src="style/images/Team.png" style="height: 30px; width: 30px; margin-top: 10px;" />
                         </div>
                         <div class="col-xs-10">
-                            Secondary Contact:<br />
+                            {{text.secondary_contact}}<br />
                             <input ng-model="currentResourceLocation.SecondaryPOCName" class="form-control" type="text" style="width: 170px; margin-bottom: 7px;" />
                         </div>
                         <div class="col-xs-2">
@@ -118,7 +131,7 @@
                             <img src="style/images/Team.png" style="height: 30px; width: 30px; margin-right: 5px; margin-bottom: 10px;" /><br />
                         </div>
                         <div class="col-xs-10">
-                            General Information<br />
+                            {{text.general_information}}<br />
                         </div>
                     </div>
                     <div class="row">
@@ -146,7 +159,7 @@
                     </div>-->
                     <div class="row">
                         <div class="col-xs-12" style="margin-bottom:5px; margin-top: 5px;">
-                            Transportation Options:
+                            {{text.transportation_options}}
                         </div>
                         <div class="col-xs-4" ng-repeat="transport in transportTypes">
                             <a href="" ng-click="toggleTransport(transport.TransportTypeID)" ng-if="showTransparentTransport(transport.Description)"><img src="style/images/Transport-{{transport.Description}}-Transparent.png" style="height: 30px; width: 45px; margin-right: 5px;" /></a>
@@ -195,7 +208,7 @@
                         </div>
                     </div>
                     <div class="row" style="background-color:black;">
-                        Distribution:
+                        {{text.distribution}}
                     </div>
                     <div class="row" style="margin-bottom:7px; margin-top:7px;">
                         <div ng-repeat="resourceLocationTransport in currentResourceLocation.ResourceLocationTransports">
@@ -211,7 +224,7 @@
                         </div>
                     </div>
                     <div class="row" style="background-color:black;">
-                        Services:
+                        {{text.services}}
                     </div>
                     <div ng-repeat="inventory in currentResourceLocation.ResourceLocationInventories">
                         <div class="row">
@@ -255,7 +268,7 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
-                            <h4 style="margin-bottom: 20px;">Services</h4>
+                            <h4 style="margin-bottom: 20px;">{{text.services}}</h4>
                         </div>
                     </div>
                     <div class="row">
@@ -271,13 +284,13 @@
                     <div class="row" ng-show="resourcesFiltered">
                         <div class="row" style="margin-top: 15px;">
                             <div class="col-xs-5">
-                                <span>Quantity:</span>
+                                <span>{{text.quantity}}</span>
                             </div>
                             <div class="col-xs-7">
                                 <input ng-model="currentResourceLocationInventory.Quantity" type="number" class="form-control pull-left" name="qty" style="margin-bottom: 7px;" />
                             </div>
                             <div class="col-xs-5">
-                                <span>Unit Type:</span>
+                                <span>{{text.unit_type}}</span>
                             </div>
                             <div class="col-xs-7">
                                 <div class="btn-group pull-left" uib-dropdown is-open="status.isopen">
