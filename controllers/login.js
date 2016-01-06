@@ -42,7 +42,7 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
                 $scope.setCurrentOrg($scope.currentUser.Organization);
                 sessionStorage.setItem("user", JSON.stringify(userSessionObject));
                 $scope.$broadcast("CurrentUserLoaded", {});
-                $location.path('#');
+                $location.path($scope.previousPath);
             }
         },
         function (response) { // optional

@@ -93,8 +93,8 @@
                                     </tr>                                    
                                 </table>                                                                
                             </div>
-                            <div class="col-md-4" ng-show="showLogin">
-                                <a id="btn-login" class="btn btn-primary pull-right" ng-click="redirectToLogin()"><span></span>{{text.login}}</a>
+                            <div class="col-md-4" ng-show="getShowLogin()">
+                                <a id="btn-login" class="btn btn-primary pull-right" ng-click="redirectToLogin()"><span></span>{{text.login}}</a>                                
                             </div>
                         </div>
                         <ng-view autoscroll="true" />

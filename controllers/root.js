@@ -15,12 +15,13 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 		});
 	};
 
-	$scope.setShowLogin = function () {
-	    if ($scope.currentUser) {
-	        $scope.showLogin = false;
-	    }
-	    else {
-	        $scope.showLogin = true;
+	$scope.getShowLogin = function () {
+	    if ($scope.title.indexOf("Login") == 0) {
+	        return false;
+	    } else if ($scope.currentUser) {
+	        return false;
+	    } else {
+	        return true;
 	    }
 	};
 	
@@ -185,16 +186,24 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	};
 	
 	$scope.loadEvents();
-	$scope.setShowLogin();
+
+	$scope.$on('$locationChangeSuccess', function (evt, absNewUrl, absOldUrl) {
+	    var url = absOldUrl.replace("/#/", "/");
+ 	    var pathArray = url.split('/');
+	    var previousPath = "";
+	    for (i = 3; i < pathArray.length; i++) {
+	        previousPath += "/";
+	        previousPath += pathArray[i];
+	    }
+	    $scope.previousPath = previousPath;
+	});
 
 	$scope.redirectToLogin = function () {
-	    $scope.showLogin = false;
 	    $location.path('/login');
 	};
 
 	$scope.redirectToLogout = function () {
         // Logout client
-	    $scope.showLogin = true;
 	    $scope.currentUser = false;
 	    sessionStorage.removeItem("user");
 
@@ -213,8 +222,6 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
         function (response) {
             alert("Logout Error - " + response);
         });
-
-	    $location.path('#');
 	};
 
 	$scope.resources = [
