@@ -2296,7 +2296,6 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        var minDist = Number.MAX_VALUE;
 
 	        var selectedCenters = $scope.distributionCenters.filter(function (center) {
-	            alert(JSON.stringify($scope.currentOrg));
 	            if ($scope.currentOrg.OrganizationTypeID == 1) {
 	                return $scope.shouldDisplayLocationMarker(center, $scope.matchingFlags)
 	            }
