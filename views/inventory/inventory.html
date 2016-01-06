@@ -48,19 +48,19 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <hr class="separated" />
-                            <input ng-model="locationPref.value" type="radio" value="Current" ng-change="getLocation()" /><span>  Use My Current Location</span><br />
-                            <input ng-model="locationPref.value" type="radio" value="Other" ng-change="getLocation()" /><span>  Use The Following Location:</span>
+                            <input ng-model="locationPref.value" type="radio" value="Current" ng-change="getLocation()" /><span>  {{text.current_location}}</span><br />
+                            <input ng-model="locationPref.value" type="radio" value="Other" ng-change="getLocation()" /><span>  {{text.manual_location}}</span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
-                            <span>{{text.lat}}</span><input ng-model="currentResourceLocation.LAT" type="text" class="form-control" name="lat" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
+                            <span>{{text.lat}}</span><input ng-model="currentResourceLocation.LAT" type="text" class="form-control" name="lat" style="display:inline; width: 34%; margin-top: 10px; color: black;" /><br />
                             <span>{{text.long}}</span><input ng-model="currentResourceLocation.LONG" type="text" class="form-control" name="long" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
                         </div>
                     </div>
 
                     <div class="well separated-small">
-                        <span class="glyphicon glyphicon-pushpin"></span> NOTE: You can select the latitude and longitude by clicking on the map.
+                        <span class="glyphicon glyphicon-pushpin"></span> {{text.note_lat_long}}
                     </div>
 
 
