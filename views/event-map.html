@@ -19,9 +19,6 @@
                 </div>
             </div>
         </div>
-        <div class="separated-small" ng-hide="showFilters">
-            <a ng-show="currentOrg" id="btn-login" class="btn btn-primary" href="#/org_event/{{event.EventID}}"><span class="glyphicon glyphicon-globe"></span>Aid Organization View</a>
-        </div>
     </div>
     <div id="helpPanel" class="col-md-3" ng-show="showHelp">
         <div class="row">
@@ -38,7 +35,7 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
-                            <a href="#\event_map\{{event.EventID}}" style="margin-top: -10px;">
+                            <a href="" ng-click="centerMapToLongLat(event.EventLocations[0].LAT, event.EventLocations[0].LONG)" style="margin-top: -10px;">
                                 ({{event.EventLocations[0].LAT}}, {{event.EventLocations[0].LONG}}, {{event.EventLocations[0].Radius}} km<sup>2</sup>)
                             </a>
                         </div>
@@ -122,7 +119,7 @@
                     </div>
                     <div class="row">
                         <div id="needs-section">
-							<div filters classfunc="toggleNeedsClass" togglefunc="toggleNeed" />
+                            <div filters classfunc="toggleNeedsClass" togglefunc="toggleNeed" />
                         </div>
                     </div>
                 </div>

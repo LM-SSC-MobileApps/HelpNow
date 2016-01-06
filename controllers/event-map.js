@@ -30,24 +30,26 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     $scope.showEventDetails = true;
     $scope.showHelp = false;
     $scope.showNeeds = false;
-	
-	$scope.filterFlags = {
-		showMedical: true,
-		showShelter: true,
-		showFood: true,
-		showWater:true,
-		showEvacuation: true,
-		showMedicine: true
-	};
-	
-	$scope.needFlags = {
-		showMedical: false,
-		showShelter: false,
-		showFood: false,
-		showWater:false,
-		showEvacuation: false,
-		showMedicine: false
-	};
+
+    $scope.filterFlags = {
+        showMedical: true,
+        showShelter: true,
+        showFood: true,
+        showWater: true,
+        showClothing: true,
+        showEvacuation: true,
+        showMedicine: true
+    };
+
+    $scope.needFlags = {
+        showMedical: false,
+        showShelter: false,
+        showFood: false,
+        showWater: false,
+        showClothing: false,
+        showEvacuation: false,
+        showMedicine: false
+    };
 
     $scope.showLocationMarkers = true;
     $scope.locationPref = { value: 'Current' };
@@ -79,6 +81,12 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
         $scope.locationOutline = L.circle([position.coords.latitude, position.coords.longitude], $scope.overlayRadius, { color: "#00ff00", opacity: 1, fillOpacity: 0.7 }).addTo(map);
         $scope.$digest();
     }
+
+    $scope.centerMapToLongLat = function (lat, long) {
+        if (!map) return;
+        map.setZoom(13);
+        map.panTo(new L.LatLng(lat, long));
+    };
 
     $scope.getSelectedUrgency = function () {
         $scope.helpRequest.RequestUrgencyID = $scope.selectedUrgency.RequestUrgencyID;
@@ -119,7 +127,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     };
 
     function resetNeedsButtons() {
-		var flags = $scope.needFlags;
+        var flags = $scope.needFlags;
         flags.showMedical = false;
         flags.showShelter = false;
         flags.showFood = false;
@@ -148,7 +156,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
         mapLayers = [];
 
         if ($scope.showLocationMarkers)
-			$scope.buildLocationMarkers($scope.locations, mapLayers, $scope.filterFlags);
+            $scope.buildLocationMarkers($scope.locations, mapLayers, $scope.filterFlags);
 
         angular.forEach(mapLayers, function (layer) {
             map.addLayer(layer);
@@ -172,31 +180,31 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     }
 
     $scope.toggleButtonClass = function (id) {
-		var status = $scope[id];
+        var status = $scope[id];
         return status ? "btn btn-toggle active" : "btn btn-toggle";
     };
 
     $scope.toggleButton = function (id) {
-		var flags = $scope.filterFlags;
+        var flags = $scope.filterFlags;
         flags[id] = !flags[id];
         updateMap();
         return false;
     };
-	
-	$scope.toggleFilterClass = function(id) {
-		var flags = $scope.filterFlags;
-		var status = flags[id];
-		return status ? "btn btn-toggle active" : "btn btn-toggle";
-	};
-	
-	$scope.toggleNeedsClass = function(id) {
-		var flags = $scope.needFlags;
-		var status = flags[id];
-		return status ? "btn btn-toggle active" : "btn btn-toggle";
-	};
+
+    $scope.toggleFilterClass = function (id) {
+        var flags = $scope.filterFlags;
+        var status = flags[id];
+        return status ? "btn btn-toggle active" : "btn btn-toggle";
+    };
+
+    $scope.toggleNeedsClass = function (id) {
+        var flags = $scope.needFlags;
+        var status = flags[id];
+        return status ? "btn btn-toggle active" : "btn btn-toggle";
+    };
 
     $scope.toggleNeed = function (id) {
-		var flags = $scope.needFlags;
+        var flags = $scope.needFlags;
         flags[id] = !flags[id];
         return false;
     };
@@ -288,11 +296,11 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     $scope.sendNeedRequest = function () {
         var hasError = false;
         var hasSubmissionError = false;
-		var flags = $scope.needFlags;
-            
+        var flags = $scope.needFlags;
+
         if ($scope.showNeeds) {
-			if (!flags.showMedical && !flags.showShelter && !flags.showFood &&
-                !flags.showMedicine && !flags.showWater && !flags.showEvacuation) {
+            if (!flags.showMedical && !flags.showShelter && !flags.showFood &&
+                !flags.showMedicine && !flags.showWater && !flags.showClothing && !flags.showEvacuation) {
                 hasError = true;
             }
         }
@@ -321,8 +329,12 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
                 $scope.helpRequest.ResourceTypeID = '2';
                 postNeedRequest();
             }
-            if (flags.showEvacuation) {
+            if (flags.showClothing) {
                 $scope.helpRequest.ResourceTypeID = '5';
+                postNeedRequest();
+            }
+            if (flags.showEvacuation) {
+                $scope.helpRequest.ResourceTypeID = '7';
                 postNeedRequest();
             }
             resetNeedsButtons();

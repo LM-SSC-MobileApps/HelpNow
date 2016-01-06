@@ -36,6 +36,7 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
                     FirstName: $scope.currentUser.FirstName,
                     LastName: $scope.currentUser.LastName,
                     OrganizationID: $scope.currentUser.Organization.OrganizationID,
+                    OrganizationTypeID: $scope.currentUser.Organization.OrganizationTypeID,
                     OrganizationName: $scope.currentUser.Organization.Name
                 };
                 $scope.setCurrentUser(userSessionObject);
