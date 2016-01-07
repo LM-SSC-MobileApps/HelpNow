@@ -39,7 +39,7 @@ function logout(req, res) {
 function getEnvironment() {
     var os = require('os');
     var host = os.hostname();
-    if (host.indexOf('amazonaws.com') > 0) {
+    if (host.indexOf('ec2') > 0) {
         return 'PRD';
     } else {
         return 'DEV';
@@ -55,10 +55,8 @@ function getHttp() {
 }
 
 function getHost() {
-    var os = require('os');
-    var host = os.hostname();
     if (getEnvironment() === 'PRD') {
-        return host;
+        return 'ec2-52-35-71-10.us-west-2.compute.amazonaws.com';
     } else {
         return 'localhost';
     }       
