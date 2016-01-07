@@ -5,8 +5,6 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	$scope.eventsResource = $resource("/api/event");
 	$scope.currentUser = JSON.parse(sessionStorage.getItem("user"));
 	$scope.currentOrg = JSON.parse(sessionStorage.getItem("user"));
-
-	$scope.title = "Worldwide Events";
 	
 	$scope.loadEvents = function() {
 		$scope.eventsResource.get({}, function(data) {
@@ -15,12 +13,13 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 		});
 	};
 
-	$scope.setShowLogin = function () {
-	    if ($scope.currentUser) {
-	        $scope.showLogin = false;
-	    }
-	    else {
-	        $scope.showLogin = true;
+	$scope.getShowLogin = function () {
+	    if ($scope.title.indexOf("Login") == 0) {
+	        return false;
+	    } else if ($scope.currentUser) {
+	        return false;
+	    } else {
+	        return true;
 	    }
 	};
 	
@@ -51,6 +50,10 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	    $scope.currentUser = user;
 	};
 
+	$scope.getCurrentUser = function () {
+	    return $scope.currentUser;
+	}
+
 	$scope.setCurrentOrg = function (org) {
 	    $scope.currentOrg = org;
 	};
@@ -63,7 +66,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 					$scope.text = data;
 				})
 				.error(function (data) {
-					alert(data);
+				    console.log("setCurrentLanguage: " + data);
 				});
 		else {
 			$http.get("i18n/text-ENG.json")
@@ -71,7 +74,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 					$scope.text = data;
 				})
 				.error(function (data) {
-					alert(data);
+				    console.log("setCurrentLanguage: " + data);
 				});
 		}	
 	};
@@ -102,12 +105,12 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 
 	$scope.getLocationIcon = function (location) {
 	    var inventories = location.ResourceLocationInventories;
-		var belongsToUser = $scope.currentOrg && location.OrganizationID == $scope.currentOrg.OrganizationID;
-		
+	    var belongsToUser = $scope.currentOrg && location.OrganizationID == $scope.currentOrg.OrganizationID;
+
 	    if (inventories.length > 1)
 	        return belongsToUser ? "style/images/Resources-DBox-Blue.png" : "style/images/Resources-Box-Blue.png";
 
-		var iconType = belongsToUser ? "DDiamond-Blue" : "Diamond-Blue";
+	    var iconType = belongsToUser ? "DDiamond-Blue" : "Diamond-Blue";
 	    var resourceType = inventories[0].ResourceType.Description;
 	    if (resourceType == "Water") {
 	        return "style/images/Water-" + iconType + ".png";
@@ -117,6 +120,8 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	        return "style/images/Shelter-" + iconType + ".png";
 	    } else if (resourceType == "Evacuation") {
 	        return "style/images/Evacuation-" + iconType + ".png";
+	    } else if (resourceType == "Clothing") {
+	        return "style/images/Clothing-" + iconType + ".png";
 	    } else if (resourceType == "Medicine") {
 	        return "style/images/Medicine-" + iconType + ".png";
 	    } else {
@@ -170,6 +175,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	    return (type == "Water" && flags.showWater) ||
 				(type == "Shelter" && flags.showShelter) ||
 				(type == "Food" && flags.showFood) ||
+                (type == "Clothing" && flags.showClothing) ||
 				(type == "Evacuation" && flags.showEvacuation) ||
 				(type == "First Aid" && flags.showMedical) ||
 				(type == "Medicine" && flags.showMedicine);
@@ -185,16 +191,66 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	};
 	
 	$scope.loadEvents();
-	$scope.setShowLogin();
+
+	$scope.$on('$locationChangeSuccess', function (evt, absNewUrl, absOldUrl) {
+        // Check for Facebook redirect and then set client session object from server
+	    var facebookUrl = "http://localhost:8080/#/_=_";
+
+	    if (absNewUrl.indexOf(facebookUrl) == 0 &&
+            absOldUrl.indexOf(facebookUrl) == 0) {
+
+	        var webCall = $http({
+	            method: 'POST',
+	            url: '/auth/account',
+	            async: true,
+	            headers: {
+	                'Content-Type': 'application/x-www-form-urlencoded'
+	            }
+	        });
+
+	        webCall.then(function (response) {	           
+	            $scope.users = response.data.json;
+	            $scope.currentUser = $scope.users[0];
+	            if ($scope.currentUser === undefined) {
+	                alert("Incorrect username or password. Please try again.");
+	            }
+	            else {	               
+	                var userSessionObject = {
+	                    AccountID: $scope.currentUser.AccountID,
+	                    FirstName: $scope.currentUser.FirstName,
+	                    LastName: $scope.currentUser.LastName,
+	                    OrganizationID: $scope.currentUser.Organization.OrganizationID,
+	                    OrganizationTypeID: $scope.currentUser.Organization.OrganizationTypeID,
+	                    OrganizationName: $scope.currentUser.Organization.Name
+	                };
+	                $scope.setCurrentUser(userSessionObject);
+	                $scope.setCurrentOrg($scope.currentUser.Organization);
+	                sessionStorage.setItem("user", JSON.stringify(userSessionObject));
+	                $scope.$broadcast("CurrentUserLoaded", {});
+	            }
+	        },
+            function (response) { // optional
+                alert("Incorrect username or password. Please try again.");
+            });
+	    }
+
+        // Handle previous path logic
+	    var url = absOldUrl.replace("/#/", "/");
+ 	    var pathArray = url.split('/');
+	    var previousPath = "";
+	    for (i = 3; i < pathArray.length; i++) {
+	        previousPath += "/";
+	        previousPath += pathArray[i];
+	    }
+	    $scope.previousPath = previousPath;
+	});
 
 	$scope.redirectToLogin = function () {
-	    $scope.showLogin = false;
 	    $location.path('/login');
 	};
 
 	$scope.redirectToLogout = function () {
         // Logout client
-	    $scope.showLogin = true;
 	    $scope.currentUser = false;
 	    sessionStorage.removeItem("user");
 

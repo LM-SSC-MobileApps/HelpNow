@@ -30,6 +30,14 @@
     <!--<script src="http://labs.easyblog.it/maps/leaflet-search/src/leaflet-search.js"></script>-->
     <script type="text/javascript" src="leaflet/leaflet-search.js"></script>
 
+    <link rel="shortcut icon" href="/style/images/HelpNowIcon.ico" type="image/x-icon" />
+
+    <!--Apple Web Clip Icons-->
+    <link rel="apple-touch-icon" href="touch-icon-iphone.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="touch-icon-ipad.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="touch-icon-iphone-retina.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="touch-icon-ipad-retina.png">
+
 	<script type="text/javascript" src="generated/all.js"></script>
     <script type="text/javascript" src="factories/regulation.js"></script>
     <script type="text/javascript" src="factories/invitation.js"></script>
@@ -93,8 +101,8 @@
                                     </tr>                                    
                                 </table>                                                                
                             </div>
-                            <div class="col-md-4" ng-show="showLogin">
-                                <a id="btn-login" class="btn btn-primary pull-right" ng-click="redirectToLogin()"><span></span>{{text.login}}</a>
+                            <div class="col-md-4" ng-show="getShowLogin()">
+                                <a id="btn-login" class="btn btn-primary pull-right" ng-click="redirectToLogin()"><span></span>{{text.login}}</a>                                
                             </div>
                         </div>
                         <ng-view autoscroll="true" />

@@ -200,7 +200,44 @@ function setupFacebookAuthentication(app, passport, strategy) {
               //console.log(JSON.stringify(profile));
               //var profileStr = profile.name.givenName + '|' + profile.name.familyName + '|' + profile.emails[0].value
               //console.log(profileStr);
-              return done(null, profile);
+
+              var http = require('http');
+
+              var creds = '{"email":"' + profile.emails[0].value + '"}';
+              var options = {
+                  host: getHost(),
+                  path: '/api/account/external_login',
+                  port: getHttpPort(false),
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' }
+              };
+
+              callback = function (response) {
+                  var str = '';
+
+                  // Another chunk of data has been recieved, so append it to `str`
+                  response.on('data', function (chunk) {
+                      str += chunk;
+                  });
+
+                  // The whole response has been recieved, so know we can use it
+                  response.on('end', function () {
+                      if (str === "Unauthorized") {
+                          console.log("unauthorized");
+                          return done(null, false);
+                      } else {
+                          var jsonObj = JSON.parse(str);
+                          var user = jsonObj.json[0];
+                          console.log("authorized user: " + user.Email);
+                          //return done(null, user.Email, { message: str });
+                          return done(null, str);
+                      }
+                  });
+              }
+
+              var req = http.request(options, callback);
+              req.write(creds);
+              req.end();
           });
       }
     ));
@@ -223,8 +260,19 @@ function setupFacebookAuthentication(app, passport, strategy) {
         function (req, res) {
             //console.log('req = ' + JSON.stringify(req.user));
 
-            // Successful authentication, redirect home.
+            // Successful authentication, redirect home.            
             res.redirect('/');
         }
     );
+
+    app.post('/auth/account', function (req, res) {
+        //console.log("req.isAuthenticated() = " + req.isAuthenticated() + " user = " + req.user);
+        if (req.isAuthenticated()) {
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.write(req.user);
+            res.end();
+        } else {
+            res.redirect('/login');
+        }
+    });
 }

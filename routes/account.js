@@ -253,6 +253,57 @@ var routes = function(){
       });
     }
   )
+  //find login which retrieves account
+  .post('/external_login/', function (req, res) {
+        models.Account.findAll(
+          {
+              include: [
+                {
+                  model: models.Organization,
+                }
+              ],
+              where: {
+                  Email: req.body.email
+              }
+          }
+        ).then(function (account) {
+            if (account.length>0)
+            {
+              // var userSessionObject = {
+              //       AccountID: account[0].AccountID,
+              //       FirstName: account[0].FirstName,
+              //       LastName: account[0].LastName,
+              //       OrganizationID: account[0].Organization.OrganizationID,
+              //       OrganizationName: account[0].Organization.Organization.Name
+              //   }
+              req.session.accountid =  account[0].AccountID;
+              req.session.organizationid =  account[0].OrganizationID;
+              res.statusCode = 200;
+              res.send(
+                {
+                    result: 'success',
+                    err: '',
+                    json: account,
+                    length: account.length
+                }
+              );
+            }
+            else
+            {
+              res.sendStatus(401)
+            }
+            
+        }
+      ).catch(function (err) {
+          console.error(err);
+          res.statusCode = 502;
+          res.send({
+              result: 'error',
+              err: err.message
+          });
+      });
+    }
+  )
   //insert into Account
   .post('/', function(req, res) {
     models.Account.create(req.body)

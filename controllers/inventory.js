@@ -3,7 +3,7 @@
     var map;
     var mapLayers = [];
   
-    $scope.setTitle("Inventory Management");
+    $scope.setTitle("Inventory Managenent");
 
     $scope.setCurrentView("inventory");
 
@@ -166,31 +166,66 @@
         return popupText;
     }
 
-    $scope.initMap = function (newMap) {
-        map = newMap;
-        //map.on('click', function (e) {
-        //    if ($scope.locationPref.value == "Other") {
-        //        if ($scope.locationOutline !== undefined) {
-        //            map.removeLayer($scope.locationOutline);
-        //        }
-        //        $scope.locationOutline = L.circle(e.latlng, $scope.overlayRadius, { color: "#00ff00", opacity: 1, fillOpacity: 0.7 }).addTo(map);
-        //        $scope.helpRequest.LAT = e.latlng.lat.toFixed(3);
-        //        $scope.helpRequest.LONG = e.latlng.lng.toFixed(3);
-        //        $scope.$digest();
-        //    }
-        //});
-        updateMap();
-    };
-
-    $scope.centerMapToLongLat = function (lat, long) {
+    $scope.centerMapToLongLat = function (lat, long, zoom) {
         if (!map) return;
-        map.setZoom(12);
+        map.setZoom(zoom);
         map.panTo(new L.LatLng(lat, long));
     };
 
+
+    $scope.showLocationMarkers = true;
+    $scope.locationPref = { value: 'Current' };
+
+    $scope.getLocation = function () {
+        requestLocation();
+    };
+
+    function requestLocation() {
+        if ($scope.locationPref.value == "Current") {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            }
+        }
+        else {
+            if ($scope.locationOutline !== undefined) {
+                map.removeLayer($scope.locationOutline);
+            }
+            $scope.currentResourceLocation.LAT = "";
+            $scope.currentResourceLocation.LONG = "";
+        }
+    }
+
+    function showPosition(position) {
+        $scope.currentResourceLocation.LAT = position.coords.latitude;
+        $scope.currentResourceLocation.LONG = position.coords.longitude;
+        if ($scope.locationOutline !== undefined) {
+            map.removeLayer($scope.locationOutline);
+        }
+        $scope.locationOutline = L.circle([position.coords.latitude, position.coords.longitude], $scope.overlayRadius, { color: "#00ff00", opacity: 1, fillOpacity: 0.7 }).addTo(map);
+        $scope.$digest();
+        $scope.centerMapToLongLat(position.coords.latitude, position.coords.longitude, 7);
+    }
+
+    $scope.initMap = function (newMap) {
+        map = newMap;
+        map.on('click', function (e) {
+            if ($scope.locationPref.value == "Other") {
+                if ($scope.locationOutline !== undefined) {
+                    map.removeLayer($scope.locationOutline);
+                }
+                $scope.locationOutline = L.circle(e.latlng, $scope.overlayRadius, { color: "#00ff00", opacity: 1, fillOpacity: 0.7 }).addTo(map);
+                $scope.currentResourceLocation.LAT = e.latlng.lat.toFixed(3);
+                $scope.currentResourceLocation.LONG = e.latlng.lng.toFixed(3);
+                $scope.$digest();
+            }
+        });
+        updateMap();
+    };
+
+
     $scope.resourceLocationClick = function (lat, long, resourceLocID) {
         if (!map) return;
-        $scope.centerMapToLongLat(lat, long);
+        $scope.centerMapToLongLat(lat, long, 13);
         $scope.setCurrentResourceLocationByID(resourceLocID);
         $scope.showResourceLocationDiv();
     };
