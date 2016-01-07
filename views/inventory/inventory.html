@@ -11,7 +11,7 @@
                         <a href="" ng-click="showNewEditForm(resourceLocation.ResourceLocationID)"><img class="inventory-img" src="style/images/Edit.png" style="height: 22px; width: 22px;" /></a>
                     </div>
                     <div class="col-sm-9" style="padding-bottom: 10px;">
-                        <a href="" ng-click="resourceLocationClick(resourceLocation.LAT, resourceLocation.LONG,resourceLocation.ResourceLocationID)">({{resourceLocation.LONG | number:2}}, {{resourceLocation.LAT| number:2}})</a>
+                        <a href="" ng-click="resourceLocationClick(resourceLocation.LAT, resourceLocation.LONG,resourceLocation.ResourceLocationID)">({{resourceLocation.LAT| number:2}}, {{resourceLocation.LONG | number:2}})</a>
                     </div>
                     <div ng-repeat="resourceLocationTransport in resourceLocation.ResourceLocationTransports">
                         <div ng-if="resourceLocationTransport.TransportType.Description == 'Ground'" class="col-xs-4">
@@ -31,7 +31,7 @@
         </div>
     </div>
 
-    <div id="rightColumn" class="col-md-3" ng-if="showLocationForm">
+    <div id="rightColumn" class="col-md-3 form-group" ng-if="showLocationForm" ng-form name="reslocform1">
         <div class="row">
             <div class="col-md-12">
                 <div class="well">
@@ -40,7 +40,8 @@
                             <img src="style/images/Label.png" style="height: 25px; width: 30px; margin-top: 5px;" />
                         </div>
                         <div class="col-xs-10">
-                            {{text.location_name}}<br /><input ng-model="currentResourceLocation.Description" class="form-control" type="text" style="width: 170px;  margin-bottom: 10px;" />
+                            {{text.location_name}}<br /><input name="reslocname" ng-model="currentResourceLocation.Description" class="form-control" type="text" style="width: 170px;  margin-bottom: 10px;" required/>
+                            <!--<div class="help-block error" ng-show="reslocform1.reslocname.$error.required">Required</div>--> 
                         </div>
                     </div>
 
