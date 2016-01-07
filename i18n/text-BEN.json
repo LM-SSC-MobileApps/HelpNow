@@ -100,5 +100,21 @@
   "major_municipality_label": "মেজর পৌরসভা ( শহর / নগর )",
   "governing_district_label": "গভর্নিং জেলা ( প্রদেশ / রাষ্ট্র / কাউন্টি )",
   "postal_area_label": "ঠিকানা ফোন ( পোস্টাল কোড / জিপ )",
-  "country_label": "দেশ"
+  "country_label": "দেশ",
+  "manage_title_label": "প্রতিষ্ঠানের ব্যবস্থাপনা",
+  "registered_team_members_label": "নিবন্ধিত দল সদস্য",
+  "invitations_label": "আমন্ত্রণ",
+  "api_key_label": "এপিআই কী",
+  "btn_assign_points_of_contact": "যোগাযোগ পয়েন্ট বরাদ্দ",
+  "btn_invite_new_member": "নতুন সদস্যকে আমন্ত্রণ",
+  "btn_regulations": "রেগুলেশন ও নীতিসমূহ",
+  "btn_new_event": "নতুন ইভেন্ট শুরু",
+  "btn_manage_address": "ঠিকানা গালাগাল প্রতিবেদন",
+  "points_of_contact_label": "যোগাযোগ পয়েন্ট",
+  "primary_poc_label": "যোগাযোগ প্রাথমিক বিন্দু",
+  "second_poc_label": "যোগাযোগ দ্বিতীয় বিন্দু",
+  "invitation_label": "আমন্ত্রণ",
+  "btn_add_policy": "নতুন নীতি বা নিয়ন্ত্রণ করো",
+  "policy_title_label": "নীতি শিরোনাম",
+  "policy_text_label": "নীতি শিরোনাম"
 }
