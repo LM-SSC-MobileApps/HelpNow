@@ -9,7 +9,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     $scope.urgencyResource = $resource("/api/requesturgency");
     $scope.needRequestResource = $resource("/api/resourcerequest");
 
-    $scope.helpRequest = { EventID: '', RequestStateID: '1', Notes: 'Reported from App', AreaSize: '0.25 km', UnitOfMeasure: '', Quantity: '' };
+    $scope.helpRequest = { EventID: '', RequestStateID: '1', Notes: 'Reported from App', AreaSize: '0.25 km', UnitOfMeasure: '', Quantity: '', CreateDate: new Date() };
 
     $scope.eventID = $routeParams.eventID * 1;
     if ($scope.events) {
