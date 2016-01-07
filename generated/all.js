@@ -568,7 +568,7 @@ angular.module("helpNow").controller("DeploymentCtrl", ["$scope", "$routeParams"
 angular.module("helpNow").controller("EventListCtrl", ["$scope", "$location", function ($scope, $location) {
     var map;
 
-    $scope.setTitle("Worldwide Events");
+    $scope.setTitle($scope.text.events_title);
     $scope.user = $scope.getCurrentUser();
     if ($scope.user == null || $scope.user == false) {
         $scope.isLoggedIn = false;
@@ -631,7 +631,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     $scope.urgencyResource = $resource("/api/requesturgency");
     $scope.needRequestResource = $resource("/api/resourcerequest");
 
-    $scope.helpRequest = { EventID: '', RequestStateID: '1', Notes: 'Reported from App', AreaSize: '0.25 km', UnitOfMeasure: '', Quantity: '' };
+    $scope.helpRequest = { EventID: '', RequestStateID: '1', Notes: 'Reported from App', AreaSize: '0.25 km', UnitOfMeasure: '', Quantity: '', CreateDate: new Date() };
 
     $scope.eventID = $routeParams.eventID * 1;
     if ($scope.events) {
@@ -1055,7 +1055,7 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
     var map;
     var mapLayers = [];
   
-    $scope.setTitle("Inventory Management");
+    $scope.setTitle("Inventory Managenent");
 
     $scope.setCurrentView("inventory");
 
@@ -2589,8 +2589,6 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	$scope.eventsResource = $resource("/api/event");
 	$scope.currentUser = JSON.parse(sessionStorage.getItem("user"));
 	$scope.currentOrg = JSON.parse(sessionStorage.getItem("user"));
-
-	$scope.title = "Worldwide Events";
 	
 	$scope.loadEvents = function() {
 		$scope.eventsResource.get({}, function(data) {
@@ -2779,6 +2777,48 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	$scope.loadEvents();
 
 	$scope.$on('$locationChangeSuccess', function (evt, absNewUrl, absOldUrl) {
+        // Check for Facebook redirect and then set client session object from server
+	    var facebookUrl = "http://localhost:8080/#/_=_";
+
+	    if (absNewUrl.indexOf(facebookUrl) == 0 &&
+            absOldUrl.indexOf(facebookUrl) == 0) {
+
+	        var webCall = $http({
+	            method: 'POST',
+	            url: '/auth/account',
+	            async: true,
+	            headers: {
+	                'Content-Type': 'application/x-www-form-urlencoded'
+	            }
+	        });
+
+	        webCall.then(function (response) {	           
+	            $scope.users = response.data.json;
+	            $scope.currentUser = $scope.users[0];
+	            if ($scope.currentUser === undefined) {
+	                alert("Incorrect username or password. Please try again.");
+	            }
+	            else {	               
+	                var userSessionObject = {
+	                    AccountID: $scope.currentUser.AccountID,
+	                    FirstName: $scope.currentUser.FirstName,
+	                    LastName: $scope.currentUser.LastName,
+	                    OrganizationID: $scope.currentUser.Organization.OrganizationID,
+	                    OrganizationTypeID: $scope.currentUser.Organization.OrganizationTypeID,
+	                    OrganizationName: $scope.currentUser.Organization.Name
+	                };
+	                $scope.setCurrentUser(userSessionObject);
+	                $scope.setCurrentOrg($scope.currentUser.Organization);
+	                sessionStorage.setItem("user", JSON.stringify(userSessionObject));
+	                $scope.$broadcast("CurrentUserLoaded", {});
+	            }
+	        },
+            function (response) { // optional
+                alert("Incorrect username or password. Please try again.");
+            });
+	    }
+
+        // Handle previous path logic
 	    var url = absOldUrl.replace("/#/", "/");
  	    var pathArray = url.split('/');
 	    var previousPath = "";

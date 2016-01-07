@@ -1,7 +1,7 @@
 angular.module("helpNow").controller("EventListCtrl", ["$scope", "$location", function ($scope, $location) {
     var map;
 
-    $scope.setTitle("Worldwide Events");
+    $scope.setTitle($scope.text.events_title);
     $scope.user = $scope.getCurrentUser();
     if ($scope.user == null || $scope.user == false) {
         $scope.isLoggedIn = false;
