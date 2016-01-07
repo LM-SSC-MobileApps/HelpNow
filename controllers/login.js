@@ -1,6 +1,6 @@
 angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function ($scope, $http, $location, $routeParams, $resource) {
     $scope.setCurrentView("login");
-    $scope.setTitle("Login");
+    $scope.setTitle($scope.text.login_title);
 
     $scope.validateUser = function () {
         if ($scope.userCreds.username === undefined || $scope.userCreds.password === undefined) {
@@ -28,7 +28,7 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
             $scope.users = response.data.json;
             $scope.currentUser = $scope.users[0];
             if ($scope.currentUser === undefined) {
-                alert("Incorrect username or password. Please try again.");
+                alert($scope.text.incorrect_login_alert);
             }
             else {
                 var userSessionObject = {
@@ -47,7 +47,7 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
             }
         },
         function (response) { // optional
-            alert("Incorrect username or password. Please try again.");
+            alert($scope.text.incorrect_login_alert);
         });
-    }    
+    }
 }]);

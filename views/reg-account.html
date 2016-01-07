@@ -1,33 +1,28 @@
 <div ng-controller="RegAccountCtrl">
-    <div class="row">
-        <div class="col-xs-3 ">
-            <h3><img src="style/images/Person.png" style="height: 50px; width: 20px;" />   Register Account</h3>
-        </div>
-    </div>
     <div class="row" ng-show="showUsername">
         <div class="well">
             <div class="row">
                 <form name="usernamePassForm" novalidate role="form">
                     <div class="form-group" ng-class="">
                         <div class="col-xs-12">
-                            <label for="username">Username</label>
+                            <label for="username">{{text.username_label}}</label>
                             <input type="text" ng-model="userAccount.Username" id="username" name="username" class="form-control" ng-required="true" />
                             <br />
                         </div>
                         <div class="col-xs-12">
-                            <label for="password">Password</label>
+                            <label for="password">{{text.password_label}}</label>
                             <input type="password" ng-model="userAccount.Password" id="password" name="password" class="form-control" ng-required="true" />
                             <br />
                         </div>
                         <div class="col-xs-12">
-                            <label for="confirmPassword">Confirm Password</label>
+                            <label for="confirmPassword">{{text.confirm_password_label}}</label>
                             <input type="password" ng-model="confirmedPassword" id="confirmPassword" name="confirmPassword" class="form-control" ng-required="true" />
                             <br />
                         </div>
                     </div>
                 </form>
                 <div class="col-xs-1 col-xs-offset-11">
-                    <a id="btn-showUser" class="btn btn-primary" ng-click="showUserForm()"><span></span>Next</a>
+                    <a id="btn-showUser" class="btn btn-primary" ng-click="showUserForm()"><span></span>{{text.next}}</a>
                 </div>
             </div>
         </div>
@@ -38,40 +33,40 @@
                 <form name="userInfoForm" novalidate role="form">
                     <div class="form-group" ng-class="">
                         <div class="col-xs-12">
-                            <label for="firstName">First Name</label>
+                            <label for="firstName">{{text.first_name_label}}</label>
                             <input type="text" ng-model="userAccount.FirstName" id="firstName" name="firstName" class="form-control" ng-required="true" />
                             <br />
                         </div>
                         <div class="col-xs-12">
-                            <label for="middleInitial">Middle Initial</label>
+                            <label for="middleInitial">{{text.middle_initial_label}}</label>
                             <input type="text" ng-model="userAccount.MiddleInitial" id="middleInitial" name="middleInitial" class="form-control" ng-required="true" />
                             <br />
                         </div>
                         <div class="col-xs-12">
-                            <label for="lastName">Last Name</label>
+                            <label for="lastName">{{text.last_name_label}}</label>
                             <input type="text" ng-model="userAccount.LastName" id="lastName" name="lastName" class="form-control" ng-required="true" />
                             <br />
                         </div>
                         <div class="col-xs-12">
-                            <label for="email">Email</label>
+                            <label for="email">{{text.email_label}}</label>
                             <input type="text" ng-model="userAccount.Email" id="email" name="email" class="form-control" ng-required="true" />
                             <br />
                         </div>
                         <div class="col-xs-12">
-                            <label for="phone">Phone</label>
+                            <label for="phone">{{text.phone_label}}</label>
                             <input type="text" ng-model="userAccount.Phone" id="phone" name="phone" class="form-control" ng-required="true" />
                             <br />
                         </div>
                         <div class="col-xs-12">
-                            <label for="mobilePhone">Mobile Phone</label>
+                            <label for="mobilePhone">{{text.mobile_phone_label}}</label>
                             <input type="text" ng-model="userAccount.MobilePhone" id="mobilePhone" name="mobilePhone" class="form-control" ng-required="true" />
                             <br />
                         </div>
                     </div>
                 </form>
                 <div>
-                    <a id="btn-showUsername" class="btn btn-primary" ng-click="showUsernameForm()"><span></span>Back</a>
-                    <a id="btn-showAddress" class="btn btn-primary pull-right" ng-click="submitUserReg()"><span></span>Submit</a>
+                    <a id="btn-showUsername" class="btn btn-primary" ng-click="showUsernameForm()"><span></span>{{text.back}}</a>
+                    <a id="btn-showAddress" class="btn btn-primary pull-right" ng-click="submitUserReg()"><span></span>{{text.btn_submit}}</a>
                 </div>
             </div>
         </div>

@@ -1,5 +1,5 @@
 ﻿angular.module("helpNow").controller("AdministrationCtrl", ["$scope", "$location", "$resource", "Organization", "$uibModal", function ($scope, $location, $resource, Organization, $uibModal) {
-    $scope.setTitle("Government & Organization Administration");
+    $scope.setTitle($scope.text.admin_title);
 
     $scope.governmentResource = $resource("/api/organization/type/:id",
 			{ id: 1 });
@@ -16,7 +16,7 @@
     $scope.loadOrganizations = function () {
         $scope.organizationResource.get({}, function (data) {
             angular.module("helpNow").controller("AdministrationCtrl", ["$scope", "$location", "$resource", "Organization", "$uibModal", function ($scope, $location, $resource, Organization, $uibModal) {
-                $scope.setTitle("Government & Organization Administration");
+                $scope.setTitle($scope.text.admin_title);
 
                 $scope.governmentResource = $resource("/api/organization/type/:id",
                         { id: 1 });

@@ -6,16 +6,16 @@
                 <div ng-repeat="event in events">
                     <div class="row">
                         <div class="col-sm-3">
-                            <a ng-hide="getShowLogin" href="#event_map/{{event.EventID}}"><img class="resource-img" src="{{getEventIcon(event.EventType.Description)}}" /></a>
-                            <a ng-show="getShowLogin" href="#org_event/{{event.EventID}}"><img class="resource-img" src="{{getEventIcon(event.EventType.Description)}}" /></a>
+                            <a ng-hide="isLoggedIn" href="#event_map/{{event.EventID}}"><img class="resource-img" src="{{getEventIcon(event.EventType.Description)}}" /></a>
+                            <a ng-show="isLoggedIn" href="#org_event/{{event.EventID}}"><img class="resource-img" src="{{getEventIcon(event.EventType.Description)}}" /></a>
                         </div>
                         <div class="col-sm-9">
                             <h4>{{event.EventType.Description}}</h4>
                             <h5>{{event.Summary}}</h5>
-                            <a ng-hide="getShowLogin" href="#event_map/{{event.EventID}}">
+                            <a ng-hide="isLoggedIn" href="#event_map/{{event.EventID}}">
                                 ({{event.EventLocations[0].LAT}}, {{event.EventLocations[0].LONG}}, {{event.EventLocations[0].Radius}} km<sup>2</sup>)
                             </a>
-                            <a ng-show="getShowLogin" href="#org_event/{{event.EventID}}">
+                            <a ng-show="isLoggedIn" href="#org_event/{{event.EventID}}">
                                 ({{event.EventLocations[0].LAT}}, {{event.EventLocations[0].LONG}}, {{event.EventLocations[0].Radius}} km<sup>2</sup>)
                             </a>
                         </div>

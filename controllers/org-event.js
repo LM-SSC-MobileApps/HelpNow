@@ -446,6 +446,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 
 	    $scope.showLocation = function (lat, lng) {
 	        map.setView([lat, lng], map.getZoom());
+	        updateMap();
 	    };
 
 	    $scope.backToFind = function () {

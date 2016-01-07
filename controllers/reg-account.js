@@ -1,24 +1,23 @@
 ﻿angular.module("helpNow").controller("RegAccountCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function ($scope, $http, $location, $routeParams, $resource) {
     $scope.setCurrentView("reg-account");
-    $scope.setTitle("Register an Account");
+    $scope.setTitle($scope.text.reg_account_title);
 
     $scope.showUsername = true;
     $scope.showUser = false;
 
-    $scope.userAccount = {OrganizationGroupID: 1, Active: true, AccountRoleID: 3, CreateDate: new Date()};
+    $scope.userAccount = { OrganizationGroupID: 1, Active: true, AccountRoleID: 3, CreateDate: new Date() };
 
     $scope.showUserForm = function () {
         var hasError = false;
         if ($scope.userAccount.Username === undefined || $scope.userAccount.Password === undefined || $scope.confirmedPassword === undefined) {
-            alert("Missing field(s)");
+            alert($scope.text.missing_fields_alert);
             hasError = true;
         }
         else if ($scope.userAccount.Password != $scope.confirmedPassword) {
-            alert("Passwords do not match");
+            alert($scope.text.password_mismatch_alert);
             hasError = true;
         }
-        if (!hasError)
-        {
+        if (!hasError) {
             $scope.showUser = true;
             $scope.showUsername = false;
         }
@@ -32,7 +31,7 @@
     $scope.submitUserReg = function () {
         var hasError = false;
         if ($scope.userAccount.FirstName === undefined || $scope.userAccount.LastName === undefined || $scope.userAccount.Email === undefined) {
-            alert("Missing field(s)");
+            alert($scope.text.missing_fields_alert);
             hasError = true;
         }
         if (!hasError) {

@@ -97,7 +97,7 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 		});
 	}]);
 angular.module("helpNow").controller("AdministrationCtrl", ["$scope", "$location", "$resource", "Organization", "$uibModal", function ($scope, $location, $resource, Organization, $uibModal) {
-    $scope.setTitle("Government & Organization Administration");
+    $scope.setTitle($scope.text.admin_title);
 
     $scope.governmentResource = $resource("/api/organization/type/:id",
 			{ id: 1 });
@@ -114,7 +114,7 @@ angular.module("helpNow").controller("AdministrationCtrl", ["$scope", "$location
     $scope.loadOrganizations = function () {
         $scope.organizationResource.get({}, function (data) {
             angular.module("helpNow").controller("AdministrationCtrl", ["$scope", "$location", "$resource", "Organization", "$uibModal", function ($scope, $location, $resource, Organization, $uibModal) {
-                $scope.setTitle("Government & Organization Administration");
+                $scope.setTitle($scope.text.admin_title);
 
                 $scope.governmentResource = $resource("/api/organization/type/:id",
                         { id: 1 });
@@ -415,7 +415,8 @@ angular.module("helpNow").controller("DeploymentCtrl", ["$scope", "$routeParams"
 	            ResourceLocationTypeID: 2,
 	            OrganizationID: $scope.currentOrg.OrganizationID,
 	            ResourceLocationStatusID: "1",
-	            ResourceLocationTransports: []
+	            ResourceLocationTransports: [],
+	            ResourceLocationInventories: []
 	        };
 	    }
 
@@ -515,6 +516,7 @@ angular.module("helpNow").controller("DeploymentCtrl", ["$scope", "$routeParams"
 	    };
 
 	    $scope.addResources = function (inventory) {
+	        alert("Test1");
 	        delete inventory.ResourceLocationInventoryID;
 	        inventory.SourceLocationID = inventory.ResourceLocationID;
 	        inventory.ResourceLocationID = $scope.deployment.ResourceLocationID;
@@ -533,7 +535,9 @@ angular.module("helpNow").controller("DeploymentCtrl", ["$scope", "$routeParams"
 	        request.then(
                 function successCallback(response) {
                     inventory.ResourceLocationInventoryID = response.data.json.ResourceLocationInventoryID;
+                    alert(JSON.stringify($scope.deployment));
                     $scope.deployment.ResourceLocationInventories.push(inventory);
+                    alert("Test2");
                     $scope.showDistributionCenters = false;
                 },
                 function errorCallback(response) {
@@ -885,7 +889,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
             $scope.showNeeds = !$scope.showNeeds;
         }
         else {
-            alert("Missing Required Field(s)");
+            alert($scope.text.missing_fields_alert);
         }
         return false;
     };
@@ -964,7 +968,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
             $scope.showNeeds = !$scope.showNeeds;
             $scope.showEventDetails = !$scope.showEventDetails;
             if (!$scope.hasSubmissionError) {
-                alert("Request(s) successfully submitted");
+                alert($scope.text.need_request_success);
             }
         }
         else {
@@ -975,7 +979,6 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
 
     function postNeedRequest() {
         var needRequestData = JSON.stringify($scope.helpRequest);
-        alert("needRequestData: " + needRequestData);
         var webCall = $http({
             method: 'POST',
             url: '/api/resourcerequest',
@@ -1688,7 +1691,7 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
 }]);
 angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function ($scope, $http, $location, $routeParams, $resource) {
     $scope.setCurrentView("login");
-    $scope.setTitle("Login");
+    $scope.setTitle($scope.text.login_title);
 
     $scope.validateUser = function () {
         if ($scope.userCreds.username === undefined || $scope.userCreds.password === undefined) {
@@ -1716,7 +1719,7 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
             $scope.users = response.data.json;
             $scope.currentUser = $scope.users[0];
             if ($scope.currentUser === undefined) {
-                alert("Incorrect username or password. Please try again.");
+                alert($scope.text.incorrect_login_alert);
             }
             else {
                 var userSessionObject = {
@@ -1735,9 +1738,9 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
             }
         },
         function (response) { // optional
-            alert("Incorrect username or password. Please try again.");
+            alert($scope.text.incorrect_login_alert);
         });
-    }    
+    }
 }]);
 /**
  * ManageCtrl
@@ -2381,6 +2384,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 
 	    $scope.showLocation = function (lat, lng) {
 	        map.setView([lat, lng], map.getZoom());
+	        updateMap();
 	    };
 
 	    $scope.backToFind = function () {
@@ -2446,25 +2450,24 @@ angular.module("helpNow").controller("OrganizationAddCtrl", ["$scope", "$resourc
 
 angular.module("helpNow").controller("RegAccountCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function ($scope, $http, $location, $routeParams, $resource) {
     $scope.setCurrentView("reg-account");
-    $scope.setTitle("Register an Account");
+    $scope.setTitle($scope.text.reg_account_title);
 
     $scope.showUsername = true;
     $scope.showUser = false;
 
-    $scope.userAccount = {OrganizationGroupID: 1, Active: true, AccountRoleID: 3, CreateDate: new Date()};
+    $scope.userAccount = { OrganizationGroupID: 1, Active: true, AccountRoleID: 3, CreateDate: new Date() };
 
     $scope.showUserForm = function () {
         var hasError = false;
         if ($scope.userAccount.Username === undefined || $scope.userAccount.Password === undefined || $scope.confirmedPassword === undefined) {
-            alert("Missing field(s)");
+            alert($scope.text.missing_fields_alert);
             hasError = true;
         }
         else if ($scope.userAccount.Password != $scope.confirmedPassword) {
-            alert("Passwords do not match");
+            alert($scope.text.password_mismatch_alert);
             hasError = true;
         }
-        if (!hasError)
-        {
+        if (!hasError) {
             $scope.showUser = true;
             $scope.showUsername = false;
         }
@@ -2478,7 +2481,7 @@ angular.module("helpNow").controller("RegAccountCtrl", ["$scope", "$http", "$loc
     $scope.submitUserReg = function () {
         var hasError = false;
         if ($scope.userAccount.FirstName === undefined || $scope.userAccount.LastName === undefined || $scope.userAccount.Email === undefined) {
-            alert("Missing field(s)");
+            alert($scope.text.missing_fields_alert);
             hasError = true;
         }
         if (!hasError) {
@@ -2618,282 +2621,284 @@ $scope.$on("RegulationDataLoaded", function() {});
 
 }]);
 
-angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http", "$resource", function($scope, $location, $http, $resource) {
-	var currentLanguage = "Eng";
-	var currentView = "";
-	
-	$scope.eventsResource = $resource("/api/event");
-	$scope.currentUser = JSON.parse(sessionStorage.getItem("user"));
-	$scope.currentOrg = JSON.parse(sessionStorage.getItem("user"));
-	
-	$scope.loadEvents = function() {
-		$scope.eventsResource.get({}, function(data) {
-			$scope.events = data.json;
-			$scope.$broadcast("EventDataLoaded", {});
-		});
-	};
+angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location", "$http", "$resource", function ($scope, $route, $location, $http, $resource) {
+    var currentLanguage = "Eng";
+    var currentView = "";
 
-	$scope.getShowLogin = function () {
-	    if ($scope.title.indexOf("Login") == 0) {
-	        return false;
-	    } else if ($scope.currentUser) {
-	        return false;
-	    } else {
-	        return true;
-	    }
-	};
-	
-	$scope.getEventIcon = function(eventType) {
-		if (eventType == "Flood") {
-			return "style/images/flood.png";
-		} else if (eventType == "Tsunami") {
-			return "style/images/Tsunami.png";
-		} else {
-			return "style/images/earthquake.png";
-		}
-	};
-	
-	$scope.getMenuClass = function(viewName) {
-		return viewName == currentView ? "active" : "";
-	};
-	
-	$scope.setCurrentView = function (viewName) {
-		currentView = viewName;
-	};
+    $scope.eventsResource = $resource("/api/event");
+    $scope.currentUser = JSON.parse(sessionStorage.getItem("user"));
+    $scope.currentOrg = JSON.parse(sessionStorage.getItem("user"));
 
-	$scope.setTitle = function (title, img) {
-	    $scope.title = title;
-	    $scope.imageSrc = img;
-	};
+    $scope.loadEvents = function () {
+        $scope.eventsResource.get({}, function (data) {
+            $scope.events = data.json;
+            $scope.$broadcast("EventDataLoaded", {});
+        });
+    };
 
-	$scope.setCurrentUser = function (user) {
-	    $scope.currentUser = user;
-	};
+    $scope.getShowLogin = function () {
+        if ($scope.title.indexOf($scope.text.login_title) == 0) {
+            return false;
+        } else if ($scope.currentUser) {
+            return false;
+        } else {
+            return true;
+        }
+    };
 
-	$scope.getCurrentUser = function () {
-	    return $scope.currentUser;
-	}
+    $scope.getEventIcon = function (eventType) {
+        if (eventType == "Flood") {
+            return "style/images/flood.png";
+        } else if (eventType == "Tsunami") {
+            return "style/images/Tsunami.png";
+        } else {
+            return "style/images/earthquake.png";
+        }
+    };
 
-	$scope.setCurrentOrg = function (org) {
-	    $scope.currentOrg = org;
-	};
-	
-	$scope.setCurrentLanguage = function(language) {
-		currentLanguage = language;
-		if (language == "Ben")
-			$http.get("i18n/text-BEN.json")
+    $scope.getMenuClass = function (viewName) {
+        return viewName == currentView ? "active" : "";
+    };
+
+    $scope.setCurrentView = function (viewName) {
+        currentView = viewName;
+    };
+
+    $scope.setTitle = function (title, img) {
+        $scope.title = title;
+        $scope.imageSrc = img;
+    };
+
+    $scope.setCurrentUser = function (user) {
+        $scope.currentUser = user;
+    };
+
+    $scope.getCurrentUser = function () {
+        return $scope.currentUser;
+    }
+
+    $scope.setCurrentOrg = function (org) {
+        $scope.currentOrg = org;
+    };
+
+    $scope.setCurrentLanguage = function (language) {
+        currentLanguage = language;
+        if (language == "Ben")
+            $http.get("i18n/text-BEN.json")
 				.success(function (data) {
-					$scope.text = data;
+				    $scope.text = data;
+				    $route.reload();
 				})
 				.error(function (data) {
 				    console.log("setCurrentLanguage: " + data);
 				});
-		else {
-			$http.get("i18n/text-ENG.json")
+        else {
+            $http.get("i18n/text-ENG.json")
 				.success(function (data) {
-					$scope.text = data;
+				    $scope.text = data;
+				    $route.reload();
 				})
 				.error(function (data) {
 				    console.log("setCurrentLanguage: " + data);
 				});
-		}	
-	};
-	
-	$scope.getLanguageClass = function(language) {
-		return currentLanguage == language ? "active" : "";
-	};
-	
-	$scope.setCurrentLanguage("Eng");
+        }
+    };
 
-	$scope.getResourcesForEvent = function (eventID) {
-	    var resources = [];
-	    for (var i = 0; i < $scope.resources.length; i++) {
-	        var resource = $scope.resources[i];
-	        if (resource.eventID == eventID) resources.push(resource);
-	    }
-	    if (resources.length > 0) return resources;
-	    return {};
-	};
-	
-	$scope.getEvent = function(eventID) {
-		for (var i = 0; i < $scope.events.length; i++) {
-			var event = $scope.events[i];
-			if (event.EventID == eventID) return event;
-		}
-		return {}; 
-	};
+    $scope.getLanguageClass = function (language) {
+        return currentLanguage == language ? "active" : "";
+    };
 
-	$scope.getLocationIcon = function (location) {
-	    var inventories = location.ResourceLocationInventories;
-	    var belongsToUser = $scope.currentOrg && location.OrganizationID == $scope.currentOrg.OrganizationID;
+    $scope.setCurrentLanguage("Eng");
 
-	    if (inventories.length > 1)
-	        return belongsToUser ? "style/images/Resources-DBox-Blue.png" : "style/images/Resources-Box-Blue.png";
+    $scope.getResourcesForEvent = function (eventID) {
+        var resources = [];
+        for (var i = 0; i < $scope.resources.length; i++) {
+            var resource = $scope.resources[i];
+            if (resource.eventID == eventID) resources.push(resource);
+        }
+        if (resources.length > 0) return resources;
+        return {};
+    };
 
-	    var iconType = belongsToUser ? "DDiamond-Blue" : "Diamond-Blue";
-	    var resourceType = inventories[0].ResourceType.Description;
-	    if (resourceType == "Water") {
-	        return "style/images/Water-" + iconType + ".png";
-	    } else if (resourceType == "First Aid") {
-	        return "style/images/First Aid-" + iconType + ".png";
-	    } else if (resourceType == "Shelter") {
-	        return "style/images/Shelter-" + iconType + ".png";
-	    } else if (resourceType == "Evacuation") {
-	        return "style/images/Evacuation-" + iconType + ".png";
-	    } else if (resourceType == "Clothing") {
-	        return "style/images/Clothing-" + iconType + ".png";
-	    } else if (resourceType == "Medicine") {
-	        return "style/images/Medicine-" + iconType + ".png";
-	    } else {
-	        return "style/images/Food-" + iconType + ".png";
-	    }
-	};
-	
-	$scope.buildLocationDetails = function (location) {
-	    var popupText = "<strong>" + location.Organization.Name + "</strong><br/>" +
+    $scope.getEvent = function (eventID) {
+        for (var i = 0; i < $scope.events.length; i++) {
+            var event = $scope.events[i];
+            if (event.EventID == eventID) return event;
+        }
+        return {};
+    };
+
+    $scope.getLocationIcon = function (location) {
+        var inventories = location.ResourceLocationInventories;
+        var belongsToUser = $scope.currentOrg && location.OrganizationID == $scope.currentOrg.OrganizationID;
+
+        if (inventories.length > 1)
+            return belongsToUser ? "style/images/Resources-DBox-Blue.png" : "style/images/Resources-Box-Blue.png";
+
+        var iconType = belongsToUser ? "DDiamond-Blue" : "Diamond-Blue";
+        var resourceType = inventories[0].ResourceType.Description;
+        if (resourceType == "Water") {
+            return "style/images/Water-" + iconType + ".png";
+        } else if (resourceType == "First Aid") {
+            return "style/images/First Aid-" + iconType + ".png";
+        } else if (resourceType == "Shelter") {
+            return "style/images/Shelter-" + iconType + ".png";
+        } else if (resourceType == "Evacuation") {
+            return "style/images/Evacuation-" + iconType + ".png";
+        } else if (resourceType == "Clothing") {
+            return "style/images/Clothing-" + iconType + ".png";
+        } else if (resourceType == "Medicine") {
+            return "style/images/Medicine-" + iconType + ".png";
+        } else {
+            return "style/images/Food-" + iconType + ".png";
+        }
+    };
+
+    $scope.buildLocationDetails = function (location) {
+        var popupText = "<strong>" + location.Organization.Name + "</strong><br/>" +
 			location.PrimaryPOCName + "<br/>" +
 			location.PrimaryPOCPhone + "<hr/>";
-	    location.ResourceLocationInventories.forEach(function (inventory) {
-	        popupText += inventory.ResourceType.Description + ": " + inventory.Quantity + " " +
+        location.ResourceLocationInventories.forEach(function (inventory) {
+            popupText += inventory.ResourceType.Description + ": " + inventory.Quantity + " " +
 				inventory.ResourceTypeUnitOfMeasure.Description + "<br/>";
-	    });
-	    return popupText;
-	};
-	
-	$scope.buildLocationMarker = function (location, icon, onClick) {
-	    var marker = L.marker([location.LAT, location.LONG], { icon: icon });
-		if (onClick)
-			marker.on("click", function() {
-				$scope.$apply(function() {
-					onClick(location);
-				});
-			});
-		else
-			marker.bindPopup($scope.buildLocationDetails(location));
-	    return marker;
-	};
-	
-	$scope.buildLocationMarkers = function (locations, mapLayers, flags, onClick) {
-	    if (!locations) return;
-	    var selectedLocations = locations.filter(function (location) {
-	        return $scope.shouldDisplayLocationMarker(location, flags);
-	    });
+        });
+        return popupText;
+    };
 
-	    angular.forEach(selectedLocations, function (location) {
-	        var locationIcon = L.icon({
-	            iconUrl: $scope.getLocationIcon(location),
-	            iconSize: [60, 60],
-	            iconAnchor: [30, 30]
-	        });
+    $scope.buildLocationMarker = function (location, icon, onClick) {
+        var marker = L.marker([location.LAT, location.LONG], { icon: icon });
+        if (onClick)
+            marker.on("click", function () {
+                $scope.$apply(function () {
+                    onClick(location);
+                });
+            });
+        else
+            marker.bindPopup($scope.buildLocationDetails(location));
+        return marker;
+    };
 
-	        var marker = $scope.buildLocationMarker(location, locationIcon, onClick);
-	        mapLayers.push(marker);
-	    });
-	};
-	
-	$scope.shouldDisplayMarker = function (type, flags) {
-	    return (type == "Water" && flags.showWater) ||
+    $scope.buildLocationMarkers = function (locations, mapLayers, flags, onClick) {
+        if (!locations) return;
+        var selectedLocations = locations.filter(function (location) {
+            return $scope.shouldDisplayLocationMarker(location, flags);
+        });
+
+        angular.forEach(selectedLocations, function (location) {
+            var locationIcon = L.icon({
+                iconUrl: $scope.getLocationIcon(location),
+                iconSize: [60, 60],
+                iconAnchor: [30, 30]
+            });
+
+            var marker = $scope.buildLocationMarker(location, locationIcon, onClick);
+            mapLayers.push(marker);
+        });
+    };
+
+    $scope.shouldDisplayMarker = function (type, flags) {
+        return (type == "Water" && flags.showWater) ||
 				(type == "Shelter" && flags.showShelter) ||
 				(type == "Food" && flags.showFood) ||
                 (type == "Clothing" && flags.showClothing) ||
 				(type == "Evacuation" && flags.showEvacuation) ||
 				(type == "First Aid" && flags.showMedical) ||
 				(type == "Medicine" && flags.showMedicine);
-	};
-	
-	$scope.shouldDisplayLocationMarker = function (location, flags) {
-	    var inventories = location.ResourceLocationInventories;
-	    for (var i = 0; i < inventories.length; i++) {
-	        if ($scope.shouldDisplayMarker(inventories[i].ResourceType.Description, flags))
-	            return true;
-	    }
-	    return false;
-	};
-	
-	$scope.loadEvents();
+    };
 
-	$scope.$on('$locationChangeSuccess', function (evt, absNewUrl, absOldUrl) {
+    $scope.shouldDisplayLocationMarker = function (location, flags) {
+        var inventories = location.ResourceLocationInventories;
+        for (var i = 0; i < inventories.length; i++) {
+            if ($scope.shouldDisplayMarker(inventories[i].ResourceType.Description, flags))
+                return true;
+        }
+        return false;
+    };
+
+    $scope.loadEvents();
+
+    $scope.$on('$locationChangeSuccess', function (evt, absNewUrl, absOldUrl) {
         // Check for Facebook redirect and then set client session object from server
-	    var facebookUrl = "http://localhost:8080/#/_=_";
+        var facebookUrl = "http://localhost:8080/#/_=_";
 
-	    if (absNewUrl.indexOf(facebookUrl) == 0 &&
+        if (absNewUrl.indexOf(facebookUrl) == 0 &&
             absOldUrl.indexOf(facebookUrl) == 0) {
 
-	        var webCall = $http({
-	            method: 'POST',
-	            url: '/auth/account',
-	            async: true,
-	            headers: {
-	                'Content-Type': 'application/x-www-form-urlencoded'
-	            }
-	        });
-
-	        webCall.then(function (response) {	           
-	            $scope.users = response.data.json;
-	            $scope.currentUser = $scope.users[0];
-	            if ($scope.currentUser === undefined) {
-	                alert("Incorrect username or password. Please try again.");
-	            }
-	            else {	               
-	                var userSessionObject = {
-	                    AccountID: $scope.currentUser.AccountID,
-	                    FirstName: $scope.currentUser.FirstName,
-	                    LastName: $scope.currentUser.LastName,
-	                    OrganizationID: $scope.currentUser.Organization.OrganizationID,
-	                    OrganizationTypeID: $scope.currentUser.Organization.OrganizationTypeID,
-	                    OrganizationName: $scope.currentUser.Organization.Name
-	                };
-	                $scope.setCurrentUser(userSessionObject);
-	                $scope.setCurrentOrg($scope.currentUser.Organization);
-	                sessionStorage.setItem("user", JSON.stringify(userSessionObject));
-	                $scope.$broadcast("CurrentUserLoaded", {});
-	            }
-	        },
-            function (response) { // optional
-                alert("Incorrect username or password. Please try again.");
+            var webCall = $http({
+                method: 'POST',
+                url: '/auth/account',
+                async: true,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
             });
-	    }
+
+            webCall.then(function (response) {
+                $scope.users = response.data.json;
+                $scope.currentUser = $scope.users[0];
+                if ($scope.currentUser === undefined) {
+                    alert($scope.text.incorrect_login_alert);
+                }
+                else {
+                    var userSessionObject = {
+                        AccountID: $scope.currentUser.AccountID,
+                        FirstName: $scope.currentUser.FirstName,
+                        LastName: $scope.currentUser.LastName,
+                        OrganizationID: $scope.currentUser.Organization.OrganizationID,
+                        OrganizationTypeID: $scope.currentUser.Organization.OrganizationTypeID,
+                        OrganizationName: $scope.currentUser.Organization.Name
+                    };
+                    $scope.setCurrentUser(userSessionObject);
+                    $scope.setCurrentOrg($scope.currentUser.Organization);
+                    sessionStorage.setItem("user", JSON.stringify(userSessionObject));
+                    $scope.$broadcast("CurrentUserLoaded", {});
+                }
+            },
+            function (response) { // optional
+                alert($scope.text.incorrect_login_alert);
+            });
+        }
 
         // Handle previous path logic
-	    var url = absOldUrl.replace("/#/", "/");
- 	    var pathArray = url.split('/');
-	    var previousPath = "";
-	    for (i = 3; i < pathArray.length; i++) {
-	        previousPath += "/";
-	        previousPath += pathArray[i];
-	    }
-	    $scope.previousPath = previousPath;
-	});
+        var url = absOldUrl.replace("/#/", "/");
+        var pathArray = url.split('/');
+        var previousPath = "";
+        for (i = 3; i < pathArray.length; i++) {
+            previousPath += "/";
+            previousPath += pathArray[i];
+        }
+        $scope.previousPath = previousPath;
+    });
 
-	$scope.redirectToLogin = function () {
-	    $location.path('/login');
-	};
+    $scope.redirectToLogin = function () {
+        $location.path('/login');
+    };
 
-	$scope.redirectToLogout = function () {
+    $scope.redirectToLogout = function () {
         // Logout client
-	    $scope.currentUser = false;
-	    sessionStorage.removeItem("user");
+        $scope.currentUser = false;
+        sessionStorage.removeItem("user");
 
         // Logout server
-	    var webCall = $http({
-	        method: 'POST',
-	        url: '/auth/logout',
-	        async: true,
-	        headers: {
-	            'Content-Type': 'application/x-www-form-urlencoded'
-	        }
-	    });
-	    webCall.then(function (response) {
-	        //alert("You have been successfully logged out.");
-	    },
+        var webCall = $http({
+            method: 'POST',
+            url: '/auth/logout',
+            async: true,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        });
+        webCall.then(function (response) {
+            //alert("You have been successfully logged out.");
+        },
         function (response) {
             alert("Logout Error - " + response);
         });
 
-	    $location.path('#');
-	};
+        $location.path('#');
+    };
 
-	$scope.resources = [
+    $scope.resources = [
         {
             id: 1,
             eventID: 1,
@@ -2948,47 +2953,47 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
             provider: "",
             message: "No more than 1 bag per person.  Only bring what you can carry."
         }
-	];
-	
-	var testEvents = [
+    ];
+
+    var testEvents = [
 		{
-			id: 1,
-			location: "Dhaka, Bangladesh",
-			eventType: "Flood",
-			lat: 23.74,
-			long: 90.39,
-			eventRadius: "542 km",
-			eventDate: "9/23/2015",
-			eventTime: "4:36 PM",
-			contactPhone: "+880 2 555 5555",
+		    id: 1,
+		    location: "Dhaka, Bangladesh",
+		    eventType: "Flood",
+		    lat: 23.74,
+		    long: 90.39,
+		    eventRadius: "542 km",
+		    eventDate: "9/23/2015",
+		    eventTime: "4:36 PM",
+		    contactPhone: "+880 2 555 5555",
 		    iconPath: "style/images/icons/FloodIcon.png"
 		},
 		{
-			id: 2,
-			location: "Port Moresby, Papua New Guinea",
-			eventType: "Tsunami",
-			lat: -9.46,
-			long: 147.18,
-			eventRadius: "1024 km",
-			eventDate: "9/24/2015",
-			eventTime: "2:16 PM",
-			contactPhone: "+880 2 555 5555",
-			iconPath: "style/images/icons/TsunamiIcon.png"
+		    id: 2,
+		    location: "Port Moresby, Papua New Guinea",
+		    eventType: "Tsunami",
+		    lat: -9.46,
+		    long: 147.18,
+		    eventRadius: "1024 km",
+		    eventDate: "9/24/2015",
+		    eventTime: "2:16 PM",
+		    contactPhone: "+880 2 555 5555",
+		    iconPath: "style/images/icons/TsunamiIcon.png"
 
 		},
 		{
-			id: 3,
-			location: "Tacna, Peru",
-			eventType: "Earthquake",
-			lat: -18.04,
-			long: -70.174,
-			eventRadius: "860 km",
-			eventDate: "9/25/2015",
-			eventTime: "1:06 PM",
-			contactPhone: "+880 2 555 5555",
-			iconPath: "style/images/icons/EarthquakeIcon.png"
+		    id: 3,
+		    location: "Tacna, Peru",
+		    eventType: "Earthquake",
+		    lat: -18.04,
+		    long: -70.174,
+		    eventRadius: "860 km",
+		    eventDate: "9/25/2015",
+		    eventTime: "1:06 PM",
+		    contactPhone: "+880 2 555 5555",
+		    iconPath: "style/images/icons/EarthquakeIcon.png"
 		}
-	];
+    ];
 }]);
 /**
  * TeamInviteCtrl

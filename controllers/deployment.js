@@ -34,7 +34,8 @@ angular.module("helpNow").controller("DeploymentCtrl", ["$scope", "$routeParams"
 	            ResourceLocationTypeID: 2,
 	            OrganizationID: $scope.currentOrg.OrganizationID,
 	            ResourceLocationStatusID: "1",
-	            ResourceLocationTransports: []
+	            ResourceLocationTransports: [],
+	            ResourceLocationInventories: []
 	        };
 	    }
 
@@ -134,6 +135,7 @@ angular.module("helpNow").controller("DeploymentCtrl", ["$scope", "$routeParams"
 	    };
 
 	    $scope.addResources = function (inventory) {
+	        alert("Test1");
 	        delete inventory.ResourceLocationInventoryID;
 	        inventory.SourceLocationID = inventory.ResourceLocationID;
 	        inventory.ResourceLocationID = $scope.deployment.ResourceLocationID;
@@ -152,7 +154,9 @@ angular.module("helpNow").controller("DeploymentCtrl", ["$scope", "$routeParams"
 	        request.then(
                 function successCallback(response) {
                     inventory.ResourceLocationInventoryID = response.data.json.ResourceLocationInventoryID;
+                    alert(JSON.stringify($scope.deployment));
                     $scope.deployment.ResourceLocationInventories.push(inventory);
+                    alert("Test2");
                     $scope.showDistributionCenters = false;
                 },
                 function errorCallback(response) {

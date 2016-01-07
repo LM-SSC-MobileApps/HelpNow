@@ -263,7 +263,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
             $scope.showNeeds = !$scope.showNeeds;
         }
         else {
-            alert("Missing Required Field(s)");
+            alert($scope.text.missing_fields_alert);
         }
         return false;
     };
@@ -342,7 +342,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
             $scope.showNeeds = !$scope.showNeeds;
             $scope.showEventDetails = !$scope.showEventDetails;
             if (!$scope.hasSubmissionError) {
-                alert("Request(s) successfully submitted");
+                alert($scope.text.need_request_success);
             }
         }
         else {
@@ -353,7 +353,6 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
 
     function postNeedRequest() {
         var needRequestData = JSON.stringify($scope.helpRequest);
-        alert("needRequestData: " + needRequestData);
         var webCall = $http({
             method: 'POST',
             url: '/api/resourcerequest',
