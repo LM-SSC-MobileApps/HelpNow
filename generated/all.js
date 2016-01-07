@@ -1339,7 +1339,21 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
         return $scope.resourceLocationStatuses[index];
     };
 
-    
+    $scope.createNewResourceLocation = function () {
+        var newResLoc = new ResourceLocation();
+        newResLoc.ResourceLocationTransports = [];
+        newResLoc.OrganizationID = $scope.currentUser.OrganizationID;
+        //We default each new location to Distribution Center as Inventory is only for Distribution Center Management.
+        var defaultResLocType = $scope.setDefaultResourceLocationType();
+        newResLoc.ResourceLocationType = defaultResLocType;
+        newResLoc.ResourceLocationTypeID = defaultResLocType.ResourceLocationTypeID;
+        //We default each new lcoation to Active Status
+        var defaultResLocStatus = $scope.setDefaultResourceLocationStatus();
+        newResLoc.ResourceLocationStatus = defaultResLocStatus;
+        newResLoc.ResourceLocationStatusID = defaultResLocStatus.ResourceLocationStatusID;
+
+        return newResLoc;
+    };
 
 
 
@@ -1354,19 +1368,24 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
         {
             //new ResourceLocation mode
             $scope.editMode = false;
-            var newResLoc = new ResourceLocation();
-            newResLoc.ResourceLocationTransports = [];
-            newResLoc.OrganizationID = $scope.currentUser.OrganizationID;
-            //We default each new location to Distribution Center as Inventory is only for Distribution Center Management.
-            var defaultResLocType = $scope.setDefaultResourceLocationType();
-            newResLoc.ResourceLocationType = defaultResLocType;
-            newResLoc.ResourceLocationTypeID = defaultResLocType.ResourceLocationTypeID;
-            //We default each new lcoation to Active Status
-            var defaultResLocStatus = $scope.setDefaultResourceLocationStatus();
-            newResLoc.ResourceLocationStatus = defaultResLocStatus;
-            newResLoc.ResourceLocationStatusID = defaultResLocStatus.ResourceLocationStatusID;
+            //var newResLoc = new ResourceLocation();
+            //newResLoc.ResourceLocationTransports = [];
+            //newResLoc.OrganizationID = $scope.currentUser.OrganizationID;
+            ////We default each new location to Distribution Center as Inventory is only for Distribution Center Management.
+            //var defaultResLocType = $scope.setDefaultResourceLocationType();
+            //newResLoc.ResourceLocationType = defaultResLocType;
+            //newResLoc.ResourceLocationTypeID = defaultResLocType.ResourceLocationTypeID;
+            ////We default each new lcoation to Active Status
+            //var defaultResLocStatus = $scope.setDefaultResourceLocationStatus();
+            //newResLoc.ResourceLocationStatus = defaultResLocStatus;
+            //newResLoc.ResourceLocationStatusID = defaultResLocStatus.ResourceLocationStatusID;
 
-            $scope.currentResourceLocation = newResLoc;
+            $scope.currentResourceLocation = $scope.createNewResourceLocation();
+
+            //set lat/long radio buttons
+            $scope.locationPref.value = "Other";
+            $scope.getLocation();
+
         }
         else
         {
@@ -1376,6 +1395,10 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
                 return el.ResourceLocationID;
             }).indexOf(id);
             $scope.currentResourceLocation = $scope.resourceLocations[index];
+
+            //set lat/long radio buttons
+            $scope.locationPref.value = "Other";
+            //$scope.getLocation();
 
             //set the transport icons
             $scope.currentResourceLocation.ResourceLocationTransports.forEach(function (transport) {
@@ -1687,6 +1710,10 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
             return true;
         }
         return false;
+    };
+
+    $scope.fieldIsRequired = function () {
+
     };
 }]);
 angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function ($scope, $http, $location, $routeParams, $resource) {
