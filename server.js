@@ -37,8 +37,8 @@ var requestInviteRequestRouter = require('./routes/inviterequest')();
 
 var app = express();
 
-var port = process.env.PORT || 80;
-var ssl_port = process.env.SSL_PORT || 443;
+var port = process.env.PORT || 8080;
+var ssl_port = process.env.SSL_PORT || 4443;
 var enable_redirect = process.env.ENABLE_REDIRECT || true;
 
 app.use(bodyParser.urlencoded({extended:true}));
