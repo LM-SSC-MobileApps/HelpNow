@@ -39,7 +39,7 @@ function logout(req, res) {
 function getEnvironment() {
     var os = require('os');
     var host = os.hostname().toLowerCase();
-    if (host.indexOf('ec2') > 0) {
+    if (host.indexOf('ec2') >= 0) {
         return 'PRD';
     } else {
         return 'DEV';
