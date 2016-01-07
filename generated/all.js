@@ -631,7 +631,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     $scope.urgencyResource = $resource("/api/requesturgency");
     $scope.needRequestResource = $resource("/api/resourcerequest");
 
-    $scope.helpRequest = { EventID: '', RequestStateID: '1', Notes: 'Reported from App', AreaSize: '0.25 km', UnitOfMeasure: '', Quantity: '', CreateDate: new Date() };
+    $scope.helpRequest = { EventID: '', RequestStateID: '1', Notes: 'Reported from App', AreaSize: '0.25 km', UnitOfMeasure: '', Quantity: ''};
 
     $scope.eventID = $routeParams.eventID * 1;
     if ($scope.events) {
@@ -975,6 +975,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
 
     function postNeedRequest() {
         var needRequestData = JSON.stringify($scope.helpRequest);
+        alert("needRequestData: " + needRequestData);
         var webCall = $http({
             method: 'POST',
             url: '/api/resourcerequest',
@@ -1218,6 +1219,46 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
         return popupText;
     }
 
+    $scope.centerMapToLongLat = function (lat, long, zoom) {
+        if (!map) return;
+        map.setZoom(zoom);
+        map.panTo(new L.LatLng(lat, long));
+    };
+
+
+    $scope.showLocationMarkers = true;
+    $scope.locationPref = { value: 'Current' };
+
+    $scope.getLocation = function () {
+        requestLocation();
+    };
+
+    function requestLocation() {
+        if ($scope.locationPref.value == "Current") {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            }
+        }
+        else {
+            if ($scope.locationOutline !== undefined) {
+                map.removeLayer($scope.locationOutline);
+            }
+            $scope.currentResourceLocation.LAT = "";
+            $scope.currentResourceLocation.LONG = "";
+        }
+    }
+
+    function showPosition(position) {
+        $scope.currentResourceLocation.LAT = position.coords.latitude;
+        $scope.currentResourceLocation.LONG = position.coords.longitude;
+        if ($scope.locationOutline !== undefined) {
+            map.removeLayer($scope.locationOutline);
+        }
+        $scope.locationOutline = L.circle([position.coords.latitude, position.coords.longitude], $scope.overlayRadius, { color: "#00ff00", opacity: 1, fillOpacity: 0.7 }).addTo(map);
+        $scope.$digest();
+        $scope.centerMapToLongLat(position.coords.latitude, position.coords.longitude, 7);
+    }
+
     $scope.initMap = function (newMap) {
         map = newMap;
         map.on('click', function (e) {
@@ -1234,15 +1275,10 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
         updateMap();
     };
 
-    $scope.centerMapToLongLat = function (lat, long) {
-        if (!map) return;
-        map.setZoom(12);
-        map.panTo(new L.LatLng(lat, long));
-    };
 
     $scope.resourceLocationClick = function (lat, long, resourceLocID) {
         if (!map) return;
-        $scope.centerMapToLongLat(lat, long);
+        $scope.centerMapToLongLat(lat, long, 13);
         $scope.setCurrentResourceLocationByID(resourceLocID);
         $scope.showResourceLocationDiv();
     };

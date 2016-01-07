@@ -69,7 +69,7 @@ module.exports = function(sequelize, DataTypes) {
     CreateDate: {
         type: DataTypes.DATE,
         allowNull: true,
-        defaultValue: 'CURRENT_TIMESTAMP'
+        defaultValue: sequelize.fn("NOW")
     }
   });
 };
