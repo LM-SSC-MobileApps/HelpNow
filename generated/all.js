@@ -631,7 +631,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     $scope.urgencyResource = $resource("/api/requesturgency");
     $scope.needRequestResource = $resource("/api/resourcerequest");
 
-    $scope.helpRequest = { EventID: '', RequestStateID: '1', Notes: 'Reported from App', AreaSize: '0.25 km', UnitOfMeasure: '', Quantity: '', CreateDate: new Date() };
+    $scope.helpRequest = { EventID: '', RequestStateID: '1', Notes: 'Reported from App', AreaSize: '0.25 km', UnitOfMeasure: '', Quantity: ''};
 
     $scope.eventID = $routeParams.eventID * 1;
     if ($scope.events) {
@@ -975,6 +975,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
 
     function postNeedRequest() {
         var needRequestData = JSON.stringify($scope.helpRequest);
+        alert("needRequestData: " + needRequestData);
         var webCall = $http({
             method: 'POST',
             url: '/api/resourcerequest',

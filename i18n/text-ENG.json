@@ -100,5 +100,21 @@
   "major_municipality_label": "Major Municipality (Town/City)",
   "governing_district_label": "Governing District (Province/State/County)",
   "postal_area_label": "Postal Area (Postal Code/Zip)",
-  "country_label": "Country"
+  "country_label": "Country",
+  "manage_title_label": "Organization Management",
+  "registered_team_members_label": "Registered Team Members",
+  "invitations_label": "Invitations",
+  "api_key_label": "API Key",
+  "btn_assign_points_of_contact": "Assign Points of Contact",
+  "btn_invite_new_member": "Invite New Member",
+  "btn_regulations": "Regulations & Policies",
+  "btn_new_event": "Begin New Event",
+  "btn_manage_address": "Manage Address",
+  "points_of_contact_label": "Points of Contact",
+  "primary_poc_label": "Primary Point of Contact",
+  "second_poc_label": "Second Point of Contact",
+  "invitation_label": "Invitation",
+  "btn_add_policy": "Add New Policy or Regulation",
+  "policy_title_label": "Policy Title",
+  "policy_text_label": "Policy Text"
 }
