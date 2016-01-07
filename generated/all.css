@@ -6507,6 +6507,17 @@ h5 {
   background-size: 30px;
 }
 
+#showClothing {
+  background-image: -webkit-linear-gradient(top, #ffff00, rgb(153, 153, 0));
+  background-image: linear-gradient(to bottom, #ffff00, rgb(153, 153, 0));
+}
+
+#showClothing span {
+  background-image: url("../style/images/Clothing.png");
+  background-position: 6px 5px;
+  background-size: 20px;
+}
+
 #showEvacuation {
   background-image: -webkit-linear-gradient(top, #ca62ff, rgb(121, 59, 153));
   background-image: linear-gradient(to bottom, #ca62ff, rgb(121, 59, 153));
