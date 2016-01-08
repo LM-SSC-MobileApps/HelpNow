@@ -22,7 +22,7 @@
   "note_lat_long": "NOTE: You can select the latitude and longitude by clicking on the map.",
   "current_location": "Use My Current Location",
   "manual_location":  "Use The Following Location",
-  "lat": "Lat.",
+  "lat": "Lat",
   "long":  "Long",
   "delete": "Delete",
   "remove": "Remove",
@@ -138,6 +138,7 @@
   "deploy_resources_header": "Deploy Resources",
   "btn_deploy": "Deploy",
   "deployment_title": "Resource Deployment",
+  "deployment_details_header": "Deployment Details",
   "event_label": "Event",
   "location": "Location",
   "description_label": "Description",
@@ -149,5 +150,6 @@
   "status_label": "Status",
   "inventory_header": "Inventory",
   "btn_add_inventory": "Add Inventory",
-  "btn_add":  "Add"
+  "btn_add": "Add",
+   "btn_modify":  "Modify"
 }

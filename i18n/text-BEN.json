@@ -138,6 +138,7 @@
   "deploy_resources_header": "স্থাপন সম্পদ",
   "btn_deploy": "স্থাপন",
   "deployment_title": "রিসোর্স ডিপ্লোয়মেন্ট",
+  "deployment_details_header":  "স্থাপনার বিবরণ",
   "event_label": "ঘটনা",
   "location": "অবস্থান",
   "description_label": "বিবরণ",
@@ -149,5 +150,6 @@
   "status_label": "অবস্থা",
   "inventory_header": "জায়",
   "btn_add_inventory": "পরিসংখ্যা করো",
-  "btn_add":  "যোগ"
+  "btn_add": "যোগ",
+  "btn_modify":  "পরিবর্তন"
 }
