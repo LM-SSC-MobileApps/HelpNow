@@ -1860,7 +1860,7 @@ angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$re
 }]);
 angular.module("helpNow").controller("OrgAddressCtrl", ["$scope", "$http", "$location", "Organization", "$routeParams", "$resource", function ($scope, $http, $location, Organization, $routeParams, $resource) {
     $scope.setCurrentView("org-address");
-    $scope.setTitle("Organization Address");
+    $scope.setTitle($scope.text.address_title);
 
     $scope.addressResource = $resource("/api/address/:id");
     $scope.orgResource = $resource("/api/organization/:id");
@@ -2446,9 +2446,9 @@ angular.module("helpNow").controller("OrganizationAddCtrl", ["$scope", "$resourc
     $scope.orgTypeID = $routeParams.orgTypeID * 1;
     $scope.newOrg = new Organization();
     $scope.newOrg.OrganizationTypeID = $scope.orgTypeID;
-    $scope.orgType = $scope.orgTypeID == 1 ? "Government" : "Organization";
+    $scope.orgType = $scope.orgTypeID == 1 ? $scope.text.gov_name_label : $scope.text.org_name_label;
 
-    $scope.setTitle("Create " + $scope.orgType);
+    $scope.setTitle($scope.text.create + " " + $scope.orgType);
 
     $scope.go = function (path) {
         $location.path(path);
