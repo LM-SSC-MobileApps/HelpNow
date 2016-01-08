@@ -387,7 +387,7 @@ angular.module("helpNow").controller("DeploymentCtrl", ["$scope", "$routeParams"
 	    $scope.deploymentsResource = $resource("/api/resourcelocation/:id");
 	    $scope.distCenterResource = $resource("/api/resourcelocation/dist-center/all");
 
-	    $scope.setTitle("Resource Deployment", "style/images/Distribution-Center.png");
+	    $scope.setTitle($scope.text.deployment_title, "style/images/Distribution-Center.png");
 
 	    $scope.distCenterResource.get({}, function (data) {
 	        var centers = data.json;
@@ -516,7 +516,6 @@ angular.module("helpNow").controller("DeploymentCtrl", ["$scope", "$routeParams"
 	    };
 
 	    $scope.addResources = function (inventory) {
-	        alert("Test1");
 	        delete inventory.ResourceLocationInventoryID;
 	        inventory.SourceLocationID = inventory.ResourceLocationID;
 	        inventory.ResourceLocationID = $scope.deployment.ResourceLocationID;
@@ -535,9 +534,7 @@ angular.module("helpNow").controller("DeploymentCtrl", ["$scope", "$routeParams"
 	        request.then(
                 function successCallback(response) {
                     inventory.ResourceLocationInventoryID = response.data.json.ResourceLocationInventoryID;
-                    alert(JSON.stringify($scope.deployment));
                     $scope.deployment.ResourceLocationInventories.push(inventory);
-                    alert("Test2");
                     $scope.showDistributionCenters = false;
                 },
                 function errorCallback(response) {
@@ -2167,6 +2164,18 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            valueField: 'Quantity'
 	        };
 
+	        angular.forEach($scope.locations, function (deployment) {
+	            angular.forEach(deployment.ResourceLocationInventories, function (inventory) {
+	                angular.forEach(selectedRequests, function (request) {
+	                    if (calculateKmDistance(deployment.LAT, deployment.LONG, request.LAT, request.LONG) < 10 &&
+                            request.ResourceTypeID == inventory.ResourceTypeID) {
+	                        var index = selectedRequests.indexOf(request);
+	                        selectedRequests.splice(index, 1);
+	                    }
+	                });
+	            });
+	        });
+
 	        var heatmapLayer = new HeatmapOverlay(heatmapConfig);
 	        var heatmapData = { data: selectedRequests };
 	        heatmapLayer.setData(heatmapData);
@@ -2846,10 +2855,10 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
 
     $scope.$on('$locationChangeSuccess', function (evt, absNewUrl, absOldUrl) {
         // Check for Facebook redirect and then set client session object from server
-        var facebookUrl = "http://localhost:8080/#/_=_";
+        var facebookUrl = "_=_";
 
-        if (absNewUrl.indexOf(facebookUrl) == 0 &&
-            absOldUrl.indexOf(facebookUrl) == 0) {
+        if (absNewUrl.indexOf(facebookUrl) > 0 &&
+            absOldUrl.indexOf(facebookUrl) > 0) {
 
             var webCall = $http({
                 method: 'POST',

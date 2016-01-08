@@ -36,10 +36,8 @@ function logout(req, res) {
     res.end();
 }
 
-function getEnvironment() {
-    var os = require('os');
-    var host = os.hostname().toLowerCase();
-    if (host.indexOf('ec2') >= 0) {
+function getEnvironment() {   
+    if (getHost().indexOf('ec2') >= 0) {
         return 'PRD';
     } else {
         return 'DEV';
@@ -54,12 +52,18 @@ function getHttp() {
     }
 }
 
-function getHost() {
-    if (getEnvironment() === 'PRD') {
-        return 'ec2-52-35-71-10.us-west-2.compute.amazonaws.com';
+function getHost() {    
+    if (process.platform.indexOf("linux") >= 0) {
+        var child_process = require("child_process");
+        var hostname = child_process.execSync("curl -s http://169.254.169.254/latest/meta-data/public-hostname");
+        if (hostname.indexOf("") == 0) {
+            return "localhost";
+        } else {
+            return hostname;
+        }
     } else {
-        return 'localhost';
-    }       
+        return "localhost";
+    }
 }
 
 function getHttpPort(addColon) {
@@ -113,7 +117,7 @@ function setupLocalAuthentication(app, passport, strategy) {
 
             var creds = '{"username":"' + username + '","password":"' + password + '"}';
             var options = {
-                host: getHost(),
+                host: 'localhost',
                 path: '/api/account/login',
                 port: getHttpPort(false),
                 method: 'POST',
@@ -203,7 +207,7 @@ function setupFacebookAuthentication(app, passport, strategy) {
 
               var creds = '{"email":"' + profile.emails[0].value + '"}';
               var options = {
-                  host: getHost(),
+                  host: 'localhost',
                   path: '/api/account/external_login',
                   port: getHttpPort(false),
                   method: 'POST',
