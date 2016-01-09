@@ -10,7 +10,7 @@ angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$re
 			{ accountid: $scope.currentUser.AccountID });
 	$scope.orgResource = $resource("/api/organization/:id", { id: $scope.currentOrg.OrganizationID });
 
-	$scope.setTitle("Organization Management");
+	$scope.setTitle($scope.text.manage_title_label);
 
 
 	$scope.loadInvites = function() {
