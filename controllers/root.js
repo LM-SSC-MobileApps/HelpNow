@@ -196,10 +196,10 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
 
     $scope.$on('$locationChangeSuccess', function (evt, absNewUrl, absOldUrl) {
         // Check for Facebook redirect and then set client session object from server
-        var facebookUrl = "http://localhost:8080/#/_=_";
+        var facebookUrl = "_=_";
 
-        if (absNewUrl.indexOf(facebookUrl) == 0 &&
-            absOldUrl.indexOf(facebookUrl) == 0) {
+        if (absNewUrl.indexOf(facebookUrl) > 0 &&
+            absOldUrl.indexOf(facebookUrl) > 0) {
 
             var webCall = $http({
                 method: 'POST',
@@ -228,23 +228,13 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
                     $scope.setCurrentUser(userSessionObject);
                     $scope.setCurrentOrg($scope.currentUser.Organization);
                     sessionStorage.setItem("user", JSON.stringify(userSessionObject));
-                    $scope.$broadcast("CurrentUserLoaded", {});
+                    $scope.$broadcast("CurrentUserLoaded", {});                    
                 }
             },
             function (response) { // optional
                 alert($scope.text.incorrect_login_alert);
             });
         }
-
-        // Handle previous path logic
-        var url = absOldUrl.replace("/#/", "/");
-        var pathArray = url.split('/');
-        var previousPath = "";
-        for (i = 3; i < pathArray.length; i++) {
-            previousPath += "/";
-            previousPath += pathArray[i];
-        }
-        $scope.previousPath = previousPath;
     });
 
     $scope.redirectToLogin = function () {

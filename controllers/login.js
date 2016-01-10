@@ -1,4 +1,4 @@
-angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function ($scope, $http, $location, $routeParams, $resource) {
+﻿angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function ($scope, $http, $location, $routeParams, $resource) {
     $scope.setCurrentView("login");
     $scope.setTitle($scope.text.login_title);
 
@@ -7,11 +7,11 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
             alert("Missing Username or Password");
         }
         else {
-            login();
+            $scope.login();
         }
     };
 
-    function login() {
+    $scope.login = function() {
         var postdata = 'username=' + $scope.userCreds.username + '&' + 'password=' + $scope.userCreds.password;
 
         var webCall = $http({
@@ -43,11 +43,23 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
                 $scope.setCurrentOrg($scope.currentUser.Organization);
                 sessionStorage.setItem("user", JSON.stringify(userSessionObject));
                 $scope.$broadcast("CurrentUserLoaded", {});
-                $location.path($scope.previousPath);
+                $location.search('error', null);
+                $location.path('/');
             }
         },
         function (response) { // optional
             alert($scope.text.incorrect_login_alert);
         });
-    }
+    };
+
+    $scope.checkForErrors = function () {
+        var errorType = ($location.search()).error;
+        if (typeof errorType !== 'undefined') {
+            if (errorType.indexOf("invalid_account") >= 0) {
+                alert("Your Facebook account has not been registered. Please register and try again.");
+            }
+        }
+    };
+
+    $scope.checkForErrors();
 }]);

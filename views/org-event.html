@@ -4,25 +4,25 @@
         <div id="eventInfo" ng-hide="panelIsOpen()" ng-include="'views/fragments/event-info.html'"></div>
         <div class="row" ng-hide="panelIsOpen()">
             <div class="col-md-12">
-                <a class="btn btn-primary" ng-click="toggleFilters()"><span class="glyphicon glyphicon-filter"></span> Show Filters</a>
+                <a class="btn btn-primary" ng-click="toggleFilters()"><span class="glyphicon glyphicon-filter"></span> {{text.btn_show_filters}}</a>
             </div>
         </div>
         <div class="row separated-small" ng-hide="panelIsOpen()">
             <div class="col-md-12">
-                <a class="btn btn-primary" ng-click="toggleFindPanel()"><span class="glyphicon glyphicon-search"></span> Find Resources</a>
+                <a class="btn btn-primary" ng-click="toggleFindPanel()"><span class="glyphicon glyphicon-search"></span> {{text.btn_find_resources}}</a>
             </div>
         </div>
         <div class="row separated-small" ng-hide="panelIsOpen()">
             <div class="col-md-12">
-                <a class="btn btn-primary" ng-click="toggleDeployPanel()"><span class="glyphicon glyphicon-plus-sign"></span> Deploy Resources</a>
+                <a class="btn btn-primary" ng-click="toggleDeployPanel()"><span class="glyphicon glyphicon-plus-sign"></span> {{text.btn_deploy_resources}}</a>
             </div>
         </div>
 
         <div class="row" ng-show="showFilters">
             <div class="col-md-12">
                 <div class="well">
-                    <a class="btn btn-primary pull-right" ng-click="toggleFilters()"><span class="glyphicon glyphicon-eye-close"></span> Hide</a>
-                    <h4><span class="glyphicon glyphicon-filter"></span> Filters</h4>
+                    <a class="btn btn-primary pull-right" ng-click="toggleFilters()"><span class="glyphicon glyphicon-eye-close"></span> {{text.btn_hide}}</a>
+                    <h4><span class="glyphicon glyphicon-filter"></span> {{text.filters_label}}</h4>
                     <div id="filter-section">
                         <hr class="separated"></hr>
                         <div class="row">
@@ -31,21 +31,21 @@
                                     <span></span>
                                 </a>
                                 <br />
-                                <span class="filter-caption">Needs</span>
+                                <span class="filter-caption">{{text.needs_label}}</span>
                             </div>
                             <div class="col-xs-4 text-center">
                                 <a id="showClusters" ng-class="toggleButtonClass('showClusters')" ng-click="toggleButton('showClusters')">
                                     <span></span>
                                 </a>
                                 <br />
-                                <span class="filter-caption">Clusters</span>
+                                <span class="filter-caption">{{text.clusters_label}}</span>
                             </div>
                             <div class="col-xs-4 text-center">
                                 <a id="showHeatmap" ng-class="toggleButtonClass('showHeatmap')" ng-click="toggleButton('showHeatmap')">
                                     <span></span>
                                 </a>
                                 <br />
-                                <span class="filter-caption">Heatmap</span>
+                                <span class="filter-caption">{{text.heatmap_label}}</span>
                             </div>
                         </div>
                         <div class="row separated-small">
@@ -54,14 +54,14 @@
                                     <span></span>
                                 </a>
                                 <br />
-                                <span class="filter-caption">Resources</span>
+                                <span class="filter-caption">{{text.resources_label}}</span>
                             </div>
                             <div class="col-xs-4 text-center">
                                 <a id="showDistCenterMarkers" ng-class="toggleButtonClass('showDistCenterMarkers')" ng-click="toggleButton('showDistCenterMarkers')">
                                     <span></span>
                                 </a>
                                 <br />
-                                <span class="filter-caption">Dist Ctrs</span>
+                                <span class="filter-caption">{{text.dist_centers_label}}</span>
                             </div>
                         </div>
                         <hr></hr>
@@ -81,37 +81,37 @@
                                 <img width="30" height="30" src="style/images/Match.png" />
                             </div>
                             <div id="event-title" class="col-xs-10">
-                                <h4 class="separated-tiny">Match Resources</h4>
+                                <h4 class="separated-tiny">{{text.match_resources_header}}</h4>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
                                 <hr />
-                                <input ng-model="locationPref.value" type="radio" value="Current" ng-change="getLocation()" /><span>  Use My Current Location</span><br />
-                                <input ng-model="locationPref.value" type="radio" value="Other" ng-change="getLocation()" /><span>  Use The Following Location:</span>
+                                <input ng-model="locationPref.value" type="radio" value="Current" ng-change="getLocation()" /><span>  {{text.my_location_label}}</span><br />
+                                <input ng-model="locationPref.value" type="radio" value="Other" ng-change="getLocation()" /><span>  {{text.map_location_label}}</span>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <span>Lat </span><input ng-model="mappingLoc.LAT" type="text" class="form-control" name="lat" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
-                                <span>Long </span><input ng-model="mappingLoc.LONG" type="text" class="form-control" name="long" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
+                                <span>{{text.lat_label}} </span><input ng-model="mappingLoc.LAT" type="text" class="form-control" name="lat" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
+                                <span>{{text.long_label}} </span><input ng-model="mappingLoc.LONG" type="text" class="form-control" name="long" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
                             </div>
                         </div>
                         <div class="well separated-small">
-                            <span class="glyphicon glyphicon-pushpin"></span> NOTE: You can select the latitude and longitude by clicking on the map.
+                            <span class="glyphicon glyphicon-pushpin"></span> {{text.map_note}}
                         </div>
                         <hr></hr>
                         <div filters classfunc="toggleMatchingButtonClass" togglefunc="toggleMatchingFilter" />
                         <hr></hr>
                         <div class="row separated" ng-show="showMappingError">
                             <div class="col-sm-12">
-                                <div class="alert alert-danger" role="alert">You must select a location and at least one resource type.</div>
+                                <div class="alert alert-danger" role="alert">{{text.match_error}}</div>
                             </div>
                         </div>
                         <div class="row separated-small">
                             <div class="col-sm-12 btn-row">
-                                <a class="btn btn-primary" ng-click="findMatches()"><span class="glyphicon glyphicon-search"></span>Match</a>
-                                <a class="btn btn-primary" ng-click="toggleFindPanel()"><span class="glyphicon glyphicon-remove-sign"></span>Close</a>
+                                <a class="btn btn-primary" ng-click="findMatches()"><span class="glyphicon glyphicon-search"></span>{{text.btn_match}}</a>
+                                <a class="btn btn-primary" ng-click="toggleFindPanel()"><span class="glyphicon glyphicon-remove-sign"></span>{{text.btn_close}}</a>
                             </div>
                         </div>
                     </div>
@@ -122,13 +122,13 @@
                                 <img width="50" height="50" src="style/images/Match.png" />
                             </div>
                             <div id="event-title" class="col-xs-8">
-                                <h4>Match Results</h4>
+                                <h4>{{text.match_results_header}}</h4>
                                 <h5><a ng-click="showLocation(mappingLoc.LAT, mappingLoc.LONG)" href="">({{mappingLoc.LAT}}, {{mappingLoc.LONG}})</a></h5>
                             </div>
                         </div>
                         <div class="row separated-small">
                             <div class="col-xs-12">
-                                Resource Types: {{getMatchResources()}}
+                                {{text.resource_types_label}}: {{getMatchResources()}}
                             </div>
                         </div>
                         <hr></hr>
@@ -142,7 +142,7 @@
                                     <h5>{{match.center.Description}}</h5>
                                     <h5>{{match.dist}} km</h5>
                                     <div>
-                                        <a tabindex="0" class="btn btn-primary" uib-popover-html="'{{getCleanLocationText(match.center)}}'" popover-trigger="focus"><span class="glyphicon glyphicon-list"></span>More Info</a>
+                                        <a tabindex="0" class="btn btn-primary" uib-popover-html="'{{getCleanLocationText(match.center)}}'" popover-trigger="focus"><span class="glyphicon glyphicon-list"></span>{{text.btn_more_info}}</a>
                                     </div>
                                 </div>
                             </div>
@@ -151,8 +151,8 @@
                         <hr></hr>
                         <div class="row separated">
                             <div class="col-sm-12 btn-row">
-                                <a class="btn btn-primary" ng-click="backToFind()"><span class="glyphicon glyphicon-arrow-left"></span>Back</a>
-                                <a class="btn btn-primary" ng-click="toggleFindPanel()"><span class="glyphicon glyphicon-remove-sign"></span>Close</a>
+                                <a class="btn btn-primary" ng-click="backToFind()"><span class="glyphicon glyphicon-arrow-left"></span>{{text.back}}</a>
+                                <a class="btn btn-primary" ng-click="toggleFindPanel()"><span class="glyphicon glyphicon-remove-sign"></span>{{text.btn_close}}</a>
                             </div>
                         </div>
                     </div>
@@ -169,30 +169,30 @@
                             <img width="30" src="style/images/Distribution-Center.png" />
                         </div>
                         <div id="event-title" class="col-xs-10">
-                            <h4 class="separated-tiny">Deploy Resources</h4>
+                            <h4 class="separated-tiny">{{text.deploy_resources_header}}</h4>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
                             <hr />
-                            <input ng-model="locationPref.value" type="radio" value="Current" ng-change="getLocation()" /><span>  Use My Current Location</span><br />
-                            <input ng-model="locationPref.value" type="radio" value="Other" ng-change="getLocation()" /><span>  Use The Following Location:</span>
+                            <input ng-model="locationPref.value" type="radio" value="Current" ng-change="getLocation()" /><span>  {{text.my_location_label}}</span><br />
+                            <input ng-model="locationPref.value" type="radio" value="Other" ng-change="getLocation()" /><span>  {{text.map_location_label}}:</span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
-                            <span>Lat </span><input ng-model="deployment.LAT" type="text" class="form-control" name="lat" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
-                            <span>Long </span><input ng-model="deployment.LONG" type="text" class="form-control" name="long" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
+                            <span>{{text.lat_label}} </span><input ng-model="deployment.LAT" type="text" class="form-control" name="lat" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
+                            <span>{{text.long_label}} </span><input ng-model="deployment.LONG" type="text" class="form-control" name="long" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
                         </div>
                     </div>
                     <div class="well separated-small">
-                        <span class="glyphicon glyphicon-pushpin"></span> NOTE: You can select the latitude and longitude by clicking on the map.
+                        <span class="glyphicon glyphicon-pushpin"></span> {{text.map_note}}
                     </div>
                     <hr></hr>
                     <div class="row separated">
                         <div class="col-sm-12 btn-row">
-                            <a class="btn btn-primary" ng-click="createDeployment()"><span class="glyphicon glyphicon-plus-sign"></span>Deploy</a>
-                            <a class="btn btn-primary" ng-click="toggleDeployPanel()"><span class="glyphicon glyphicon-remove-sign"></span>Close</a>
+                            <a class="btn btn-primary" ng-click="createDeployment()"><span class="glyphicon glyphicon-plus-sign"></span>{{text.btn_deploy}}</a>
+                            <a class="btn btn-primary" ng-click="toggleDeployPanel()"><span class="glyphicon glyphicon-remove-sign"></span>{{text.btn_close}}</a>
                         </div>
                     </div>
                 </div>
@@ -222,8 +222,8 @@
                     <hr></hr>
                     <div class="row separated">
                         <div class="col-sm-12 btn-row">
-                            <a class="btn btn-primary" ng-click="modifyDeployment()"><span class="glyphicon glyphicon-pencil"></span>Modify</a>
-                            <a class="btn btn-primary" ng-click="closeDeploymentPanel()"><span class="glyphicon glyphicon-remove-sign"></span>Close</a>
+                            <a class="btn btn-primary" ng-click="modifyDeployment()"><span class="glyphicon glyphicon-pencil"></span>{{text.btn_modify}}</a>
+                            <a class="btn btn-primary" ng-click="closeDeploymentPanel()"><span class="glyphicon glyphicon-remove-sign"></span>{{text.btn_close}}</a>
                         </div>
                     </div>
                 </div>

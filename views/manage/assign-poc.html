@@ -1,10 +1,10 @@
 <div ng-controller="AssignPocCtrl">
     <div class="row">
         <div class="col-xs-1 ">
-            <img ng-src="style/images/Team.png" style="height: 50px; width: 45px;" alt="Team Invite"/>
+            <img ng-src="style/images/Team.png" style="height: 50px; width: 45px;" />
         </div>
         <div class="col-xs-2 ">
-            <h4>Points of Contact</h4>
+            <h4>{{text.points_of_contact_label}}</h4>
         </div>
         <div class="col-xs-offset-7 col-xs-2">
             <button type="button" class="close" style="" ng-click="go('/manage')">&times;</button>
@@ -14,7 +14,7 @@
     <form class="form-horizontal" name="teamInviteForm" novalidate role="form" ng-submit="updateOrg(org)">
         <div class="form-group">
             <div class="col-xs-offset-2   col-xs-4 ">
-                <label for="primaryPOC">Primary Point of Contact:</label>
+                <label for="primaryPOC">{{text.primary_poc_label}}:</label>
             </div>
             <div class="col-xs-6 ">
                 <select class="form-control" name="primaryPOCSelect"    id="primaryPOCSelect" ng-model="org.PrimaryPOC">
@@ -26,7 +26,7 @@
         </div>
         <div class="form-group">
             <div class="col-xs-offset-2   col-xs-4 ">
-                <label for="secondPOC">Second Point of Contact:</label>
+                <label for="secondPOC">{{text.second_poc_label}}:</label>
             </div>
             <div class="col-xs-6 ">
                 <select class="form-control" name="secondPOCSelect" id="secondPOCSelect" ng-model="org.SecondaryPOC">
@@ -37,7 +37,7 @@
             </div>
         </div>
         <div class=" col-xs-offset-11 col-xs-1 ">
-            <input type="submit" class="btn btn-primary " value="Save"/>
+            <input type="submit" class="btn btn-primary " value="{{text.save}}"/>
         </div>
     </form>
 </div>

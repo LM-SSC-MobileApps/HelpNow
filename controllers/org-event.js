@@ -202,6 +202,18 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            valueField: 'Quantity'
 	        };
 
+	        angular.forEach($scope.locations, function (deployment) {
+	            angular.forEach(deployment.ResourceLocationInventories, function (inventory) {
+	                angular.forEach(selectedRequests, function (request) {
+	                    if (calculateKmDistance(deployment.LAT, deployment.LONG, request.LAT, request.LONG) < 10 &&
+                            request.ResourceTypeID == inventory.ResourceTypeID) {
+	                        var index = selectedRequests.indexOf(request);
+	                        selectedRequests.splice(index, 1);
+	                    }
+	                });
+	            });
+	        });
+
 	        var heatmapLayer = new HeatmapOverlay(heatmapConfig);
 	        var heatmapData = { data: selectedRequests };
 	        heatmapLayer.setData(heatmapData);
