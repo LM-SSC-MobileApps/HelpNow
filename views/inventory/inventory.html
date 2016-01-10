@@ -39,9 +39,9 @@
                         <div class="col-xs-2">
                             <img src="style/images/Label.png" style="height: 25px; width: 30px; margin-top: 5px;" />
                         </div>
-                        <div class="col-xs-10">
+                        <div class="col-xs-10" ng-class="{'has-error': reslocform1.reslocname.$invalid && reslocform1.reslocname.$dirty}">
                             {{text.location_name}}<br /><input name="reslocname" ng-model="currentResourceLocation.Description" class="form-control" type="text" style="width: 170px;  margin-bottom: 10px;" required/>
-                            <!--<div class="help-block error" ng-show="reslocform1.reslocname.$error.required">Required</div>--> 
+                            <div class="help-block error" ng-show="reslocform1.reslocname.$error.required">Required</div> 
                         </div>
                     </div>
 
