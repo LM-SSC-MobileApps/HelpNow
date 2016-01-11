@@ -31,163 +31,151 @@
         </div>
     </div>
 
-    <div id="rightColumn" class="col-md-3 form-group" ng-if="showLocationForm" ng-form name="reslocform1">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="well">
-                    <div class="row">
-                        <div class="col-xs-2">
-                            <img src="style/images/Label.png" style="height: 25px; width: 30px; margin-top: 5px;" />
+    <form name="reslocform1">
+        <div id="rightColumn" class="col-md-3 form-group" ng-if="showLocationForm">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="well">
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <img src="style/images/Label.png" style="height: 25px; width: 30px; margin-top: 5px;" />
+                            </div>
+                            <div class="col-xs-10 form-group" show-errors>
+                                {{text.location_name}}<br /><input name="reslocname" ng-model="currentResourceLocation.Description" class="form-control" type="text" style="width: 170px;  margin-bottom: 10px;" required />
+                                <div class="help-block error" ng-if="reslocform1.reslocname.$error.required">Required</div>
+                            </div>
+                            <!--<div class="col-xs-10" ng-class="{'has-error': reslocform1.reslocname.$invalid && reslocform1.reslocname.$dirty}">
+                                {{text.location_name}}<br /><input name="reslocname" ng-model="currentResourceLocation.Description" class="form-control" type="text" style="width: 170px;  margin-bottom: 10px;" required />
+                                <div class="help-block error" ng-show="reslocform1.reslocname.$error.required">Required</div>
+                            </div>-->
                         </div>
-                        <div class="col-xs-10" ng-class="{'has-error': reslocform1.reslocname.$invalid && reslocform1.reslocname.$dirty}">
-                            {{text.location_name}}<br /><input name="reslocname" ng-model="currentResourceLocation.Description" class="form-control" type="text" style="width: 170px;  margin-bottom: 10px;" required/>
-                            <div class="help-block error" ng-show="reslocform1.reslocname.$error.required">Required</div> 
-                        </div>
-                    </div>
 
 
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <input ng-model="locationPref.value" type="radio" value="Current" ng-change="getLocation()" /><span>  {{text.current_location}}</span><br />
-                            <input ng-model="locationPref.value" type="radio" value="Other" ng-change="getLocation()" /><span>  {{text.manual_location}}</span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-6 pull-left" style="margin-top: 7px;">
-                            {{text.lat}}<br /><input ng-model="currentResourceLocation.LAT" type="text" class="form-control" name="lat" style="display:inline; width: 90px; color: black;" />
-                        </div>
-                        <div class="col-xs-6 pull-left" style="margin-top: 7px;">
-                            {{text.long}}<br/><input ng-model="currentResourceLocation.LONG" type="text" class="form-control" name="long" style="display:inline; width: 90px; color: black;" />
-                        </div>
-                    </div>
-
-                    <div class="well separated-small">
-                        <span class="glyphicon glyphicon-pushpin"></span> {{text.note_lat_long}}
-                    </div>
-
-
-                    <!--<div class="well">
                         <div class="row">
                             <div class="col-xs-12">
-                                <span>Lat </span><input ng-model="currentResourceLocation.LAT" type="text" class="form-control" name="lat" style="display:inline; width: 32%; margin-top: 10px; color: black;" />
-                                <span>Long </span><input ng-model="currentResourceLocation.LONG" type="text" class="form-control" name="long" style="display:inline; width: 32%; margin-top: 10px; color: black;" />
+                                <input ng-model="locationPref.value" type="radio" value="Current" ng-change="getLocation()" /><span>  {{text.current_location}}</span><br />
+                                <input ng-model="locationPref.value" type="radio" value="Other" ng-change="getLocation()" /><span>  {{text.manual_location}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6 pull-left form-group" style="margin-top: 7px;" show-errors>
+                                {{text.lat}}<br /><input ng-model="currentResourceLocation.LAT" type="text" class="form-control" name="lat" style="display:inline; width: 90px; color: black;" latitude required />
+                                <div class="help-block error" ng-if="reslocform1.lat.$error.required">Required</div>
+                                <div class="help-block error" ng-if="reslocform1.lat.$error.latitude">Invalid</div>
+                            </div>
+                            <div class="col-xs-6 pull-left form-group" style="margin-top: 7px;" show-errors>
+                                {{text.long}}<br /><input ng-model="currentResourceLocation.LONG" type="text" class="form-control" name="long" style="display:inline; width: 90px; color: black;" longitude required />
+                                <div class="help-block error" ng-if="reslocform1.long.$error.required">Required</div>
+                                <div class="help-block error" ng-if="reslocform1.long.$error.longitude">Invalid</div>
+                            </div>
+                        </div>
+
+                        <div class="well separated-small">
+                            <span class="glyphicon glyphicon-pushpin"></span> {{text.note_lat_long}}
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <img src="style/images/Team.png" style="height: 30px; width: 30px; margin-top: 10px;" />
+                            </div>
+                            <div class="col-xs-10">
+                                {{text.primary_contact}}<br />
+                                <input ng-model="currentResourceLocation.PrimaryPOCName" class="form-control" type="text" style="width: 170px; margin-bottom: 7px;" />
+                            </div>
+                            <div class="col-xs-2">
+                                <img src="style/images/Phone.png" style="height: 30px; width: 30px" />
+                            </div>
+                            <div class="col-xs-10">
+                                <input ng-model="currentResourceLocation.PrimaryPOCPhone" class="form-control" type="tel" style="width: 170px; margin-bottom: 7px;" />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-2">
-                                <img src="style/images/Location.png" style="height: 30px; width: 20px; margin-top: 5px;" />
+                                <img src="style/images/Team.png" style="height: 30px; width: 30px; margin-top: 10px;" />
                             </div>
                             <div class="col-xs-10">
-                                <h5 align="center" style="color: whitesmoke; margin-top: 10px;">OR</h5>
+                                {{text.secondary_contact}}<br />
+                                <input ng-model="currentResourceLocation.SecondaryPOCName" class="form-control" type="text" style="width: 170px; margin-bottom: 7px;" />
+                            </div>
+                            <div class="col-xs-2">
+                                <img src="style/images/Phone.png" style="height: 30px; width: 30px" />
+                            </div>
+                            <div class="col-xs-10">
+                                <input ng-model="currentResourceLocation.SecondaryPOCPhone" class="form-control" type="tel" style="width: 170px; margin-bottom: 7px;" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a id="btn-back" class="btn btn-primary" ng-click="showLocationsDiv()"><span class="glyphicon glyphicon-remove"></span>{{text.cancel}}</a>
+            <a id="btn-next" class="btn btn-primary pull-right" ng-click="showTransportationDiv()">{{text.next}}&nbsp;<span class="glyphicon glyphicon-chevron-right"></span></a>
+        </div>
+        <div id="rightColumn" class="col-md-3" ng-if="showTransportationOptionsForm">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="well">
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <img src="style/images/Team.png" style="height: 30px; width: 30px; margin-right: 5px; margin-bottom: 10px;" /><br />
+                            </div>
+                            <div class="col-xs-10">
+                                {{text.general_information}}<br />
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col-xs-12" style="margin-bottom:5px;">
+                                <!--<h5 style="vertical-align:top; color: whitesmoke">Note:</h5>-->
+                                <textarea ng-model="currentResourceLocation.Notes" class="form-control" style="width: 100%" maxlength="1000"></textarea>
+                            </div>
+                        </div>
+                        <!--<div class="row">
+                            <div class="col-xs-12" style="margin-bottom:5px; margin-top: 5px;">
+                                Resource Location Type:
+                            </div>
                             <div class="col-xs-12">
-                                <h5 style="vertical-align:top; color: whitesmoke; margin-top: 10px;">Address:</h5>
-                                <textarea class="form-control" style="width: 100%"></textarea><br />
+                                <div class="btn-group" uib-dropdown is-open="status.isopen">
+                                    <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle>
+                                        {{currentResourceLocation.ResourceLocationType.Description}} <span class="caret"></span>
+                                    </button>
+                                    <ul class="uib-dropdown-menu" role="menu" aria-labelledby="single-button">
+                                        <li role="menuitem" ng-repeat="choice in resourceLocationTypes">
+                                            <a ng-click="setResourceLocationType(choice)" style="color: whitesmoke;">{{choice.Description}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
-                    </div>-->
-                    <div class="row">
-                        <div class="col-xs-2">
-                            <img src="style/images/Team.png" style="height: 30px; width: 30px; margin-top: 10px;" />
-                        </div>
-                        <div class="col-xs-10">
-                            {{text.primary_contact}}<br />
-                            <input ng-model="currentResourceLocation.PrimaryPOCName" class="form-control" type="text" style="width: 170px; margin-bottom: 7px;" />
-                        </div>
-                        <div class="col-xs-2">
-                            <img src="style/images/Phone.png" style="height: 30px; width: 30px" />
-                        </div>
-                        <div class="col-xs-10">
-                            <input ng-model="currentResourceLocation.PrimaryPOCPhone" class="form-control" type="tel" style="width: 170px; margin-bottom: 7px;" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-2">
-                            <img src="style/images/Team.png" style="height: 30px; width: 30px; margin-top: 10px;" />
-                        </div>
-                        <div class="col-xs-10">
-                            {{text.secondary_contact}}<br />
-                            <input ng-model="currentResourceLocation.SecondaryPOCName" class="form-control" type="text" style="width: 170px; margin-bottom: 7px;" />
-                        </div>
-                        <div class="col-xs-2">
-                            <img src="style/images/Phone.png" style="height: 30px; width: 30px" />
-                        </div>
-                        <div class="col-xs-10">
-                            <input ng-model="currentResourceLocation.SecondaryPOCPhone" class="form-control" type="tel" style="width: 170px; margin-bottom: 7px;" />
+                        </div>-->
+                        <div class="row">
+                            <div class="col-xs-12" style="margin-bottom:5px; margin-top: 5px;">
+                                {{text.transportation_options}}
+                            </div>
+                            <div class="col-xs-4" ng-repeat="transport in transportTypes">
+                                <a href="" ng-click="toggleTransport(transport.TransportTypeID)" ng-if="showTransparentTransport(transport.Description)"><img src="style/images/Transport-{{transport.Description}}-Transparent.png" style="height: 30px; width: 45px; margin-right: 5px;" /></a>
+                                <a href="" ng-click="toggleTransport(transport.TransportTypeID)" ng-if="showTransport(transport.Description)"><img src="style/images/Transport-{{transport.Description}}.png" style="height: 30px; width: 45px; margin-right: 5px;" /></a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <a id="btn-back" class="btn btn-primary" ng-click="showLocationsDiv()"><span class="glyphicon glyphicon-remove"></span>{{text.cancel}}</a>
-        <a id="btn-next" class="btn btn-primary pull-right" ng-click="showTransportationDiv()">{{text.next}}&nbsp;<span class="glyphicon glyphicon-chevron-right"></span></a>
-    </div>
-    <div id="rightColumn" class="col-md-3" ng-if="showTransportationOptionsForm">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="well">
-                    <div class="row">
-                        <div class="col-xs-2">
-                            <img src="style/images/Team.png" style="height: 30px; width: 30px; margin-right: 5px; margin-bottom: 10px;" /><br />
-                        </div>
-                        <div class="col-xs-10">
-                            {{text.general_information}}<br />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12" style="margin-bottom:5px;">
-                            <!--<h5 style="vertical-align:top; color: whitesmoke">Note:</h5>-->
-                            <textarea ng-model="currentResourceLocation.Notes" class="form-control" style="width: 100%" maxlength="1000"></textarea>
-                        </div>
-                    </div>
-                    <!--<div class="row">
-                        <div class="col-xs-12" style="margin-bottom:5px; margin-top: 5px;">
-                            Resource Location Type:
-                        </div>
-                        <div class="col-xs-12">
-                            <div class="btn-group" uib-dropdown is-open="status.isopen">
-                                <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle>
-                                    {{currentResourceLocation.ResourceLocationType.Description}} <span class="caret"></span>
-                                </button>
-                                <ul class="uib-dropdown-menu" role="menu" aria-labelledby="single-button">
-                                    <li role="menuitem" ng-repeat="choice in resourceLocationTypes">
-                                        <a ng-click="setResourceLocationType(choice)" style="color: whitesmoke;">{{choice.Description}}</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>-->
-                    <div class="row">
-                        <div class="col-xs-12" style="margin-bottom:5px; margin-top: 5px;">
-                            {{text.transportation_options}}
-                        </div>
-                        <div class="col-xs-4" ng-repeat="transport in transportTypes">
-                            <a href="" ng-click="toggleTransport(transport.TransportTypeID)" ng-if="showTransparentTransport(transport.Description)"><img src="style/images/Transport-{{transport.Description}}-Transparent.png" style="height: 30px; width: 45px; margin-right: 5px;" /></a>
-                            <a href="" ng-click="toggleTransport(transport.TransportTypeID)" ng-if="showTransport(transport.Description)"><img src="style/images/Transport-{{transport.Description}}.png" style="height: 30px; width: 45px; margin-right: 5px;" /></a>
-                        </div>
-                    </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <a id="btn-back" class="btn btn-primary pull-left" ng-click="showLocationDiv()"><span class="glyphicon glyphicon-chevron-left"></span>{{text.back}}</a>
+                    <a id="btn-save" class="btn btn-success pull-right" ng-click="saveResourceLocation()"><span class="glyphicon glyphicon-save"></span>{{text.save}}</a>
+                </div>
+            </div>
+            <div class="row" ng-if="editMode">
+                <div class="col-sm-12">
+                    <a id="btn-delete" class="btn btn-danger pull-left" ng-click="modalDeleteResourceLocation()" style="margin-top: 10px;">{{text.delete_location}}</a>
+                </div>
+            </div>
+            <div class="row" ng-if="!editMode">
+                <div class="col-sm-12">
+                    <a id="btn-cancel" class="btn btn-primary pull-left" ng-click="showLocationsDiv()" style="margin-top: 10px;"><span class="glyphicon glyphicon-remove"></span>{{text.cancel}}</a>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-sm-12">
-                <a id="btn-back" class="btn btn-primary pull-left" ng-click="showLocationDiv()"><span class="glyphicon glyphicon-chevron-left"></span>{{text.back}}</a>
-                <a id="btn-save" class="btn btn-success pull-right" ng-click="saveResourceLocation()"><span class="glyphicon glyphicon-save"></span>{{text.save}}</a>
-            </div>
-        </div>
-        <div class="row" ng-if="editMode">
-            <div class="col-sm-12">
-                <a id="btn-delete" class="btn btn-danger pull-left" ng-click="modalDeleteResourceLocation()" style="margin-top: 10px;">{{text.delete_location}}</a>
-            </div>
-        </div>
-        <div class="row" ng-if="!editMode">
-            <div class="col-sm-12">
-                <a id="btn-cancel" class="btn btn-primary pull-left" ng-click="showLocationsDiv()" style="margin-top: 10px;"><span class="glyphicon glyphicon-remove"></span>{{text.cancel}}</a>
-            </div>
-        </div>
-    </div>
+    </form>
+
     <div id="rightColumn" class="col-md-3" ng-if="showResourceLocation">
         <div class="row">
             <div class="col-md-12">
@@ -256,72 +244,76 @@
         </div>
     </div>
 
-    <div id="rightColumn" class="col-md-3" ng-if="showResourceTypes">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="well">
-                    <div class="row">
-                        <div class="col-sm-10">
-                            <h3 style="margin-bottom: 20px;">{{currentResourceLocation.Description}}</h3>
-                        </div>
-                        <div class="col-sm-2">
-                            <a id="btn-remove" class="close pull-right" ng-click="showResourceLocationDiv()"><span class="glyphicon glyphicon-remove"></span></a>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <h4 style="margin-bottom: 20px;">{{text.services}}</h4>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-4" ng-repeat="resourceType in resourceTypesFiltered">
-                            <div>
-                                <a href="" ng-click="setResourceLocationInventoryType(resourceType)"><img src="style/images/{{resourceType.Description}}-Circle-Blue.png" alt="{{resourceType.Description}}" ng-disabled="resourceDisabled" style="height: 50px; width: 50px;  margin-bottom: 5px;" /></a>
+    <form name="reslocinvform">
+        <div id="rightColumn" class="col-md-3" ng-if="showResourceTypes">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="well">
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <h3 style="margin-bottom: 20px;">{{currentResourceLocation.Description}}</h3>
                             </div>
-                            <div class="text-center">
-                                <span style="margin-bottom: 5px; display: block; width: 54px;">{{resourceType.Description}}</span>
+                            <div class="col-sm-2">
+                                <a id="btn-remove" class="close pull-right" ng-click="showResourceLocationDiv()"><span class="glyphicon glyphicon-remove"></span></a>
                             </div>
                         </div>
-                    </div>
-                    <div class="row" ng-show="resourcesFiltered">
-                        <div class="row" style="margin-top: 15px;">
-                            <div class="col-xs-5">
-                                <span>{{text.quantity}}</span>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h4 style="margin-bottom: 20px;">{{text.services}}</h4>
                             </div>
-                            <div class="col-xs-7">
-                                <input ng-model="currentResourceLocationInventory.Quantity" type="number" class="form-control pull-left" name="qty" style="margin-bottom: 7px;" />
-                            </div>
-                            <div class="col-xs-5">
-                                <span>{{text.unit_type}}</span>
-                            </div>
-                            <div class="col-xs-7">
-                                <div class="btn-group pull-left" uib-dropdown is-open="status.isopen">
-                                    <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle>
-                                        {{currentResourceTypeUnitOfMeasure.Description}} <span class="caret"></span>
-                                    </button>
-                                    <ul class="uib-dropdown-menu" role="menu" aria-labelledby="single-button">
-                                        <li role="menuitem" ng-repeat="choice in resourceTypeUnitOfMeasuresFiltered">
-                                            <a ng-click="setResourceTypeUnitOfMeasure(choice)" style="color: whitesmoke;">{{choice.Description}}</a>
-                                        </li>
-                                    </ul>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4" ng-repeat="resourceType in resourceTypesFiltered">
+                                <div>
+                                    <a href="" ng-click="setResourceLocationInventoryType(resourceType)"><img src="style/images/{{resourceType.Description}}-Circle-Blue.png" alt="{{resourceType.Description}}" ng-disabled="resourceDisabled" style="height: 50px; width: 50px;  margin-bottom: 5px;" /></a>
                                 </div>
-                            </div>                       
-                        </div>
-                        <div class="row" style="margin-bottom:5px; margin-top: 15px;">
-                            <div class="col-xs-6" ng-if="!resourceLocationInventoryEdit">
-                                <a id="btn-clear" class="btn btn-primary pull-left" ng-click="showResourceLocationInventoryNewForm()"><span class="glyphicon glyphicon-refresh"></span>{{text.reset}}</a>
-                            </div>
-                            <div class="col-xs-6" ng-if="resourceLocationInventoryEdit">
-                                <a id="btn-clear" class="btn btn-danger pull-left" ng-click="modalDeleteResourceLocationInventory()"><span class="glyphicon glyphicon-remove"></span>{{text.delete}}</a>
-                            </div>
-                            <div class="col-xs-6">
-                                <a id="btn-save" class="btn btn-success pull-right" ng-click="saveResourceLocationInventory()"><span class="glyphicon glyphicon-save"></span>{{text.save}}</a>
+                                <div class="text-center">
+                                    <span style="margin-bottom: 5px; display: block; width: 54px;">{{resourceType.Description}}</span>
+                                </div>
                             </div>
                         </div>
+                        <div class="row" ng-show="resourcesFiltered">
+                            <div class="row" style="margin-top: 15px;">
+                                <div class="col-xs-5">
+                                    <span>{{text.quantity}}</span>
+                                </div>
+                                <div class="col-xs-7 form-group" show-errors>
+                                    <input ng-model="currentResourceLocationInventory.Quantity" type="number" min="1" class="form-control pull-left" name="qty" style="margin-bottom: 7px;" required />
+                                    <div class="help-block error" ng-if="reslocinvform.qty.$error.required">Required</div>
+                                    <div class="help-block error" ng-if="reslocinvform.qty.$error.min">Invalid</div>
+                                </div>
+                                <div class="col-xs-5">
+                                    <span>{{text.unit_type}}</span>
+                                </div>
+                                <div class="col-xs-7">
+                                    <div class="btn-group pull-left" uib-dropdown is-open="status.isopen">
+                                        <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle>
+                                            {{currentResourceTypeUnitOfMeasure.Description}} <span class="caret"></span>
+                                        </button>
+                                        <ul class="uib-dropdown-menu" role="menu" aria-labelledby="single-button">
+                                            <li role="menuitem" ng-repeat="choice in resourceTypeUnitOfMeasuresFiltered">
+                                                <a ng-click="setResourceTypeUnitOfMeasure(choice)" style="color: whitesmoke;">{{choice.Description}}</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom:5px; margin-top: 15px;">
+                                <div class="col-xs-6" ng-if="!resourceLocationInventoryEdit">
+                                    <a id="btn-clear" class="btn btn-primary pull-left" ng-click="showResourceLocationInventoryNewForm()"><span class="glyphicon glyphicon-refresh"></span>{{text.reset}}</a>
+                                </div>
+                                <div class="col-xs-6" ng-if="resourceLocationInventoryEdit">
+                                    <a id="btn-clear" class="btn btn-danger pull-left" ng-click="modalDeleteResourceLocationInventory()"><span class="glyphicon glyphicon-remove"></span>{{text.delete}}</a>
+                                </div>
+                                <div class="col-xs-6">
+                                    <a id="btn-save" class="btn btn-success pull-right" ng-click="saveResourceLocationInventory()"><span class="glyphicon glyphicon-save"></span>{{text.save}}</a>
+                                </div>
+                            </div>
                         </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 
 </div>

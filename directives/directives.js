@@ -1,3 +1,62 @@
+angular.module("helpNow").directive('showErrors', function () {
+      return {
+          restrict: 'A',
+          require: '^form',
+          link: function (scope, el, attrs, formCtrl) {
+              // find the text box element, which has the 'name' attribute
+              var inputEl = el[0].querySelector("[name]");
+              // convert the native text box element to an angular element
+              var inputNgEl = angular.element(inputEl);
+              // get the name on the text box so we know the property to check
+              // on the form controller
+              var inputName = inputNgEl.attr('name');
+
+              // only apply the has-error class after the user leaves the text box
+              inputNgEl.bind('blur', function () {
+                  el.toggleClass('has-error', formCtrl[inputName].$invalid);
+              })
+
+              scope.$on('show-errors-check-validity', function () {
+                  el.toggleClass('has-error', formCtrl[inputName].$invalid);
+              });
+          }
+      }
+});
+
+angular.module("helpNow").directive('latitude', function () {
+    var LAT_REGEXP = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)/i;
+
+    return {
+        require: 'ngModel',
+        link: function(scope, elm, attrs, ctrl) {
+            ctrl.$validators.latitude = function (modelValue, viewValue) {
+                if (ctrl.$isEmpty(viewValue)) {
+                    // not validating for empty value, only for valid
+                    return true;
+                }
+                return LAT_REGEXP.test(viewValue);
+            };
+        }
+    };
+});
+
+angular.module("helpNow").directive('longitude', function () {
+    var LONG_REGEXP = /^[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/i;
+
+    return {
+        require: 'ngModel',
+        link: function (scope, elm, attrs, ctrl) {
+            ctrl.$validators.longitude = function (modelValue, viewValue) {
+                if (ctrl.$isEmpty(viewValue)) {
+                    // not validating for empty value, only for valid
+                    return true;
+                }
+                return LONG_REGEXP.test(viewValue)
+            };
+        }
+    };
+});
+
 angular.module("helpNow").directive("filters", function () {
     return {
         scope: {

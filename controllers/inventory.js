@@ -376,6 +376,10 @@
     };
 
     $scope.showTransportationDiv = function () {
+        //before we go to the transportation div, we check for any form errors.
+        $scope.$broadcast('show-errors-check-validity');
+        if ($scope.reslocform1.$invalid) { return; }
+
         $scope.showLocationForm = false;
         $scope.showResourceLocation = false;
         $scope.showResourceLocations = false;
@@ -601,6 +605,8 @@
     };
 
     $scope.saveResourceLocationInventory = function () {
+        $scope.$broadcast('show-errors-check-validity');
+        if ($scope.reslocinvform.$invalid) { return; }
         if ($scope.resourceLocationInventoryEdit) {
             $scope.updateResourceLocationInventory();
         }
@@ -679,8 +685,4 @@
     //};
 
 
-
-    $scope.fieldIsRequired = function () {
-
-    };
 }]);
