@@ -376,6 +376,10 @@
     };
 
     $scope.showTransportationDiv = function () {
+        //before we go to the transportation div, we check for any form errors.
+        $scope.$broadcast('show-errors-check-validity');
+        if ($scope.reslocform1.$invalid) { return; }
+
         $scope.showLocationForm = false;
         $scope.showResourceLocation = false;
         $scope.showResourceLocations = false;
@@ -601,6 +605,8 @@
     };
 
     $scope.saveResourceLocationInventory = function () {
+        $scope.$broadcast('show-errors-check-validity');
+        if ($scope.reslocinvform.$invalid) { return; }
         if ($scope.resourceLocationInventoryEdit) {
             $scope.updateResourceLocationInventory();
         }
@@ -656,7 +662,27 @@
         return false;
     };
 
-    $scope.fieldIsRequired = function () {
+    //var hnNextDirective = {
+    //    'hnNext': ['$parse', function ($parse) {
+    //        return {
+    //            restrict: 'A',
+    //            require: 'form',
+    //            link: function (scope, formElement, attributes, formController) {
 
-    };
+    //                var fn = $parse(attributes.rcSubmit);
+
+    //                formElement.bind('btn-next', function (event) {
+    //                    // if form is not valid cancel it.
+    //                    if (!formController.$valid) return false;
+
+    //                    scope.$apply(function () {
+    //                        fn(scope, { $event: event });
+    //                    });
+    //                });
+    //            }
+    //        };
+    //    }]
+    //};
+
+
 }]);

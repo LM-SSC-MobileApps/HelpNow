@@ -228,23 +228,13 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
                     $scope.setCurrentUser(userSessionObject);
                     $scope.setCurrentOrg($scope.currentUser.Organization);
                     sessionStorage.setItem("user", JSON.stringify(userSessionObject));
-                    $scope.$broadcast("CurrentUserLoaded", {});
+                    $scope.$broadcast("CurrentUserLoaded", {});                    
                 }
             },
             function (response) { // optional
                 alert($scope.text.incorrect_login_alert);
             });
         }
-
-        // Handle previous path logic
-        var url = absOldUrl.replace("/#/", "/");
-        var pathArray = url.split('/');
-        var previousPath = "";
-        for (i = 3; i < pathArray.length; i++) {
-            previousPath += "/";
-            previousPath += pathArray[i];
-        }
-        $scope.previousPath = previousPath;
     });
 
     $scope.redirectToLogin = function () {

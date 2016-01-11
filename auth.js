@@ -258,14 +258,14 @@ function setupFacebookAuthentication(app, passport, strategy) {
     // login page.  Otherwise, the primary route function function will be called,
     // which, in this example, will redirect the user to the home page.
     app.get('/auth/facebook/callback',
-        passport.authenticate('facebook', { failureRedirect: './#/login' }),
+        passport.authenticate('facebook', { failureRedirect: '../../#/login?error=invalid_account' }),
         function (req, res) {
             //console.log('req = ' + JSON.stringify(req.user));
 
             // Successful authentication, redirect home.            
             res.redirect('/');
         }
-    );
+    );   
 
     app.post('/auth/account', function (req, res) {
         //console.log("req.isAuthenticated() = " + req.isAuthenticated() + " user = " + req.user);

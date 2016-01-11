@@ -7,6 +7,10 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 		$routeProvider.when("/login", {
 			templateUrl: "views/login.html"
 		});
+
+		$routeProvider.when("/about", {
+		    templateUrl: "views/about.html"
+		});
 		
 		$routeProvider.when("/events", {
 			templateUrl: "views/events.html"

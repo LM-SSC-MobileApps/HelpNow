@@ -546,3 +546,12 @@ input.switch:checked ~ label:after
     background-color: var(--dark-blue-trans);
     border-color: var(--dark-gray);
 }
+
+.form-group .help-block {
+  display: none;
+}
+
+.form-group.has-error .help-block {
+  display: block;
+  color: red;
+}
