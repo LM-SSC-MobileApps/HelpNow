@@ -4,6 +4,7 @@
   "menu_inv": "জায়",
   "menu_manage": "পরিচালনা করা",
   "menu_lang": "ভাষা",
+  "menu_about":  "প্রায়",
   "events_title": "বিশ্বব্যাপী ঘটনা",
   "inventory_title": "ইনভেন্টরি ম্যানেজমেন্ট",
   "delete_location": "অবস্থান মুছে",
@@ -159,5 +160,6 @@
   "additional_inventory": "এই সব যুক্ত জায় আইটেম মুছে ফেলা হবে",
   "confirm": "নিশ্চিত করা",
   "inventory": "জায়",
-  "resource_location": "রিসোর্স অবস্থান"
+  "resource_location": "রিসোর্স অবস্থান",
+  "about_title": "HelpNow™ সম্পর্কে"
 }

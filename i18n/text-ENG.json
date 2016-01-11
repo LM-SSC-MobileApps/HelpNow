@@ -4,6 +4,7 @@
   "menu_inv": "Inventory",
   "menu_manage": "Manage",
   "menu_lang": "Language",
+  "menu_about": "About",
   "events_title": "Worldwide Events",
   "inventory_title": "Inventory Management",
   "delete_location": "Delete Location",
@@ -23,7 +24,7 @@
   "note_lat_long": "NOTE: You can select the latitude and longitude by clicking on the map.",
   "current_location": "Use My Current Location",
   "manual_location": "Use The Following Location",
-  "lat": "Lat.",
+  "lat": "Lat",
   "long": "Long",
   "delete": "Delete",
   "remove": "Remove",
@@ -175,5 +176,6 @@
   "additional_inventory": "This will also delete all associated inventory items",
   "confirm": "Confirm",
   "inventory": "Inventory",
-  "resource_location": "Resource Location"
+  "resource_location": "Resource Location",
+  "about_title": "About HelpNow™"
 }
