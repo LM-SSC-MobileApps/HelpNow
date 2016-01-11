@@ -97,7 +97,7 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 		});
 	}]);
 angular.module("helpNow").controller("AdministrationCtrl", ["$scope", "$location", "$resource", "Organization", "$uibModal", function ($scope, $location, $resource, Organization, $uibModal) {
-    $scope.setTitle("Government & Organization Administration");
+    $scope.setTitle($scope.text.admin_title);
 
     $scope.governmentResource = $resource("/api/organization/type/:id",
 			{ id: 1 });
@@ -114,7 +114,7 @@ angular.module("helpNow").controller("AdministrationCtrl", ["$scope", "$location
     $scope.loadOrganizations = function () {
         $scope.organizationResource.get({}, function (data) {
             angular.module("helpNow").controller("AdministrationCtrl", ["$scope", "$location", "$resource", "Organization", "$uibModal", function ($scope, $location, $resource, Organization, $uibModal) {
-                $scope.setTitle("Government & Organization Administration");
+                $scope.setTitle($scope.text.admin_title);
 
                 $scope.governmentResource = $resource("/api/organization/type/:id",
                         { id: 1 });
@@ -297,8 +297,8 @@ angular.module("helpNow").controller("AssignPocCtrl", ["$scope", "$resource", "$
  * DemoCtrl
  */
 
-angular.module("helpNow").controller("DemoCtrl", ["$scope", "$http", "Event", "EventLocation", "ResourceRequest", "ResourceLocation",
-    function ($scope, $http, Event, EventLocation, ResourceRequest, ResourceLocation) {
+angular.module("helpNow").controller("DemoCtrl", ["$scope", "$http", "Event", "EventLocation", "ResourceRequest", "$location" ,"ResourceLocation",
+    function ($scope, $http, Event, EventLocation, ResourceRequest, $location ,ResourceLocation) {
 
         $scope.demoRunning = false;
 
@@ -311,6 +311,11 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "$http", "Event", "E
             }).error(function (data) {
             console.log("Error loading scenario data:  " + data);
         });
+
+        $scope.go = function ( path ) {
+            $location.path( path );
+        };
+
 
 
         $scope.startDemo = function () {
@@ -374,233 +379,247 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "$http", "Event", "E
 
     }]);
 
-angular.module("helpNow").controller("DeploymentCtrl", ["$scope", "$routeParams", "$resource", "$sce", "$location", "$http", 
+angular.module("helpNow").controller("DeploymentCtrl", ["$scope", "$routeParams", "$resource", "$sce", "$location", "$http",
 	function ($scope, $routeParams, $resource, $sce, $location, $http) {
-	
-	$scope.showDistributionCenters = false;
-	
-	$scope.deploymentsResource = $resource("/api/resourcelocation/:id");
-	$scope.distCenterResource = $resource("/api/resourcelocation/dist-center/all");
-	
-	$scope.setTitle("Resource Deployment", "style/images/Distribution-Center.png");
-	
-	$scope.distCenterResource.get({}, function (data) {
-		var centers = data.json;
-		centers = centers.filter(function(center) {
-			return center.OrganizationID == $scope.currentOrg.OrganizationID;
-		});
-		$scope.distCenters = centers;
-	});
-	
-	if ($routeParams.locationID) {
-		$scope.deployment = {};
-		$scope.deploymentsResource.get({id: $routeParams.locationID}, function(data) {
-			var deployment = data.json[0];
-			deployment.ResourceLocationStatusID = deployment.ResourceLocationStatusID + "";
-			$scope.deployment = deployment;
-			if ($scope.events) {
-				$scope.event = $scope.getEvent($scope.deployment.EventID);
-			}
-		});
-	} else {
-		$scope.deployment = {
-			EventID: $routeParams.eventID,
-			LAT: $routeParams.lat,
-			LONG: $routeParams.long,
-			ResourceLocationTypeID: 1,
-			OrganizationID: $scope.currentOrg.OrganizationID,
-			ResourceLocationStatusID: "1"
-		};
-	}
-	
-	if ($scope.events) {
-	    $scope.event = $scope.getEvent($scope.deployment.EventID);
-	}
-	
-	$scope.$on("EventDataLoaded", function() {
-		$scope.event = $scope.getEvent($scope.deployment.EventID);
-	});
-	
-	$scope.cancel = function() {
-		var url = "org_event/" + $scope.deployment.EventID;
-		$location.path(url);
-	};
-	
-	$scope.removeInventory = function(resource) {
-		var request = $http({
-            method: 'DELETE',
-            url: '/api/resourcelocationinventory/' + resource.ResourceLocationInventoryID,
-            async: true,
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-		
-		request.then(
-			function successCallback(response) {
-				var resources = $scope.deployment.ResourceLocationInventories;
-				var index = 0;
-				for (var i = 0; i < resources.length; i++) {
-					var currentResource = resources[i];
-					if (resource.ResourceLocationInventoryID == currentResource.ResourceLocationInventoryID) {
-						index = i;
-						break;
-					}
-				}
-				$scope.deployment.ResourceLocationInventories.splice(index, 1);
-			}, 
-			function errorCallback(response) {
-				alert(response.data.err);
-			}
-		);
-	};
-	
-	function createDeployment() {
-		var deploymentData = JSON.stringify($scope.deployment);
-		var request = $http({
-            method: 'POST',
-            url: '/api/resourcelocation',
-            async: true,
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            data: deploymentData
-        });
-		
-		request.then(
-			function successCallback(response) {
-				$scope.deployment.ResourceLocationID = response.data.json.ResourceLocationID;
-			}, 
-			function errorCallback(response) {
-				alert(response.data.err);
-			}
-		);
-	}
-	
-	function updateDeployment() {
-		var deploymentData = JSON.stringify($scope.deployment);
-		var request = $http({
-            method: 'PUT',
-            url: '/api/resourcelocation/' + $scope.deployment.ResourceLocationID,
-            async: true,
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            data: deploymentData
-        });
-		
-		request.then(
-			function successCallback(response) {
-				//alert("success");
-			}, 
-			function errorCallback(response) {
-				console.log(response);
-				alert("error: " + response.data.err);
-			}
-		);
-	}
-	
-	$scope.saveDeployment = function() {
-		if ($scope.deployment.ResourceLocationID) {
-			updateDeployment();
-		} else {
-			createDeployment();
-		}
-	};
-	
-	$scope.addResources = function(inventory) {
-		delete inventory.ResourceLocationInventoryID;
-		inventory.SourceLocationID = inventory.ResourceLocationID;
-		inventory.ResourceLocationID = $scope.deployment.ResourceLocationID;
-		var inventoryData = JSON.stringify(inventory);
-		alert(inventoryData);
-		var request = $http({
-            method: 'POST',
-            url: '/api/resourcelocationinventory',
-            async: true,
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            data: inventoryData
-        });
-		
-		request.then(
-			function successCallback(response) {
-				inventory.ResourceLocationInventoryID = response.data.json.ResourceLocationInventoryID;
-				$scope.deployment.ResourceLocationInventories.push(inventory);
-				$scope.showDistributionCenters = false;
-			}, 
-			function errorCallback(response) {
-				console.log(response.data);
-				alert("error: " + response.data.err);
-			}
-		);
-	};
-	
-	$scope.getResourceIcon = function (inventory) {
-	    var resourceType = inventory.ResourceType.Description;
-		
-	    if (resourceType == "Water") {
-	        return "style/images/Water-Diamond-Blue.png";
-	    } else if (resourceType == "First Aid") {
-	        return "style/images/First Aid-Diamond-Blue.png";
-	    } else if (resourceType == "Shelter") {
-	        return "style/images/Shelter-Diamond-Blue.png";
-	    } else if (resourceType == "Evacuation") {
-	        return "style/images/Evacuation-Diamond-Blue.png";
-	    } else if (resourceType == "Medicine") {
-	        return "style/images/Medicine-Diamond-Blue.png";
+
+	    $scope.showDistributionCenters = false;
+
+	    $scope.deploymentsResource = $resource("/api/resourcelocation/:id");
+	    $scope.distCenterResource = $resource("/api/resourcelocation/dist-center/all");
+
+	    $scope.setTitle($scope.text.deployment_title, "style/images/Distribution-Center.png");
+
+	    $scope.distCenterResource.get({}, function (data) {
+	        var centers = data.json;
+	        centers = centers.filter(function (center) {
+	            return center.OrganizationID == $scope.currentOrg.OrganizationID;
+	        });
+	        $scope.distCenters = centers;
+	    });
+
+	    if ($routeParams.locationID) {
+	        $scope.deployment = {};
+	        $scope.deploymentsResource.get({ id: $routeParams.locationID }, function (data) {
+	            var deployment = data.json[0];
+	            deployment.ResourceLocationStatusID = deployment.ResourceLocationStatusID + "";
+	            $scope.deployment = deployment;
+	            if ($scope.events) {
+	                $scope.event = $scope.getEvent($scope.deployment.EventID);
+	            }
+	        });
 	    } else {
-	        return "style/images/Food-Diamond-Blue.png";
+	        $scope.deployment = {
+	            EventID: $routeParams.eventID,
+	            LAT: $routeParams.lat,
+	            LONG: $routeParams.long,
+	            ResourceLocationTypeID: 2,
+	            OrganizationID: $scope.currentOrg.OrganizationID,
+	            ResourceLocationStatusID: "1",
+	            ResourceLocationTransports: [],
+	            ResourceLocationInventories: []
+	        };
 	    }
-	};
-	
-	$scope.toggleDistributionCenters = function() {
-		$scope.showDistributionCenters = !$scope.showDistributionCenters;
-	}
-}]);
-angular.module("helpNow").controller("EventListCtrl", ["$scope", "$location", function($scope, $location) {
+
+	    if ($scope.events) {
+	        $scope.event = $scope.getEvent($scope.deployment.EventID);
+	    }
+
+	    $scope.$on("EventDataLoaded", function () {
+	        $scope.event = $scope.getEvent($scope.deployment.EventID);
+	    });
+
+	    $scope.cancel = function () {
+	        var url = "org_event/" + $scope.deployment.EventID;
+	        $location.path(url);
+	    };
+
+	    $scope.removeInventory = function (resource) {
+	        var request = $http({
+	            method: 'DELETE',
+	            url: '/api/resourcelocationinventory/' + resource.ResourceLocationInventoryID,
+	            async: true,
+	            headers: {
+	                'Content-Type': 'application/json'
+	            }
+	        });
+
+	        request.then(
+                function successCallback(response) {
+                    var resources = $scope.deployment.ResourceLocationInventories;
+                    var index = 0;
+                    for (var i = 0; i < resources.length; i++) {
+                        var currentResource = resources[i];
+                        if (resource.ResourceLocationInventoryID == currentResource.ResourceLocationInventoryID) {
+                            index = i;
+                            break;
+                        }
+                    }
+                    $scope.deployment.ResourceLocationInventories.splice(index, 1);
+                },
+                function errorCallback(response) {
+                    alert(response.data.err);
+                }
+            );
+	    };
+
+	    function createDeployment() {
+	        var deploymentData = JSON.stringify($scope.deployment);
+	        var request = $http({
+	            method: 'POST',
+	            url: '/api/resourcelocation',
+	            async: true,
+	            headers: {
+	                'Content-Type': 'application/json'
+	            },
+	            data: deploymentData
+	        });
+
+	        request.then(
+                function successCallback(response) {
+                    $scope.deployment.ResourceLocationID = response.data.json.ResourceLocationID;
+                },
+                function errorCallback(response) {
+                    alert(response.data.err);
+                }
+            );
+	    }
+
+	    function updateDeployment() {
+	        var deploymentData = JSON.stringify($scope.deployment);
+	        var request = $http({
+	            method: 'PUT',
+	            url: '/api/resourcelocation/' + $scope.deployment.ResourceLocationID,
+	            async: true,
+	            headers: {
+	                'Content-Type': 'application/json'
+	            },
+	            data: deploymentData
+	        });
+
+	        request.then(
+                function successCallback(response) {
+                    //alert("success");
+                },
+                function errorCallback(response) {
+                    console.log(response);
+                    alert("error: " + response.data.err);
+                }
+            );
+	    }
+
+	    $scope.saveDeployment = function () {
+	        if ($scope.deployment.ResourceLocationID) {
+	            updateDeployment();
+	        } else {
+	            createDeployment();
+	        }
+	    };
+
+	    $scope.addResources = function (inventory) {
+	        delete inventory.ResourceLocationInventoryID;
+	        inventory.SourceLocationID = inventory.ResourceLocationID;
+	        inventory.ResourceLocationID = $scope.deployment.ResourceLocationID;
+	        var inventoryData = JSON.stringify(inventory);
+	        //alert(inventoryData);
+	        var request = $http({
+	            method: 'POST',
+	            url: '/api/resourcelocationinventory',
+	            async: true,
+	            headers: {
+	                'Content-Type': 'application/json'
+	            },
+	            data: inventoryData
+	        });
+
+	        request.then(
+                function successCallback(response) {
+                    inventory.ResourceLocationInventoryID = response.data.json.ResourceLocationInventoryID;
+                    $scope.deployment.ResourceLocationInventories.push(inventory);
+                    $scope.showDistributionCenters = false;
+                },
+                function errorCallback(response) {
+                    console.log(response.data);
+                    alert("error: " + response.data.err);
+                }
+            );
+	    };
+
+	    $scope.getResourceIcon = function (inventory) {
+	        var resourceType = inventory.ResourceType.Description;
+
+	        if (resourceType == "Water") {
+	            return "style/images/Water-Diamond-Blue.png";
+	        } else if (resourceType == "First Aid") {
+	            return "style/images/First Aid-Diamond-Blue.png";
+	        } else if (resourceType == "Shelter") {
+	            return "style/images/Shelter-Diamond-Blue.png";
+	        } else if (resourceType == "Evacuation") {
+	            return "style/images/Evacuation-Diamond-Blue.png";
+	        } else if (resourceType == "Medicine") {
+	            return "style/images/Medicine-Diamond-Blue.png";
+	        } else {
+	            return "style/images/Food-Diamond-Blue.png";
+	        }
+	    };
+
+	    $scope.toggleDistributionCenters = function () {
+	        $scope.showDistributionCenters = !$scope.showDistributionCenters;
+	    }
+	}]);
+angular.module("helpNow").controller("EventListCtrl", ["$scope", "$location", function ($scope, $location) {
     var map;
 
-    $scope.setTitle("Worldwide Events")
-	
-	$scope.getMapEventIcon = function(eventType) {
-		if (eventType == "Flood") {
-			return "style/images/Flood-Circle-Red.png";
-		} else if (eventType == "Tsunami") {
-			return "style/images/Tsunami-Circle-Red.png";
-		} else {
-			return "style/images/Earthquake-Circle-Red.png";
-		}
-	};
-	
-	function addEventsToMap() {
-		if (!map || !$scope.events) return;
-		angular.forEach($scope.events, function(event) {
-			var eventIcon = L.icon({
-				iconUrl: $scope.getMapEventIcon(event.EventType.Description),
-				iconSize: [43, 44] 
-			}); 
-			var marker = L.marker([event.EventLocations[0].LAT, event.EventLocations[0].LONG], { icon: eventIcon });
-			marker.on("click", function() {
-				$scope.$apply(function() {
-					$location.url("event_map/" + event.EventID);
-				});
-			});
-			marker.addTo(map);
-		});
-	}
-	
-	$scope.setCurrentView("events");
-	
-	$scope.$on("EventDataLoaded", function() {
-		addEventsToMap();
-	});
-	
-	$scope.initMap = function(newMap) {
-		map = newMap;
-		addEventsToMap();
-	};
+    $scope.setTitle($scope.text.events_title);
+    $scope.user = $scope.getCurrentUser();
+    if ($scope.user == null || $scope.user == false) {
+        $scope.isLoggedIn = false;
+    }
+    else {
+        $scope.isLoggedIn = true;
+    }
+
+    $scope.getMapEventIcon = function (eventType) {
+        if (eventType == "Flood") {
+            return "style/images/Flood-Circle-Red.png";
+        } else if (eventType == "Tsunami") {
+            return "style/images/Tsunami-Circle-Red.png";
+        } else {
+            return "style/images/Earthquake-Circle-Red.png";
+        }
+    };
+
+    function addEventsToMap() {
+        if (!map || !$scope.events) return;
+        angular.forEach($scope.events, function (event) {
+            var eventIcon = L.icon({
+                iconUrl: $scope.getMapEventIcon(event.EventType.Description),
+                iconSize: [43, 44]
+            });
+            var marker = L.marker([event.EventLocations[0].LAT, event.EventLocations[0].LONG], { icon: eventIcon });
+            marker.on("click", function () {
+                $scope.$apply(function () {
+                    if ($scope.isLoggedIn) {
+                        $location.url("org_event/" + event.EventID);
+                    }
+                    else {
+                        $location.url("event_map/" + event.EventID);
+                    }
+                });
+            });
+            marker.addTo(map);
+        });
+    }
+
+    $scope.setCurrentView("events");
+
+    $scope.$on("EventDataLoaded", function () {
+        addEventsToMap();
+    });
+
+    $scope.initMap = function (newMap) {
+        map = newMap;
+        addEventsToMap();
+    };
 }]);
 angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$routeParams", "$resource", function ($scope, $http, $routeParams, $resource) {
 
@@ -613,7 +632,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     $scope.urgencyResource = $resource("/api/requesturgency");
     $scope.needRequestResource = $resource("/api/resourcerequest");
 
-    $scope.helpRequest = { EventID: '', RequestStateID: '1', Notes: 'Reported from App', AreaSize: '0.25 km', UnitOfMeasure: '', Quantity: '' };
+    $scope.helpRequest = { EventID: '', RequestStateID: '1', Notes: 'Reported from App', AreaSize: '0.25 km', UnitOfMeasure: '', Quantity: ''};
 
     $scope.eventID = $routeParams.eventID * 1;
     if ($scope.events) {
@@ -634,24 +653,26 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     $scope.showEventDetails = true;
     $scope.showHelp = false;
     $scope.showNeeds = false;
-	
-	$scope.filterFlags = {
-		showMedical: true,
-		showShelter: true,
-		showFood: true,
-		showWater:true,
-		showEvacuation: true,
-		showMedicine: true
-	};
-	
-	$scope.needFlags = {
-		showMedical: false,
-		showShelter: false,
-		showFood: false,
-		showWater:false,
-		showEvacuation: false,
-		showMedicine: false
-	};
+
+    $scope.filterFlags = {
+        showMedical: true,
+        showShelter: true,
+        showFood: true,
+        showWater: true,
+        showClothing: true,
+        showEvacuation: true,
+        showMedicine: true
+    };
+
+    $scope.needFlags = {
+        showMedical: false,
+        showShelter: false,
+        showFood: false,
+        showWater: false,
+        showClothing: false,
+        showEvacuation: false,
+        showMedicine: false
+    };
 
     $scope.showLocationMarkers = true;
     $scope.locationPref = { value: 'Current' };
@@ -680,9 +701,15 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
         if ($scope.locationOutline !== undefined) {
             map.removeLayer($scope.locationOutline);
         }
-        $scope.locationOutline = L.circle([position.coords.latitude, position.coords.longitude], $scope.overlayRadius).addTo(map);
+        $scope.locationOutline = L.circle([position.coords.latitude, position.coords.longitude], $scope.overlayRadius, { color: "#00ff00", opacity: 1, fillOpacity: 0.7 }).addTo(map);
         $scope.$digest();
     }
+
+    $scope.centerMapToLongLat = function (lat, long) {
+        if (!map) return;
+        map.setZoom(13);
+        map.panTo(new L.LatLng(lat, long));
+    };
 
     $scope.getSelectedUrgency = function () {
         $scope.helpRequest.RequestUrgencyID = $scope.selectedUrgency.RequestUrgencyID;
@@ -723,7 +750,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     };
 
     function resetNeedsButtons() {
-		var flags = $scope.needFlags;
+        var flags = $scope.needFlags;
         flags.showMedical = false;
         flags.showShelter = false;
         flags.showFood = false;
@@ -752,7 +779,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
         mapLayers = [];
 
         if ($scope.showLocationMarkers)
-			$scope.buildLocationMarkers($scope.locations, mapLayers, $scope.filterFlags);
+            $scope.buildLocationMarkers($scope.locations, mapLayers, $scope.filterFlags);
 
         angular.forEach(mapLayers, function (layer) {
             map.addLayer(layer);
@@ -776,31 +803,31 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     }
 
     $scope.toggleButtonClass = function (id) {
-		var status = $scope[id];
+        var status = $scope[id];
         return status ? "btn btn-toggle active" : "btn btn-toggle";
     };
 
     $scope.toggleButton = function (id) {
-		var flags = $scope.filterFlags;
+        var flags = $scope.filterFlags;
         flags[id] = !flags[id];
         updateMap();
         return false;
     };
-	
-	$scope.toggleFilterClass = function(id) {
-		var flags = $scope.filterFlags;
-		var status = flags[id];
-		return status ? "btn btn-toggle active" : "btn btn-toggle";
-	};
-	
-	$scope.toggleNeedsClass = function(id) {
-		var flags = $scope.needFlags;
-		var status = flags[id];
-		return status ? "btn btn-toggle active" : "btn btn-toggle";
-	};
+
+    $scope.toggleFilterClass = function (id) {
+        var flags = $scope.filterFlags;
+        var status = flags[id];
+        return status ? "btn btn-toggle active" : "btn btn-toggle";
+    };
+
+    $scope.toggleNeedsClass = function (id) {
+        var flags = $scope.needFlags;
+        var status = flags[id];
+        return status ? "btn btn-toggle active" : "btn btn-toggle";
+    };
 
     $scope.toggleNeed = function (id) {
-		var flags = $scope.needFlags;
+        var flags = $scope.needFlags;
         flags[id] = !flags[id];
         return false;
     };
@@ -812,7 +839,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
                 if ($scope.locationOutline !== undefined) {
                     map.removeLayer($scope.locationOutline);
                 }
-                $scope.locationOutline = L.circle(e.latlng, $scope.overlayRadius).addTo(map);
+                $scope.locationOutline = L.circle(e.latlng, $scope.overlayRadius, { color: "#00ff00", opacity: 1, fillOpacity: 0.7 }).addTo(map);
                 $scope.helpRequest.LAT = e.latlng.lat.toFixed(3);
                 $scope.helpRequest.LONG = e.latlng.lng.toFixed(3);
                 $scope.$digest();
@@ -859,7 +886,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
             $scope.showNeeds = !$scope.showNeeds;
         }
         else {
-            alert("Missing Required Field(s)");
+            alert($scope.text.missing_fields_alert);
         }
         return false;
     };
@@ -892,11 +919,11 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     $scope.sendNeedRequest = function () {
         var hasError = false;
         var hasSubmissionError = false;
-		var flags = $scope.needFlags;
-            
+        var flags = $scope.needFlags;
+
         if ($scope.showNeeds) {
-			if (!flags.showMedical && !flags.showShelter && !flags.showFood &&
-                !flags.showMedicine && !flags.showWater && !flags.showEvacuation) {
+            if (!flags.showMedical && !flags.showShelter && !flags.showFood &&
+                !flags.showMedicine && !flags.showWater && !flags.showClothing && !flags.showEvacuation) {
                 hasError = true;
             }
         }
@@ -925,8 +952,12 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
                 $scope.helpRequest.ResourceTypeID = '2';
                 postNeedRequest();
             }
-            if (flags.showEvacuation) {
+            if (flags.showClothing) {
                 $scope.helpRequest.ResourceTypeID = '5';
+                postNeedRequest();
+            }
+            if (flags.showEvacuation) {
+                $scope.helpRequest.ResourceTypeID = '7';
                 postNeedRequest();
             }
             resetNeedsButtons();
@@ -934,7 +965,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
             $scope.showNeeds = !$scope.showNeeds;
             $scope.showEventDetails = !$scope.showEventDetails;
             if (!$scope.hasSubmissionError) {
-                alert("Request(s) successfully submitted");
+                alert($scope.text.need_request_success);
             }
         }
         else {
@@ -1024,14 +1055,16 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
 
     var map;
     var mapLayers = [];
-
-    $scope.setTitle("Inventory Management");
+  
+    $scope.setTitle("Inventory Managenent");
 
     $scope.setCurrentView("inventory");
 
-    $scope.resourceLocationResource = $resource("/api/resourcelocation/organization/:orgid", { orgid: '@orgid' });
+    $scope.resourceLocationResource = $resource("/api/resourcelocation/dist-center/organization/:orgid", { orgid: '@orgid' });
 
     $scope.locationTypeResource = $resource("/api/resourcelocationtype/", {});
+
+    $scope.locationStatusResource = $resource("/api/resourcelocationstatus/", {});
 
     $scope.transportTypeResource = $resource("/api/transporttype/", {});
 
@@ -1065,8 +1098,12 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
     $scope.showGround = false;
     $scope.showWater = false;
 
+    $scope.resourcesFiltered = false;
+    $scope.resourceLocationInventoryEdit = false;
+
     loadTransportTypes();
     loadResourceLocationTypes();
+    loadResourceLocationStatuses();
     loadResourceLocations();
     loadResourceTypes();
     loadResourceTypeUnitOfMeasures();
@@ -1076,9 +1113,6 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
         updateMap();
     });
 
-    //$scope.$on("ResourceLocationDataUpdated", function () {
-    //    loadResourceLocations();
-    //});
 
     function loadResourceLocations() {
         
@@ -1099,6 +1133,12 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
     function loadResourceLocationTypes() {
         $scope.locationTypeResource.get({}, function (data) {
             $scope.resourceLocationTypes = data.json;
+        });
+    }
+
+    function loadResourceLocationStatuses() {
+        $scope.locationStatusResource.get({}, function (data) {
+            $scope.resourceLocationStatuses = data.json;
         });
     }
 
@@ -1179,48 +1219,69 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
         return popupText;
     }
 
-    $scope.initMap = function (newMap) {
-        map = newMap;
-        //map.on('click', function (e) {
-        //    if ($scope.locationPref.value == "Other") {
-        //        if ($scope.locationOutline !== undefined) {
-        //            map.removeLayer($scope.locationOutline);
-        //        }
-        //        $scope.locationOutline = L.circle(e.latlng, $scope.overlayRadius).addTo(map);
-        //        $scope.helpRequest.LAT = e.latlng.lat.toFixed(3);
-        //        $scope.helpRequest.LONG = e.latlng.lng.toFixed(3);
-        //        $scope.$digest();
-        //    }
-        //});
-        updateMap();
-    };
-
-    $scope.centerMapToLongLat = function (lat, long) {
+    $scope.centerMapToLongLat = function (lat, long, zoom) {
         if (!map) return;
-        map.setZoom(12);
+        map.setZoom(zoom);
         map.panTo(new L.LatLng(lat, long));
     };
 
+
+    $scope.showLocationMarkers = true;
+    $scope.locationPref = { value: 'Current' };
+
+    $scope.getLocation = function () {
+        requestLocation();
+    };
+
+    function requestLocation() {
+        if ($scope.locationPref.value == "Current") {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            }
+        }
+        else {
+            if ($scope.locationOutline !== undefined) {
+                map.removeLayer($scope.locationOutline);
+            }
+            $scope.currentResourceLocation.LAT = "";
+            $scope.currentResourceLocation.LONG = "";
+        }
+    }
+
+    function showPosition(position) {
+        $scope.currentResourceLocation.LAT = position.coords.latitude;
+        $scope.currentResourceLocation.LONG = position.coords.longitude;
+        if ($scope.locationOutline !== undefined) {
+            map.removeLayer($scope.locationOutline);
+        }
+        $scope.locationOutline = L.circle([position.coords.latitude, position.coords.longitude], $scope.overlayRadius, { color: "#00ff00", opacity: 1, fillOpacity: 0.7 }).addTo(map);
+        $scope.$digest();
+        $scope.centerMapToLongLat(position.coords.latitude, position.coords.longitude, 7);
+    }
+
+    $scope.initMap = function (newMap) {
+        map = newMap;
+        map.on('click', function (e) {
+            if ($scope.locationPref.value == "Other") {
+                if ($scope.locationOutline !== undefined) {
+                    map.removeLayer($scope.locationOutline);
+                }
+                $scope.locationOutline = L.circle(e.latlng, $scope.overlayRadius, { color: "#00ff00", opacity: 1, fillOpacity: 0.7 }).addTo(map);
+                $scope.currentResourceLocation.LAT = e.latlng.lat.toFixed(3);
+                $scope.currentResourceLocation.LONG = e.latlng.lng.toFixed(3);
+                $scope.$digest();
+            }
+        });
+        updateMap();
+    };
+
+
     $scope.resourceLocationClick = function (lat, long, resourceLocID) {
         if (!map) return;
-        $scope.centerMapToLongLat(lat, long);
+        $scope.centerMapToLongLat(lat, long, 13);
         $scope.setCurrentResourceLocationByID(resourceLocID);
         $scope.showResourceLocationDiv();
     };
-    
-
-    
-
-    //$scope.toggleTransportClass = function (id) {
-    //    var status = $scope[id];
-    //    return status ? "btn btn-toggle active" : "btn btn-toggle";
-    //};
-
-    //$scope.toggleTransport = function (id) {
-    //    $scope[id] = !$scope[id];
-    //    return false;
-    //};
-
     
 
     /********************************* DATA FUNCTIONS ****************************************************/
@@ -1267,18 +1328,28 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
         return $scope.resourceLocationTypes[index];
     };
 
-    $scope.setResourceLocationInventoryType = function (resourceTypeID) {
-        $scope.currentResourceLocationInventory.ResourceTypeID = resourceTypeID;
-        $scope.resourceTypesFiltered = $scope.resourceTypes.filter(function (el) {
-            return el.ResourceTypeID = resourceTypeID;
-        });
-        $scope.resourceTypesFiltered.forEach(function (resType) {
-            alert("ResourceType: " + resType.Description);
-        });
-        $scope.resourceTypeUnitOfMeasuresFiltered = $scope.resourceTypeUnitOfMeasures.filter(function (el) {
-            return el.ResourceTypeID == resourceTypeID;
-        });
-        return false;
+    $scope.setDefaultResourceLocationStatus = function () {
+        var index = $scope.resourceLocationStatuses.map(function (el) {
+            return el.Status;
+        }).indexOf("Active");
+
+        return $scope.resourceLocationStatuses[index];
+    };
+
+    $scope.createNewResourceLocation = function () {
+        var newResLoc = new ResourceLocation();
+        newResLoc.ResourceLocationTransports = [];
+        newResLoc.OrganizationID = $scope.currentUser.OrganizationID;
+        //We default each new location to Distribution Center as Inventory is only for Distribution Center Management.
+        var defaultResLocType = $scope.setDefaultResourceLocationType();
+        newResLoc.ResourceLocationType = defaultResLocType;
+        newResLoc.ResourceLocationTypeID = defaultResLocType.ResourceLocationTypeID;
+        //We default each new lcoation to Active Status
+        var defaultResLocStatus = $scope.setDefaultResourceLocationStatus();
+        newResLoc.ResourceLocationStatus = defaultResLocStatus;
+        newResLoc.ResourceLocationStatusID = defaultResLocStatus.ResourceLocationStatusID;
+
+        return newResLoc;
     };
 
 
@@ -1294,14 +1365,24 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
         {
             //new ResourceLocation mode
             $scope.editMode = false;
-            var newResLoc = new ResourceLocation();
-            newResLoc.ResourceLocationTransports = [];
-            newResLoc.OrganizationID = $scope.currentUser.OrganizationID;
-            //We default each new location to Distribution Center, user can change on UI.
-            var defaultResLocType = $scope.setDefaultResourceLocationType();
-            newResLoc.ResourceLocationType = defaultResLocType;
-            newResLoc.ResourceLocationTypeID = defaultResLocType.ResourceLocationTypeID;
-            $scope.currentResourceLocation = newResLoc;
+            //var newResLoc = new ResourceLocation();
+            //newResLoc.ResourceLocationTransports = [];
+            //newResLoc.OrganizationID = $scope.currentUser.OrganizationID;
+            ////We default each new location to Distribution Center as Inventory is only for Distribution Center Management.
+            //var defaultResLocType = $scope.setDefaultResourceLocationType();
+            //newResLoc.ResourceLocationType = defaultResLocType;
+            //newResLoc.ResourceLocationTypeID = defaultResLocType.ResourceLocationTypeID;
+            ////We default each new lcoation to Active Status
+            //var defaultResLocStatus = $scope.setDefaultResourceLocationStatus();
+            //newResLoc.ResourceLocationStatus = defaultResLocStatus;
+            //newResLoc.ResourceLocationStatusID = defaultResLocStatus.ResourceLocationStatusID;
+
+            $scope.currentResourceLocation = $scope.createNewResourceLocation();
+
+            //set lat/long radio buttons
+            $scope.locationPref.value = "Other";
+            $scope.getLocation();
+
         }
         else
         {
@@ -1311,6 +1392,10 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
                 return el.ResourceLocationID;
             }).indexOf(id);
             $scope.currentResourceLocation = $scope.resourceLocations[index];
+
+            //set lat/long radio buttons
+            $scope.locationPref.value = "Other";
+            //$scope.getLocation();
 
             //set the transport icons
             $scope.currentResourceLocation.ResourceLocationTransports.forEach(function (transport) {
@@ -1344,6 +1429,10 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
     };
 
     $scope.showTransportationDiv = function () {
+        //before we go to the transportation div, we check for any form errors.
+        $scope.$broadcast('show-errors-check-validity');
+        if ($scope.reslocform1.$invalid) { return; }
+
         $scope.showLocationForm = false;
         $scope.showResourceLocation = false;
         $scope.showResourceLocations = false;
@@ -1371,10 +1460,7 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
     };
 
     $scope.showResourceTypesDiv = function () {
-        $scope.resourceTypesFiltered = $scope.resourceTypes;
-        var resLocInv = new ResourceLocationInventory();
-        resLocInv.ResourceLocationID = $scope.currentResourceLocation.ResourceLocationID;
-        $scope.currentResourceLocationInventory = resLocInv;
+        
         $scope.showLocationForm = false;
         $scope.showResourceLocations = false;
         $scope.showResourceLocation = false;
@@ -1433,11 +1519,71 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
         return false;
     };
 
+    $scope.showResourceLocationInventoryEditForm = function (inventory) {
+        $scope.currentResourceLocationInventory = inventory;
+        $scope.resourceLocationInventoryEdit = true;
+
+        $scope.showResourceTypesDiv();
+        $scope.setResourceLocationInventoryType(inventory.ResourceType);
+
+        return false;
+    };
+
+    $scope.showResourceLocationInventoryNewForm = function () {
+        $scope.resourceLocationInventoryEdit = false;
+
+        $scope.resourcesFiltered = false;
+        $scope.resourceTypesFiltered = $scope.resourceTypes;
+        var resLocInv = new ResourceLocationInventory();
+        resLocInv.ResourceLocationID = $scope.currentResourceLocation.ResourceLocationID;
+        $scope.currentResourceLocationInventory = resLocInv;
+
+        $scope.showResourceTypesDiv();
+       
+        return false;
+    };
+
+    $scope.setResourceLocationInventoryType = function (resourceType) {
+        $scope.resourcesFiltered = true;
+        $scope.currentResourceLocationInventory.ResourceTypeID = resourceType.ResourceTypeID;
+        $scope.currentResourceLocationInventory.ResourceType = resourceType;
+
+        $scope.resourceTypesFiltered = $scope.resourceTypes.filter(function (el) {
+            return el.ResourceTypeID == resourceType.ResourceTypeID;
+        });
+
+        $scope.resourceTypeUnitOfMeasuresFiltered = $scope.resourceTypeUnitOfMeasures.filter(function (el) {
+            return el.ResourceTypeID == resourceType.ResourceTypeID;
+        });
+
+        var uom = $scope.currentResourceLocationInventory.ResourceTypeUnitOfMeasure;
+        if (uom)
+        {
+            $scope.setResourceTypeUnitOfMeasure(uom);
+        }
+        else
+        {
+            $scope.setResourceTypeUnitOfMeasure($scope.resourceTypeUnitOfMeasuresFiltered[0]);
+        }
+        
+        return false;
+    };
+
+    $scope.clearResourceTypeFiltered = function () {
+        $scope.resourcesFiltered = false;
+        $scope.resourceTypesFiltered = $scope.resourceTypes;
+    };
+
+    $scope.setResourceTypeUnitOfMeasure = function (resourceTypeUOM) {
+        $scope.currentResourceTypeUnitOfMeasure = resourceTypeUOM;
+        $scope.currentResourceLocationInventory.ResourceTypeUnitOfMeasureID = resourceTypeUOM.ResourceTypeUnitOfMeasureID;
+        $scope.currentResourceLocationInventory.ResourceTypeUnitOfMeasure = resourceTypeUOM;
+    };
+
 
     /********************************* DELETE FUNCTIONS ****************************************************/
 
-    $scope.modalDeleteResourceLocationInventory = function (resourcelocationinventory) {
-        $scope.currentResourceLocationInventory = resourcelocationinventory;
+    $scope.modalDeleteResourceLocationInventory = function () {
         $scope.modalInstance = $uibModal.open(
             {
                 templateUrl: '/inventory/resource-inventory-modal-delete.html',
@@ -1446,12 +1592,17 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
             });
     };
 
+
     $scope.deleteResourceLocationInventory = function () {
-        ResourceLocationInventory.delete({ id: $scope.currentResourceLocationInventory.ResourceLocationInventoryID });
-        var index = $scope.currentResourceLocation.ResourceLocationInventories.map(function (el) {
-            return el.ResourceLocationInventoryID;
-        }).indexOf($scope.currentResourceLocationInventory.ResourceLocationInventoryID);
-        $scope.currentResourceLocation.ResourceLocationInventories.splice(index, 1);
+        ResourceLocationInventory.delete({ id: $scope.currentResourceLocationInventory.ResourceLocationInventoryID })
+        .$promise.then(function (value) {
+            var index = $scope.currentResourceLocation.ResourceLocationInventories.map(function (el) {
+                return el.ResourceLocationInventoryID;
+            }).indexOf($scope.currentResourceLocationInventory.ResourceLocationInventoryID);
+            $scope.currentResourceLocation.ResourceLocationInventories.splice(index, 1);
+
+            $scope.showResourceLocationDiv();
+        });
     };
 
     $scope.modalDeleteResourceLocation = function () {
@@ -1506,12 +1657,39 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
             });
     };
 
-
-    $scope.comingSoon = function () {
-        alert("Coming Soon - In Developement");
+    $scope.saveResourceLocationInventory = function () {
+        $scope.$broadcast('show-errors-check-validity');
+        if ($scope.reslocinvform.$invalid) { return; }
+        if ($scope.resourceLocationInventoryEdit) {
+            $scope.updateResourceLocationInventory();
+        }
+        else {
+            $scope.saveNewResourceLocationInventory();
+        }
         return false;
     };
 
+    $scope.saveNewResourceLocationInventory = function () {
+        ResourceLocationInventory.save($scope.currentResourceLocationInventory)
+            .$promise.then(function (value) {
+                $scope.currentResourceLocation.ResourceLocationInventories.push($scope.currentResourceLocationInventory);
+                //$scope.currentResourceLocationInventory = new ResourceLocationInventory();
+                $scope.showResourceLocationDiv();
+            });
+        return false;
+    };
+
+    $scope.updateResourceLocationInventory = function () {
+        ResourceLocationInventory.update({ id: $scope.currentResourceLocationInventory.ResourceLocationInventoryID }, $scope.currentResourceLocationInventory)
+            .$promise.then(function (value) {
+                //$scope.currentResourceLocationInventory = new ResourceLocationInventory();
+                $scope.showResourceLocationDiv();
+            });
+        return false;
+    };
+
+
+    /********************************* VALIDATE FUNCTIONS ****************************************************/
     $scope.validateNumber = function (evt) {
         var e = evt || window.event;
         var key = e.keyCode || e.which;
@@ -1536,21 +1714,45 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
         }
         return false;
     };
+
+    //var hnNextDirective = {
+    //    'hnNext': ['$parse', function ($parse) {
+    //        return {
+    //            restrict: 'A',
+    //            require: 'form',
+    //            link: function (scope, formElement, attributes, formController) {
+
+    //                var fn = $parse(attributes.rcSubmit);
+
+    //                formElement.bind('btn-next', function (event) {
+    //                    // if form is not valid cancel it.
+    //                    if (!formController.$valid) return false;
+
+    //                    scope.$apply(function () {
+    //                        fn(scope, { $event: event });
+    //                    });
+    //                });
+    //            }
+    //        };
+    //    }]
+    //};
+
+
 }]);
 angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function ($scope, $http, $location, $routeParams, $resource) {
     $scope.setCurrentView("login");
-    $scope.setTitle("Login");
+    $scope.setTitle($scope.text.login_title);
 
     $scope.validateUser = function () {
         if ($scope.userCreds.username === undefined || $scope.userCreds.password === undefined) {
             alert("Missing Username or Password");
         }
         else {
-            login();
+            $scope.login();
         }
     };
 
-    function login() {
+    $scope.login = function() {
         var postdata = 'username=' + $scope.userCreds.username + '&' + 'password=' + $scope.userCreds.password;
 
         var webCall = $http({
@@ -1567,7 +1769,7 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
             $scope.users = response.data.json;
             $scope.currentUser = $scope.users[0];
             if ($scope.currentUser === undefined) {
-                alert("Incorrect username or password. Please try again.");
+                alert($scope.text.incorrect_login_alert);
             }
             else {
                 var userSessionObject = {
@@ -1575,19 +1777,32 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
                     FirstName: $scope.currentUser.FirstName,
                     LastName: $scope.currentUser.LastName,
                     OrganizationID: $scope.currentUser.Organization.OrganizationID,
+                    OrganizationTypeID: $scope.currentUser.Organization.OrganizationTypeID,
                     OrganizationName: $scope.currentUser.Organization.Name
                 };
                 $scope.setCurrentUser(userSessionObject);
                 $scope.setCurrentOrg($scope.currentUser.Organization);
                 sessionStorage.setItem("user", JSON.stringify(userSessionObject));
                 $scope.$broadcast("CurrentUserLoaded", {});
-                $location.path('#');
+                $location.search('error', null);
+                $location.path('/');
             }
         },
         function (response) { // optional
-            alert("Incorrect username or password. Please try again.");
+            alert($scope.text.incorrect_login_alert);
         });
-    }    
+    };
+
+    $scope.checkForErrors = function () {
+        var errorType = ($location.search()).error;
+        if (typeof errorType !== 'undefined') {
+            if (errorType.indexOf("invalid_account") >= 0) {
+                alert("Your Facebook account has not been registered. Please register and try again.");
+            }
+        }
+    };
+
+    $scope.checkForErrors();
 }]);
 /**
  * ManageCtrl
@@ -1601,7 +1816,7 @@ angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$re
 			{ accountid: $scope.currentUser.AccountID });
 	$scope.orgResource = $resource("/api/organization/:id", { id: $scope.currentOrg.OrganizationID });
 
-	$scope.setTitle("Organization Management");
+	$scope.setTitle($scope.text.manage_title_label);
 
 
 	$scope.loadInvites = function() {
@@ -1680,7 +1895,7 @@ angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$re
 }]);
 angular.module("helpNow").controller("OrgAddressCtrl", ["$scope", "$http", "$location", "Organization", "$routeParams", "$resource", function ($scope, $http, $location, Organization, $routeParams, $resource) {
     $scope.setCurrentView("org-address");
-    $scope.setTitle("Organization Address");
+    $scope.setTitle($scope.text.address_title);
 
     $scope.addressResource = $resource("/api/address/:id");
     $scope.orgResource = $resource("/api/organization/:id");
@@ -1783,463 +1998,500 @@ angular.module("helpNow").controller("OrgAddressCtrl", ["$scope", "$http", "$loc
         });
     }
 }]);
-angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", "$resource", "$sce", "$location", 
+angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", "$resource", "$sce", "$location",
 	function ($scope, $routeParams, $resource, $sce, $location) {
-	var map;
-	var mapLayers = [];
-	$scope.setCurrentView("org-events");
-	
-	$scope.requestsResource = $resource("/api/event/mapitems/:eventID");
-	
-    $scope.eventID = $routeParams.eventID * 1;
-	if ($scope.events) {
-	    $scope.event = $scope.getEvent($scope.eventID);
-	    $scope.setTitle($scope.event.EventLocations[0].Description, $scope.getEventIcon($scope.event.EventType.Description));
-		loadRequests();
-	} 
-	
-	$scope.requests = [];
-	
-	$scope.showFilters = false;
-	$scope.showFindPanel = false;
-	$scope.showFindResults = false;
-	$scope.showMappingError = false;
-	$scope.showDeployPanel = false;
-	$scope.showDeploymentPanel = false;
-	
-	$scope.showHeatmap = false;
-	$scope.showClusters = false;
-	$scope.showNeedsMarkers = true;
-	$scope.showLocationMarkers = true;
-	$scope.showDistCenterMarkers = false;
-	
-	$scope.filterFlags = {
-		showMedical: true,
-		showShelter: true,
-		showFood: true,
-		showWater:true,
-		showEvacuation: true,
-		showMedicine: true
-	};
-	
-	$scope.matchingFlags = {
-		showMedical: false,
-		showShelter: false,
-		showFood: false,
-		showWater:false,
-		showEvacuation: false,
-		showMedicine: false
-	};
-	
-	$scope.mappingLoc = {}
-	$scope.deployment = {}
-	
-    $scope.locationPref = { value: 'Current' };
-	
-	$scope.getLocation = function () {
-        requestLocation();
-    };
-	
-	function closePanels() {
-		$scope.showFilters = false;
-		$scope.showFindPanel = false;
-		$scope.showFindResults = false;
-		$scope.showMappingError = false;
-		$scope.showDeployPanel = false;
-		$scope.showDeploymentPanel = false;
-	};
-	
-	$scope.getMatchResources = function() {
-		var resources = [];
-		var flags = $scope.matchingFlags;
-		if (flags.showMedical) resources.push("First Aid");
-		if (flags.showShelter) resources.push("Shelter");
-		if (flags.showFood) resources.push("Food");
-		if (flags.showWater) resources.push("Water");
-		if (flags.showEvacuation) resources.push("Evacuation");
-		if (flags.showMedicine) resources.push("Medicine");
-		return resources.join(", ");
-	}
+	    var map;
+	    var mapLayers = [];
+	    $scope.setCurrentView("org-events");
 
-    function requestLocation() {
-        if ($scope.locationPref.value == "Current") {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition);
-            }
-        }
-        else {
-            $scope.mappingLoc.LAT = null;
-            $scope.mappingLoc.LONG = null;
-			drawLocationMarker();
-        }
-    }
+	    $scope.requestsResource = $resource("/api/event/mapitems/:eventID");
 
-    function showPosition(position) {
-        $scope.mappingLoc.LAT = position.coords.latitude;
-        $scope.mappingLoc.LONG = position.coords.longitude;
-		drawLocationMarker();
-        $scope.$digest();
-    }
-	
-	function removeLocationMarker() {
-		if ($scope.locationOutline) {
-            map.removeLayer($scope.locationOutline);
-        }
-	}
-	
-	function drawLocationMarker() {
-		removeLocationMarker();
+	    $scope.eventID = $routeParams.eventID * 1;
+	    if ($scope.events) {
+	        $scope.event = $scope.getEvent($scope.eventID);
+	        $scope.setTitle($scope.event.EventLocations[0].Description, $scope.getEventIcon($scope.event.EventType.Description));
+	        loadRequests();
+	    }
 		
-		if ($scope.showFindPanel && $scope.mappingLoc.LAT && $scope.mappingLoc.LONG) {
-			$scope.locationOutline = L.circle([$scope.mappingLoc.LAT, $scope.mappingLoc.LONG], 250).addTo(map);
-		} else if ($scope.showDeployPanel && $scope.deployment.LAT && $scope.deployment.LONG) {
-			$scope.locationOutline = L.circle([$scope.deployment.LAT, $scope.deployment.LONG], 250).addTo(map);
-		}
-	}
-	
-	function getNeedsIcon(resourceType) {
-		if (resourceType == "Water") {
-			return "style/images/markers/dot-blue.png";
-		} else if (resourceType == "First Aid") {
-			return "style/images/markers/dot-red.png";
-		} else if (resourceType == "Shelter") {
-			return "style/images/markers/dot-orange.png";
-		} else if (resourceType == "Evacuation") {
-			return "style/images/markers/dot-purple.png";
-		} else if (resourceType == "Medicine") {
-			return "style/images/markers/dot-cyan.png";
-		} else {
-			return "style/images/markers/dot-green.png";
-		}
-	}
-	
-	function getClusterIcon(resourceType) {
-		if (resourceType == "Water") {
-			return "style/images/Water-Circle-Red.png";
-		} else if (resourceType == "First Aid") {
-			return "style/images/First Aid-Circle-Red.png";
-		} else if (resourceType == "Shelter") {
-			return "style/images/Shelter-Circle-Red.png";
-		} else if (resourceType == "Evacuation") {
-			return "style/images/Evacuation-Circle-Red.png";
-		} else if (resourceType == "Medicine") {
-			return "style/images/Medicine-Circle-Red.png";
-		} else {
-			return "style/images/Food-Circle-Red.png";
-		}
-	}
-	
-	$scope.$on("EventDataLoaded", function() {
-		$scope.event = $scope.getEvent($scope.eventID);
-	    $scope.setTitle($scope.event.EventLocations[0].Description, $scope.getEventIcon($scope.event.EventType.Description));
-		loadRequests();
-		updateMap();
-	});
-	
-	function buildNeedsMarkers(selectedRequests) {
-		angular.forEach(selectedRequests, function(request) {
-			var requestIcon = L.icon({
-				iconUrl: getNeedsIcon(request.ResourceType.Description),
-				iconSize: [27, 27],
-				iconAnchor: [13, 41],
-				popupAnchor:  [0, -20]
-			}); 
-			var marker = L.marker([request.LAT, request.LONG], { icon: requestIcon });
-			marker.bindPopup("<strong>" + request.ResourceType.Description + " (" + request.Quantity + ")</strong><br/>" + request.Notes);
-			mapLayers.push(marker);
-		});
-	}
-	
-	function buildClusterMarkers() {
-		if (!$scope.requestClusters) return;
-		var selectedClusters = $scope.requestClusters.filter(function(cluster) {
-			var type = cluster.ResourceType.Description;
-			return $scope.shouldDisplayMarker(type, $scope.filterFlags);
-		});
+		var dataRefreshTaskID = setInterval(loadRequests, 1000);
 		
-		angular.forEach(selectedClusters, function(cluster) {
-			var clusterIcon = L.icon({
-				iconUrl: getClusterIcon(cluster.ResourceType.Description),
-				iconSize: [50, 50],
-				iconAnchor: [25, 25]
-			}); 
-			var marker = L.marker([cluster.LAT, cluster.LONG], { icon: clusterIcon });
-			marker.bindPopup("<strong>" + cluster.ResourceType.Description + "</strong><br/>" + cluster.Notes);
-			mapLayers.push(marker);
-		});
-	}
-	
-	function buildHeatmap(selectedRequests) {
-		var heatmapConfig = {
-			"radius": 100,
-			"maxOpacity": 0.5,
-			"scaleRadius": false,
-			"useLocalExtrema": true,
-			latField: 'LAT',
-			lngField: 'LONG',
-			valueField: 'Quantity'
-		};
-		
-		var heatmapLayer = new HeatmapOverlay(heatmapConfig);
-		var heatmapData = { data: selectedRequests };
-		heatmapLayer.setData(heatmapData);
-		mapLayers.push(heatmapLayer);
-	}
-	
-	function buildDistCenterMarkers() {
-		if (!$scope.distributionCenters) return;
-		var selectedCenters = $scope.distributionCenters.filter(function(center) {
-			return $scope.shouldDisplayLocationMarker(center, $scope.filterFlags);
-		});
-		
-		angular.forEach(selectedCenters, function(center) {
-			var belongsToUser = center.OrganizationID == $scope.currentOrg.OrganizationID;
-			var url = belongsToUser ? "style/images/Distribution-Center-DBox-Blue.png" : "style/images/Distribution-Center-Box-Blue.png";
-			var centerIcon = L.icon({
-				iconUrl: url,
-				iconSize: [60, 60],
-				iconAnchor: [30, 30]
-			}); 
-			
-			var marker = $scope.buildLocationMarker(center, centerIcon);
-			mapLayers.push(marker);
-		});
-	}
-	
-	function updateMap() {
-		if (!map || !$scope.events) return;
-		
-		var zoom = map.getZoom();
-		
-		for (var i = 0; i < mapLayers.length; i++) {
-			var layer = mapLayers[i];
-			map.removeLayer(layer);
-		}
-		
-		mapLayers = [];
-		var selectedRequests = $scope.requests.filter(function(request) {
-			var type = request.ResourceType.Description;
-			return $scope.shouldDisplayMarker(type, $scope.filterFlags);
-		});
-		
-		if ($scope.showHeatmap)
-			buildHeatmap(selectedRequests);
-		
-		if ($scope.showNeedsMarkers && zoom > 7)
-			buildNeedsMarkers(selectedRequests);
-		
-		if ($scope.showClusters)
-			buildClusterMarkers();
-		
-		if ($scope.showLocationMarkers)
-			$scope.buildLocationMarkers($scope.locations, mapLayers, $scope.filterFlags, locationClicked);
-		
-		if ($scope.showDistCenterMarkers)
-			buildDistCenterMarkers();
-		
-		angular.forEach(mapLayers, function(layer) {
-			map.addLayer(layer);
-		});
-	}
-	
-	function locationClicked(location) {
-		closePanels();
-		$scope.deployment = location;
-		$scope.showDeploymentPanel = true;
-	}
-
-	function loadRequests() {
-		$scope.requestsResource.get({eventID: $scope.eventID}, function(data) {
-			$scope.requests = data.json.requests;
-			$scope.locations = data.json.locations;
-			$scope.requestClusters = data.json.requestClusters;
-			$scope.distributionCenters = data.json.distributionCenters;
-			updateMap();
-		});
-	}
-	
-	$scope.toggleButtonClass = function(id) {
-		var status = $scope[id];
-		return status ? "btn btn-toggle active" : "btn btn-toggle";
-	};
-	
-	$scope.toggleButton = function(id) {
-		$scope[id] = !$scope[id];
-		updateMap();
-		return false;
-	};
-	
-	$scope.toggleResourceFilter = function(filterName) {
-		var flags = $scope.filterFlags;
-		flags[filterName] = !flags[filterName];
-		updateMap();
-		return false;
-	}
-	
-	$scope.toggleResourceButtonClass = function(id) {
-		var flags = $scope.filterFlags;
-		var status = flags[id];
-		return status ? "btn btn-toggle active" : "btn btn-toggle";
-	};
-	
-	$scope.toggleMatchingFilter = function(filterName) {
-		var flags = $scope.matchingFlags;
-		flags[filterName] = !flags[filterName];
-		updateMap();
-		return false;
-	}
-	
-	$scope.toggleMatchingButtonClass = function(id) {
-		var flags = $scope.matchingFlags;
-		var status = flags[id];
-		return status ? "btn btn-toggle active" : "btn btn-toggle";
-	};
-	
-	$scope.getCleanLocationText = function(location) {
-		return $sce.trustAsHtml($scope.buildLocationDetails(location));
-	};
-	
-	$scope.initMap = function(newMap) {
-		map = newMap;
-		map.on("zoomend", function() {
-			updateMap();
-		});
-		map.on('click', function (e) {
-            if ($scope.showFindPanel && !$scope.showFindResults && $scope.locationPref.value == "Other") {
-                $scope.mappingLoc.LAT = e.latlng.lat.toFixed(3);
-                $scope.mappingLoc.LONG = e.latlng.lng.toFixed(3);
-				drawLocationMarker();
-                $scope.$digest();
-            } else if ($scope.showDeployPanel) {
-				$scope.deployment.LAT = e.latlng.lat.toFixed(3);
-                $scope.deployment.LONG = e.latlng.lng.toFixed(3);
-				drawLocationMarker();
-                $scope.$digest();
-			}
+		$scope.$on('$destroy', function() {
+			clearInterval(dataRefreshTaskID);
         });
-		updateMap();
-	};
-	
-	$scope.filterButtonText = function() {
-		return $scope.showFilters ? "Hide" : "Show";
-	};
-	
-	$scope.toggleFilters = function() {
-		$scope.showFilters = !$scope.showFilters;
-	};
-	
-	$scope.toggleFindPanel = function() {	
-		$scope.showFindPanel = !$scope.showFindPanel;
-		if ($scope.showFindPanel) {
-			$scope.showDistCenterMarkers = true;
-			requestLocation();
-			updateMap();
-		} else {
-			removeLocationMarker();
-		}
-	};
-	
-	$scope.toggleDeployPanel = function() {
-		$scope.showDeployPanel = !$scope.showDeployPanel;
-		if ($scope.showDeployPanel) {
-			requestLocation();
-			$scope.showDistCenterMarkers = true;
-			updateMap();
-		}
-	}
 
-	function convertToRadians(degrees) {
-	  return degrees * (Math.PI/180)
-	}
-	
-	function calculateKmDistance(lat1, lng1, lat2, lng2) {
-		var earthRadius = 6371;
-		var dLat = convertToRadians(lat2 - lat1);
-		var dLng = convertToRadians(lng2 - lng1); 
-		var a = 
-			Math.sin(dLat/2) * Math.sin(dLat/2) +
-			Math.cos(convertToRadians(lat1)) * Math.cos(convertToRadians(lat2)) * 
-			Math.sin(dLng/2) * Math.sin(dLng/2); 
-		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 -a )); 
-		return earthRadius * c;
-	}
-	
-	function matchDistributionCenters() {
-		var maxDist = 0;
-		var minDist = Number.MAX_VALUE;
-		
-		var selectedCenters = $scope.distributionCenters.filter(function(center) {
-			return $scope.shouldDisplayLocationMarker(center, $scope.matchingFlags) &&
-				center.OrganizationID == $scope.currentOrg.OrganizationID;
-		});
-		
-		var centersWithCompScores = selectedCenters.map(function(center) {
-			var distance = calculateKmDistance(center.LAT, center.LONG, $scope.mappingLoc.LAT, $scope.mappingLoc.LONG);
-			if (distance >= maxDist) maxDist = distance;
-			if (distance <= minDist) minDist = distance;
-			
-			return { center: center, dist: distance.toFixed(3) };
-		});
-		
-		var centersWithScores = centersWithCompScores.map(function(center) {
-			var score = (center.dist - minDist) / (maxDist - minDist);
-			center.score = score;
-			return center;
-		});
-		
-		centersWithScores.sort(function(a, b) {
-			return a.score - b.score;
-		});
-		
-		if (centersWithScores.length > 3)
-			centersWithScores = centersWithScores.slice(0, 3);
-		
-		$scope.hasMatches = centersWithScores.length > 0;
-		
-		return centersWithScores;
-	}
-	
-	$scope.findMatches = function() {
-		$scope.showMappingError = false;
-		if (!$scope.mappingLoc.LAT || !$scope.mappingLoc.LONG || $scope.getMatchResources().length == 0) {
-			$scope.showMappingError = true;
-			return false;
-		}
-		
-		$scope.matches = matchDistributionCenters();
-		$scope.showFindResults = true;
-		return false;
-	};
-	
-	$scope.showLocation = function(lat, lng) {
-		map.setView([lat, lng], map.getZoom());
-	};
-	
-	$scope.backToFind = function() {
-		$scope.showFindResults = false;
-		return false;
-	};
-	
-	$scope.closeDeploymentPanel = function() {
-		$scope.showDeploymentPanel = false;
-	};
-	
-	$scope.panelIsOpen = function() {
-		return $scope.showFindPanel || $scope.showFilters || $scope.showDeployPanel || $scope.showDeploymentPanel;
-	};
-	
-	$scope.createDeployment = function() {
-		var url = "create_deployment/" + $scope.eventID + "/" + $scope.deployment.LAT + "/" + $scope.deployment.LONG;
-		$location.path(url);
-	};
-	
-	$scope.modifyDeployment = function() {
-		var url = "modify_deployment/" + $scope.deployment.ResourceLocationID;
-		$location.path(url);
-	}
-	
-	$scope.setCurrentView("org-event");
-}]);
+	    $scope.requests = [];
+
+	    $scope.showFilters = false;
+	    $scope.showFindPanel = false;
+	    $scope.showFindResults = false;
+	    $scope.showMappingError = false;
+	    $scope.showDeployPanel = false;
+	    $scope.showDeploymentPanel = false;
+
+	    $scope.showHeatmap = true;
+	    $scope.showClusters = true;
+	    $scope.showNeedsMarkers = false;
+	    $scope.showLocationMarkers = false;
+	    $scope.showDistCenterMarkers = false;
+
+	    $scope.filterFlags = {
+	        showMedical: true,
+	        showShelter: true,
+	        showFood: true,
+	        showWater: true,
+	        showClothing: true,
+	        showEvacuation: true,
+	        showMedicine: true
+	    };
+
+	    $scope.matchingFlags = {
+	        showMedical: false,
+	        showShelter: false,
+	        showFood: false,
+	        showWater: false,
+	        showClothing: false,
+	        showEvacuation: false,
+	        showMedicine: false
+	    };
+
+	    $scope.mappingLoc = {}
+	    $scope.deployment = {}
+
+	    $scope.locationPref = { value: 'Current' };
+
+	    $scope.getLocation = function () {
+	        requestLocation();
+	    };
+
+	    function closePanels() {
+	        $scope.showFilters = false;
+	        $scope.showFindPanel = false;
+	        $scope.showFindResults = false;
+	        $scope.showMappingError = false;
+	        $scope.showDeployPanel = false;
+	        $scope.showDeploymentPanel = false;
+	    };
+
+	    $scope.getMatchResources = function () {
+	        var resources = [];
+	        var flags = $scope.matchingFlags;
+	        if (flags.showMedical) resources.push("First Aid");
+	        if (flags.showShelter) resources.push("Shelter");
+	        if (flags.showFood) resources.push("Food");
+	        if (flags.showWater) resources.push("Water");
+	        if (flags.showClothing) resources.push("Clothing");
+	        if (flags.showEvacuation) resources.push("Evacuation");
+	        if (flags.showMedicine) resources.push("Medicine");
+	        return resources.join(", ");
+	    }
+
+	    function requestLocation() {
+	        if ($scope.locationPref.value == "Current") {
+	            if (navigator.geolocation) {
+	                navigator.geolocation.getCurrentPosition(showPosition);
+	            }
+	        }
+	        else {
+	            $scope.mappingLoc.LAT = null;
+	            $scope.mappingLoc.LONG = null;
+	            drawLocationMarker();
+	        }
+	    }
+
+	    function showPosition(position) {
+	        $scope.mappingLoc.LAT = position.coords.latitude;
+	        $scope.mappingLoc.LONG = position.coords.longitude;
+	        drawLocationMarker();
+	        $scope.$digest();
+	    }
+
+	    function removeLocationMarker() {
+	        if ($scope.locationOutline) {
+	            map.removeLayer($scope.locationOutline);
+	        }
+	    }
+
+	    function drawLocationMarker() {
+	        removeLocationMarker();
+
+	        if ($scope.showFindPanel && $scope.mappingLoc.LAT && $scope.mappingLoc.LONG) {
+	            $scope.locationOutline = L.circle([$scope.mappingLoc.LAT, $scope.mappingLoc.LONG], 250, { color: "#00ff00", opacity: 1, fillOpacity: 0.7 }).addTo(map);
+	        } else if ($scope.showDeployPanel && $scope.deployment.LAT && $scope.deployment.LONG) {
+	            $scope.locationOutline = L.circle([$scope.deployment.LAT, $scope.deployment.LONG], 250, { color: "#00ff00", opacity: 1, fillOpacity: 0.7 }).addTo(map);
+	        }
+	    }
+
+	    function getNeedsIcon(resourceType) {
+	        if (resourceType == "Water") {
+	            return "style/images/markers/dot-blue.png";
+	        } else if (resourceType == "First Aid") {
+	            return "style/images/markers/dot-red.png";
+	        } else if (resourceType == "Shelter") {
+	            return "style/images/markers/dot-orange.png";
+	        } else if (resourceType == "Evacuation") {
+	            return "style/images/markers/dot-purple.png";
+	        } else if (resourceType == "Medicine") {
+	            return "style/images/markers/dot-cyan.png";
+	        } else if (resourceType == "Clothing") {
+	            return "style/images/markers/dot-yellow.png";
+	        } else {
+	            return "style/images/markers/dot-green.png";
+	        }
+	    }
+
+	    function getClusterIcon(resourceType) {
+	        if (resourceType == "Water") {
+	            return "style/images/Water-Circle-Red.png";
+	        } else if (resourceType == "First Aid") {
+	            return "style/images/First Aid-Circle-Red.png";
+	        } else if (resourceType == "Shelter") {
+	            return "style/images/Shelter-Circle-Red.png";
+	        } else if (resourceType == "Clothing") {
+	            return "style/images/Clothing-Circle-Red.png";
+	        } else if (resourceType == "Evacuation") {
+	            return "style/images/Evacuation-Circle-Red.png";
+	        } else if (resourceType == "Medicine") {
+	            return "style/images/Medicine-Circle-Red.png";
+	        } else {
+	            return "style/images/Food-Circle-Red.png";
+	        }
+	    }
+
+	    $scope.$on("EventDataLoaded", function () {
+	        $scope.event = $scope.getEvent($scope.eventID);
+	        $scope.setTitle($scope.event.EventLocations[0].Description, $scope.getEventIcon($scope.event.EventType.Description));
+	        loadRequests();
+	        updateMap();
+	    });
+
+	    function buildNeedsMarkers(selectedRequests) {
+	        angular.forEach(selectedRequests, function (request) {
+	            var requestIcon = L.icon({
+	                iconUrl: getNeedsIcon(request.ResourceType.Description),
+	                iconSize: [27, 27],
+	                iconAnchor: [13, 41],
+	                popupAnchor: [0, -20]
+	            });
+	            var marker = L.marker([request.LAT, request.LONG], { icon: requestIcon });
+	            marker.bindPopup("<strong>" + request.ResourceType.Description + " (" + request.Quantity + ")</strong><br/>" + request.Notes);
+	            mapLayers.push(marker);
+	        });
+	    }
+
+	    function buildClusterMarkers() {
+	        if (!$scope.requestClusters) return;
+	        var selectedClusters = $scope.requestClusters.filter(function (cluster) {
+	            var type = cluster.ResourceType.Description;
+	            return $scope.shouldDisplayMarker(type, $scope.filterFlags);
+	        });
+
+	        angular.forEach(selectedClusters, function (cluster) {
+	            var clusterIcon = L.icon({
+	                iconUrl: getClusterIcon(cluster.ResourceType.Description),
+	                iconSize: [50, 50],
+	                iconAnchor: [25, 25]
+	            });
+	            var marker = L.marker([cluster.LAT, cluster.LONG], { icon: clusterIcon });
+	            marker.bindPopup("<strong>" + cluster.ResourceType.Description + "</strong><br/>" + cluster.Notes);
+	            mapLayers.push(marker);
+	        });
+	    }
+
+	    function buildHeatmap(selectedRequests) {
+	        var heatmapConfig = {
+	            "radius": 100,
+	            "maxOpacity": 0.5,
+	            "scaleRadius": false,
+	            "useLocalExtrema": true,
+	            latField: 'LAT',
+	            lngField: 'LONG',
+	            valueField: 'Quantity'
+	        };
+
+	        angular.forEach($scope.locations, function (deployment) {
+	            angular.forEach(deployment.ResourceLocationInventories, function (inventory) {
+	                angular.forEach(selectedRequests, function (request) {
+	                    if (calculateKmDistance(deployment.LAT, deployment.LONG, request.LAT, request.LONG) < 10 &&
+                            request.ResourceTypeID == inventory.ResourceTypeID) {
+	                        var index = selectedRequests.indexOf(request);
+	                        selectedRequests.splice(index, 1);
+	                    }
+	                });
+	            });
+	        });
+
+	        var heatmapLayer = new HeatmapOverlay(heatmapConfig);
+	        var heatmapData = { data: selectedRequests };
+	        heatmapLayer.setData(heatmapData);
+	        mapLayers.push(heatmapLayer);
+	    }
+
+	    function buildDistCenterMarkers() {
+	        if (!$scope.distributionCenters) return;
+	        var selectedCenters = $scope.distributionCenters.filter(function (center) {
+	            return $scope.shouldDisplayLocationMarker(center, $scope.filterFlags);
+	        });
+
+	        angular.forEach(selectedCenters, function (center) {
+	            var belongsToUser = center.OrganizationID == $scope.currentOrg.OrganizationID;
+	            var url = belongsToUser ? "style/images/Distribution-Center-DBox-Blue.png" : "style/images/Distribution-Center-Box-Blue.png";
+	            var centerIcon = L.icon({
+	                iconUrl: url,
+	                iconSize: [60, 60],
+	                iconAnchor: [30, 30]
+	            });
+
+	            var marker = $scope.buildLocationMarker(center, centerIcon);
+	            mapLayers.push(marker);
+	        });
+	    }
+
+	    function updateMap() {
+	        if (!map || !$scope.events) return;
+
+	        var zoom = map.getZoom();
+
+	        for (var i = 0; i < mapLayers.length; i++) {
+	            var layer = mapLayers[i];
+	            map.removeLayer(layer);
+	        }
+
+	        mapLayers = [];
+	        var selectedRequests = $scope.requests.filter(function (request) {
+	            var type = request.ResourceType.Description;
+	            return $scope.shouldDisplayMarker(type, $scope.filterFlags);
+	        });
+
+	        if ($scope.showHeatmap)
+	            buildHeatmap(selectedRequests);
+
+	        if ($scope.showNeedsMarkers && zoom > 7)
+	            buildNeedsMarkers(selectedRequests);
+
+	        if ($scope.showClusters)
+	            buildClusterMarkers();
+
+	        if ($scope.showLocationMarkers)
+	            $scope.buildLocationMarkers($scope.locations, mapLayers, $scope.filterFlags, locationClicked);
+
+	        if ($scope.showDistCenterMarkers)
+	            buildDistCenterMarkers();
+
+	        angular.forEach(mapLayers, function (layer) {
+	            map.addLayer(layer);
+	        });
+	    }
+
+	    function locationClicked(location) {
+	        closePanels();
+	        $scope.deployment = location;
+	        $scope.showDeploymentPanel = true;
+	    }
+
+	    function loadRequests() {
+	        $scope.requestsResource.get({ eventID: $scope.eventID }, function (data) {
+				$scope.requests = data.json.requests;
+	            $scope.locations = data.json.locations;
+	            $scope.requestClusters = data.json.requestClusters;
+	            $scope.distributionCenters = data.json.distributionCenters;
+	            updateMap();
+	        });
+	    }
+
+	    $scope.centerMapToLongLat = function (lat, long) {
+	        if (!map) return;
+	        map.setZoom(13);
+	        map.panTo(new L.LatLng(lat, long));
+	    };
+
+	    $scope.toggleButtonClass = function (id) {
+	        var status = $scope[id];
+	        return status ? "btn btn-toggle active" : "btn btn-toggle";
+	    };
+
+	    $scope.toggleButton = function (id) {
+	        $scope[id] = !$scope[id];
+	        updateMap();
+	        return false;
+	    };
+
+	    $scope.toggleResourceFilter = function (filterName) {
+	        var flags = $scope.filterFlags;
+	        flags[filterName] = !flags[filterName];
+	        updateMap();
+	        return false;
+	    }
+
+	    $scope.toggleResourceButtonClass = function (id) {
+	        var flags = $scope.filterFlags;
+	        var status = flags[id];
+	        return status ? "btn btn-toggle active" : "btn btn-toggle";
+	    };
+
+	    $scope.toggleMatchingFilter = function (filterName) {
+	        var flags = $scope.matchingFlags;
+	        flags[filterName] = !flags[filterName];
+	        updateMap();
+	        return false;
+	    }
+
+	    $scope.toggleMatchingButtonClass = function (id) {
+	        var flags = $scope.matchingFlags;
+	        var status = flags[id];
+	        return status ? "btn btn-toggle active" : "btn btn-toggle";
+	    };
+
+	    $scope.getCleanLocationText = function (location) {
+	        return $sce.trustAsHtml($scope.buildLocationDetails(location));
+	    };
+
+	    $scope.initMap = function (newMap) {
+	        map = newMap;
+	        map.on("zoomend", function () {
+	            updateMap();
+	        });
+	        map.on('click', function (e) {
+	            if ($scope.showFindPanel && !$scope.showFindResults && $scope.locationPref.value == "Other") {
+	                $scope.mappingLoc.LAT = e.latlng.lat.toFixed(3);
+	                $scope.mappingLoc.LONG = e.latlng.lng.toFixed(3);
+	                drawLocationMarker();
+	                $scope.$digest();
+	            } else if ($scope.showDeployPanel) {
+	                $scope.deployment.LAT = e.latlng.lat.toFixed(3);
+	                $scope.deployment.LONG = e.latlng.lng.toFixed(3);
+	                drawLocationMarker();
+	                $scope.$digest();
+	            }
+	        });
+	        updateMap();
+	    };
+
+	    $scope.filterButtonText = function () {
+	        return $scope.showFilters ? "Hide" : "Show";
+	    };
+
+	    $scope.toggleFilters = function () {
+	        $scope.showFilters = !$scope.showFilters;
+	    };
+
+	    $scope.toggleFindPanel = function () {
+	        $scope.showFindPanel = !$scope.showFindPanel;
+	        if ($scope.showFindPanel) {
+	            $scope.showDistCenterMarkers = true;
+	            requestLocation();
+	            updateMap();
+	        } else {
+	            removeLocationMarker();
+	        }
+	    };
+
+	    $scope.toggleDeployPanel = function () {
+	        $scope.showDeployPanel = !$scope.showDeployPanel;
+	        if ($scope.showDeployPanel) {
+	            requestLocation();
+	            $scope.showDistCenterMarkers = true;
+	            updateMap();
+	        }
+	    }
+
+	    function convertToRadians(degrees) {
+	        return degrees * (Math.PI / 180)
+	    }
+
+	    function calculateKmDistance(lat1, lng1, lat2, lng2) {
+	        var earthRadius = 6371;
+	        var dLat = convertToRadians(lat2 - lat1);
+	        var dLng = convertToRadians(lng2 - lng1);
+	        var a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(convertToRadians(lat1)) * Math.cos(convertToRadians(lat2)) *
+                Math.sin(dLng / 2) * Math.sin(dLng / 2);
+	        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+	        return earthRadius * c;
+	    }
+
+	    function matchDistributionCenters() {
+	        var maxDist = 0;
+	        var minDist = Number.MAX_VALUE;
+
+	        var selectedCenters = $scope.distributionCenters.filter(function (center) {
+	            if ($scope.currentOrg.OrganizationTypeID == 1) {
+	                return $scope.shouldDisplayLocationMarker(center, $scope.matchingFlags)
+	            }
+	            else {
+	                return $scope.shouldDisplayLocationMarker(center, $scope.matchingFlags) &&
+                    center.OrganizationID == $scope.currentOrg.OrganizationID;
+	            }
+	        });
+
+	        var centersWithCompScores = selectedCenters.map(function (center) {
+	            var distance = calculateKmDistance(center.LAT, center.LONG, $scope.mappingLoc.LAT, $scope.mappingLoc.LONG);
+	            if (distance >= maxDist) maxDist = distance;
+	            if (distance <= minDist) minDist = distance;
+
+	            return { center: center, dist: distance.toFixed(3) };
+	        });
+
+	        var centersWithScores = centersWithCompScores.map(function (center) {
+	            var score = (center.dist - minDist) / (maxDist - minDist);
+	            center.score = score;
+	            return center;
+	        });
+
+	        centersWithScores.sort(function (a, b) {
+	            return a.score - b.score;
+	        });
+
+	        if (centersWithScores.length > 3)
+	            centersWithScores = centersWithScores.slice(0, 3);
+
+	        $scope.hasMatches = centersWithScores.length > 0;
+
+	        return centersWithScores;
+	    }
+
+	    $scope.findMatches = function () {
+	        $scope.showMappingError = false;
+	        if (!$scope.mappingLoc.LAT || !$scope.mappingLoc.LONG || $scope.getMatchResources().length == 0) {
+	            $scope.showMappingError = true;
+	            return false;
+	        }
+
+	        $scope.matches = matchDistributionCenters();
+	        $scope.showFindResults = true;
+	        return false;
+	    };
+
+	    $scope.showLocation = function (lat, lng) {
+	        map.setView([lat, lng], map.getZoom());
+	        updateMap();
+	    };
+
+	    $scope.backToFind = function () {
+	        $scope.showFindResults = false;
+	        return false;
+	    };
+
+	    $scope.closeDeploymentPanel = function () {
+	        $scope.showDeploymentPanel = false;
+	    };
+
+	    $scope.panelIsOpen = function () {
+	        return $scope.showFindPanel || $scope.showFilters || $scope.showDeployPanel || $scope.showDeploymentPanel;
+	    };
+
+	    $scope.createDeployment = function () {
+	        var url = "create_deployment/" + $scope.eventID + "/" + $scope.deployment.LAT + "/" + $scope.deployment.LONG;
+	        $location.path(url);
+	    };
+
+	    $scope.modifyDeployment = function () {
+	        var url = "modify_deployment/" + $scope.deployment.ResourceLocationID;
+	        $location.path(url);
+	    }
+
+	    $scope.setCurrentView("org-event");
+	}]);
 
 
 angular.module("helpNow").controller("OrganizationAddCtrl", ["$scope", "$resource", "$routeParams", "Organization", "$location", function ($scope, $resource, $routeParams, Organization, $location) {
@@ -2247,9 +2499,9 @@ angular.module("helpNow").controller("OrganizationAddCtrl", ["$scope", "$resourc
     $scope.orgTypeID = $routeParams.orgTypeID * 1;
     $scope.newOrg = new Organization();
     $scope.newOrg.OrganizationTypeID = $scope.orgTypeID;
-    $scope.orgType = $scope.orgTypeID == 1 ? "Government" : "Organization";
+    $scope.orgType = $scope.orgTypeID == 1 ? $scope.text.gov_name_label : $scope.text.org_name_label;
 
-    $scope.setTitle("Create " + $scope.orgType);
+    $scope.setTitle($scope.text.create + " " + $scope.orgType);
 
     $scope.go = function (path) {
         $location.path(path);
@@ -2278,25 +2530,24 @@ angular.module("helpNow").controller("OrganizationAddCtrl", ["$scope", "$resourc
 
 angular.module("helpNow").controller("RegAccountCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function ($scope, $http, $location, $routeParams, $resource) {
     $scope.setCurrentView("reg-account");
-    $scope.setTitle("Register an Account");
+    $scope.setTitle($scope.text.reg_account_title);
 
     $scope.showUsername = true;
     $scope.showUser = false;
 
-    $scope.userAccount = {OrganizationGroupID: 1, Active: true, AccountRoleID: 3, CreateDate: new Date()};
+    $scope.userAccount = { OrganizationGroupID: 1, Active: true, AccountRoleID: 3, CreateDate: new Date() };
 
     $scope.showUserForm = function () {
         var hasError = false;
         if ($scope.userAccount.Username === undefined || $scope.userAccount.Password === undefined || $scope.confirmedPassword === undefined) {
-            alert("Missing field(s)");
+            alert($scope.text.missing_fields_alert);
             hasError = true;
         }
         else if ($scope.userAccount.Password != $scope.confirmedPassword) {
-            alert("Passwords do not match");
+            alert($scope.text.password_mismatch_alert);
             hasError = true;
         }
-        if (!hasError)
-        {
+        if (!hasError) {
             $scope.showUser = true;
             $scope.showUsername = false;
         }
@@ -2310,7 +2561,7 @@ angular.module("helpNow").controller("RegAccountCtrl", ["$scope", "$http", "$loc
     $scope.submitUserReg = function () {
         var hasError = false;
         if ($scope.userAccount.FirstName === undefined || $scope.userAccount.LastName === undefined || $scope.userAccount.Email === undefined) {
-            alert("Missing field(s)");
+            alert($scope.text.missing_fields_alert);
             hasError = true;
         }
         if (!hasError) {
@@ -2450,226 +2701,276 @@ $scope.$on("RegulationDataLoaded", function() {});
 
 }]);
 
-angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http", "$resource", function($scope, $location, $http, $resource) {
-	var currentLanguage = "Eng";
-	var currentView = "";
-	
-	$scope.eventsResource = $resource("/api/event");
-	$scope.currentUser = JSON.parse(sessionStorage.getItem("user"));
-	$scope.currentOrg = JSON.parse(sessionStorage.getItem("user"));
+angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location", "$http", "$resource", function ($scope, $route, $location, $http, $resource) {
+    var currentLanguage = "Eng";
+    var currentView = "";
 
-	$scope.title = "Worldwide Events";
-	
-	$scope.loadEvents = function() {
-		$scope.eventsResource.get({}, function(data) {
-			$scope.events = data.json;
-			$scope.$broadcast("EventDataLoaded", {});
-		});
-	};
+    $scope.eventsResource = $resource("/api/event");
+    $scope.currentUser = JSON.parse(sessionStorage.getItem("user"));
+    $scope.currentOrg = JSON.parse(sessionStorage.getItem("user"));
 
-	$scope.setShowLogin = function () {
-	    if ($scope.currentUser) {
-	        $scope.showLogin = false;
-	    }
-	    else {
-	        $scope.showLogin = true;
-	    }
-	};
-	
-	$scope.getEventIcon = function(eventType) {
-		if (eventType == "Flood") {
-			return "style/images/flood.png";
-		} else if (eventType == "Tsunami") {
-			return "style/images/Tsunami.png";
-		} else {
-			return "style/images/earthquake.png";
-		}
-	};
-	
-	$scope.getMenuClass = function(viewName) {
-		return viewName == currentView ? "active" : "";
-	};
-	
-	$scope.setCurrentView = function (viewName) {
-		currentView = viewName;
-	};
+    $scope.loadEvents = function () {
+        $scope.eventsResource.get({}, function (data) {
+            $scope.events = data.json;
+            $scope.$broadcast("EventDataLoaded", {});
+        });
+    };
 
-	$scope.setTitle = function (title, img) {
-	    $scope.title = title;
-	    $scope.imageSrc = img;
-	};
+    $scope.getShowLogin = function () {
+        if (!$scope.title) {
+			return true;
+		} else if ($scope.title.indexOf($scope.text.login_title) == 0) {
+            return false;
+        } else if ($scope.currentUser) {
+            return false;
+        } else {
+            return true;
+        }
+    };
 
-	$scope.setCurrentUser = function (user) {
-	    $scope.currentUser = user;
-	};
+    $scope.getEventIcon = function (eventType) {
+        if (eventType == "Flood") {
+            return "style/images/flood.png";
+        } else if (eventType == "Tsunami") {
+            return "style/images/Tsunami.png";
+        } else {
+            return "style/images/earthquake.png";
+        }
+    };
 
-	$scope.setCurrentOrg = function (org) {
-	    $scope.currentOrg = org;
-	};
-	
-	$scope.setCurrentLanguage = function(language) {
-		currentLanguage = language;
-		if (language == "Ben")
-			$http.get("i18n/text-BEN.json")
+    $scope.getMenuClass = function (viewName) {
+        return viewName == currentView ? "active" : "";
+    };
+
+    $scope.setCurrentView = function (viewName) {
+        currentView = viewName;
+    };
+
+    $scope.setTitle = function (title, img) {
+		$scope.title = title;
+        $scope.imageSrc = img;
+    };
+
+    $scope.setCurrentUser = function (user) {
+        $scope.currentUser = user;
+    };
+
+    $scope.getCurrentUser = function () {
+        return $scope.currentUser;
+    }
+
+    $scope.setCurrentOrg = function (org) {
+        $scope.currentOrg = org;
+    };
+
+    $scope.setCurrentLanguage = function (language) {
+        currentLanguage = language;
+        if (language == "Ben")
+            $http.get("i18n/text-BEN.json")
 				.success(function (data) {
-					$scope.text = data;
+				    $scope.text = data;
+				    $route.reload();
 				})
 				.error(function (data) {
-					alert(data);
+				    console.log("setCurrentLanguage: " + data);
 				});
-		else {
-			$http.get("i18n/text-ENG.json")
+        else {
+            $http.get("i18n/text-ENG.json")
 				.success(function (data) {
-					$scope.text = data;
+				    $scope.text = data;
+				    $route.reload();
 				})
 				.error(function (data) {
-					alert(data);
+				    console.log("setCurrentLanguage: " + data);
 				});
-		}	
-	};
-	
-	$scope.getLanguageClass = function(language) {
-		return currentLanguage == language ? "active" : "";
-	};
-	
-	$scope.setCurrentLanguage("Eng");
+        }
+    };
 
-	$scope.getResourcesForEvent = function (eventID) {
-	    var resources = [];
-	    for (var i = 0; i < $scope.resources.length; i++) {
-	        var resource = $scope.resources[i];
-	        if (resource.eventID == eventID) resources.push(resource);
-	    }
-	    if (resources.length > 0) return resources;
-	    return {};
-	};
-	
-	$scope.getEvent = function(eventID) {
-		for (var i = 0; i < $scope.events.length; i++) {
-			var event = $scope.events[i];
-			if (event.EventID == eventID) return event;
-		}
-		return {}; 
-	};
+    $scope.getLanguageClass = function (language) {
+        return currentLanguage == language ? "active" : "";
+    };
 
-	$scope.getLocationIcon = function (location) {
-	    var inventories = location.ResourceLocationInventories;
-		var belongsToUser = $scope.currentOrg && location.OrganizationID == $scope.currentOrg.OrganizationID;
-		
-	    if (inventories.length > 1)
-	        return belongsToUser ? "style/images/Resources-DBox-Blue.png" : "style/images/Resources-Box-Blue.png";
+    $scope.setCurrentLanguage("Eng");
 
-		var iconType = belongsToUser ? "DDiamond-Blue" : "Diamond-Blue";
-	    var resourceType = inventories[0].ResourceType.Description;
-	    if (resourceType == "Water") {
-	        return "style/images/Water-" + iconType + ".png";
-	    } else if (resourceType == "First Aid") {
-	        return "style/images/First Aid-" + iconType + ".png";
-	    } else if (resourceType == "Shelter") {
-	        return "style/images/Shelter-" + iconType + ".png";
-	    } else if (resourceType == "Evacuation") {
-	        return "style/images/Evacuation-" + iconType + ".png";
-	    } else if (resourceType == "Medicine") {
-	        return "style/images/Medicine-" + iconType + ".png";
-	    } else {
-	        return "style/images/Food-" + iconType + ".png";
-	    }
-	};
-	
-	$scope.buildLocationDetails = function (location) {
-	    var popupText = "<strong>" + location.Organization.Name + "</strong><br/>" +
+    $scope.getResourcesForEvent = function (eventID) {
+        var resources = [];
+        for (var i = 0; i < $scope.resources.length; i++) {
+            var resource = $scope.resources[i];
+            if (resource.eventID == eventID) resources.push(resource);
+        }
+        if (resources.length > 0) return resources;
+        return {};
+    };
+
+    $scope.getEvent = function (eventID) {
+        for (var i = 0; i < $scope.events.length; i++) {
+            var event = $scope.events[i];
+            if (event.EventID == eventID) return event;
+        }
+        return {};
+    };
+
+    $scope.getLocationIcon = function (location) {
+        var inventories = location.ResourceLocationInventories;
+        var belongsToUser = $scope.currentOrg && location.OrganizationID == $scope.currentOrg.OrganizationID;
+
+        if (inventories.length > 1)
+            return belongsToUser ? "style/images/Resources-DBox-Blue.png" : "style/images/Resources-Box-Blue.png";
+
+        var iconType = belongsToUser ? "DDiamond-Blue" : "Diamond-Blue";
+        var resourceType = inventories[0].ResourceType.Description;
+        if (resourceType == "Water") {
+            return "style/images/Water-" + iconType + ".png";
+        } else if (resourceType == "First Aid") {
+            return "style/images/First Aid-" + iconType + ".png";
+        } else if (resourceType == "Shelter") {
+            return "style/images/Shelter-" + iconType + ".png";
+        } else if (resourceType == "Evacuation") {
+            return "style/images/Evacuation-" + iconType + ".png";
+        } else if (resourceType == "Clothing") {
+            return "style/images/Clothing-" + iconType + ".png";
+        } else if (resourceType == "Medicine") {
+            return "style/images/Medicine-" + iconType + ".png";
+        } else {
+            return "style/images/Food-" + iconType + ".png";
+        }
+    };
+
+    $scope.buildLocationDetails = function (location) {
+        var popupText = "<strong>" + location.Organization.Name + "</strong><br/>" +
 			location.PrimaryPOCName + "<br/>" +
 			location.PrimaryPOCPhone + "<hr/>";
-	    location.ResourceLocationInventories.forEach(function (inventory) {
-	        popupText += inventory.ResourceType.Description + ": " + inventory.Quantity + " " +
+        location.ResourceLocationInventories.forEach(function (inventory) {
+            popupText += inventory.ResourceType.Description + ": " + inventory.Quantity + " " +
 				inventory.ResourceTypeUnitOfMeasure.Description + "<br/>";
-	    });
-	    return popupText;
-	};
-	
-	$scope.buildLocationMarker = function (location, icon, onClick) {
-	    var marker = L.marker([location.LAT, location.LONG], { icon: icon });
-		if (onClick)
-			marker.on("click", function() {
-				$scope.$apply(function() {
-					onClick(location);
-				});
-			});
-		else
-			marker.bindPopup($scope.buildLocationDetails(location));
-	    return marker;
-	};
-	
-	$scope.buildLocationMarkers = function (locations, mapLayers, flags, onClick) {
-	    if (!locations) return;
-	    var selectedLocations = locations.filter(function (location) {
-	        return $scope.shouldDisplayLocationMarker(location, flags);
-	    });
+        });
+        return popupText;
+    };
 
-	    angular.forEach(selectedLocations, function (location) {
-	        var locationIcon = L.icon({
-	            iconUrl: $scope.getLocationIcon(location),
-	            iconSize: [60, 60],
-	            iconAnchor: [30, 30]
-	        });
+    $scope.buildLocationMarker = function (location, icon, onClick) {
+        var marker = L.marker([location.LAT, location.LONG], { icon: icon });
+        if (onClick)
+            marker.on("click", function () {
+                $scope.$apply(function () {
+                    onClick(location);
+                });
+            });
+        else
+            marker.bindPopup($scope.buildLocationDetails(location));
+        return marker;
+    };
 
-	        var marker = $scope.buildLocationMarker(location, locationIcon, onClick);
-	        mapLayers.push(marker);
-	    });
-	};
-	
-	$scope.shouldDisplayMarker = function (type, flags) {
-	    return (type == "Water" && flags.showWater) ||
+    $scope.buildLocationMarkers = function (locations, mapLayers, flags, onClick) {
+        if (!locations) return;
+        var selectedLocations = locations.filter(function (location) {
+            return $scope.shouldDisplayLocationMarker(location, flags);
+        });
+
+        angular.forEach(selectedLocations, function (location) {
+            var locationIcon = L.icon({
+                iconUrl: $scope.getLocationIcon(location),
+                iconSize: [60, 60],
+                iconAnchor: [30, 30]
+            });
+
+            var marker = $scope.buildLocationMarker(location, locationIcon, onClick);
+            mapLayers.push(marker);
+        });
+    };
+
+    $scope.shouldDisplayMarker = function (type, flags) {
+        return (type == "Water" && flags.showWater) ||
 				(type == "Shelter" && flags.showShelter) ||
 				(type == "Food" && flags.showFood) ||
+                (type == "Clothing" && flags.showClothing) ||
 				(type == "Evacuation" && flags.showEvacuation) ||
 				(type == "First Aid" && flags.showMedical) ||
 				(type == "Medicine" && flags.showMedicine);
-	};
-	
-	$scope.shouldDisplayLocationMarker = function (location, flags) {
-	    var inventories = location.ResourceLocationInventories;
-	    for (var i = 0; i < inventories.length; i++) {
-	        if ($scope.shouldDisplayMarker(inventories[i].ResourceType.Description, flags))
-	            return true;
-	    }
-	    return false;
-	};
-	
-	$scope.loadEvents();
-	$scope.setShowLogin();
+    };
 
-	$scope.redirectToLogin = function () {
-	    $scope.showLogin = false;
-	    $location.path('/login');
-	};
+    $scope.shouldDisplayLocationMarker = function (location, flags) {
+        var inventories = location.ResourceLocationInventories;
+        for (var i = 0; i < inventories.length; i++) {
+            if ($scope.shouldDisplayMarker(inventories[i].ResourceType.Description, flags))
+                return true;
+        }
+        return false;
+    };
 
-	$scope.redirectToLogout = function () {
+    $scope.loadEvents();
+
+    $scope.$on('$locationChangeSuccess', function (evt, absNewUrl, absOldUrl) {
+        // Check for Facebook redirect and then set client session object from server
+        var facebookUrl = "_=_";
+
+        if (absNewUrl.indexOf(facebookUrl) > 0 &&
+            absOldUrl.indexOf(facebookUrl) > 0) {
+
+            var webCall = $http({
+                method: 'POST',
+                url: '/auth/account',
+                async: true,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            });
+
+            webCall.then(function (response) {
+                $scope.users = response.data.json;
+                $scope.currentUser = $scope.users[0];
+                if ($scope.currentUser === undefined) {
+                    alert($scope.text.incorrect_login_alert);
+                }
+                else {
+                    var userSessionObject = {
+                        AccountID: $scope.currentUser.AccountID,
+                        FirstName: $scope.currentUser.FirstName,
+                        LastName: $scope.currentUser.LastName,
+                        OrganizationID: $scope.currentUser.Organization.OrganizationID,
+                        OrganizationTypeID: $scope.currentUser.Organization.OrganizationTypeID,
+                        OrganizationName: $scope.currentUser.Organization.Name
+                    };
+                    $scope.setCurrentUser(userSessionObject);
+                    $scope.setCurrentOrg($scope.currentUser.Organization);
+                    sessionStorage.setItem("user", JSON.stringify(userSessionObject));
+                    $scope.$broadcast("CurrentUserLoaded", {});                    
+                }
+            },
+            function (response) { // optional
+                alert($scope.text.incorrect_login_alert);
+            });
+        }
+    });
+
+    $scope.redirectToLogin = function () {
+        $location.path('/login');
+    };
+
+    $scope.redirectToLogout = function () {
         // Logout client
-	    $scope.showLogin = true;
-	    $scope.currentUser = false;
-	    sessionStorage.removeItem("user");
+        $scope.currentUser = false;
+        sessionStorage.removeItem("user");
 
         // Logout server
-	    var webCall = $http({
-	        method: 'POST',
-	        url: '/auth/logout',
-	        async: true,
-	        headers: {
-	            'Content-Type': 'application/x-www-form-urlencoded'
-	        }
-	    });
-	    webCall.then(function (response) {
-	        //alert("You have been successfully logged out.");
-	    },
+        var webCall = $http({
+            method: 'POST',
+            url: '/auth/logout',
+            async: true,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        });
+        webCall.then(function (response) {
+            //alert("You have been successfully logged out.");
+        },
         function (response) {
             alert("Logout Error - " + response);
         });
 
-	    $location.path('#');
-	};
+        $location.path('#');
+    };
 
-	$scope.resources = [
+    $scope.resources = [
         {
             id: 1,
             eventID: 1,
@@ -2724,47 +3025,47 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
             provider: "",
             message: "No more than 1 bag per person.  Only bring what you can carry."
         }
-	];
-	
-	var testEvents = [
+    ];
+
+    var testEvents = [
 		{
-			id: 1,
-			location: "Dhaka, Bangladesh",
-			eventType: "Flood",
-			lat: 23.74,
-			long: 90.39,
-			eventRadius: "542 km",
-			eventDate: "9/23/2015",
-			eventTime: "4:36 PM",
-			contactPhone: "+880 2 555 5555",
+		    id: 1,
+		    location: "Dhaka, Bangladesh",
+		    eventType: "Flood",
+		    lat: 23.74,
+		    long: 90.39,
+		    eventRadius: "542 km",
+		    eventDate: "9/23/2015",
+		    eventTime: "4:36 PM",
+		    contactPhone: "+880 2 555 5555",
 		    iconPath: "style/images/icons/FloodIcon.png"
 		},
 		{
-			id: 2,
-			location: "Port Moresby, Papua New Guinea",
-			eventType: "Tsunami",
-			lat: -9.46,
-			long: 147.18,
-			eventRadius: "1024 km",
-			eventDate: "9/24/2015",
-			eventTime: "2:16 PM",
-			contactPhone: "+880 2 555 5555",
-			iconPath: "style/images/icons/TsunamiIcon.png"
+		    id: 2,
+		    location: "Port Moresby, Papua New Guinea",
+		    eventType: "Tsunami",
+		    lat: -9.46,
+		    long: 147.18,
+		    eventRadius: "1024 km",
+		    eventDate: "9/24/2015",
+		    eventTime: "2:16 PM",
+		    contactPhone: "+880 2 555 5555",
+		    iconPath: "style/images/icons/TsunamiIcon.png"
 
 		},
 		{
-			id: 3,
-			location: "Tacna, Peru",
-			eventType: "Earthquake",
-			lat: -18.04,
-			long: -70.174,
-			eventRadius: "860 km",
-			eventDate: "9/25/2015",
-			eventTime: "1:06 PM",
-			contactPhone: "+880 2 555 5555",
-			iconPath: "style/images/icons/EarthquakeIcon.png"
+		    id: 3,
+		    location: "Tacna, Peru",
+		    eventType: "Earthquake",
+		    lat: -18.04,
+		    long: -70.174,
+		    eventRadius: "860 km",
+		    eventDate: "9/25/2015",
+		    eventTime: "1:06 PM",
+		    contactPhone: "+880 2 555 5555",
+		    iconPath: "style/images/icons/EarthquakeIcon.png"
 		}
-	];
+    ];
 }]);
 /**
  * TeamInviteCtrl
@@ -2807,6 +3108,65 @@ angular.module("helpNow").controller("TeamInviteCtrl", ["$scope", "$resource", "
 
 
 }]);
+angular.module("helpNow").directive('showErrors', function () {
+      return {
+          restrict: 'A',
+          require: '^form',
+          link: function (scope, el, attrs, formCtrl) {
+              // find the text box element, which has the 'name' attribute
+              var inputEl = el[0].querySelector("[name]");
+              // convert the native text box element to an angular element
+              var inputNgEl = angular.element(inputEl);
+              // get the name on the text box so we know the property to check
+              // on the form controller
+              var inputName = inputNgEl.attr('name');
+
+              // only apply the has-error class after the user leaves the text box
+              inputNgEl.bind('blur', function () {
+                  el.toggleClass('has-error', formCtrl[inputName].$invalid);
+              })
+
+              scope.$on('show-errors-check-validity', function () {
+                  el.toggleClass('has-error', formCtrl[inputName].$invalid);
+              });
+          }
+      }
+});
+
+angular.module("helpNow").directive('latitude', function () {
+    var LAT_REGEXP = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)/i;
+
+    return {
+        require: 'ngModel',
+        link: function(scope, elm, attrs, ctrl) {
+            ctrl.$validators.latitude = function (modelValue, viewValue) {
+                if (ctrl.$isEmpty(viewValue)) {
+                    // not validating for empty value, only for valid
+                    return true;
+                }
+                return LAT_REGEXP.test(viewValue);
+            };
+        }
+    };
+});
+
+angular.module("helpNow").directive('longitude', function () {
+    var LONG_REGEXP = /^[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/i;
+
+    return {
+        require: 'ngModel',
+        link: function (scope, elm, attrs, ctrl) {
+            ctrl.$validators.longitude = function (modelValue, viewValue) {
+                if (ctrl.$isEmpty(viewValue)) {
+                    // not validating for empty value, only for valid
+                    return true;
+                }
+                return LONG_REGEXP.test(viewValue)
+            };
+        }
+    };
+});
+
 angular.module("helpNow").directive("filters", function () {
     return {
         scope: {
@@ -2814,7 +3174,7 @@ angular.module("helpNow").directive("filters", function () {
             classfunc: "="
         },
         templateUrl: 'views/fragments/resource-filters.html'
-    }
+    };
 });
 
 angular.module("helpNow").directive('map', function () {

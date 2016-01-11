@@ -4,23 +4,20 @@
         <div id="eventInfo" ng-hide="showFilters" ng-include="'views/fragments/event-info.html'"></div>
         <div class="row" ng-hide="showFilters">
             <div class="col-md-12">
-                <a class="btn btn-primary" ng-click="toggleFilters()"><span class="glyphicon glyphicon-filter"></span> Show Filters</a>
+                <a class="btn btn-primary" ng-click="toggleFilters()"><span class="glyphicon glyphicon-filter"></span>{{text.btn_show_filters}}</a>
             </div>
         </div>
         <div class="row" ng-if="showFilters">
             <div class="col-md-12">
                 <div class="well">
-                    <a class="btn btn-primary pull-right" ng-click="toggleFilters()"><span class="glyphicon glyphicon-eye-close"></span> Hide</a>
-                    <h4><span class="glyphicon glyphicon-filter"></span> Filters</h4>
+                    <a class="btn btn-primary pull-right" ng-click="toggleFilters()"><span class="glyphicon glyphicon-eye-close"></span>{{text.btn_hide}}</a>
+                    <h4><span class="glyphicon glyphicon-filter"></span>{{text.filters_label}}</h4>
                     <div id="filter-section" ng-if="showFilters">
                         <hr class="separated" />
                         <div filters classfunc="toggleFilterClass" togglefunc="toggleButton" />
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="separated-small" ng-hide="showFilters">
-            <a ng-show="currentOrg" id="btn-login" class="btn btn-primary" href="#/org_event/{{event.EventID}}"><span class="glyphicon glyphicon-globe"></span>Aid Organization View</a>
         </div>
     </div>
     <div id="helpPanel" class="col-md-3" ng-show="showHelp">
@@ -38,7 +35,7 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
-                            <a href="#\event_map\{{event.EventID}}" style="margin-top: -10px;">
+                            <a href="" ng-click="centerMapToLongLat(event.EventLocations[0].LAT, event.EventLocations[0].LONG)" style="margin-top: -10px;">
                                 ({{event.EventLocations[0].LAT}}, {{event.EventLocations[0].LONG}}, {{event.EventLocations[0].Radius}} km<sup>2</sup>)
                             </a>
                         </div>
@@ -46,46 +43,47 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <hr class="separated" />
-                            <input ng-model="locationPref.value" type="radio" value="Current" ng-change="getLocation()" /><span>  Use My Current Location</span><br />
-                            <input ng-model="locationPref.value" type="radio" value="Other" ng-change="getLocation()" /><span>  Use The Following Location:</span>
+                            <input ng-model="locationPref.value" type="radio" value="Current" ng-change="getLocation()" /><span>  {{text.my_location_label}}</span><br />
+                            <input ng-model="locationPref.value" type="radio" value="Other" ng-change="getLocation()" /><span>  {{text.map_location_label}}</span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
-                            <span>Lat </span><input ng-model="helpRequest.LAT" type="text" class="form-control" name="lat" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
-                            <span>Long </span><input ng-model="helpRequest.LONG" type="text" class="form-control" name="long" style="display:inline; width: 34%; margin-top: 10px; color: black;" /><br /><br />
-                            <h5 align="center" style="color: whitesmoke">OR</h5>
-                            <h5 style="vertical-align:top; color: whitesmoke">Address:</h5>
-                            <textarea class="form-control" style="width: 100%"></textarea>
+                            <span>{{text.lat_label}} </span><input ng-model="helpRequest.LAT" type="text" class="form-control" name="lat" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
+                            <span>{{text.long_label}} </span><input ng-model="helpRequest.LONG" type="text" class="form-control" name="long" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
                         </div>
+                    </div>
+
+                    <div class="well separated-small">
+                        <span class="glyphicon glyphicon-pushpin"></span> {{text.map_note}}
                     </div>
                     <div class="row">
                         <div id="slider" style="height: 100px; width: 100%; margin-top: 15px; margin-bottom: -15px;">
-                            <span>Impacted Area Size: </span>
+                            <span>{{text.area_size_label}}: </span>
                             <input id="overlayRadiusSlider" ng-model="radiusRawVal" ng-click="showValue()" type="range" min="0" max="1" step="0.05" />
                             <span id="range">{{sliderLabel}}  </span>
                             <input type="checkbox" id="unitsToggle" ng-model="isMetric" name="unitsToggle" class="switch" checked="checked" ng-click="changeUnits()" />
-                            <label for="unitsToggle">Metric</label>
+                            <label for="unitsToggle">{{text.metric_label}}</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
                             <img src="style/images/Person.png" style="height: 30px; width: 7px;" />
-                            <span>  Number of People:  <input ng-model="helpRequest.Quantity" class="form-control" type="text" ng-keypress="validateNumber($event)" name="NumPeople" style="display:inline; width: 32%; margin-top: 10px; color: black;" /></span><br />
+                            <span>  {{text.num_people_label}}:  <input ng-model="helpRequest.Quantity" class="form-control" type="text" ng-keypress="validateNumber($event)" name="NumPeople" style="display:inline; width: 32%; margin-top: 10px; color: black;" /></span><br />
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
                             <img src="style/images/Exclamation Mark.png" style="height: 20px; width: 7px;" />
-                            <span>  Criticality:  </span><select class="form-control" ng-model="selectedUrgency" ng-options="urgency.Description for urgency in urgencyList" ng-change="getSelectedUrgency()" style="display:inline; margin-top: 7px; width: 62%; color: black;"></select>
+                            <span>  {{text.criticality_label}}:  </span><select class="form-control" ng-model="selectedUrgency" ng-options="urgency.Description for urgency in urgencyList" ng-change="getSelectedUrgency()" style="display:inline; margin-top: 7px; width: 62%; color: black;"></select>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="separated">
-            <a id="btn-back" class="btn btn-primary" ng-click="toggleHelp()"><span></span>Back</a>
-            <a id="btn-next" class="btn btn-primary pull-right" ng-click="toggleNeeds()"><span></span>Next</a>
+            <a id="btn-back" class="btn btn-primary" ng-click="toggleHelp()"><span></span>{{text.back}}</a>
+            <a id="btn-next" class="btn btn-primary pull-right" ng-click="toggleNeeds()"><span></span>{{text.next}}</a>
         </div>
     </div>
     <div id="needsPanel" class="col-md-3" ng-if="showNeeds">
@@ -94,17 +92,17 @@
                 <div class="well">
                     <div class="row">
                         <div class="col-xs-4">
-                            <img src="style/images/Team.png" style="height: 66px; width: 66px; margin-right: 5px;" /><br />(Optional)
+                            <img src="style/images/Team.png" style="height: 66px; width: 66px; margin-right: 5px;" /><br />({{text.optional_label}})
                         </div>
                         <div class="col-xs-8">
-                            Name:<br /><input ng-model="helpRequest.RequestorName" type="text" class="form-control" name="name" style="display:inline; width: 100%; color: black;" /><br />
-                            Phone:<br /><input ng-model="helpRequest.RequestorPhone" type="text" class="form-control" name="phone" style="display: inline; width: 100%; color: black;" /><br />
-                            Email:<br /><input ng-model="helpRequest.RequestorEmail" type="text" class="form-control" name="email" style="display: inline; width: 100%; color: black;" />
+                            {{text.name_label}}:<br /><input ng-model="helpRequest.RequestorName" type="text" class="form-control" name="name" style="display:inline; width: 100%; color: black;" /><br />
+                            {{text.phone_label}}:<br /><input ng-model="helpRequest.RequestorPhone" type="text" class="form-control" name="phone" style="display: inline; width: 100%; color: black;" /><br />
+                            {{text.email_label}}:<br /><input ng-model="helpRequest.RequestorEmail" type="text" class="form-control" name="email" style="display: inline; width: 100%; color: black;" />
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
-                            <input ng-model="helpRequest.RequestorUpdatePref" type="checkbox" name="pinLocation" value="useCurrentLocation" checked="checked" /><span>Send Email Updates</span>
+                            <input ng-model="helpRequest.RequestorUpdatePref" type="checkbox" name="pinLocation" value="useCurrentLocation" checked="checked" /><span>{{text.send_email_label}}</span>
                         </div>
                     </div>
                 </div>
@@ -115,21 +113,21 @@
                 <div class="well">
                     <div class="row">
                         <div class="col-xs-12">
-                            <h4>Needs</h4>
+                            <h4>{{text.needs_label}}</h4>
                             <br />
                         </div>
                     </div>
                     <div class="row">
                         <div id="needs-section">
-							<div filters classfunc="toggleNeedsClass" togglefunc="toggleNeed" />
+                            <div filters classfunc="toggleNeedsClass" togglefunc="toggleNeed" />
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="separated">
-            <a id="btn-back" class="btn btn-primary" ng-click="toggleNeeds()"><span></span>Back</a>
-            <a id="btn-next" class="btn btn-primary pull-right" ng-click="sendNeedRequest()"><span></span>Send Request</a>
+            <a id="btn-back" class="btn btn-primary" ng-click="toggleNeeds()"><span></span>{{text.back}}</a>
+            <a id="btn-next" class="btn btn-primary pull-right" ng-click="sendNeedRequest()"><span></span>{{text.btn_send_request}}</a>
         </div>
     </div>
 </div>

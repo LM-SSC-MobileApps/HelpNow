@@ -4,22 +4,27 @@
         <div id="eventList" class="col-md-3">
             <div id="eventsTable">
                 <div ng-repeat="event in events">
-					<div class="row">
-						<div class="col-sm-3">
-							<a href="#event_map/{{event.EventID}}"><img class="resource-img" src="{{getEventIcon(event.EventType.Description)}}" /></a>
-						</div>
-						<div class="col-sm-9">
-							<h4>{{event.EventType.Description}}</h4>
-							<h5>{{event.Summary}}</h5>
-							<a href="#event_map/{{event.EventID}}">
-								({{event.EventLocations[0].LAT}}, {{event.EventLocations[0].LONG}}, {{event.EventLocations[0].Radius}})
-							</a>
-						</div>
-					</div>
-					<div class="separated-small">
-						<a id="btn-help" class="btn btn-danger" href="#event_map/{{event.EventID}}" style="margin-left: 0px;"><span class="glyphicon glyphicon-warning-sign"></span>{{text.menu_help}}</a>
-					</div>
-					<hr />
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <a ng-hide="isLoggedIn" href="#event_map/{{event.EventID}}"><img class="resource-img" src="{{getEventIcon(event.EventType.Description)}}" /></a>
+                            <a ng-show="isLoggedIn" href="#org_event/{{event.EventID}}"><img class="resource-img" src="{{getEventIcon(event.EventType.Description)}}" /></a>
+                        </div>
+                        <div class="col-sm-9">
+                            <h4>{{event.EventType.Description}}</h4>
+                            <h5>{{event.Summary}}</h5>
+                            <a ng-hide="isLoggedIn" href="#event_map/{{event.EventID}}">
+                                ({{event.EventLocations[0].LAT}}, {{event.EventLocations[0].LONG}}, {{event.EventLocations[0].Radius}} km<sup>2</sup>)
+                            </a>
+                            <a ng-show="isLoggedIn" href="#org_event/{{event.EventID}}">
+                                ({{event.EventLocations[0].LAT}}, {{event.EventLocations[0].LONG}}, {{event.EventLocations[0].Radius}} km<sup>2</sup>)
+                            </a>
+                        </div>
+                    </div>
+                    <div class="separated-small">
+                        <a ng-hide="isLoggedIn" id="btn-help" class="btn btn-danger" href="#event_map/{{event.EventID}}" style="margin-left: 0px;"><span class="glyphicon glyphicon-warning-sign"></span>{{text.menu_help}}</a>
+                        <a ng-show="isLoggedIn" id="btn-help" class="btn btn-danger" href="#org_event/{{event.EventID}}" style="margin-left: 0px;"><span class="glyphicon glyphicon-warning-sign"></span>{{text.menu_help}}</a>
+                    </div>
+                    <hr />
                 </div>
             </div>
         </div>

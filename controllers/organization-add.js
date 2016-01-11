@@ -3,9 +3,9 @@
     $scope.orgTypeID = $routeParams.orgTypeID * 1;
     $scope.newOrg = new Organization();
     $scope.newOrg.OrganizationTypeID = $scope.orgTypeID;
-    $scope.orgType = $scope.orgTypeID == 1 ? "Government" : "Organization";
+    $scope.orgType = $scope.orgTypeID == 1 ? $scope.text.gov_name_label : $scope.text.org_name_label;
 
-    $scope.setTitle("Create " + $scope.orgType);
+    $scope.setTitle($scope.text.create + " " + $scope.orgType);
 
     $scope.go = function (path) {
         $location.path(path);

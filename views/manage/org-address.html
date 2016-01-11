@@ -5,67 +5,67 @@
                 <form name="userInfoForm" novalidate role="form">
                     <div class="form-group" ng-class="">
                         <div class="col-md-2">
-                            <label for="streetPrefix">Street Number Prefix</label>
+                            <label for="streetPrefix">{{text.street_prefix_label}}</label>
                             <input type="text" ng-model="orgAddress.StreetNumberPrefix" id="streetPrefix" name="streetPrefix" class="form-control" ng-required="true" />
                             <br />
                         </div>
                         <div class="col-md-2">
-                            <label for="streetNumber">Street Number</label>
+                            <label for="streetNumber">{{text.street_number_label}}</label>
                             <input type="text" ng-model="orgAddress.StreetNumber" id="streetNumber" name="streetNumber" class="form-control" ng-required="true" />
                             <br />
                         </div>
                         <div class="col-md-2">
-                            <label for="streetSuffix">Street Number Suffix</label>
+                            <label for="streetSuffix">{{text.street_suffix_label}}</label>
                             <input type="text" ng-model="orgAddress.StreetNumberSuffix" id="streetSuffix" name="streetSuffix" class="form-control" ng-required="true" />
                             <br />
                         </div>
                         <div class="col-md-2">
-                            <label for="streetName">Street Name</label>
+                            <label for="streetName">{{text.street_name_label}}</label>
                             <input type="text" ng-model="orgAddress.StreetName" id="streetName" name="streetName" class="form-control" ng-required="true" />
                             <br />
                         </div>
                         <div class="col-md-2">
-                            <label for="streetType">Street Type</label>
+                            <label for="streetType">{{text.street_type_label}}</label>
                             <input type="text" ng-model="orgAddress.StreetType" id="streetType" name="streetType" class="form-control" ng-required="true" />
                             <br />
                         </div>
                         <div class="col-md-2">
-                            <label for="streetDirection">Street Direction</label>
+                            <label for="streetDirection">{{text.street_direction_label}}</label>
                             <input type="text" ng-model="orgAddress.StreetDirection" id="streetDirection" name="streetDirection" class="form-control" ng-required="true" />
                             <br />
                         </div>
                         <div class="col-md-9">
-                            <label for="addressType">Address Type (Apartment/Suite/Office)</label>
+                            <label for="addressType">{{text.address_type_label}}</label>
                             <input type="text" ng-model="orgAddress.AddressType" id="addressType" name="addressType" class="form-control" ng-required="true" />
                             <br />
                         </div>
                         <div class="col-md-3">
-                            <label for="addressTypeID">Address Type Identifier</label>
+                            <label for="addressTypeID">{{text.address_type_id_label}}</label>
                             <input type="text" ng-model="orgAddress.AddressTypeID" id="addressTypeID" name="addressTypeID" class="form-control" ng-required="true" />
                             <br />
                         </div>
                         <div class="col-md-6">
-                            <label for="minorMunicipality">Minor Municipality (Village/Hamlet)</label>
+                            <label for="minorMunicipality">{{text.minor_municipality_label}}</label>
                             <input type="text" ng-model="orgAddress.MinorMunicipality" id="minorMunicipality" name="minorMunicipality" class="form-control" ng-required="true" />
                             <br />
                         </div>
                         <div class="col-md-6">
-                            <label for="majorMunicipality">Major Municipality (Town/City)</label>
+                            <label for="majorMunicipality">{{text.major_municipality_label}}</label>
                             <input type="text" ng-model="orgAddress.MajorMunicipality" id="majorMunicipality" name="majorMunicipality" class="form-control" ng-required="true" />
                             <br />
                         </div>
                         <div class="col-md-6">
-                            <label for="governingDistrict">Governing District (Province/State/County)</label>
+                            <label for="governingDistrict">{{text.governing_district_label}}</label>
                             <input type="text" ng-model="orgAddress.GoverningDistrict" id="governingDistrict" name="governingDistrict" class="form-control" ng-required="true" />
                             <br />
                         </div>
                         <div class="col-md-3">
-                            <label for="postalArea">Postal Area (Postal Code/Zip)</label>
+                            <label for="postalArea">{{text.postal_area_label}}</label>
                             <input type="text" ng-model="orgAddress.PostalArea" id="postalArea" name="postalArea" class="form-control" ng-required="true" />
                             <br />
                         </div>
                         <div class="col-md-3">
-                            <label for="country">Country</label>
+                            <label for="country">{{text.country_label}}</label>
                             <input type="text" ng-model="orgAddress.Country" id="country" name="country" class="form-control" ng-required="true" />
                             <br />
                         </div>
@@ -74,7 +74,7 @@
             </div>
         </div>
         <div class="separated">
-            <a id="btn-showAddress" class="btn btn-primary pull-right" ng-click="submitOrgAddress()"><span></span>Submit</a>
+            <a id="btn-showAddress" class="btn btn-primary pull-right" ng-click="submitOrgAddress()"><span></span>{{text.btn_submit}}</a>
         </div>
     </div>
 </div>

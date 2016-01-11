@@ -2,8 +2,8 @@
  * DemoCtrl
  */
 
-angular.module("helpNow").controller("DemoCtrl", ["$scope", "$http", "Event", "EventLocation", "ResourceRequest", "ResourceLocation",
-    function ($scope, $http, Event, EventLocation, ResourceRequest, ResourceLocation) {
+angular.module("helpNow").controller("DemoCtrl", ["$scope", "$http", "Event", "EventLocation", "ResourceRequest", "$location" ,"ResourceLocation",
+    function ($scope, $http, Event, EventLocation, ResourceRequest, $location ,ResourceLocation) {
 
         $scope.demoRunning = false;
 
@@ -16,6 +16,11 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "$http", "Event", "E
             }).error(function (data) {
             console.log("Error loading scenario data:  " + data);
         });
+
+        $scope.go = function ( path ) {
+            $location.path( path );
+        };
+
 
 
         $scope.startDemo = function () {

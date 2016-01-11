@@ -1,15 +1,15 @@
 <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Are you sure?</h3>
+                <h3 class="modal-title">{{text.are_you_sure}}</h3>
             </div>
             <div class="modal-body">
 
-                You are about to delete the invitation to: {{model.invitation.FirstName}} &nbsp;  {{model.invitation.LastName}} .
-                Are you sure?
+                {{text.delete_invite_confirm_label}}: {{model.invitation.FirstName}} &nbsp;  {{model.invitation.LastName}} .
+                {{text.are_you_sure}}
 
             </div>
             <div class="modal-footer">
-                <button class="btn btn-danger" ng-click="$close(deleteInvite(model.invitation))">Yes!</button>
-                <button class="btn btn-primary" ng-click="$dismiss('cancel')">No</button>
+                <button class="btn btn-danger" ng-click="$close(deleteInvite(model.invitation))">{{text.yes}}!</button>
+                <button class="btn btn-primary" ng-click="$dismiss('cancel')">{{text.no}}</button>
             </div>
 </div>

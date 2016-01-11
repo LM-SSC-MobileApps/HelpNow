@@ -27,6 +27,10 @@ models.ResourceLocation.belongsTo(models.Event, { foreignKey: 'EventID' });
 models.ResourceLocation.belongsTo(models.ResourceLocationType, { foreignKey: 'ResourceLocationTypeID' });
 models.ResourceLocationType.hasMany(models.ResourceLocation, { foreignKey: 'ResourceLocationTypeID' });
 
+//ResourceLocation many-to-one on ResourceLocationStatus
+models.ResourceLocation.belongsTo(models.ResourceLocationStatus, { foreignKey: 'ResourceLocationStatusID' });
+models.ResourceLocationStatus.hasMany(models.ResourceLocation, { foreignKey: 'ResourceLocationStatusID' });
+
 //ResourceLocationInventory many-to-one on ResourceType
 models.ResourceLocationInventory.belongsTo(models.ResourceType, { foreignKey: 'ResourceTypeID' });
 models.ResourceType.hasMany(models.ResourceLocationInventory, { foreignKey: 'ResourceTypeID' });
@@ -203,6 +207,59 @@ var routes = function () {
                   ]
               },
               { model: models.ResourceLocationType }
+            ]
+        }
+      ).then(function (resourceLocation) {
+          res.statusCode = 200;
+          res.send(
+            {
+                result: 'success',
+                err: '',
+                json: resourceLocation,
+                length: resourceLocation.length
+            }
+          );
+      }
+     ).catch(function (err) {
+         console.error(err);
+         res.statusCode = 502;
+         res.send({
+             result: 'error',
+             err: err.message
+         });
+     });
+  }
+  )
+//find Distribution Centers by OrganiztionID
+  .get('/dist-center/organization/:orgid', function (req, res) {
+      models.ResourceLocation.findAll(
+        {
+            where: {
+                OrganizationID: req.params.orgid
+            },
+            include: [
+              { model: models.Organization },
+              {
+                  model: models.ResourceLocationInventory,
+                  include: [
+                      { model: models.ResourceType },
+                      { model: models.ResourceTypeUnitOfMeasure },
+                  ]
+              },
+              {
+                  model: models.ResourceLocationTransport,
+                  include: [
+                      {
+                          model: models.TransportType
+                      }
+                  ]
+              },
+              {
+                  model: models.ResourceLocationType,
+                  where: {
+                      Description: "Distribution Center"
+                  }
+              }
             ]
         }
       ).then(function (resourceLocation) {

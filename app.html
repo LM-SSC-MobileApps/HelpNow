@@ -12,15 +12,15 @@
     <script type="text/javascript" src="lib/jquery-1.10.2.js"></script>
     <script type="text/javascript" src="angular/angular.js"></script>
     <script type="text/javascript" src="angular/angular-route.js"></script>
-	<script type="text/javascript" src="angular/angular-resource.js"></script>
-	<script type="text/javascript" src="angular/angular-sanitize.min.js"></script>
+    <script type="text/javascript" src="angular/angular-resource.js"></script>
+    <script type="text/javascript" src="angular/angular-sanitize.min.js"></script>
     <script type="text/javascript" src="lib/bootstrap.js"></script>
     <script type="text/javascript" src="lib/ui-bootstrap-tpls-0.14.2.js"></script>
 
     <!-- Leaflet -->
     <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
     <!--<link rel="stylesheet" href="http://labs.easyblog.it/maps/leaflet-search/src/leaflet-search.css" />-->
-    <link rel="stylesheet" src="style/leaflet-search.css" />
+    <link rel="stylesheet" type="text/css" href="style/leaflet-search.css" />
     <script type='text/javascript' src='http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js'></script>
     <script type="text/javascript" src="leaflet/heatmap.js"></script>
     <script type="text/javascript" src="leaflet/leaflet-heatmap.js"></script>
@@ -30,7 +30,15 @@
     <!--<script src="http://labs.easyblog.it/maps/leaflet-search/src/leaflet-search.js"></script>-->
     <script type="text/javascript" src="leaflet/leaflet-search.js"></script>
 
-	<script type="text/javascript" src="generated/all.js"></script>
+    <link rel="shortcut icon" href="/style/images/HelpNowIcon.ico" type="image/x-icon" />
+
+    <!--Apple Web Clip Icons-->
+    <link rel="apple-touch-icon" href="touch-icon-iphone.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="touch-icon-ipad.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="touch-icon-iphone-retina.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="touch-icon-ipad-retina.png">
+
+    <script type="text/javascript" src="generated/all.js"></script>
     <script type="text/javascript" src="factories/regulation.js"></script>
     <script type="text/javascript" src="factories/invitation.js"></script>
     <script type="text/javascript" src="factories/account.js"></script>
@@ -44,25 +52,25 @@
 <body ng-controller="RootCtrl">
     <div class="container page-container">
         <nav class="navbar navbar-inverse" role="navigation">
-			<div class="container">
+            <div class="container">
 
-				<div class="navbar-header">
-				  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				  </button>
-				  <a class="navbar-brand" href="#/events">
-					<img alt="Help Now" src="style/images/logo.png" />
-				  </a>
-				</div>
-				
-				<div id="navbar" class="navbar-collapse collapse">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#/events">
+                        <img alt="Help Now" src="style/images/logo.png" />
+                    </a>
+                </div>
+
+                <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li ng-class="getMenuClass('events')"><a href="#">{{text.menu_events}}</a></li>
-                        <li ng-class="getMenuClass('inv')"><a href="#/inventory">{{text.menu_inv}}</a></li>
-                        <li ng-class="getMenuClass('mng')"><a href="#/manage">{{text.menu_manage}}</a></li>
+                        <li ng-class="getMenuClass('inv')" ng-show="currentUser"><a href="#/inventory">{{text.menu_inv}}</a></li>
+                        <li ng-class="getMenuClass('mng')" ng-show="currentUser"><a href="#/manage">{{text.menu_manage}}</a></li>
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{text.menu_lang}} <span class="caret"></span></a>
                             <ul class="dropdown-menu">
@@ -71,9 +79,9 @@
                             </ul>
                         </li>
                     </ul>
-				</div>
-			</div>
-		</nav>
+                </div>
+            </div>
+        </nav>
 
         <div class="row main-content">
             <div class="col-lg-12">
@@ -85,16 +93,16 @@
                             </div>
                             <div class="col-md-4" ng-show="currentUser">
                                 <table>
-                                    <tr>                                        
-                                        <td><h5>Current User: {{currentUser.FirstName + " " + currentUser.LastName + ", " + currentUser.OrganizationName}}</h5></td>
+                                    <tr>
+                                        <td><h5>{{text.user_label}}: {{currentUser.FirstName + " " + currentUser.LastName + ", " + currentUser.OrganizationName}}</h5></td>
                                         <td><br /></td>
                                         <td>&nbsp;</td>
-                                        <td><a id="btn-logout" class="btn btn-primary pull-right" ng-click="redirectToLogout()"><span></span>Logout</a></td>
-                                    </tr>                                    
-                                </table>                                                                
+                                        <td><a id="btn-logout" class="btn btn-primary pull-right" ng-click="redirectToLogout()"><span></span>{{text.logout}}</a></td>
+                                    </tr>
+                                </table>
                             </div>
-                            <div class="col-md-4" ng-show="showLogin">
-                                <a id="btn-login" class="btn btn-primary pull-right" ng-click="redirectToLogin()"><span></span>Login</a>
+                            <div class="col-md-4" ng-show="getShowLogin()">
+                                <a id="btn-login" class="btn btn-primary pull-right" ng-click="redirectToLogin()"><span></span>{{text.login}}</a>
                             </div>
                         </div>
                         <ng-view autoscroll="true" />

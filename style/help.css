@@ -22,6 +22,8 @@
     --marker-red-grad: linear-gradient(to bottom, red, color(red shade(40%)));
     --marker-purple: #ca62ff;
     --marker-purple-grad: linear-gradient(to bottom, var(--marker-purple), color(var(--marker-purple) shade(40%)));
+    --marker-yellow: #ffff00;
+    --marker-yellow-grad: linear-gradient(to bottom, var(--marker-yellow), color(var(--marker-yellow) shade(40%)));
     --marker-blue: #087fff;
     --marker-blue-grad: linear-gradient(to bottom, var(--marker-blue), color(var(--marker-blue) shade(40%)));
 
@@ -188,6 +190,16 @@ h5 {
     background-image: url("../style/images/heatmap2.png");
     background-position: 2px 3px;
     background-size: 30px;
+}
+
+#showClothing {
+    background-image: var(--marker-yellow-grad);
+}
+
+#showClothing span {
+    background-image: url("../style/images/Clothing.png");
+    background-position: 6px 5px;
+    background-size: 20px;
 }
 
 #showEvacuation {
@@ -533,4 +545,13 @@ input.switch:checked ~ label:after
 .panel-footer {
     background-color: var(--dark-blue-trans);
     border-color: var(--dark-gray);
+}
+
+.form-group .help-block {
+  display: none;
+}
+
+.form-group.has-error .help-block {
+  display: block;
+  color: red;
 }
