@@ -7,6 +7,10 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 		$routeProvider.when("/login", {
 			templateUrl: "views/login.html"
 		});
+
+		$routeProvider.when("/about", {
+		    templateUrl: "views/about.html"
+		});
 		
 		$routeProvider.when("/events", {
 			templateUrl: "views/events.html"
@@ -96,6 +100,10 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 			templateUrl: "views/events.html"
 		});
 	}]);
+angular.module("helpNow").controller("AboutCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function ($scope, $http, $location, $routeParams, $resource) {
+    $scope.setCurrentView("about");
+    $scope.setTitle($scope.text.about_title);
+}]);
 angular.module("helpNow").controller("AdministrationCtrl", ["$scope", "$location", "$resource", "Organization", "$uibModal", function ($scope, $location, $resource, Organization, $uibModal) {
     $scope.setTitle($scope.text.admin_title);
 
@@ -1429,6 +1437,10 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
     };
 
     $scope.showTransportationDiv = function () {
+        //before we go to the transportation div, we check for any form errors.
+        $scope.$broadcast('show-errors-check-validity');
+        if ($scope.reslocform1.$invalid) { return; }
+
         $scope.showLocationForm = false;
         $scope.showResourceLocation = false;
         $scope.showResourceLocations = false;
@@ -1654,6 +1666,8 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
     };
 
     $scope.saveResourceLocationInventory = function () {
+        $scope.$broadcast('show-errors-check-validity');
+        if ($scope.reslocinvform.$invalid) { return; }
         if ($scope.resourceLocationInventoryEdit) {
             $scope.updateResourceLocationInventory();
         }
@@ -1709,9 +1723,29 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
         return false;
     };
 
-    $scope.fieldIsRequired = function () {
+    //var hnNextDirective = {
+    //    'hnNext': ['$parse', function ($parse) {
+    //        return {
+    //            restrict: 'A',
+    //            require: 'form',
+    //            link: function (scope, formElement, attributes, formController) {
 
-    };
+    //                var fn = $parse(attributes.rcSubmit);
+
+    //                formElement.bind('btn-next', function (event) {
+    //                    // if form is not valid cancel it.
+    //                    if (!formController.$valid) return false;
+
+    //                    scope.$apply(function () {
+    //                        fn(scope, { $event: event });
+    //                    });
+    //                });
+    //            }
+    //        };
+    //    }]
+    //};
+
+
 }]);
 angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function ($scope, $http, $location, $routeParams, $resource) {
     $scope.setCurrentView("login");
@@ -1722,11 +1756,11 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
             alert("Missing Username or Password");
         }
         else {
-            login();
+            $scope.login();
         }
     };
 
-    function login() {
+    $scope.login = function() {
         var postdata = 'username=' + $scope.userCreds.username + '&' + 'password=' + $scope.userCreds.password;
 
         var webCall = $http({
@@ -1758,13 +1792,25 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
                 $scope.setCurrentOrg($scope.currentUser.Organization);
                 sessionStorage.setItem("user", JSON.stringify(userSessionObject));
                 $scope.$broadcast("CurrentUserLoaded", {});
-                $location.path($scope.previousPath);
+                $location.search('error', null);
+                $location.path('/');
             }
         },
         function (response) { // optional
             alert($scope.text.incorrect_login_alert);
         });
-    }
+    };
+
+    $scope.checkForErrors = function () {
+        var errorType = ($location.search()).error;
+        if (typeof errorType !== 'undefined') {
+            if (errorType.indexOf("invalid_account") >= 0) {
+                alert("Your Facebook account has not been registered. Please register and try again.");
+            }
+        }
+    };
+
+    $scope.checkForErrors();
 }]);
 /**
  * ManageCtrl
@@ -1778,7 +1824,7 @@ angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$re
 			{ accountid: $scope.currentUser.AccountID });
 	$scope.orgResource = $resource("/api/organization/:id", { id: $scope.currentOrg.OrganizationID });
 
-	$scope.setTitle("Organization Management");
+	$scope.setTitle($scope.text.manage_title_label);
 
 
 	$scope.loadInvites = function() {
@@ -2887,23 +2933,13 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
                     $scope.setCurrentUser(userSessionObject);
                     $scope.setCurrentOrg($scope.currentUser.Organization);
                     sessionStorage.setItem("user", JSON.stringify(userSessionObject));
-                    $scope.$broadcast("CurrentUserLoaded", {});
+                    $scope.$broadcast("CurrentUserLoaded", {});                    
                 }
             },
             function (response) { // optional
                 alert($scope.text.incorrect_login_alert);
             });
         }
-
-        // Handle previous path logic
-        var url = absOldUrl.replace("/#/", "/");
-        var pathArray = url.split('/');
-        var previousPath = "";
-        for (i = 3; i < pathArray.length; i++) {
-            previousPath += "/";
-            previousPath += pathArray[i];
-        }
-        $scope.previousPath = previousPath;
     });
 
     $scope.redirectToLogin = function () {
@@ -3072,6 +3108,65 @@ angular.module("helpNow").controller("TeamInviteCtrl", ["$scope", "$resource", "
 
 
 }]);
+angular.module("helpNow").directive('showErrors', function () {
+    return {
+        restrict: 'A',
+        require: '^form',
+        link: function (scope, el, attrs, formCtrl) {
+            // find the text box element, which has the 'name' attribute
+            var inputEl = el[0].querySelector("[name]");
+            // convert the native text box element to an angular element
+            var inputNgEl = angular.element(inputEl);
+            // get the name on the text box so we know the property to check
+            // on the form controller
+            var inputName = inputNgEl.attr('name');
+
+            // only apply the has-error class after the user leaves the text box
+            inputNgEl.bind('blur', function () {
+                el.toggleClass('has-error', formCtrl[inputName].$invalid);
+            });
+
+            scope.$on('show-errors-check-validity', function () {
+                el.toggleClass('has-error', formCtrl[inputName].$invalid);
+            });
+        }
+    };
+});
+
+angular.module("helpNow").directive('latitude', function () {
+    var LAT_REGEXP = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)/i;
+
+    return {
+        require: 'ngModel',
+        link: function(scope, elm, attrs, ctrl) {
+            ctrl.$validators.latitude = function (modelValue, viewValue) {
+                if (ctrl.$isEmpty(viewValue)) {
+                    // not validating for empty value, only for valid
+                    return true;
+                }
+                return LAT_REGEXP.test(viewValue);
+            };
+        }
+    };
+});
+
+angular.module("helpNow").directive('longitude', function () {
+    var LONG_REGEXP = /^[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/i;
+
+    return {
+        require: 'ngModel',
+        link: function (scope, elm, attrs, ctrl) {
+            ctrl.$validators.longitude = function (modelValue, viewValue) {
+                if (ctrl.$isEmpty(viewValue)) {
+                    // not validating for empty value, only for valid
+                    return true;
+                }
+                return LONG_REGEXP.test(viewValue);
+            };
+        }
+    };
+});
+
 angular.module("helpNow").directive("filters", function () {
     return {
         scope: {
