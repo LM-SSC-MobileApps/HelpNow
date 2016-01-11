@@ -169,7 +169,7 @@
   "title_poc_change_confirm": "Change Confirmation",
   "body_poc_change_confirm": "You have successfully updated team points of contact.",
   "delete_team_confirm_label": "You are about to delete team member",
-  "btn_send_invite": "Send Invite"
+  "btn_send_invite": "Send Invite",
   "required": "Required",
   "invalid": "Invalid",
   "about_to_delete": "You are about to delete:",
