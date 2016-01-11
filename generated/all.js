@@ -297,87 +297,83 @@ angular.module("helpNow").controller("AssignPocCtrl", ["$scope", "$resource", "$
  * DemoCtrl
  */
 
-angular.module("helpNow").controller("DemoCtrl", ["$scope", "DemoService", "Event", "$location",
-    function ($scope, DemoService, Event, $location) {
+angular.module("helpNow").controller("DemoCtrl", ["$scope", "$http", "Event", "EventLocation", "ResourceRequest", "ResourceLocation",
+    function ($scope, $http, Event, EventLocation, ResourceRequest, ResourceLocation) {
 
-        $scope.started = false;
-
-
-        $scope.startDemo = function () {
-            $scope.started = true;
-            var event = demoData[0];
-
-            Event.save(event, function (data) {
-                $scope.newEvent = data.json;
-                console.log($scope.newEvent);
-            });
-
-        };
+        $scope.demoRunning = false;
 
 
-        $scope.go = function (path) {
-            $location.path(path);
-        };
+        $http.get("data/scenario.json")
+            .success(function (data) {
+                $scope.scenarioData = data;
+                console.log("Success loading scenario data: " + data);
 
-
-        var demoData = [
-
-
-            {
-                "ID": 1,
-                "Type": "Event",
-                "WaitTime": 0,
-                "Data": {
-                    "EventTypeID": 1,
-                    "OrganizationID": 1,
-                    "Summary": "Flood",
-                    "Active": "true",
-                    "CreateDate": "2015-12-22 00:00:00"
-                }
-            },
-            {
-                "ID": 2,
-                "Type": "EventLocation",
-                "WaitTime": 2,
-                "Data": {
-
-                    "Description": "Dhaka, Bangladesh",
-                    "LAT": "23.713",
-                    "LONG": "90.39",
-                    "Radius": 542
-                }
-            }
-
-        ];
-
-
-        angular.forEach(demoData, function (item, key) {
-            console.log(item.ID);
-            console.log(item.Type);
-            switch (item.Type) {
-
-                case "Event":
-                {
-                    console.log("I'm an event");
-                    //TODO: Event.save goes here
-
-                    break;
-                }
-                case "EventLocation":
-                {
-                    console.log("I'm an event location");
-                    //TODO: EventLocation.save goes here...
-                    break;
-                }
-                default:
-                    console.log("I'm lost");
-
-            }
-
+            }).error(function (data) {
+            console.log("Error loading scenario data:  " + data);
         });
 
 
+        $scope.startDemo = function () {
+
+            console.log("starting demo run");
+            $scope.demoRunning = true;
+
+            angular.forEach($scope.scenarioData, function (item, key) {
+                console.log("item.Type : " + item.Type);
+                switch (item.Type) {
+
+                    case "Event":
+                    {
+                        var event = angular.fromJson(item.Data);
+                        Event.save(event, function (data) {
+                            var newEvent = data.json;
+                            console.log(newEvent);
+                            angular.forEach(event.EventLocations, function (item, key) {
+                                var eventLocation = event.EventLocations[key];
+                                eventLocation.EventID = newEvent.EventID;
+                                setTimeout(function () {
+                                    EventLocation.save(eventLocation, function (data) {
+                                        var newEventLocation = data.json;
+                                        console.log(newEventLocation);
+                                    });
+                                }, event.WaitTime);
+                            });
+
+                            angular.forEach(event.ResourceRequests, function (item, key) {
+                                console.log(key + ":" + item);
+                                var resourceRequest = event.ResourceRequests[key];
+                                resourceRequest.EventID = newEvent.EventID;
+                                setTimeout(function () {
+                                    ResourceRequest.save(resourceRequest, function (data) {
+                                        var newResourceRequest = data.json;
+                                        console.log(newResourceRequest);
+                                    });
+                                }, resourceRequest.WaitTime);
+                            });
+
+                            angular.forEach(event.ResourceLocations, function (item, key) {
+                                var resourceLocation = event.ResourceLocations[key];
+                                resourceLocation.EventID = newEvent.EventID;
+                                setTimeout(function () {
+                                    ResourceLocation.save(resourceLocation, function (data) {
+                                        var newResourceLocation = data.json;
+                                        console.log(newResourceLocation);
+                                    });
+                                }, resourceLocation.WaitTime);
+                            });
+                        });
+                        break;
+                    }
+                    default:
+                        console.log("I'm lost");
+                }
+            });
+
+            $scope.demoRunning = false;
+        };
+
     }]);
+
 angular.module("helpNow").controller("DeploymentCtrl", ["$scope", "$routeParams", "$resource", "$sce", "$location", "$http", 
 	function ($scope, $routeParams, $resource, $sce, $location, $http) {
 	
@@ -1039,6 +1035,10 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
 
     $scope.transportTypeResource = $resource("/api/transporttype/", {});
 
+    $scope.resourceTypeResource = $resource("/api/resourcetype/", {});
+
+    $scope.resourceTypeUnitOfMeasureResource = $resource("/api/resourcetypeunitofmeasure/", {});
+
     $scope.currentResourceLocation = new ResourceLocation();
 
     $scope.currentResourceLocationInventory = new ResourceLocationInventory();
@@ -1058,6 +1058,7 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
     $scope.showLocationForm = false;
     $scope.showTransportationOptionsForm = false;
     $scope.showResourceLocation = false;
+    $scope.showResourceTypes = false;
     $scope.editMode = false;
 
     $scope.showAir = false;
@@ -1067,19 +1068,21 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
     loadTransportTypes();
     loadResourceLocationTypes();
     loadResourceLocations();
+    loadResourceTypes();
+    loadResourceTypeUnitOfMeasures();
 
     $scope.$on("ResourceLocationDataLoaded", function () {
         $scope.showLocationsDiv();
         updateMap();
     });
 
-    $scope.$on("ResourceLocationDataUpdated", function () {
-        loadResourceLocations();
-    });
+    //$scope.$on("ResourceLocationDataUpdated", function () {
+    //    loadResourceLocations();
+    //});
 
     function loadResourceLocations() {
         
-        if ($scope.currentUser != null)
+        if ($scope.currentUser !== null)
         {
             $scope.resourceLocationResource.get({ orgid: $scope.currentUser.OrganizationID }, function (data) {
                 $scope.resourceLocations = data.json;
@@ -1105,6 +1108,18 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
         });
     }
 
+    function loadResourceTypes() {
+        $scope.resourceTypeResource.get({}, function (data) {
+            $scope.resourceTypes = data.json;
+        });
+    }
+
+    function loadResourceTypeUnitOfMeasures() {
+        $scope.resourceTypeUnitOfMeasureResource.get({}, function (data) {
+            $scope.resourceTypeUnitOfMeasures = data.json;
+        });
+    }
+
     function updateMap() {
         if (!map || !$scope.resourceLocations) return;
 
@@ -1126,7 +1141,7 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
     function buildInventoryMarkers(mapLayers) {  
         angular.forEach($scope.resourceLocations, function (location) {
             var locationIcon = L.icon({
-                iconUrl: "style/images/resources.png",
+                iconUrl: "style/images/Resources-Box-Blue.png",
                 iconSize: [60, 60],
                 iconAnchor: [30, 30]
             });
@@ -1216,7 +1231,7 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
                 $scope.currentResourceLocation = resLoc;
             }
         });
-    }
+    };
 
     $scope.setTransportationType = function (transportTypeID) {
         var index = $scope.currentResourceLocation.ResourceLocationTransports.map(function (el) {
@@ -1240,18 +1255,33 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
 
     $scope.setResourceLocationType = function (resourceLocationType) {
         $scope.currentResourceLocation.ResourceLocationType = resourceLocationType;
-        $scope.currentResourceLocation.ResourceLocationTypeID = resourceLocationType.ResourceLocationTypeID
+        $scope.currentResourceLocation.ResourceLocationTypeID = resourceLocationType.ResourceLocationTypeID;
         return false;
     };
 
-    $scope.setDefaultResourceLocationType = function()
-    {
+    $scope.setDefaultResourceLocationType = function () {
         var index = $scope.resourceLocationTypes.map(function (el) {
             return el.Description;
         }).indexOf("Distribution Center");
 
         return $scope.resourceLocationTypes[index];
-    }
+    };
+
+    $scope.setResourceLocationInventoryType = function (resourceTypeID) {
+        $scope.currentResourceLocationInventory.ResourceTypeID = resourceTypeID;
+        $scope.resourceTypesFiltered = $scope.resourceTypes.filter(function (el) {
+            return el.ResourceTypeID = resourceTypeID;
+        });
+        $scope.resourceTypesFiltered.forEach(function (resType) {
+            alert("ResourceType: " + resType.Description);
+        });
+        $scope.resourceTypeUnitOfMeasuresFiltered = $scope.resourceTypeUnitOfMeasures.filter(function (el) {
+            return el.ResourceTypeID == resourceTypeID;
+        });
+        return false;
+    };
+
+
 
     /********************************* UI FUNCTIONS ****************************************************/
     $scope.showNewEditForm = function (id) {
@@ -1270,7 +1300,7 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
             //We default each new location to Distribution Center, user can change on UI.
             var defaultResLocType = $scope.setDefaultResourceLocationType();
             newResLoc.ResourceLocationType = defaultResLocType;
-            newResLoc.ResourceLocationTypeID = defaultResLocType.ResourceLocationTypeID
+            newResLoc.ResourceLocationTypeID = defaultResLocType.ResourceLocationTypeID;
             $scope.currentResourceLocation = newResLoc;
         }
         else
@@ -1309,6 +1339,7 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
         $scope.showResourceLocation = false;
         $scope.showResourceLocations = false;
         $scope.showTransportationOptionsForm = false;
+        $scope.showResourceTypes = false;
         return false;
     };
 
@@ -1317,6 +1348,7 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
         $scope.showResourceLocation = false;
         $scope.showResourceLocations = false;
         $scope.showTransportationOptionsForm = true;
+        $scope.showResourceTypes = false;
         return false;
     };
 
@@ -1325,6 +1357,7 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
         $scope.showResourceLocation = false;
         $scope.showResourceLocations = true;
         $scope.showTransportationOptionsForm = false;
+        $scope.showResourceTypes = false;
         return false;
     };
 
@@ -1333,6 +1366,20 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
         $scope.showResourceLocations = false;
         $scope.showResourceLocation = true;
         $scope.showTransportationOptionsForm = false;
+        $scope.showResourceTypes = false;
+        return false;
+    };
+
+    $scope.showResourceTypesDiv = function () {
+        $scope.resourceTypesFiltered = $scope.resourceTypes;
+        var resLocInv = new ResourceLocationInventory();
+        resLocInv.ResourceLocationID = $scope.currentResourceLocation.ResourceLocationID;
+        $scope.currentResourceLocationInventory = resLocInv;
+        $scope.showLocationForm = false;
+        $scope.showResourceLocations = false;
+        $scope.showResourceLocation = false;
+        $scope.showTransportationOptionsForm = false;
+        $scope.showResourceTypes = true;
         return false;
     };
 
@@ -1349,7 +1396,7 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
         else {
             return false;
         }
-    }
+    };
 
     $scope.showTransparentTransport = function (transport) {
         if (transport == "Ground") {
@@ -1364,7 +1411,7 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
         else {
             return false;
         }
-    }
+    };
 
     $scope.toggleTransport = function (transportTypeID) {
         var transportTypeIdx = $scope.transportTypes.map(function (object) {
@@ -1384,7 +1431,7 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
             $scope.setTransportationType(transportTypeID);
         }
         return false;
-    }
+    };
 
 
     /********************************* DELETE FUNCTIONS ****************************************************/
@@ -1417,13 +1464,16 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
     };
 
     $scope.deleteResourceLocation = function () {
-        ResourceLocation.delete({ id: $scope.currentResourceLocation.ResourceLocationID });
-        var index = $scope.resourceLocations.map(function (el) {
-            return el.ResourceLocationID;
-        }).indexOf($scope.currentResourceLocation.ResourceLocationID);
-        $scope.resourceLocations.splice(index, 1);
-        $scope.currentResourceLocation = new ResourceLocation();
-        $scope.showLocationsDiv();
+        ResourceLocation.delete({ id: $scope.currentResourceLocation.ResourceLocationID })
+            .$promise.then(function (value) {
+                var index = $scope.resourceLocations.map(function (el) {
+                    return el.ResourceLocationID;
+                }).indexOf($scope.currentResourceLocation.ResourceLocationID);
+                $scope.resourceLocations.splice(index, 1);
+                $scope.currentResourceLocation = new ResourceLocation();
+                $scope.showLocationsDiv();
+                updateMap();
+            });
     };
 
     
@@ -1436,7 +1486,7 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
         }
         else
         {
-            $scope.saveNewResourceLocation()
+            $scope.saveNewResourceLocation();
         }
         return false;
     };
@@ -1456,14 +1506,6 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
             });
     };
 
-
-
-
-    //$scope.deleteResourceLocation = function () {
-    //    $scope.showTransportationOptions = !$scope.showTransportationOptions;
-    //    $scope.showResourceLocations = !$scope.showResourceLocations;
-    //    return false;
-    //};
 
     $scope.comingSoon = function () {
         alert("Coming Soon - In Developement");
@@ -1509,21 +1551,23 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
     };
 
     function login() {
-        var creds = JSON.stringify($scope.userCreds);
+        var postdata = 'username=' + $scope.userCreds.username + '&' + 'password=' + $scope.userCreds.password;
+
         var webCall = $http({
             method: 'POST',
-            url: '/api/account/login',
+            url: '/auth/login',
             async: true,
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/x-www-form-urlencoded'
             },
-            data: creds
+            data: postdata
         });
+
         webCall.then(function (response) {
             $scope.users = response.data.json;
             $scope.currentUser = $scope.users[0];
             if ($scope.currentUser === undefined) {
-                alert("Incorrect Username/Password combination.\nPlease try again");
+                alert("Incorrect username or password. Please try again.");
             }
             else {
                 var userSessionObject = {
@@ -1541,9 +1585,9 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
             }
         },
         function (response) { // optional
-            alert("Login Error - Please Try Again");
+            alert("Incorrect username or password. Please try again.");
         });
-    }
+    }    
 }]);
 /**
  * ManageCtrl
@@ -2600,6 +2644,30 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$location", "$http"
 	    $location.path('/login');
 	};
 
+	$scope.redirectToLogout = function () {
+        // Logout client
+	    $scope.showLogin = true;
+	    $scope.currentUser = false;
+	    sessionStorage.removeItem("user");
+
+        // Logout server
+	    var webCall = $http({
+	        method: 'POST',
+	        url: '/auth/logout',
+	        async: true,
+	        headers: {
+	            'Content-Type': 'application/x-www-form-urlencoded'
+	        }
+	    });
+	    webCall.then(function (response) {
+	        //alert("You have been successfully logged out.");
+	    },
+        function (response) {
+            alert("Logout Error - " + response);
+        });
+
+	    $location.path('#');
+	};
 
 	$scope.resources = [
         {
@@ -2939,6 +3007,13 @@ angular.module('helpNow').factory('ResourceLocationTransport', function ($resour
 });
 angular.module('helpNow').factory('ResourceLocationType', function ($resource) {
     return $resource('api/resourcelocationtype/:id', null, {
+        update: {
+            method: 'PUT'
+        }
+    });
+});
+angular.module('helpNow').factory('ResourceRequest', function ($resource) {
+    return $resource('api/resourcerequest/:id', null ,{
         update: {
             method: 'PUT'
         }
