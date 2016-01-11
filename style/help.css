@@ -553,5 +553,5 @@ input.switch:checked ~ label:after
 
 .form-group.has-error .help-block {
   display: block;
-  color: yellow;
+  color: red;
 }
