@@ -42,14 +42,9 @@
                             </div>
                             <div class="col-xs-10 form-group" show-errors>
                                 {{text.location_name}}<br /><input name="reslocname" ng-model="currentResourceLocation.Description" class="form-control" type="text" style="width: 170px;  margin-bottom: 10px;" required />
-                                <div class="help-block error" ng-if="reslocform1.reslocname.$error.required">Required</div>
+                                <div class="help-block error" ng-if="reslocform1.reslocname.$error.required">{{text.required}}</div>
                             </div>
-                            <!--<div class="col-xs-10" ng-class="{'has-error': reslocform1.reslocname.$invalid && reslocform1.reslocname.$dirty}">
-                                {{text.location_name}}<br /><input name="reslocname" ng-model="currentResourceLocation.Description" class="form-control" type="text" style="width: 170px;  margin-bottom: 10px;" required />
-                                <div class="help-block error" ng-show="reslocform1.reslocname.$error.required">Required</div>
-                            </div>-->
                         </div>
-
 
                         <div class="row">
                             <div class="col-xs-12">
@@ -60,13 +55,13 @@
                         <div class="row">
                             <div class="col-xs-6 pull-left form-group" style="margin-top: 7px;" show-errors>
                                 {{text.lat}}<br /><input ng-model="currentResourceLocation.LAT" type="text" class="form-control" name="lat" style="display:inline; width: 90px; color: black;" latitude required />
-                                <div class="help-block error" ng-if="reslocform1.lat.$error.required">Required</div>
-                                <div class="help-block error" ng-if="reslocform1.lat.$error.latitude">Invalid</div>
+                                <div class="help-block error" ng-if="reslocform1.lat.$error.required">{{text.required}}</div>
+                                <div class="help-block error" ng-if="reslocform1.lat.$error.latitude">{{text.invalid}}</div>
                             </div>
                             <div class="col-xs-6 pull-left form-group" style="margin-top: 7px;" show-errors>
                                 {{text.long}}<br /><input ng-model="currentResourceLocation.LONG" type="text" class="form-control" name="long" style="display:inline; width: 90px; color: black;" longitude required />
-                                <div class="help-block error" ng-if="reslocform1.long.$error.required">Required</div>
-                                <div class="help-block error" ng-if="reslocform1.long.$error.longitude">Invalid</div>
+                                <div class="help-block error" ng-if="reslocform1.long.$error.required">{{text.required}}</div>
+                                <div class="help-block error" ng-if="reslocform1.long.$error.longitude">{{text.invalid}}</div>
                             </div>
                         </div>
 
@@ -124,27 +119,10 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-12" style="margin-bottom:5px;">
-                                <!--<h5 style="vertical-align:top; color: whitesmoke">Note:</h5>-->
                                 <textarea ng-model="currentResourceLocation.Notes" class="form-control" style="width: 100%" maxlength="1000"></textarea>
                             </div>
                         </div>
-                        <!--<div class="row">
-                            <div class="col-xs-12" style="margin-bottom:5px; margin-top: 5px;">
-                                Resource Location Type:
-                            </div>
-                            <div class="col-xs-12">
-                                <div class="btn-group" uib-dropdown is-open="status.isopen">
-                                    <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle>
-                                        {{currentResourceLocation.ResourceLocationType.Description}} <span class="caret"></span>
-                                    </button>
-                                    <ul class="uib-dropdown-menu" role="menu" aria-labelledby="single-button">
-                                        <li role="menuitem" ng-repeat="choice in resourceLocationTypes">
-                                            <a ng-click="setResourceLocationType(choice)" style="color: whitesmoke;">{{choice.Description}}</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>-->
+                        
                         <div class="row">
                             <div class="col-xs-12" style="margin-bottom:5px; margin-top: 5px;">
                                 {{text.transportation_options}}
@@ -279,8 +257,8 @@
                                 </div>
                                 <div class="col-xs-7 form-group" show-errors>
                                     <input ng-model="currentResourceLocationInventory.Quantity" type="number" min="1" class="form-control pull-left" name="qty" style="margin-bottom: 7px;" required />
-                                    <div class="help-block error" ng-if="reslocinvform.qty.$error.required">Required</div>
-                                    <div class="help-block error" ng-if="reslocinvform.qty.$error.min">Invalid</div>
+                                    <div class="help-block error" ng-if="reslocinvform.qty.$error.required">{{text.required}}</div>
+                                    <div class="help-block error" ng-if="reslocinvform.qty.$error.min">{{text.invalid}}</div>
                                 </div>
                                 <div class="col-xs-5">
                                     <span>{{text.unit_type}}</span>

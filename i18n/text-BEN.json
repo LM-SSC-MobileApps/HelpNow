@@ -118,5 +118,11 @@
   "policy_title_label": "নীতি শিরোনাম",
   "policy_text_label": "নীতি শিরোনাম",
   "required": "প্রয়োজনীয়",
-  "invalid": "অকার্যকর"
+  "invalid": "অকার্যকর",
+  "about_to_delete": "আপনি মুছে ফেলতে চলেছেন:",
+  "are_you_sure": "তুমি কি নিশ্চিত?",
+  "additional_inventory":  "এই সব যুক্ত জায় আইটেম মুছে ফেলা হবে",
+  "confirm": "নিশ্চিত করা",
+  "inventory": "জায়",
+  "resource_location": "রিসোর্স অবস্থান"
 }

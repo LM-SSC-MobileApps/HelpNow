@@ -1,4 +1,4 @@
-{ "menu_help":"Help Me Now!",
+﻿{ "menu_help":"Help Me Now!",
   "menu_events":  "Events",
   "menu_inv":  "Inventory",
   "menu_manage": "Manage",
@@ -118,5 +118,12 @@
   "policy_title_label": "Policy Title",
   "policy_text_label": "Policy Text",
   "required": "Required",
-  "invalid": "Invalid"
+  "invalid": "Invalid",
+  "about_to_delete": "You are about to delete:",
+  "are_you_sure": "Are you sure?",
+  "additional_inventory":  "This will also delete all associated inventory items",
+  "confirm": "Confirm",
+  "inventory": "Inventory",
+  "resource_location": "Resource Location"
+
 }
