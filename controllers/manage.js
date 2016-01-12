@@ -27,13 +27,17 @@ angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$re
 	$scope.loadInvites();
 
 
+
 	$scope.deleteInvite = function (invitation) {
+
 		$scope.modalInstance = $uibModal.open(
 				{
 					templateUrl: '/manage/invite-modal-delete.html',
-					controller: function ($scope) {
+					scope: $scope,
+					controller: function () {
 						this.invitation = invitation;
 						this.Invitation = Invitation;
+						this.text = $scope.text;
 
 						$scope.deleteInvite = function (invitation) {
 							Invitation.delete({inviteid: invitation.InviteID});

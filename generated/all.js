@@ -7,6 +7,10 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 		$routeProvider.when("/login", {
 			templateUrl: "views/login.html"
 		});
+
+		$routeProvider.when("/about", {
+		    templateUrl: "views/about.html"
+		});
 		
 		$routeProvider.when("/events", {
 			templateUrl: "views/events.html"
@@ -96,6 +100,10 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 			templateUrl: "views/events.html"
 		});
 	}]);
+angular.module("helpNow").controller("AboutCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function ($scope, $http, $location, $routeParams, $resource) {
+    $scope.setCurrentView("about");
+    $scope.setTitle($scope.text.about_title);
+}]);
 angular.module("helpNow").controller("AdministrationCtrl", ["$scope", "$location", "$resource", "Organization", "$uibModal", function ($scope, $location, $resource, Organization, $uibModal) {
     $scope.setTitle($scope.text.admin_title);
 
@@ -297,30 +305,34 @@ angular.module("helpNow").controller("AssignPocCtrl", ["$scope", "$resource", "$
  * DemoCtrl
  */
 
-angular.module("helpNow").controller("DemoCtrl", ["$scope", "$http", "Event", "EventLocation", "ResourceRequest", "$location" ,"ResourceLocation",
-    function ($scope, $http, Event, EventLocation, ResourceRequest, $location ,ResourceLocation) {
+angular.module("helpNow").controller("DemoCtrl", ["$scope", "$http", "Event", "EventLocation", "ResourceRequest", "$location", "ResourceLocation",
+    function ($scope, $http, Event, EventLocation, ResourceRequest, $location, ResourceLocation) {
 
         $scope.demoRunning = false;
 
 
-        $http.get("data/scenario.json")
-            .success(function (data) {
-                $scope.scenarioData = data;
-                console.log("Success loading scenario data: " + data);
+        $scope.loadScenario = function () {
+            $http.get("data/scenario.json")
+                .success(function (data) {
+                    $scope.scenarioData = data;
+                    console.log("Success loading scenario data: " + data);
 
-            }).error(function (data) {
-            console.log("Error loading scenario data:  " + data);
-        });
+                }).error(function (data) {
+                console.log("Error loading scenario data:  " + data);
+            });
+        };
 
-        $scope.go = function ( path ) {
-            $location.path( path );
+        $scope.go = function (path) {
+            $location.path(path);
         };
 
 
+        $scope.loadScenario();
 
         $scope.startDemo = function () {
 
             console.log("starting demo run");
+
             $scope.demoRunning = true;
 
             angular.forEach($scope.scenarioData, function (item, key) {
@@ -331,53 +343,95 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "$http", "Event", "E
                     {
                         var event = angular.fromJson(item.Data);
                         Event.save(event, function (data) {
-                            var newEvent = data.json;
-                            console.log(newEvent);
-                            angular.forEach(event.EventLocations, function (item, key) {
-                                var eventLocation = event.EventLocations[key];
-                                eventLocation.EventID = newEvent.EventID;
-                                setTimeout(function () {
-                                    EventLocation.save(eventLocation, function (data) {
-                                        var newEventLocation = data.json;
-                                        console.log(newEventLocation);
-                                    });
-                                }, event.WaitTime);
-                            });
+                                var newEvent = data.json;
+                                console.log(newEvent);
+                                angular.forEach(event.EventLocations, function (item, key) {
+                                    var eventLocation = event.EventLocations[key];
+                                    eventLocation.EventID = newEvent.EventID;
+                                    setTimeout(function () {
+                                        EventLocation.save(eventLocation, function (data) {
+                                            var newEventLocation = data.json;
+                                            console.log(newEventLocation);
+                                        });
+                                    }, event.WaitTime);
+                                });
 
-                            angular.forEach(event.ResourceRequests, function (item, key) {
-                                console.log(key + ":" + item);
-                                var resourceRequest = event.ResourceRequests[key];
-                                resourceRequest.EventID = newEvent.EventID;
-                                setTimeout(function () {
-                                    ResourceRequest.save(resourceRequest, function (data) {
-                                        var newResourceRequest = data.json;
-                                        console.log(newResourceRequest);
-                                    });
-                                }, resourceRequest.WaitTime);
-                            });
+                                angular.forEach(event.ResourceRequests, function (item, key) {
+                                    var resourceRequest = event.ResourceRequests[key];
+                                    resourceRequest.EventID = newEvent.EventID;
+                                    var centerLat = parseFloat(resourceRequest.LAT);
+                                    var centerLong = parseFloat(resourceRequest.LONG);
+                                    var diameter = 0.5;
+                                    setTimeout(function () {
+                                        for (var i = 0; i < resourceRequest.NumberOfRequests; i++) {
+                                            //populate lat
+                                            var latRand = Math.random() * diameter;
+                                            var relLat = latRand - diameter * 0.5;
+                                            var lat = centerLat + relLat;
 
-                            angular.forEach(event.ResourceLocations, function (item, key) {
-                                var resourceLocation = event.ResourceLocations[key];
-                                resourceLocation.EventID = newEvent.EventID;
-                                setTimeout(function () {
-                                    ResourceLocation.save(resourceLocation, function (data) {
-                                        var newResourceLocation = data.json;
-                                        console.log(newResourceLocation);
-                                    });
-                                }, resourceLocation.WaitTime);
-                            });
-                        });
+                                            //populate long
+                                            var longRand = Math.random() * diameter;
+                                            var relLong = longRand - diameter * 0.5;
+                                            var lng = centerLong + relLong;
+
+                                            resourceRequest.LAT = lat.toFixed(3);
+                                            resourceRequest.LONG = lng.toFixed(3);
+                                            console.log ("resourceRequest.LAT:" + resourceRequest.LAT);
+                                            console.log ("resourceRequest.LONG:" + resourceRequest.LONG);
+
+                                            //populate notes
+                                            var notesRand = Math.random() * 10;
+                                            var notes;
+                                            if (notesRand < 3.33) notes = "Please help!";
+                                            else if (notesRand > 6.66) notes = "Reported via Facebook";
+                                            else notes = "Reported via Twitter";
+                                            resourceRequest.Notes = notes;
+
+                                            //populate quantity
+                                            resourceRequest.Quantity = Math.round(Math.random() * 20);
+
+                                            //populate resource type
+                                            resourceRequest.ResourceTypeID = Math.round(Math.random() * 5) + 1;
+
+                                            //populate urgency
+                                            resourceRequest.RequestUrgencyID = Math.round(Math.random() * 5) + 1;
+
+                                            ResourceRequest.save(resourceRequest, function (data) {
+                                                var newResourceRequest = data.json;
+                                                console.log(newResourceRequest);
+                                            });
+
+                                        }
+                                    }, resourceRequest.WaitTime);
+                                });
+
+
+                                angular.forEach(event.ResourceLocations, function (item, key) {
+                                    var resourceLocation = event.ResourceLocations[key];
+                                    resourceLocation.EventID = newEvent.EventID;
+                                    setTimeout(function () {
+                                        ResourceLocation.save(resourceLocation, function (data) {
+                                            var newResourceLocation = data.json;
+                                            console.log(newResourceLocation);
+                                        });
+                                    }, resourceLocation.WaitTime);
+                                });
+                            }
+                        );
                         break;
                     }
                     default:
                         console.log("I'm lost");
                 }
-            });
+            })
+            ;
 
             $scope.demoRunning = false;
-        };
+        }
+        ;
 
-    }]);
+    }])
+;
 
 angular.module("helpNow").controller("DeploymentCtrl", ["$scope", "$routeParams", "$resource", "$sce", "$location", "$http",
 	function ($scope, $routeParams, $resource, $sce, $location, $http) {
@@ -1833,13 +1887,17 @@ angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$re
 	$scope.loadInvites();
 
 
+
 	$scope.deleteInvite = function (invitation) {
+
 		$scope.modalInstance = $uibModal.open(
 				{
 					templateUrl: '/manage/invite-modal-delete.html',
-					controller: function ($scope) {
+					scope: $scope,
+					controller: function () {
 						this.invitation = invitation;
 						this.Invitation = Invitation;
+						this.text = $scope.text;
 
 						$scope.deleteInvite = function (invitation) {
 							Invitation.delete({inviteid: invitation.InviteID});
@@ -2013,7 +2071,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        loadRequests();
 	    }
 		
-		var dataRefreshTaskID = setInterval(loadRequests, 1000);
+		//var dataRefreshTaskID = setInterval(loadRequests, 1000);
 		
 		$scope.$on('$destroy', function() {
 			clearInterval(dataRefreshTaskID);
@@ -2027,9 +2085,16 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	    $scope.showMappingError = false;
 	    $scope.showDeployPanel = false;
 	    $scope.showDeploymentPanel = false;
-
+	/*
 	    $scope.showHeatmap = true;
 	    $scope.showClusters = true;
+	    $scope.showNeedsMarkers = false;
+	    $scope.showLocationMarkers = false;
+	    $scope.showDistCenterMarkers = false;
+		*/
+		
+		$scope.showHeatmap = false;
+	    $scope.showClusters = false;
 	    $scope.showNeedsMarkers = false;
 	    $scope.showLocationMarkers = false;
 	    $scope.showDistCenterMarkers = false;
@@ -2196,6 +2261,17 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            mapLayers.push(marker);
 	        });
 	    }
+		
+		function markFulfilledRequests() {
+			angular.forEach($scope.locations, function (deployment) {
+	            angular.forEach(deployment.ResourceLocationInventories, function (inventory) {
+	                angular.forEach($scope.requests, function (request) {
+	                    request.fulfilled = calculateKmDistance(deployment.LAT, deployment.LONG, request.LAT, request.LONG) < 10 &&
+                            request.ResourceTypeID == inventory.ResourceTypeID;
+	                });
+	            });
+	        });
+		}
 
 	    function buildHeatmap(selectedRequests) {
 	        var heatmapConfig = {
@@ -2207,7 +2283,8 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            lngField: 'LONG',
 	            valueField: 'Quantity'
 	        };
-
+			
+			/*
 	        angular.forEach($scope.locations, function (deployment) {
 	            angular.forEach(deployment.ResourceLocationInventories, function (inventory) {
 	                angular.forEach(selectedRequests, function (request) {
@@ -2219,6 +2296,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	                });
 	            });
 	        });
+			*/
 
 	        var heatmapLayer = new HeatmapOverlay(heatmapConfig);
 	        var heatmapData = { data: selectedRequests };
@@ -2257,7 +2335,9 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        }
 
 	        mapLayers = [];
-	        var selectedRequests = $scope.requests.filter(function (request) {
+			markFulfilledRequests();
+			var selectedRequests = $scope.requests.filter(function (request) {
+				//if (request.fulfilled) return false;
 	            var type = request.ResourceType.Description;
 	            return $scope.shouldDisplayMarker(type, $scope.filterFlags);
 	        });
@@ -3109,28 +3189,28 @@ angular.module("helpNow").controller("TeamInviteCtrl", ["$scope", "$resource", "
 
 }]);
 angular.module("helpNow").directive('showErrors', function () {
-      return {
-          restrict: 'A',
-          require: '^form',
-          link: function (scope, el, attrs, formCtrl) {
-              // find the text box element, which has the 'name' attribute
-              var inputEl = el[0].querySelector("[name]");
-              // convert the native text box element to an angular element
-              var inputNgEl = angular.element(inputEl);
-              // get the name on the text box so we know the property to check
-              // on the form controller
-              var inputName = inputNgEl.attr('name');
+    return {
+        restrict: 'A',
+        require: '^form',
+        link: function (scope, el, attrs, formCtrl) {
+            // find the text box element, which has the 'name' attribute
+            var inputEl = el[0].querySelector("[name]");
+            // convert the native text box element to an angular element
+            var inputNgEl = angular.element(inputEl);
+            // get the name on the text box so we know the property to check
+            // on the form controller
+            var inputName = inputNgEl.attr('name');
 
-              // only apply the has-error class after the user leaves the text box
-              inputNgEl.bind('blur', function () {
-                  el.toggleClass('has-error', formCtrl[inputName].$invalid);
-              })
+            // only apply the has-error class after the user leaves the text box
+            inputNgEl.bind('blur', function () {
+                el.toggleClass('has-error', formCtrl[inputName].$invalid);
+            });
 
-              scope.$on('show-errors-check-validity', function () {
-                  el.toggleClass('has-error', formCtrl[inputName].$invalid);
-              });
-          }
-      }
+            scope.$on('show-errors-check-validity', function () {
+                el.toggleClass('has-error', formCtrl[inputName].$invalid);
+            });
+        }
+    };
 });
 
 angular.module("helpNow").directive('latitude', function () {
@@ -3161,7 +3241,7 @@ angular.module("helpNow").directive('longitude', function () {
                     // not validating for empty value, only for valid
                     return true;
                 }
-                return LONG_REGEXP.test(viewValue)
+                return LONG_REGEXP.test(viewValue);
             };
         }
     };
