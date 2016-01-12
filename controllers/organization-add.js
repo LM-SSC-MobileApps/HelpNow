@@ -12,21 +12,29 @@
     };
 
     $scope.addOrg = function (org) {
+        if (org.Name === undefined || org.Name == null) {
+            alert($scope.text.missing_fields_alert);
+            return;
+        }
         Organization.save(org).$promise.then(function (response) {
             $location.path('/administration');
         },
         function (response) { // optional
-            alert("Error: ");
+            alert("Error: " + response.data.err);
         });;
     };
 
     $scope.enterAddress = function (org) {
+        if (org.Name === undefined || org.Name == null) {
+            alert($scope.text.missing_fields_alert);
+            return;
+        }
         Organization.save(org).$promise.then(function (response) {
             var returnedOrg = response.json[0];
             $location.path('/org_address/' + returnedOrg.OrganizationID);
         },
         function (response) { // optional
-            alert("Error: ");
+            alert("Error: " + response.data.err);
         });;;
     };
 
