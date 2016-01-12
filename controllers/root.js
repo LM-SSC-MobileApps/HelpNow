@@ -4,6 +4,14 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
 
     $scope.eventsResource = $resource("/api/event");
     $scope.currentUser = JSON.parse(sessionStorage.getItem("user"));
+    if ($scope.currentUser != null) {
+        if ($scope.currentUser.AccountRoleID == 1) {
+            $scope.isSuperAdmin = true;
+        }
+        else {
+            $scope.isSuperAdmin = false;
+        }
+    }
     $scope.currentOrg = JSON.parse(sessionStorage.getItem("user"));
 
     $scope.loadEvents = function () {
@@ -48,6 +56,12 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
 
     $scope.setCurrentUser = function (user) {
         $scope.currentUser = user;
+        if ($scope.currentUser.AccountRoleID == 1) {
+            $scope.isSuperAdmin = true;
+        }
+        else {
+            $scope.isSuperAdmin = false;
+        }
     };
 
     $scope.getCurrentUser = function () {
@@ -244,6 +258,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
     $scope.redirectToLogout = function () {
         // Logout client
         $scope.currentUser = false;
+        $scope.isSuperAdmin = false;
         sessionStorage.removeItem("user");
 
         // Logout server
