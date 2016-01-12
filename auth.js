@@ -1,7 +1,16 @@
+var environment = "";
+var port = "";
+var ssl_port = "";
+
 module.exports =
 {
-    setupAuthentication: function (app) {
+    setupAuthentication: function (environment_val, port_val, ssl_port_val, app) {
         console.log("setupAuthentication");
+
+        environment = environment_val;
+        port = port_val;
+        ssl_port = ssl_port_val;
+
         var passport = require('passport');
         var LocalStrategy = require('passport-local').Strategy;
         var FacebookStrategy = require('passport-facebook').Strategy;
@@ -36,16 +45,14 @@ function logout(req, res) {
     res.end();
 }
 
-function getEnvironment() {   
-    if (getHost().indexOf('ec2') >= 0) {
-        return 'PRD';
-    } else {
-        return 'DEV';
-    }
+function getEnvironment() {
+    return environment;
 }
 
 function getHttp() {
-    if (getEnvironment() === 'PRD') {
+    if (getEnvironment() === 'production') {
+        return 'http://';
+    } else if (getEnvironment() === 'qas') {
         return 'http://';
     } else {
         return 'http://';
@@ -53,6 +60,10 @@ function getHttp() {
 }
 
 function getHost() {    
+    if (getEnvironment() === 'production') {
+        return "www.helpnowmap.com";
+    }
+
     if (process.platform.indexOf("linux") >= 0) {
         var child_process = require("child_process");
         var hostname = child_process.execSync("curl -s http://169.254.169.254/latest/meta-data/public-hostname");
@@ -67,8 +78,10 @@ function getHost() {
 }
 
 function getHttpPort(addColon) {
-    if (getEnvironment() === 'PRD') {
-        return '';        
+    if (getEnvironment() === 'production') {
+        return '';
+    } else if (getEnvironment() === 'qas') {
+        return ''; 
     } else {
         if (addColon == true) {
             return ':' + process.env.PORT
@@ -79,7 +92,9 @@ function getHttpPort(addColon) {
 }
 
 function getHttpsPort(addColon) {
-    if (getEnvironment() === 'PRD') {
+    if (getEnvironment() === 'production') {
+        return '';
+    } else if (getEnvironment() === 'qas') {
         return '';
     } else {
         if (addColon == true) {
@@ -91,18 +106,22 @@ function getHttpsPort(addColon) {
 }
 
 function getClientID() {
-    if (getEnvironment() === 'PRD') {
+    if (getEnvironment() === 'production') {
         return '508069382708084';
+    } else if (getEnvironment() === 'qas') {
+        return '545286995652989';
     } else {
-        return '1735152463375151';
+        return '545287402319615';
     }
 }
 
 function getClientSecret() {
-    if (getEnvironment() === 'PRD') {
+    if (getEnvironment() === 'production') {
         return 'df3684bd3cceadb1b7eb344846bfbcc8';
+    } else if (getEnvironment() === 'qas') {
+        return 'd8c52ed189c00d6f45de9f80bc1f776d';
     } else {
-        return '4c518502b119e23d3a8c3b861329084f';
+        return '543c8b04c2d94a489eba3243cd9cef5a';
     }
 }
 

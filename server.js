@@ -37,6 +37,7 @@ var requestInviteRequestRouter = require('./routes/inviterequest')();
 
 var app = express();
 
+var environment = process.env.ENVIRONMENT || 'production';
 var port = process.env.PORT || 80;
 var ssl_port = process.env.SSL_PORT || 443;
 var enable_redirect = process.env.ENABLE_REDIRECT || true;
@@ -57,7 +58,7 @@ app.use(
 
 // Setup for authentication (must be after all body parsers, cookie parsers and session parsers)
 var auth = require('./auth');
-auth.setupAuthentication(app);
+auth.setupAuthentication(environment, port, ssl_port, app);
 
 app.use('/api/account', accountRouter);
 app.use('/api/accountrole', accountRoleRouter);
