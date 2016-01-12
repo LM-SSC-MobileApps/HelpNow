@@ -33,11 +33,13 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "$http", "ResourceRe
                         var diameter = 0.5;
 
                         var saveRequest = function (i, resourceRequest) {
-                            ResourceRequest.save(resourceRequest, function (data) {
-                                var newResourceRequest = data.json;
-                                console.log(newResourceRequest);
-                                console.log(i);
-                            });
+                            setTimeout(function () {
+                                ResourceRequest.save(resourceRequest, function (data) {
+                                    var newResourceRequest = data.json;
+                                    console.log(newResourceRequest);
+                                    console.log(i);
+                                });
+                            }, i * resourceRequest.WaitTime);
                         };
 
                         setTimeout(function () {

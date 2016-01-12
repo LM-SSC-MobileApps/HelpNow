@@ -4,7 +4,7 @@
     "Data": {
       "EventID": 1,
       "WaitTime": 8000,
-      "NumberOfRequests": 100,
+      "NumberOfRequests": 25,
       "RequestStateID": 1,
       "Notes": "Request from Twitter",
       "Quantity": 17,
