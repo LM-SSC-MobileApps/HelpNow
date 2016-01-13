@@ -213,7 +213,7 @@ var routes = function(){
   .delete('/', function(req, res) {
     models.ResourceRequest.destroy(
 	{
-		truncate: true
+		where: {}
 	})
     .then(function(numDelete) {
         res.statusCode = 200;

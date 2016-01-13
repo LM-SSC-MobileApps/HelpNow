@@ -2095,6 +2095,8 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
         });
 
 	    $scope.requests = [];
+		$scope.locations = [];
+		$scope.distributionCenters = [];
 
 	    $scope.showFilters = false;
 	    $scope.showFindPanel = false;
