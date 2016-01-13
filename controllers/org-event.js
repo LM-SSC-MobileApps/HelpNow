@@ -177,7 +177,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        } else if (resourceType == "Clothing") {
 	            return "style/images/markers/dot-yellow.png";
 	        } else if (resourceType == "Rescue") {
-	            return "style/images/markers/dot-red.png";
+	            return "style/images/markers/dot-magenta.png";
 	        } else {
 	            return "style/images/markers/dot-green.png";
 	        }
