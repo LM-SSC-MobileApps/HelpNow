@@ -208,6 +208,32 @@ var routes = function(){
        });
       });
     }
+  )
+  
+  .delete('/', function(req, res) {
+    models.ResourceRequest.destroy(
+	{
+		where: {}
+	})
+    .then(function(numDelete) {
+        res.statusCode = 200;
+        res.send(
+          {
+            result: 'success',
+            err:    '',
+            json:  {rows: numDelete}
+          }
+        );
+      }
+     ).catch(function (err) {
+       console.error(err);
+       res.statusCode = 502;
+       res.send({
+           result: 'error',
+           err:    err.message
+       });
+      });
+    }
   );
   
   return router;

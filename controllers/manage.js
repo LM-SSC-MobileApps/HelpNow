@@ -11,7 +11,7 @@ angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$re
 	$scope.orgResource = $resource("/api/organization/:id", { id: $scope.currentOrg.OrganizationID });
 
 	$scope.setTitle($scope.text.manage_title_label);
-
+	$scope.setCurrentView("mng");
 
 	$scope.loadInvites = function() {
 		$scope.invitesResource.get({}, function(data) {

@@ -1,0 +1,28 @@
+[
+  {
+    "Type": "RequestGroup",
+    "Data": {
+	  "StartDelay": 5000,
+	  "EventID": 1,
+      "Diameter": 0.4,
+      "Delay": 1000,
+      "NumberOfRequests": 20,
+      "CenterLat": 23.728,
+      "CenterLong": 90.41,
+	  "RequestType": "Food"
+    }
+  },
+  {
+    "Type": "RequestGroup",
+    "Data": {
+	  "StartDelay": 5000,
+	  "EventID": 1,
+      "Diameter": 0.4,
+      "Delay": 1000,
+      "NumberOfRequests": 30,
+      "CenterLat": 23.9,
+      "CenterLong": 90.2,
+	  "RequestType": "Water"
+    }
+  }
+]

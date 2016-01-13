@@ -31,15 +31,21 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     $scope.showHelp = false;
     $scope.showNeeds = false;
 
-    $scope.filterFlags = {
-        showMedical: true,
-        showShelter: true,
-        showFood: true,
-        showWater: true,
-        showClothing: true,
-        showEvacuation: true,
-        showMedicine: true
-    };
+    var filters = JSON.parse(sessionStorage.getItem("filterFlags"));
+    if (filters != null) {
+        $scope.filterFlags = JSON.parse(sessionStorage.getItem("filterFlags"));
+    }
+    else {
+        $scope.filterFlags = {
+            showMedical: true,
+            showShelter: true,
+            showFood: true,
+            showWater: true,
+            showClothing: true,
+            showEvacuation: true,
+            showMedicine: true
+        };
+    }
 
     $scope.needFlags = {
         showMedical: false,
@@ -234,6 +240,16 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     };
 
     $scope.toggleFilters = function () {
+        var sessionFilters = {
+            showMedical: $scope.filterFlags.showMedical,
+            showShelter: $scope.filterFlags.showShelter,
+            showFood: $scope.filterFlags.showFood,
+            showWater: $scope.filterFlags.showWater,
+            showClothing: $scope.filterFlags.showClothing,
+            showEvacuation: $scope.filterFlags.showEvacuation,
+            showMedicine: $scope.filterFlags.showMedicine
+        };
+        sessionStorage.setItem("filterFlags", JSON.stringify(sessionFilters));
         $scope.showFilters = !$scope.showFilters;
         return false;
     };

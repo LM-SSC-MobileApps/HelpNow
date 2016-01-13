@@ -22,7 +22,9 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
     };
 
     $scope.getShowLogin = function () {
-        if ($scope.title.indexOf($scope.text.login_title) == 0) {
+        if (!$scope.title) {
+			return true;
+		} else if ($scope.title.indexOf($scope.text.login_title) == 0) {
             return false;
         } else if ($scope.currentUser) {
             return false;
@@ -50,7 +52,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
     };
 
     $scope.setTitle = function (title, img) {
-        $scope.title = title;
+		$scope.title = title;
         $scope.imageSrc = img;
     };
 

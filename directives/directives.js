@@ -28,7 +28,7 @@ angular.module("helpNow").directive('latitude', function () {
 
     return {
         require: 'ngModel',
-        link: function(scope, elm, attrs, ctrl) {
+        link: function (scope, elm, attrs, ctrl) {
             ctrl.$validators.latitude = function (modelValue, viewValue) {
                 if (ctrl.$isEmpty(viewValue)) {
                     // not validating for empty value, only for valid
@@ -92,6 +92,44 @@ angular.module("helpNow").directive('map', function () {
 			    attribution: '(c) <a href="http://microsites.digitalglobe.com/interactive/basemap_vivid/">DigitalGlobe</a> , (c) OpenStreetMap, (c) Mapbox'
 			});*/
 
+            var dharaharaBefore = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/dharahara_tower_before/{z}/{x}/{y}.png', {
+                minZoom: 2,
+                maxZoom: 19,
+                attribution: '(c) <a href="http://www.dmcii.com/">DMC International Imaging</a>'
+            });
+
+            var dharaharaAfter = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/dharahara_tower_after/{z}/{x}/{y}.png', {
+                minZoom: 2,
+                maxZoom: 19,
+                attribution: '(c) <a href="http://www.dmcii.com/">DMC International Imaging</a>'
+            });
+
+            var nepalBefore = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/nepal/{z}/{x}/{y}.png', {
+                minZoom: 2,
+                maxZoom: 19,
+                attribution: '(c) <a href="http://www.dmcii.com/">DMC International Imaging</a>'
+            });
+
+            var nepalAfter = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/nepal/{z}/{x}/{y}.png', {
+                minZoom: 2,
+                maxZoom: 19,
+                attribution: '(c) <a href="http://www.dmcii.com/">DMC International Imaging</a>'
+            });
+
+            var bangladeshBefore = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/bangladesh/{z}/{x}/{y}.png', {
+                tms: true,
+                minZoom: 2,
+                maxZoom: 19,
+                attribution: '(c) <a href="http://www.dmcii.com/">DMC International Imaging</a>'
+            });
+
+            var bangladeshAfter = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/bangladesh/{z}/{x}/{y}.png', {
+                tms: true,
+                minZoom: 2,
+                maxZoom: 19,
+                attribution: '(c) <a href="http://www.dmcii.com/">DMC International Imaging</a>'
+            });
+
             var vivid = new L.tileLayer('https://{s}.tiles.mapbox.com/v4/digitalglobe.n6ngnadl/{z}/{x}/{y}.png?access_token=' + api_key, {
                 minZoom: 2,
                 maxZoom: 19,
@@ -127,13 +165,20 @@ angular.module("helpNow").directive('map', function () {
             L.control.scale().addTo(map);
 
             map.attributionControl.setPrefix('');
-            var overlays = {
+            var baselayers = {
                 "Base Open Street Maps": openStreetMap,
                 "DigitalGlobe Basemap +Vivid with Streets": baseLayer,
                 "DigitalGlobe Basemap: REST": GBMREST
             };
 
-            L.control.layers(overlays, null, {
+            var overlays = {
+                "Bangladesh": bangladeshBefore,
+                "Nepal": nepalBefore,
+                "Dharahara Before": dharaharaBefore,
+                "Dharahara After": dharaharaAfter
+            };
+
+            L.control.layers(baselayers, overlays, {
                 collapsed: true
             }).addTo(map);
 

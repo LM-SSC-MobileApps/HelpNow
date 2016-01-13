@@ -303,10 +303,6 @@ h5 {
     font-size: 1em;
 }
 
-.btn-danger {
-    /*margin: 5px;*/
-}
-
 .dropdown-menu, .navbar-nav .open .dropdown-menu {
     background-color: var(--dark-blue);
     color: var(--light-gray);
@@ -368,7 +364,8 @@ h5 {
 }
 
 .btn-primary:hover {
-    background-color: #2d647b;
+    background-color: color(var(--light-blue) shade(20%));
+    background-image: none;
     color: white;
 }
 
@@ -378,9 +375,9 @@ h5 {
 }
 
 .btn-danger:hover {
-    background-color: #871c1c;
+    background-color: color(#e73131 shade(20%));
     background-image: none;
-    border-color: #871c1c;
+    border-color: #e73131;
 }
 
 .btn .glyphicon, .well .well .glyphicon {

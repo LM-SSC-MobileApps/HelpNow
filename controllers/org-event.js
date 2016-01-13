@@ -2,7 +2,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	function ($scope, $routeParams, $resource, $sce, $location) {
 	    var map;
 	    var mapLayers = [];
-	    $scope.setCurrentView("org-events");
+	    $scope.setCurrentView("events");
 
 	    $scope.requestsResource = $resource("/api/event/mapitems/:eventID");
 
@@ -12,8 +12,16 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        $scope.setTitle($scope.event.EventLocations[0].Description, $scope.getEventIcon($scope.event.EventType.Description));
 	        loadRequests();
 	    }
+		
+		var dataRefreshTaskID = setInterval(loadRequests, 2000);
+		
+		$scope.$on('$destroy', function() {
+			clearInterval(dataRefreshTaskID);
+        });
 
 	    $scope.requests = [];
+		$scope.locations = [];
+		$scope.distributionCenters = [];
 
 	    $scope.showFilters = false;
 	    $scope.showFindPanel = false;
@@ -21,22 +29,59 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	    $scope.showMappingError = false;
 	    $scope.showDeployPanel = false;
 	    $scope.showDeploymentPanel = false;
+	
+	    var showHeatmap = JSON.parse(sessionStorage.getItem("showHeatmap"));
+	    var showClusters = JSON.parse(sessionStorage.getItem("showClusters"));
+	    var showNeedsMarkers = JSON.parse(sessionStorage.getItem("showNeedsMarkers"));
+	    var showLocationMarkers = JSON.parse(sessionStorage.getItem("showLocationMarkers"));
+	    var showDistCenterMarkers = JSON.parse(sessionStorage.getItem("showDistCenterMarkers"));
 
-	    $scope.showHeatmap = true;
-	    $scope.showClusters = true;
-	    $scope.showNeedsMarkers = false;
-	    $scope.showLocationMarkers = false;
-	    $scope.showDistCenterMarkers = false;
+	    if (showHeatmap != null) {
+	        $scope.showHeatmap = showHeatmap;
+	    }
+	    else {
+	        $scope.showHeatmap = true;
+	    }
+	    if (showClusters != null) {
+	        $scope.showClusters = showClusters;
+	    }
+	    else {
+	        $scope.showClusters = true;
+	    }
+	    if (showNeedsMarkers != null) {
+	        $scope.showNeedsMarkers = showNeedsMarkers;
+	    }
+	    else {
+	        $scope.showNeedsMarkers = false;
+	    }
+	    if (showLocationMarkers != null) {
+	        $scope.showLocationMarkers = showLocationMarkers;
+	    }
+	    else {
+	        $scope.showLocationMarkers = false;
+	    }
+	    if (showDistCenterMarkers != null) {
+	        $scope.showDistCenterMarkers = showDistCenterMarkers;
+	    }
+	    else {
+	        $scope.showDistCenterMarkers = false;
+	    }
 
-	    $scope.filterFlags = {
-	        showMedical: true,
-	        showShelter: true,
-	        showFood: true,
-	        showWater: true,
-	        showClothing: true,
-	        showEvacuation: true,
-	        showMedicine: true
-	    };
+	    var filters = JSON.parse(sessionStorage.getItem("filterFlags"));
+	    if (filters != null) {
+	        $scope.filterFlags = JSON.parse(sessionStorage.getItem("filterFlags"));
+	    }
+	    else {
+	        $scope.filterFlags = {
+	            showMedical: true,
+	            showShelter: true,
+	            showFood: true,
+	            showWater: true,
+	            showClothing: true,
+	            showEvacuation: true,
+	            showMedicine: true
+	        };
+	    }
 
 	    $scope.matchingFlags = {
 	        showMedical: false,
@@ -164,7 +209,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	                iconUrl: getNeedsIcon(request.ResourceType.Description),
 	                iconSize: [27, 27],
 	                iconAnchor: [13, 41],
-	                popupAnchor: [0, -20]
+	                popupAnchor: [0, -45]
 	            });
 	            var marker = L.marker([request.LAT, request.LONG], { icon: requestIcon });
 	            marker.bindPopup("<strong>" + request.ResourceType.Description + " (" + request.Quantity + ")</strong><br/>" + request.Notes);
@@ -190,6 +235,17 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            mapLayers.push(marker);
 	        });
 	    }
+		
+		function markFulfilledRequests() {
+			angular.forEach($scope.locations, function (deployment) {
+	            angular.forEach(deployment.ResourceLocationInventories, function (inventory) {
+	                angular.forEach($scope.requests, function (request) {
+	                    request.fulfilled = calculateKmDistance(deployment.LAT, deployment.LONG, request.LAT, request.LONG) < 10 &&
+                            request.ResourceTypeID == inventory.ResourceTypeID;
+	                });
+	            });
+	        });
+		}
 
 	    function buildHeatmap(selectedRequests) {
 	        var heatmapConfig = {
@@ -201,18 +257,6 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            lngField: 'LONG',
 	            valueField: 'Quantity'
 	        };
-
-	        angular.forEach($scope.locations, function (deployment) {
-	            angular.forEach(deployment.ResourceLocationInventories, function (inventory) {
-	                angular.forEach(selectedRequests, function (request) {
-	                    if (calculateKmDistance(deployment.LAT, deployment.LONG, request.LAT, request.LONG) < 10 &&
-                            request.ResourceTypeID == inventory.ResourceTypeID) {
-	                        var index = selectedRequests.indexOf(request);
-	                        selectedRequests.splice(index, 1);
-	                    }
-	                });
-	            });
-	        });
 
 	        var heatmapLayer = new HeatmapOverlay(heatmapConfig);
 	        var heatmapData = { data: selectedRequests };
@@ -251,7 +295,9 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        }
 
 	        mapLayers = [];
-	        var selectedRequests = $scope.requests.filter(function (request) {
+			markFulfilledRequests();
+			var selectedRequests = $scope.requests.filter(function (request) {
+				//if (request.fulfilled) return false;
 	            var type = request.ResourceType.Description;
 	            return $scope.shouldDisplayMarker(type, $scope.filterFlags);
 	        });
@@ -284,11 +330,17 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 
 	    function loadRequests() {
 	        $scope.requestsResource.get({ eventID: $scope.eventID }, function (data) {
-	            $scope.requests = data.json.requests;
-	            $scope.locations = data.json.locations;
-	            $scope.requestClusters = data.json.requestClusters;
-	            $scope.distributionCenters = data.json.distributionCenters;
-	            updateMap();
+				var dataChanged = data.json.requests.length != $scope.requests.length 
+					|| data.json.locations.length != $scope.locations.length
+					|| data.json.distributionCenters.length != $scope.distributionCenters.length;
+				
+				if (dataChanged) {
+					$scope.requestClusters = data.json.requestClusters;
+					$scope.requests = data.json.requests;
+					$scope.locations = data.json.locations;
+					$scope.distributionCenters = data.json.distributionCenters;
+					updateMap();
+				}
 	        });
 	    }
 
@@ -365,6 +417,21 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	    };
 
 	    $scope.toggleFilters = function () {
+	        var sessionFilters = {
+	            showMedical: $scope.filterFlags.showMedical,
+	            showShelter: $scope.filterFlags.showShelter,
+	            showFood: $scope.filterFlags.showFood,
+	            showWater: $scope.filterFlags.showWater,
+	            showClothing: $scope.filterFlags.showClothing,
+	            showEvacuation: $scope.filterFlags.showEvacuation,
+	            showMedicine: $scope.filterFlags.showMedicine
+	        };
+	        sessionStorage.setItem("showNeedsMarkers", JSON.stringify($scope.showNeedsMarkers));
+	        sessionStorage.setItem("showLocationMarkers", JSON.stringify($scope.showLocationMarkers));
+	        sessionStorage.setItem("showDistCenterMarkers", JSON.stringify($scope.showDistCenterMarkers));
+	        sessionStorage.setItem("showClusters", JSON.stringify($scope.showClusters));
+	        sessionStorage.setItem("showHeatmap", JSON.stringify($scope.showHeatmap));
+	        sessionStorage.setItem("filterFlags", JSON.stringify(sessionFilters));
 	        $scope.showFilters = !$scope.showFilters;
 	    };
 

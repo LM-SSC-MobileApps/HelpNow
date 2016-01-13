@@ -1,6 +1,6 @@
 <div ng-controller="ManageCtrl">
     <div class="container-fluid">
-        <div class="row ">
+        <div class="row separated">
             <div class="col-md-4">
                 <div class="panel ">
                     <div class="panel-title text-center spacer">
@@ -80,6 +80,7 @@
                     </div>
                     <div class="panel-primary spacer">
                         <a class="btn btn-primary " href="#/regulations">
+						<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
                             <span>{{text.btn_regulations}}</span>
                         </a>
 
@@ -89,18 +90,24 @@
                                 <span>{{text.btn_new_event}}</span>
                             </a>
                         </div>
-                        <div class="panel-footer panel-borderless text-center">
+                        <div class="spacer">
                             <a class="btn btn-primary " href="#/demo">
-                                <span>&nbsp;&nbsp;Demo&nbsp;&nbsp;</span>
+								<span class="glyphicon glyphicon-flash" aria-hidden="true"></span>
+                                <span>Demo Scenarios</span>
                             </a>
                         </div>
+						<br/>
                     </div>
                 </div>
             </div>
         </div>
         <div class="separated">
-            <h5>{{text.api_key_label}}: {{org.APIKey}}<a id="btn-showUser" class="btn btn-primary pull-right" ng-click="enterAddress()"
-                                          style="margin-right: 10px;"><span></span>{{text.btn_manage_address}}</a></h5>
+            <h5>{{text.api_key_label}}: {{org.APIKey}}
+				<a id="btn-showUser" class="btn btn-primary pull-right" ng-click="enterAddress()" style="margin-right: 10px;">
+					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+					<span>{{text.btn_manage_address}}</span>
+				</a>
+			</h5>
         </div>
     </div>
 </div>
