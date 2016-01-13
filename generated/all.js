@@ -308,91 +308,140 @@ angular.module("helpNow").controller("AssignPocCtrl", ["$scope", "$resource", "$
 angular.module("helpNow").controller("DemoCtrl", ["$scope", "$http", "ResourceRequest", "$location", "ResourceLocation",
     function ($scope, $http, ResourceRequest, $location, ResourceLocation) {
 
+		$scope.setTitle("Organization Management");
         $scope.demoRunning = false;
-        $scope.loadScenario = function () {
-            $http.get("data/scenario.json")
-                .success(function (data) {
-                    $scope.scenarioData = data;
-                    console.log("Success loading scenario data: " + data);
-
-                }).error(function (data) {
-                console.log("Error loading scenario data:  " + data);
-            });
-        };
 
         $scope.go = function (path) {
             $location.path(path);
         };
-        $scope.loadScenario();
-        $scope.startDemo = function () {
+		
+		var resourceTypes = ["None", "Water", "Food", "Shelter", "First Aid", "Clothing", "Medicine"];
+		
+		function generateRequest(groupParameters) {
+			var request = {
+				EventID: groupParameters.EventID,
+				RequestStateID: 1
+			};
+			
+			//populate notes
+			var notesRand = Math.random() * 10;
+			var notes;
+			if (notesRand < 3.33) notes = "Please help!";
+			else if (notesRand > 6.66) notes = "Reported via Facebook";
+			else notes = "Reported via Twitter";
+			request.Notes = notes;
+			
+			//populate quantity
+			request.Quantity = Math.round(Math.random() * 20);
+			
+			//populate resource type
+			request.ResourceTypeID = resourceTypes.indexOf(groupParameters.RequestType);
+			
+			//populate lat
+			var latRand = Math.random() * groupParameters.Diameter;
+			var relLat = latRand - groupParameters.Diameter * 0.5;
+			request.LAT = groupParameters.CenterLat + relLat;
+			
+			//populate long
+			var longRand = Math.random() * groupParameters.Diameter;
+			var relLong = longRand - groupParameters.Diameter * 0.5;
+			request.LONG = groupParameters.CenterLong + relLong;
+			
+			//populate urgency
+			request.RequestUrgencyID = Math.round(Math.random() * 5) + 1;
+			
+			return request;
+		}
+			
+		function generateRequests(groupParameters, numRequests) {
+			if (!numRequests) numRequests = groupParameters.NumberOfRequests;
+			ResourceRequest.save(generateRequest(groupParameters), function (data) {
+				var newResourceRequest = data.json;
+				if (numRequests > 1) {
+					setTimeout(function() {
+						generateRequests(groupParameters, numRequests - 1);
+					}, groupParameters.Delay);
+				}
+			});
+		}
+		
+		$scope.cleanDatabase = function() {
+			var locationDeletionRequest = $http({
+	            method: 'DELETE',
+	            url: '/api/resourcelocation/deployments/all',
+	            async: true,
+	            headers: {
+	                'Content-Type': 'application/json'
+	            }
+	        });
+
+	        locationDeletionRequest.then(
+                function successCallback(response) {
+                    //Nothing to do here.
+                },
+                function errorCallback(response) {
+                    console.log(response.data.err);
+                }
+            );
+			
+			var requestDeletionRequest = $http({
+	            method: 'DELETE',
+	            url: '/api/resourcerequest',
+	            async: true,
+	            headers: {
+	                'Content-Type': 'application/json'
+	            }
+	        });
+			
+			requestDeletionRequest.then(
+                function successCallback(response) {
+                    //Nothing to do here.
+                },
+                function errorCallback(response) {
+                    console.log(response.data.err);
+                }
+            );
+		};
+		
+		$scope.runBangladeshScenario = function() {
+			loadScenario("data/BangladeshScenario.json", function(scenarioData) {
+				startDemo(scenarioData);
+			});
+		};
+		
+		$scope.runPhilippinesScenario = function() {
+			loadScenario("data/PhilippinesScenario.json", function(scenarioData) {
+				startDemo(scenarioData);
+			});
+		};
+		
+		function loadScenario(scenarioUrl, callback) {
+			$http.get(scenarioUrl)
+			.success(function (data) {
+				callback(data);
+			}).error(function (data) {
+				console.log("Error loading scenario data:  " + data);
+			});
+		}
+		
+        function startDemo(scenarioData) {
             $scope.demoRunning = true;
-            angular.forEach($scope.scenarioData, function (item, key) {
+			
+            angular.forEach(scenarioData, function (item, key) {
                 switch (item.Type) {
-                    case "ResourceRequest":
+                    case "RequestGroup":
                     {
-                        var resourceRequest = angular.fromJson(item.Data);
-                        var centerLat = parseFloat(resourceRequest.LAT);
-                        var centerLong = parseFloat(resourceRequest.LONG);
-                        var diameter = 0.5;
-
-                        var saveRequest = function (i, resourceRequest) {
-                            setTimeout(function () {
-                                ResourceRequest.save(resourceRequest, function (data) {
-                                    var newResourceRequest = data.json;
-                                    console.log(newResourceRequest);
-                                    console.log(i);
-                                });
-                            }, i * resourceRequest.WaitTime);
-                        };
-
-                        setTimeout(function () {
-                                for (var i = 0; i < resourceRequest.NumberOfRequests; i++) {
-                                    //populate lat
-                                    var latRand = Math.random() * diameter;
-                                    var relLat = latRand - diameter * 0.5;
-                                    var lat = centerLat + relLat;
-
-                                    //populate long
-                                    var longRand = Math.random() * diameter;
-                                    var relLong = longRand - diameter * 0.5;
-                                    var lng = centerLong + relLong;
-
-                                    resourceRequest.LAT = lat.toFixed(3);
-                                    resourceRequest.LONG = lng.toFixed(3);
-
-                                    //populate notes
-                                    var notesRand = Math.random() * 10;
-                                    var notes;
-                                    if (notesRand < 3.33) notes = "Please help!";
-                                    else if (notesRand > 6.66) notes = "Reported via Facebook";
-                                    else notes = "Reported via Twitter";
-                                    resourceRequest.Notes = notes;
-
-                                    //populate quantity
-                                    resourceRequest.Quantity = Math.round(Math.random() * 20);
-
-                                    //populate resource type
-                                    resourceRequest.ResourceTypeID = Math.round(Math.random() * 5) + 1;
-
-                                    //populate urgency
-                                    //resourceRequest.RequestUrgencyID = Math.round(Math.random() * 5) + 1;
-
-                                    saveRequest(i, resourceRequest);
-
-                                }
-                            }, resourceRequest.WaitTime
-                        );
-                        break;
+						var groupParameters = item.Data;
+						generateRequests(groupParameters);
+						break;
                     }
                     default:
                         console.log("I'm lost");
                 }
-            })
-            ;
+            });
 
             $scope.demoRunning = false;
-        }
-        ;
+        };
 
     }])
 ;
@@ -1792,6 +1841,7 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
             else {
                 var userSessionObject = {
                     AccountID: $scope.currentUser.AccountID,
+                    AccountRoleID: $scope.currentUser.AccountRoleID,
                     FirstName: $scope.currentUser.FirstName,
                     LastName: $scope.currentUser.LastName,
                     OrganizationID: $scope.currentUser.Organization.OrganizationID,
@@ -2035,7 +2085,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        loadRequests();
 	    }
 		
-		//var dataRefreshTaskID = setInterval(loadRequests, 1000);
+		var dataRefreshTaskID = setInterval(loadRequests, 2000);
 		
 		$scope.$on('$destroy', function() {
 			clearInterval(dataRefreshTaskID);
@@ -2049,18 +2099,11 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	    $scope.showMappingError = false;
 	    $scope.showDeployPanel = false;
 	    $scope.showDeploymentPanel = false;
-	/*
+	
 	    $scope.showHeatmap = true;
 	    $scope.showClusters = true;
 	    $scope.showNeedsMarkers = false;
-	    $scope.showLocationMarkers = false;
-	    $scope.showDistCenterMarkers = false;
-		*/
-		
-		$scope.showHeatmap = false;
-	    $scope.showClusters = false;
-	    $scope.showNeedsMarkers = false;
-	    $scope.showLocationMarkers = false;
+	    $scope.showLocationMarkers = true;
 	    $scope.showDistCenterMarkers = false;
 
 	    $scope.filterFlags = {
@@ -2199,7 +2242,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	                iconUrl: getNeedsIcon(request.ResourceType.Description),
 	                iconSize: [27, 27],
 	                iconAnchor: [13, 41],
-	                popupAnchor: [0, -20]
+	                popupAnchor: [0, -45]
 	            });
 	            var marker = L.marker([request.LAT, request.LONG], { icon: requestIcon });
 	            marker.bindPopup("<strong>" + request.ResourceType.Description + " (" + request.Quantity + ")</strong><br/>" + request.Notes);
@@ -2247,20 +2290,6 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            lngField: 'LONG',
 	            valueField: 'Quantity'
 	        };
-			
-			/*
-	        angular.forEach($scope.locations, function (deployment) {
-	            angular.forEach(deployment.ResourceLocationInventories, function (inventory) {
-	                angular.forEach(selectedRequests, function (request) {
-	                    if (calculateKmDistance(deployment.LAT, deployment.LONG, request.LAT, request.LONG) < 10 &&
-                            request.ResourceTypeID == inventory.ResourceTypeID) {
-	                        var index = selectedRequests.indexOf(request);
-	                        selectedRequests.splice(index, 1);
-	                    }
-	                });
-	            });
-	        });
-			*/
 
 	        var heatmapLayer = new HeatmapOverlay(heatmapConfig);
 	        var heatmapData = { data: selectedRequests };
@@ -2334,11 +2363,17 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 
 	    function loadRequests() {
 	        $scope.requestsResource.get({ eventID: $scope.eventID }, function (data) {
-				$scope.requests = data.json.requests;
-	            $scope.locations = data.json.locations;
-	            $scope.requestClusters = data.json.requestClusters;
-	            $scope.distributionCenters = data.json.distributionCenters;
-	            updateMap();
+				var dataChanged = data.json.requests.length != $scope.requests.length 
+					|| data.json.locations.length != $scope.locations.length
+					|| data.json.distributionCenters.length != $scope.distributionCenters.length;
+				
+				if (dataChanged) {
+					$scope.requestClusters = data.json.requestClusters;
+					$scope.requests = data.json.requests;
+					$scope.locations = data.json.locations;
+					$scope.distributionCenters = data.json.distributionCenters;
+					updateMap();
+				}
 	        });
 	    }
 
@@ -2552,21 +2587,29 @@ angular.module("helpNow").controller("OrganizationAddCtrl", ["$scope", "$resourc
     };
 
     $scope.addOrg = function (org) {
+        if (org.Name === undefined || org.Name == null) {
+            alert($scope.text.missing_fields_alert);
+            return;
+        }
         Organization.save(org).$promise.then(function (response) {
             $location.path('/administration');
         },
         function (response) { // optional
-            alert("Error: ");
+            alert("Error: " + response.data.err);
         });;
     };
 
     $scope.enterAddress = function (org) {
+        if (org.Name === undefined || org.Name == null) {
+            alert($scope.text.missing_fields_alert);
+            return;
+        }
         Organization.save(org).$promise.then(function (response) {
             var returnedOrg = response.json[0];
             $location.path('/org_address/' + returnedOrg.OrganizationID);
         },
         function (response) { // optional
-            alert("Error: ");
+            alert("Error: " + response.data.err);
         });;;
     };
 
@@ -2751,6 +2794,14 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
 
     $scope.eventsResource = $resource("/api/event");
     $scope.currentUser = JSON.parse(sessionStorage.getItem("user"));
+    if ($scope.currentUser != null) {
+        if ($scope.currentUser.AccountRoleID == 1) {
+            $scope.isSuperAdmin = true;
+        }
+        else {
+            $scope.isSuperAdmin = false;
+        }
+    }
     $scope.currentOrg = JSON.parse(sessionStorage.getItem("user"));
 
     $scope.loadEvents = function () {
@@ -2797,6 +2848,12 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
 
     $scope.setCurrentUser = function (user) {
         $scope.currentUser = user;
+        if ($scope.currentUser.AccountRoleID == 1) {
+            $scope.isSuperAdmin = true;
+        }
+        else {
+            $scope.isSuperAdmin = false;
+        }
     };
 
     $scope.getCurrentUser = function () {
@@ -2993,6 +3050,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
     $scope.redirectToLogout = function () {
         // Logout client
         $scope.currentUser = false;
+        $scope.isSuperAdmin = false;
         sessionStorage.removeItem("user");
 
         // Logout server

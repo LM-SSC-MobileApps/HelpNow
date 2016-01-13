@@ -13,7 +13,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        loadRequests();
 	    }
 		
-		//var dataRefreshTaskID = setInterval(loadRequests, 1000);
+		var dataRefreshTaskID = setInterval(loadRequests, 2000);
 		
 		$scope.$on('$destroy', function() {
 			clearInterval(dataRefreshTaskID);
@@ -27,18 +27,11 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	    $scope.showMappingError = false;
 	    $scope.showDeployPanel = false;
 	    $scope.showDeploymentPanel = false;
-	/*
+	
 	    $scope.showHeatmap = true;
 	    $scope.showClusters = true;
 	    $scope.showNeedsMarkers = false;
-	    $scope.showLocationMarkers = false;
-	    $scope.showDistCenterMarkers = false;
-		*/
-		
-		$scope.showHeatmap = false;
-	    $scope.showClusters = false;
-	    $scope.showNeedsMarkers = false;
-	    $scope.showLocationMarkers = false;
+	    $scope.showLocationMarkers = true;
 	    $scope.showDistCenterMarkers = false;
 
 	    $scope.filterFlags = {
@@ -177,7 +170,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	                iconUrl: getNeedsIcon(request.ResourceType.Description),
 	                iconSize: [27, 27],
 	                iconAnchor: [13, 41],
-	                popupAnchor: [0, -20]
+	                popupAnchor: [0, -45]
 	            });
 	            var marker = L.marker([request.LAT, request.LONG], { icon: requestIcon });
 	            marker.bindPopup("<strong>" + request.ResourceType.Description + " (" + request.Quantity + ")</strong><br/>" + request.Notes);
@@ -225,20 +218,6 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            lngField: 'LONG',
 	            valueField: 'Quantity'
 	        };
-			
-			/*
-	        angular.forEach($scope.locations, function (deployment) {
-	            angular.forEach(deployment.ResourceLocationInventories, function (inventory) {
-	                angular.forEach(selectedRequests, function (request) {
-	                    if (calculateKmDistance(deployment.LAT, deployment.LONG, request.LAT, request.LONG) < 10 &&
-                            request.ResourceTypeID == inventory.ResourceTypeID) {
-	                        var index = selectedRequests.indexOf(request);
-	                        selectedRequests.splice(index, 1);
-	                    }
-	                });
-	            });
-	        });
-			*/
 
 	        var heatmapLayer = new HeatmapOverlay(heatmapConfig);
 	        var heatmapData = { data: selectedRequests };
@@ -312,11 +291,17 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 
 	    function loadRequests() {
 	        $scope.requestsResource.get({ eventID: $scope.eventID }, function (data) {
-				$scope.requests = data.json.requests;
-	            $scope.locations = data.json.locations;
-	            $scope.requestClusters = data.json.requestClusters;
-	            $scope.distributionCenters = data.json.distributionCenters;
-	            updateMap();
+				var dataChanged = data.json.requests.length != $scope.requests.length 
+					|| data.json.locations.length != $scope.locations.length
+					|| data.json.distributionCenters.length != $scope.distributionCenters.length;
+				
+				if (dataChanged) {
+					$scope.requestClusters = data.json.requestClusters;
+					$scope.requests = data.json.requests;
+					$scope.locations = data.json.locations;
+					$scope.distributionCenters = data.json.distributionCenters;
+					updateMap();
+				}
 	        });
 	    }
 

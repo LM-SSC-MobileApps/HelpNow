@@ -1,0 +1,26 @@
+[
+  {
+    "Type": "RequestGroup",
+    "Data": {
+	  "EventID": 1,
+      "Diameter": 0.25,
+      "Delay": 1000,
+      "NumberOfRequests": 8,
+      "CenterLat": 23.728,
+      "CenterLong": 90.41,
+	  "RequestType": "Shelter"
+    }
+  },
+  {
+    "Type": "RequestGroup",
+    "Data": {
+	  "EventID": 1,
+      "Diameter": 0.25,
+      "Delay": 1000,
+      "NumberOfRequests": 10,
+      "CenterLat": 23.9,
+      "CenterLong": 90.2,
+	  "RequestType": "Medicine"
+    }
+  }
+]

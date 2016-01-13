@@ -33,6 +33,7 @@
             else {
                 var userSessionObject = {
                     AccountID: $scope.currentUser.AccountID,
+                    AccountRoleID: $scope.currentUser.AccountRoleID,
                     FirstName: $scope.currentUser.FirstName,
                     LastName: $scope.currentUser.LastName,
                     OrganizationID: $scope.currentUser.Organization.OrganizationID,
