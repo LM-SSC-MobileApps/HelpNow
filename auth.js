@@ -34,6 +34,9 @@ module.exports =
 
         setupLocalAuthentication(app, passport, LocalStrategy);
         setupFacebookAuthentication(app, passport, FacebookStrategy);
+        setupBasicAuthForAPI(app, passport);
+
+        //setupDigestAuthForAPI(app, passport);
     }
 };
 
@@ -297,3 +300,86 @@ function setupFacebookAuthentication(app, passport, strategy) {
         }
     });
 }
+
+function setupBasicAuthForAPI(app, passport, strategy) {
+    console.log("setupBasicAuthForAPI");
+    var models = require('./models');
+    var BasicStrategy = require('passport-http').BasicStrategy;
+
+    passport.use(new BasicStrategy(
+      function (username, password, done) {
+          
+          models.Organization.findAll(
+            {
+                where: {
+                    APIKey: username
+                }
+            }
+          ).then(function (organization) {
+              if (organization[0] != null) {
+                  if (organization[0].APISecret == password) { 
+                      return done(null, true);
+                  }
+                  else {      
+                      return done(null, false);
+                  }
+              }
+              else {
+                  return done(null, false);
+              }
+          }
+         ).catch(function (err) {
+             console.error(err);
+             return done(err);
+         });
+         
+      }
+        ));
+
+    //we capture all api requests and authenticate them.
+    app.all('/api/*',
+        passport.authenticate('basic', { session: false })
+    );
+}
+
+//function setupDigestAuthForAPI(app, passport) {
+//    console.log("setupDigestAuthForAPI");
+//    var models = require('./models');
+//    var DigestStrategy = require('passport-http').DigestStrategy;
+//    passport.use(new DigestStrategy(
+//        { qop: 'auth' },
+//      function (username, done) {
+//          console.log("HERE WE GO!  : username: " + username);
+//          models.Organization.findAll(
+//            {
+//                where: {
+//                    APIKey: username
+//                }
+//            }
+//          ).then(function (organization) {
+//              if (organization[0] != null) {
+//                  console.error("org found!: " + organization[0].APISecret);
+//                  return done(null, organization[0], organization[0].APISecret);
+//              }
+//              else {
+//                  console.error("no organization found!");
+//                  return done(null, false);
+//              }
+//          }
+//         ).catch(function (err) {
+//             console.error(err);
+//             return done(err);
+//         });;
+//      },
+//      function (params, done) {
+//          console.log("validate nonces as necessary");
+//          // validate nonces as necessary
+//          done(null, true)
+//      }
+//    ));
+
+//    //we capture all api requests and authenticate them.
+//    app.all('/api/*',
+//        passport.authenticate('digest', { session: false })
+//    );
+//}

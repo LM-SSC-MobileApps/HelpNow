@@ -28,9 +28,13 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER(11),
       allowNull: true,
     },
-    APIKey: {
-      type: DataTypes.CHAR(40),
+    APISecret: {
+      type: DataTypes.STRING,
       allowNull: true
+    },
+    APIKey: {
+        type: DataTypes.CHAR(40),
+        allowNull: true
     },
     CreateDate: {
         type: DataTypes.DATE,
