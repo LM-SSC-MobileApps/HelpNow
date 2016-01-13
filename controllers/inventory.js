@@ -97,7 +97,12 @@
 
     function loadResourceTypes() {
         $scope.resourceTypeResource.get({}, function (data) {
-            $scope.resourceTypes = data.json;
+            
+            $scope.resourceTypes = data.json.filter(function (el) {
+                return el.Description != 'Evacuation';
+            });
+            
+            // $scope.resourceTypes = data.json;
         });
     }
 
