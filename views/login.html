@@ -1,14 +1,14 @@
 <div ng-controller="LoginCtrl">
-	<div class="form-group detail-row">
-		<label>Username:</label>
-		<input name="Username" ng-model="userCreds.username" type="text" class="form-control" />
-	</div>
-	<div class="form-group detail-row">
-		<label>Password:</label>
-		<input name="Password" ng-model="userCreds.password" type="password" class="form-control" />
-	</div>
-	<div class="separated">
-		<a id="btn-login" class="btn btn-primary" ng-click="validateUser()"><span class="glyphicon glyphicon-ok-circle"></span>Login</a>
-        <a id="btn-login" class="btn btn-primary" href="/auth/facebook"><span class="glyphicon glyphicon-ok-circle"></span>Facebook</a>
-	</div>
+    <div class="form-group detail-row">
+        <label>{{text.username_label}}:</label>
+        <input name="Username" ng-model="userCreds.username" type="text" class="form-control" />
+    </div>
+    <div class="form-group detail-row">
+        <label>{{text.password_label}}:</label>
+        <input name="Password" ng-model="userCreds.password" type="password" class="form-control" />
+    </div>
+    <div class="separated">
+        <a id="btn-login" class="btn btn-primary" ng-click="validateUser()"><span class="glyphicon glyphicon-ok-circle"></span>{{text.login}}</a>
+        <a id="btn-login" class="btn btn-primary" href="/auth/facebook"><span class="glyphicon glyphicon-ok-circle"></span>{{text.btn_facebook}}</a>
+    </div>
 </div>

@@ -5,7 +5,7 @@
                 <form name="organizationForm" novalidate role="form">
                     <div class="form-group" ng-class="">
                         <div class="col-xs-12">
-                            <label for="orgName">{{orgType}} Name</label>
+                            <label for="orgName">{{orgType}} {{text.name_label}}</label>
                             <input type="text" ng-model="newOrg.Name" id="orgName" name="orgName" class="form-control" ng-required="true" />
                             <br />
                         </div>
@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="separated">
-        <a id="btn-showUser" class="btn btn-primary pull-right" ng-click="addOrg(newOrg)"><span></span>Submit</a>
-        <a id="btn-showUser" class="btn btn-primary pull-right" ng-click="enterAddress(newOrg)" style="margin-right: 10px;"><span></span>Enter Address (optional)</a>
+        <a id="btn-showUser" class="btn btn-primary pull-right" ng-click="addOrg(newOrg)"><span></span>{{text.btn_submit}}</a>
+        <a id="btn-showUser" class="btn btn-primary pull-right" ng-click="enterAddress(newOrg)" style="margin-right: 10px;"><span></span>{{text.btn_enter_address}}</a>
     </div>
 </div>

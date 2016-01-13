@@ -1,15 +1,15 @@
 ﻿<div class="modal-content">
     <div class="modal-header">
-        <h3 class="modal-title">Confirm Resource Location Delete</h3>
+        <h3 class="modal-title">{{text.confirm}} {{text.resoruce_location}} {{text.delete}}</h3>
     </div>
     <div class="modal-body">
 
-        You are about delete:  {{currentResourceLocation.Description}} .  This will also delete all associated inventory items.
-        Are you sure?
+        {{text.about_to_delete}}  {{currentResourceLocation.Description}} .  {{text.additional_inventory}}.
+        {{text.are_you_sure}}
 
     </div>
     <div class="modal-footer">
-        <button class="btn btn-danger" ng-click="$close(deleteResourceLocation())">Yes!</button>
-        <button class="btn btn-primary" ng-click="$dismiss('cancel')">No</button>
+        <button class="btn btn-danger" ng-click="$close(deleteResourceLocation())">{{text.delete}}</button>
+        <button class="btn btn-primary" ng-click="$dismiss('cancel')">{{text.cancel}}</button>
     </div>
 </div>

@@ -202,6 +202,16 @@ h5 {
     background-size: 20px;
 }
 
+#showRescue {
+    background-image: var(--marker-red-grad);
+}
+
+#showRescue span {
+    background-image: url("../style/images/Rescue.png");
+    background-position: 6px 5px;
+    background-size: 20px;
+}
+
 #showEvacuation {
     background-image: var(--marker-purple-grad);
 }
@@ -303,10 +313,6 @@ h5 {
     font-size: 1em;
 }
 
-.btn-danger {
-    /*margin: 5px;*/
-}
-
 .dropdown-menu, .navbar-nav .open .dropdown-menu {
     background-color: var(--dark-blue);
     color: var(--light-gray);
@@ -368,7 +374,8 @@ h5 {
 }
 
 .btn-primary:hover {
-    background-color: #2d647b;
+    background-color: color(var(--light-blue) shade(20%));
+    background-image: none;
     color: white;
 }
 
@@ -378,9 +385,9 @@ h5 {
 }
 
 .btn-danger:hover {
-    background-color: #871c1c;
+    background-color: color(#e73131 shade(20%));
     background-image: none;
-    border-color: #871c1c;
+    border-color: #e73131;
 }
 
 .btn .glyphicon, .well .well .glyphicon {
@@ -545,4 +552,13 @@ input.switch:checked ~ label:after
 .panel-footer {
     background-color: var(--dark-blue-trans);
     border-color: var(--dark-gray);
+}
+
+.form-group .help-block {
+  display: none;
+}
+
+.form-group.has-error .help-block {
+  display: block;
+  color: red;
 }

@@ -1,3 +1,62 @@
+angular.module("helpNow").directive('showErrors', function () {
+    return {
+        restrict: 'A',
+        require: '^form',
+        link: function (scope, el, attrs, formCtrl) {
+            // find the text box element, which has the 'name' attribute
+            var inputEl = el[0].querySelector("[name]");
+            // convert the native text box element to an angular element
+            var inputNgEl = angular.element(inputEl);
+            // get the name on the text box so we know the property to check
+            // on the form controller
+            var inputName = inputNgEl.attr('name');
+
+            // only apply the has-error class after the user leaves the text box
+            inputNgEl.bind('blur', function () {
+                el.toggleClass('has-error', formCtrl[inputName].$invalid);
+            });
+
+            scope.$on('show-errors-check-validity', function () {
+                el.toggleClass('has-error', formCtrl[inputName].$invalid);
+            });
+        }
+    };
+});
+
+angular.module("helpNow").directive('latitude', function () {
+    var LAT_REGEXP = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)/i;
+
+    return {
+        require: 'ngModel',
+        link: function (scope, elm, attrs, ctrl) {
+            ctrl.$validators.latitude = function (modelValue, viewValue) {
+                if (ctrl.$isEmpty(viewValue)) {
+                    // not validating for empty value, only for valid
+                    return true;
+                }
+                return LAT_REGEXP.test(viewValue);
+            };
+        }
+    };
+});
+
+angular.module("helpNow").directive('longitude', function () {
+    var LONG_REGEXP = /^[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/i;
+
+    return {
+        require: 'ngModel',
+        link: function (scope, elm, attrs, ctrl) {
+            ctrl.$validators.longitude = function (modelValue, viewValue) {
+                if (ctrl.$isEmpty(viewValue)) {
+                    // not validating for empty value, only for valid
+                    return true;
+                }
+                return LONG_REGEXP.test(viewValue);
+            };
+        }
+    };
+});
+
 angular.module("helpNow").directive("filters", function () {
     return {
         scope: {
@@ -32,6 +91,44 @@ angular.module("helpNow").directive('map', function () {
 			    maxZoom: 19,
 			    attribution: '(c) <a href="http://microsites.digitalglobe.com/interactive/basemap_vivid/">DigitalGlobe</a> , (c) OpenStreetMap, (c) Mapbox'
 			});*/
+
+            var dharaharaBefore = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/dharahara_tower_before/{z}/{x}/{y}.png', {
+                minZoom: 2,
+                maxZoom: 19,
+                attribution: '(c) <a href="http://www.dmcii.com/">DMC International Imaging</a>'
+            });
+
+            var dharaharaAfter = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/dharahara_tower_after/{z}/{x}/{y}.png', {
+                minZoom: 2,
+                maxZoom: 19,
+                attribution: '(c) <a href="http://www.dmcii.com/">DMC International Imaging</a>'
+            });
+
+            var nepalBefore = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/nepal/{z}/{x}/{y}.png', {
+                minZoom: 2,
+                maxZoom: 19,
+                attribution: '(c) <a href="http://www.dmcii.com/">DMC International Imaging</a>'
+            });
+
+            var nepalAfter = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/nepal/{z}/{x}/{y}.png', {
+                minZoom: 2,
+                maxZoom: 19,
+                attribution: '(c) <a href="http://www.dmcii.com/">DMC International Imaging</a>'
+            });
+
+            var bangladeshBefore = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/bangladesh/{z}/{x}/{y}.png', {
+                tms: true,
+                minZoom: 2,
+                maxZoom: 19,
+                attribution: '(c) <a href="http://www.dmcii.com/">DMC International Imaging</a>'
+            });
+
+            var bangladeshAfter = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/bangladesh/{z}/{x}/{y}.png', {
+                tms: true,
+                minZoom: 2,
+                maxZoom: 19,
+                attribution: '(c) <a href="http://www.dmcii.com/">DMC International Imaging</a>'
+            });
 
             var vivid = new L.tileLayer('https://{s}.tiles.mapbox.com/v4/digitalglobe.n6ngnadl/{z}/{x}/{y}.png?access_token=' + api_key, {
                 minZoom: 2,
@@ -68,13 +165,20 @@ angular.module("helpNow").directive('map', function () {
             L.control.scale().addTo(map);
 
             map.attributionControl.setPrefix('');
-            var overlays = {
+            var baselayers = {
                 "Base Open Street Maps": openStreetMap,
                 "DigitalGlobe Basemap +Vivid with Streets": baseLayer,
                 "DigitalGlobe Basemap: REST": GBMREST
             };
 
-            L.control.layers(overlays, null, {
+            var overlays = {
+                "Bangladesh": bangladeshBefore,
+                "Nepal": nepalBefore,
+                "Dharahara Before": dharaharaBefore,
+                "Dharahara After": dharaharaAfter
+            };
+
+            L.control.layers(baselayers, overlays, {
                 collapsed: true
             }).addTo(map);
 

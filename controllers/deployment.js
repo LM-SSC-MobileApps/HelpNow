@@ -6,7 +6,7 @@ angular.module("helpNow").controller("DeploymentCtrl", ["$scope", "$routeParams"
 	    $scope.deploymentsResource = $resource("/api/resourcelocation/:id");
 	    $scope.distCenterResource = $resource("/api/resourcelocation/dist-center/all");
 
-	    $scope.setTitle("Resource Deployment", "style/images/Distribution-Center.png");
+	    $scope.setTitle($scope.text.deployment_title, "style/images/Distribution-Center.png");
 
 	    $scope.distCenterResource.get({}, function (data) {
 	        var centers = data.json;
@@ -34,7 +34,8 @@ angular.module("helpNow").controller("DeploymentCtrl", ["$scope", "$routeParams"
 	            ResourceLocationTypeID: 2,
 	            OrganizationID: $scope.currentOrg.OrganizationID,
 	            ResourceLocationStatusID: "1",
-	            ResourceLocationTransports: []
+	            ResourceLocationTransports: [],
+	            ResourceLocationInventories: []
 	        };
 	    }
 

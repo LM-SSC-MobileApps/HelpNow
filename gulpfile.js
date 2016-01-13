@@ -55,7 +55,8 @@ gulp.task('default', ['scripts-min', 'style', 'watch'], function () {
             PORT: 8080,
             SSL_PORT: 4443,
             ENABLE_REDIRECT: false,
-            NODE_ENV: 'local-dev'
+            NODE_ENV: 'local-dev',
+            ENVIRONMENT: 'development' // Types include development, qas & production
         },
         ignore: ['./node_modules/**', 'generated/*', 'app.js', 'controllers/*.js', 'directives/*.js', 'factories/*.js']
     })

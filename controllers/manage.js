@@ -10,8 +10,8 @@ angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$re
 			{ accountid: $scope.currentUser.AccountID });
 	$scope.orgResource = $resource("/api/organization/:id", { id: $scope.currentOrg.OrganizationID });
 
-	$scope.setTitle("Organization Management");
-
+	$scope.setTitle($scope.text.manage_title_label);
+	$scope.setCurrentView("mng");
 
 	$scope.loadInvites = function() {
 		$scope.invitesResource.get({}, function(data) {
@@ -27,13 +27,17 @@ angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$re
 	$scope.loadInvites();
 
 
+
 	$scope.deleteInvite = function (invitation) {
+
 		$scope.modalInstance = $uibModal.open(
 				{
 					templateUrl: '/manage/invite-modal-delete.html',
-					controller: function ($scope) {
+					scope: $scope,
+					controller: function () {
 						this.invitation = invitation;
 						this.Invitation = Invitation;
+						this.text = $scope.text;
 
 						$scope.deleteInvite = function (invitation) {
 							Invitation.delete({inviteid: invitation.InviteID});

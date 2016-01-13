@@ -1,7 +1,16 @@
+var environment = "";
+var port = "";
+var ssl_port = "";
+
 module.exports =
 {
-    setupAuthentication: function (app) {
+    setupAuthentication: function (environment_val, port_val, ssl_port_val, app) {
         console.log("setupAuthentication");
+
+        environment = environment_val;
+        port = port_val;
+        ssl_port = ssl_port_val;
+
         var passport = require('passport');
         var LocalStrategy = require('passport-local').Strategy;
         var FacebookStrategy = require('passport-facebook').Strategy;
@@ -25,6 +34,9 @@ module.exports =
 
         setupLocalAuthentication(app, passport, LocalStrategy);
         setupFacebookAuthentication(app, passport, FacebookStrategy);
+        setupBasicAuthForAPI(app, passport);
+
+        //setupDigestAuthForAPI(app, passport);
     }
 };
 
@@ -37,34 +49,42 @@ function logout(req, res) {
 }
 
 function getEnvironment() {
-    var os = require('os');
-    var host = os.hostname();
-    if (host.indexOf('ec2') > 0) {
-        return 'PRD';
-    } else {
-        return 'DEV';
-    }
+    return environment;
 }
 
 function getHttp() {
-    if (getEnvironment() === 'PRD') {
+    if (getEnvironment() === 'production') {
+        return 'http://';
+    } else if (getEnvironment() === 'qas') {
         return 'http://';
     } else {
         return 'http://';
     }
 }
 
-function getHost() {
-    if (getEnvironment() === 'PRD') {
-        return 'ec2-52-35-71-10.us-west-2.compute.amazonaws.com';
+function getHost() {    
+    if (getEnvironment() === 'production') {
+        return "www.helpnowmap.com";
+    }
+
+    if (process.platform.indexOf("linux") >= 0) {
+        var child_process = require("child_process");
+        var hostname = child_process.execSync("curl -s http://169.254.169.254/latest/meta-data/public-hostname");
+        if (hostname.indexOf("") == 0) {
+            return "localhost";
+        } else {
+            return hostname;
+        }
     } else {
-        return 'localhost';
-    }       
+        return "localhost";
+    }
 }
 
 function getHttpPort(addColon) {
-    if (getEnvironment() === 'PRD') {
-        return '';        
+    if (getEnvironment() === 'production') {
+        return '';
+    } else if (getEnvironment() === 'qas') {
+        return ''; 
     } else {
         if (addColon == true) {
             return ':' + process.env.PORT
@@ -75,7 +95,9 @@ function getHttpPort(addColon) {
 }
 
 function getHttpsPort(addColon) {
-    if (getEnvironment() === 'PRD') {
+    if (getEnvironment() === 'production') {
+        return '';
+    } else if (getEnvironment() === 'qas') {
         return '';
     } else {
         if (addColon == true) {
@@ -87,18 +109,22 @@ function getHttpsPort(addColon) {
 }
 
 function getClientID() {
-    if (getEnvironment() === 'PRD') {
+    if (getEnvironment() === 'production') {
         return '508069382708084';
+    } else if (getEnvironment() === 'qas') {
+        return '545286995652989';
     } else {
-        return '1735152463375151';
+        return '545287402319615';
     }
 }
 
 function getClientSecret() {
-    if (getEnvironment() === 'PRD') {
+    if (getEnvironment() === 'production') {
         return 'df3684bd3cceadb1b7eb344846bfbcc8';
+    } else if (getEnvironment() === 'qas') {
+        return 'd8c52ed189c00d6f45de9f80bc1f776d';
     } else {
-        return '4c518502b119e23d3a8c3b861329084f';
+        return '543c8b04c2d94a489eba3243cd9cef5a';
     }
 }
 
@@ -113,7 +139,7 @@ function setupLocalAuthentication(app, passport, strategy) {
 
             var creds = '{"username":"' + username + '","password":"' + password + '"}';
             var options = {
-                host: getHost(),
+                host: 'localhost',
                 path: '/api/account/login',
                 port: getHttpPort(false),
                 method: 'POST',
@@ -203,7 +229,7 @@ function setupFacebookAuthentication(app, passport, strategy) {
 
               var creds = '{"email":"' + profile.emails[0].value + '"}';
               var options = {
-                  host: getHost(),
+                  host: 'localhost',
                   path: '/api/account/external_login',
                   port: getHttpPort(false),
                   method: 'POST',
@@ -254,14 +280,14 @@ function setupFacebookAuthentication(app, passport, strategy) {
     // login page.  Otherwise, the primary route function function will be called,
     // which, in this example, will redirect the user to the home page.
     app.get('/auth/facebook/callback',
-        passport.authenticate('facebook', { failureRedirect: './#/login' }),
+        passport.authenticate('facebook', { failureRedirect: '../../#/login?error=invalid_account' }),
         function (req, res) {
             //console.log('req = ' + JSON.stringify(req.user));
 
             // Successful authentication, redirect home.            
             res.redirect('/');
         }
-    );
+    );   
 
     app.post('/auth/account', function (req, res) {
         //console.log("req.isAuthenticated() = " + req.isAuthenticated() + " user = " + req.user);
@@ -274,3 +300,86 @@ function setupFacebookAuthentication(app, passport, strategy) {
         }
     });
 }
+
+function setupBasicAuthForAPI(app, passport, strategy) {
+    console.log("setupBasicAuthForAPI");
+    var models = require('./models');
+    var BasicStrategy = require('passport-http').BasicStrategy;
+
+    passport.use(new BasicStrategy(
+      function (username, password, done) {
+          
+          models.Organization.findAll(
+            {
+                where: {
+                    APIKey: username
+                }
+            }
+          ).then(function (organization) {
+              if (organization[0] != null) {
+                  if (organization[0].APISecret == password) { 
+                      return done(null, true);
+                  }
+                  else {      
+                      return done(null, false);
+                  }
+              }
+              else {
+                  return done(null, false);
+              }
+          }
+         ).catch(function (err) {
+             console.error(err);
+             return done(err);
+         });
+         
+      }
+        ));
+
+    //we capture all api requests and authenticate them.
+    app.all('/api/*',
+        passport.authenticate('basic', { session: false })
+    );
+}
+
+//function setupDigestAuthForAPI(app, passport) {
+//    console.log("setupDigestAuthForAPI");
+//    var models = require('./models');
+//    var DigestStrategy = require('passport-http').DigestStrategy;
+//    passport.use(new DigestStrategy(
+//        { qop: 'auth' },
+//      function (username, done) {
+//          console.log("HERE WE GO!  : username: " + username);
+//          models.Organization.findAll(
+//            {
+//                where: {
+//                    APIKey: username
+//                }
+//            }
+//          ).then(function (organization) {
+//              if (organization[0] != null) {
+//                  console.error("org found!: " + organization[0].APISecret);
+//                  return done(null, organization[0], organization[0].APISecret);
+//              }
+//              else {
+//                  console.error("no organization found!");
+//                  return done(null, false);
+//              }
+//          }
+//         ).catch(function (err) {
+//             console.error(err);
+//             return done(err);
+//         });;
+//      },
+//      function (params, done) {
+//          console.log("validate nonces as necessary");
+//          // validate nonces as necessary
+//          done(null, true)
+//      }
+//    ));
+
+//    //we capture all api requests and authenticate them.
+//    app.all('/api/*',
+//        passport.authenticate('digest', { session: false })
+//    );
+//}

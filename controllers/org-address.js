@@ -1,6 +1,6 @@
 ﻿angular.module("helpNow").controller("OrgAddressCtrl", ["$scope", "$http", "$location", "Organization", "$routeParams", "$resource", function ($scope, $http, $location, Organization, $routeParams, $resource) {
     $scope.setCurrentView("org-address");
-    $scope.setTitle("Organization Address");
+    $scope.setTitle($scope.text.address_title);
 
     $scope.addressResource = $resource("/api/address/:id");
     $scope.orgResource = $resource("/api/organization/:id");

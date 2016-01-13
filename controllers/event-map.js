@@ -9,7 +9,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     $scope.urgencyResource = $resource("/api/requesturgency");
     $scope.needRequestResource = $resource("/api/resourcerequest");
 
-    $scope.helpRequest = { EventID: '', RequestStateID: '1', Notes: 'Reported from App', AreaSize: '0.25 km', UnitOfMeasure: '', Quantity: ''};
+    $scope.helpRequest = { EventID: '', RequestStateID: '1', Notes: 'Reported from App', AreaSize: '0.25 km', UnitOfMeasure: '', Quantity: '' };
 
     $scope.eventID = $routeParams.eventID * 1;
     if ($scope.events) {
@@ -31,15 +31,22 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     $scope.showHelp = false;
     $scope.showNeeds = false;
 
-    $scope.filterFlags = {
-        showMedical: true,
-        showShelter: true,
-        showFood: true,
-        showWater: true,
-        showClothing: true,
-        showEvacuation: true,
-        showMedicine: true
-    };
+    var filters = JSON.parse(sessionStorage.getItem("filterFlags"));
+    if (filters != null) {
+        $scope.filterFlags = JSON.parse(sessionStorage.getItem("filterFlags"));
+    }
+    else {
+        $scope.filterFlags = {
+            showMedical: true,
+            showShelter: true,
+            showFood: true,
+            showWater: true,
+            showClothing: true,
+            showRescue: true,
+            showEvacuation: true,
+            showMedicine: true
+        };
+    }
 
     $scope.needFlags = {
         showMedical: false,
@@ -47,6 +54,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
         showFood: false,
         showWater: false,
         showClothing: false,
+        showRescue: false,
         showEvacuation: false,
         showMedicine: false
     };
@@ -234,6 +242,17 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     };
 
     $scope.toggleFilters = function () {
+        var sessionFilters = {
+            showMedical: $scope.filterFlags.showMedical,
+            showShelter: $scope.filterFlags.showShelter,
+            showFood: $scope.filterFlags.showFood,
+            showWater: $scope.filterFlags.showWater,
+            showClothing: $scope.filterFlags.showClothing,
+            showRescue: $scope.filterFlags.showRescue,
+            showEvacuation: $scope.filterFlags.showEvacuation,
+            showMedicine: $scope.filterFlags.showMedicine
+        };
+        sessionStorage.setItem("filterFlags", JSON.stringify(sessionFilters));
         $scope.showFilters = !$scope.showFilters;
         return false;
     };
@@ -263,7 +282,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
             $scope.showNeeds = !$scope.showNeeds;
         }
         else {
-            alert("Missing Required Field(s)");
+            alert($scope.text.missing_fields_alert);
         }
         return false;
     };
@@ -300,7 +319,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
 
         if ($scope.showNeeds) {
             if (!flags.showMedical && !flags.showShelter && !flags.showFood &&
-                !flags.showMedicine && !flags.showWater && !flags.showClothing && !flags.showEvacuation) {
+                !flags.showMedicine && !flags.showWater && !flags.showClothing && !flags.showRescue && !flags.showEvacuation) {
                 hasError = true;
             }
         }
@@ -318,7 +337,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
                 postNeedRequest();
             }
             if (flags.showFood) {
-                $scope.helpRequest.ResourceTypeID = '1';
+                $scope.helpRequest.ResourceTypeID = '2';
                 postNeedRequest();
             }
             if (flags.showMedicine) {
@@ -326,11 +345,15 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
                 postNeedRequest();
             }
             if (flags.showWater) {
-                $scope.helpRequest.ResourceTypeID = '2';
+                $scope.helpRequest.ResourceTypeID = '1';
                 postNeedRequest();
             }
             if (flags.showClothing) {
                 $scope.helpRequest.ResourceTypeID = '5';
+                postNeedRequest();
+            }
+            if (flags.showRescue) {
+                $scope.helpRequest.ResourceTypeID = '8';
                 postNeedRequest();
             }
             if (flags.showEvacuation) {
@@ -342,7 +365,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
             $scope.showNeeds = !$scope.showNeeds;
             $scope.showEventDetails = !$scope.showEventDetails;
             if (!$scope.hasSubmissionError) {
-                alert("Request(s) successfully submitted");
+                alert($scope.text.need_request_success);
             }
         }
         else {
@@ -353,7 +376,6 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
 
     function postNeedRequest() {
         var needRequestData = JSON.stringify($scope.helpRequest);
-        alert("needRequestData: " + needRequestData);
         var webCall = $http({
             method: 'POST',
             url: '/api/resourcerequest',
