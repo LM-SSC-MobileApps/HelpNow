@@ -230,6 +230,8 @@ function setupFacebookAuthentication(app, passport, strategy) {
               //console.log(profileStr);
 
               var http = require('http');
+              
+              var apiAuth = 'Basic ' + new Buffer('a1ada5ab-b8c2-11e5-847d-00ffd0ea9272:H3lpN0w2016').toString('base64');
 
               var creds = '{"email":"' + profile.emails[0].value + '"}';
               var options = {
@@ -237,7 +239,7 @@ function setupFacebookAuthentication(app, passport, strategy) {
                   path: '/api/account/external_login',
                   port: getHttpPort(false),
                   method: 'POST',
-                  headers: { 'Content-Type': 'application/json' }
+                  headers: { 'Content-Type': 'application/json', 'Authorization': apiAuth }
               };
 
               callback = function (response) {
