@@ -95,13 +95,13 @@ angular.module("helpNow").directive('map', function () {
             var dharaharaBefore = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/dharahara_tower_before/{z}/{x}/{y}.png', {
                 minZoom: 2,
                 maxZoom: 19,
-                attribution: '(c) <a href="http://www.dmcii.com/">DMC International Imaging</a>'
+                attribution: '(c) <a href="https://www.digitalglobe.com/">DigitalGlobe 2015</a>'
             });
 
             var dharaharaAfter = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/dharahara_tower_after/{z}/{x}/{y}.png', {
                 minZoom: 2,
                 maxZoom: 19,
-                attribution: '(c) <a href="http://www.dmcii.com/">DMC International Imaging</a>'
+                attribution: '(c) <a href="https://www.digitalglobe.com/">DigitalGlobe 2015</a>'
             });
 
             var nepalBefore = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/nepal/{z}/{x}/{y}.png', {
@@ -174,7 +174,6 @@ angular.module("helpNow").directive('map', function () {
             var overlays = {
                 "Bangladesh": bangladeshBefore,
                 "Nepal": nepalBefore,
-                "Dharahara Before": dharaharaBefore,
                 "Dharahara After": dharaharaAfter
             };
 
