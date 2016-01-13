@@ -2,7 +2,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	function ($scope, $routeParams, $resource, $sce, $location) {
 	    var map;
 	    var mapLayers = [];
-	    $scope.setCurrentView("org-events");
+	    $scope.setCurrentView("events");
 
 	    $scope.requestsResource = $resource("/api/event/mapitems/:eventID");
 

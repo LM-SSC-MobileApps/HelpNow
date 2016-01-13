@@ -309,6 +309,7 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "$http", "ResourceRe
     function ($scope, $http, ResourceRequest, $location, ResourceLocation) {
 
 		$scope.setTitle("Organization Management");
+		$scope.setCurrentView("mng");
         $scope.demoRunning = false;
 
         $scope.go = function (path) {
@@ -1885,7 +1886,7 @@ angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$re
 	$scope.orgResource = $resource("/api/organization/:id", { id: $scope.currentOrg.OrganizationID });
 
 	$scope.setTitle($scope.text.manage_title_label);
-
+	$scope.setCurrentView("mng");
 
 	$scope.loadInvites = function() {
 		$scope.invitesResource.get({}, function(data) {
@@ -2074,7 +2075,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	function ($scope, $routeParams, $resource, $sce, $location) {
 	    var map;
 	    var mapLayers = [];
-	    $scope.setCurrentView("org-events");
+	    $scope.setCurrentView("events");
 
 	    $scope.requestsResource = $resource("/api/event/mapitems/:eventID");
 
@@ -3303,6 +3304,32 @@ angular.module("helpNow").directive('map', function () {
 			    maxZoom: 19,
 			    attribution: '(c) <a href="http://microsites.digitalglobe.com/interactive/basemap_vivid/">DigitalGlobe</a> , (c) OpenStreetMap, (c) Mapbox'
 			});*/
+            
+            var nepalBefore = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/nepal/{z}/{x}/{y}.png', {
+                minZoom: 6,
+                maxZoom: 12,
+                attribution: '(c) <a href="http://www.dmcii.com/">DMC International Imaging</a>'
+            });
+
+            var nepalAfter = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/nepal/{z}/{x}/{y}.png', {
+                minZoom: 2,
+                maxZoom: 19,
+                attribution: '(c) <a href="http://www.dmcii.com/">DMC International Imaging</a>'
+            });
+
+            var bangladeshBefore = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/bangladesh/{z}/{x}/{y}.png', {
+                tms: true,
+                minZoom: 2,
+                maxZoom: 19,
+                attribution: '(c) <a href="http://www.dmcii.com/">DMC International Imaging</a>'
+            });
+
+            var bangladeshAfter = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/bangladesh/{z}/{x}/{y}.png', {
+                tms: true,
+                minZoom: 2,
+                maxZoom: 19,
+                attribution: '(c) <a href="http://www.dmcii.com/">DMC International Imaging</a>'
+            });
 
             var vivid = new L.tileLayer('https://{s}.tiles.mapbox.com/v4/digitalglobe.n6ngnadl/{z}/{x}/{y}.png?access_token=' + api_key, {
                 minZoom: 2,
@@ -3339,13 +3366,20 @@ angular.module("helpNow").directive('map', function () {
             L.control.scale().addTo(map);
 
             map.attributionControl.setPrefix('');
-            var overlays = {
+            var baselayers = {
                 "Base Open Street Maps": openStreetMap,
                 "DigitalGlobe Basemap +Vivid with Streets": baseLayer,
                 "DigitalGlobe Basemap: REST": GBMREST
             };
 
-            L.control.layers(overlays, null, {
+            var overlays = {
+                "Bangladesh Before": bangladeshBefore,
+                "Bangladesh After": bangladeshAfter,
+                "Nepal Before": nepalBefore,
+                "Nepal After": nepalAfter
+            };
+
+            L.control.layers(baselayers, overlays, {
                 collapsed: true
             }).addTo(map);
 

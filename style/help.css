@@ -364,7 +364,7 @@ h5 {
 }
 
 .btn-primary:hover {
-    background-color: color(var(--light-blue) shade(20%);
+    background-color: color(var(--light-blue) shade(20%));
     background-image: none;
     color: white;
 }
@@ -375,7 +375,7 @@ h5 {
 }
 
 .btn-danger:hover {
-    background-color: color(#e73131 shade(20%);
+    background-color: color(#e73131 shade(20%));
     background-image: none;
     border-color: #e73131;
 }

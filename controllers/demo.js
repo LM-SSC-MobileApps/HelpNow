@@ -6,6 +6,7 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "$http", "ResourceRe
     function ($scope, $http, ResourceRequest, $location, ResourceLocation) {
 
 		$scope.setTitle("Organization Management");
+		$scope.setCurrentView("mng");
         $scope.demoRunning = false;
 
         $scope.go = function (path) {
