@@ -23,8 +23,8 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
 
     $scope.getShowLogin = function () {
         if (!$scope.title) {
-			return true;
-		} else if ($scope.title.indexOf($scope.text.login_title) == 0) {
+            return true;
+        } else if ($scope.title.indexOf($scope.text.login_title) == 0) {
             return false;
         } else if ($scope.currentUser) {
             return false;
@@ -52,7 +52,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
     };
 
     $scope.setTitle = function (title, img) {
-		$scope.title = title;
+        $scope.title = title;
         $scope.imageSrc = img;
     };
 
@@ -140,6 +140,8 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
             return "style/images/Evacuation-" + iconType + ".png";
         } else if (resourceType == "Clothing") {
             return "style/images/Clothing-" + iconType + ".png";
+        } else if (resourceType == "Rescue") {
+            return "style/images/Rescue-" + iconType + ".png";
         } else if (resourceType == "Medicine") {
             return "style/images/Medicine-" + iconType + ".png";
         } else {
@@ -194,6 +196,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
 				(type == "Shelter" && flags.showShelter) ||
 				(type == "Food" && flags.showFood) ||
                 (type == "Clothing" && flags.showClothing) ||
+                (type == "Rescue" && flags.showRescue) ||
 				(type == "Evacuation" && flags.showEvacuation) ||
 				(type == "First Aid" && flags.showMedical) ||
 				(type == "Medicine" && flags.showMedicine);
@@ -244,7 +247,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
                     $scope.setCurrentUser(userSessionObject);
                     $scope.setCurrentOrg($scope.currentUser.Organization);
                     sessionStorage.setItem("user", JSON.stringify(userSessionObject));
-                    $scope.$broadcast("CurrentUserLoaded", {});                    
+                    $scope.$broadcast("CurrentUserLoaded", {});
                 }
             },
             function (response) { // optional

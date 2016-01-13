@@ -12,16 +12,16 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        $scope.setTitle($scope.event.EventLocations[0].Description, $scope.getEventIcon($scope.event.EventType.Description));
 	        loadRequests();
 	    }
-		
-		var dataRefreshTaskID = setInterval(loadRequests, 2000);
-		
-		$scope.$on('$destroy', function() {
-			clearInterval(dataRefreshTaskID);
-        });
+
+	    var dataRefreshTaskID = setInterval(loadRequests, 2000);
+
+	    $scope.$on('$destroy', function () {
+	        clearInterval(dataRefreshTaskID);
+	    });
 
 	    $scope.requests = [];
-		$scope.locations = [];
-		$scope.distributionCenters = [];
+	    $scope.locations = [];
+	    $scope.distributionCenters = [];
 
 	    $scope.showFilters = false;
 	    $scope.showFindPanel = false;
@@ -29,7 +29,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	    $scope.showMappingError = false;
 	    $scope.showDeployPanel = false;
 	    $scope.showDeploymentPanel = false;
-	
+
 	    var showHeatmap = JSON.parse(sessionStorage.getItem("showHeatmap"));
 	    var showClusters = JSON.parse(sessionStorage.getItem("showClusters"));
 	    var showNeedsMarkers = JSON.parse(sessionStorage.getItem("showNeedsMarkers"));
@@ -78,6 +78,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            showFood: true,
 	            showWater: true,
 	            showClothing: true,
+	            showRescue: true,
 	            showEvacuation: true,
 	            showMedicine: true
 	        };
@@ -89,6 +90,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        showFood: false,
 	        showWater: false,
 	        showClothing: false,
+	        showRescue: false,
 	        showEvacuation: false,
 	        showMedicine: false
 	    };
@@ -119,6 +121,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        if (flags.showFood) resources.push("Food");
 	        if (flags.showWater) resources.push("Water");
 	        if (flags.showClothing) resources.push("Clothing");
+	        if (flags.showRescue) resources.push("Rescue");
 	        if (flags.showEvacuation) resources.push("Evacuation");
 	        if (flags.showMedicine) resources.push("Medicine");
 	        return resources.join(", ");
@@ -173,6 +176,8 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            return "style/images/markers/dot-cyan.png";
 	        } else if (resourceType == "Clothing") {
 	            return "style/images/markers/dot-yellow.png";
+	        } else if (resourceType == "Rescue") {
+	            return "style/images/markers/dot-red.png";
 	        } else {
 	            return "style/images/markers/dot-green.png";
 	        }
@@ -187,6 +192,8 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            return "style/images/Shelter-Circle-Red.png";
 	        } else if (resourceType == "Clothing") {
 	            return "style/images/Clothing-Circle-Red.png";
+	        } else if (resourceType == "Rescue") {
+	            return "style/images/Rescue-Circle-Red.png"
 	        } else if (resourceType == "Evacuation") {
 	            return "style/images/Evacuation-Circle-Red.png";
 	        } else if (resourceType == "Medicine") {
@@ -235,9 +242,9 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            mapLayers.push(marker);
 	        });
 	    }
-		
-		function markFulfilledRequests() {
-			angular.forEach($scope.locations, function (deployment) {
+
+	    function markFulfilledRequests() {
+	        angular.forEach($scope.locations, function (deployment) {
 	            angular.forEach(deployment.ResourceLocationInventories, function (inventory) {
 	                angular.forEach($scope.requests, function (request) {
 	                    request.fulfilled = calculateKmDistance(deployment.LAT, deployment.LONG, request.LAT, request.LONG) < 10 &&
@@ -245,7 +252,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	                });
 	            });
 	        });
-		}
+	    }
 
 	    function buildHeatmap(selectedRequests) {
 	        var heatmapConfig = {
@@ -295,9 +302,9 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        }
 
 	        mapLayers = [];
-			markFulfilledRequests();
-			var selectedRequests = $scope.requests.filter(function (request) {
-				//if (request.fulfilled) return false;
+	        markFulfilledRequests();
+	        var selectedRequests = $scope.requests.filter(function (request) {
+	            if (request.fulfilled) return false;
 	            var type = request.ResourceType.Description;
 	            return $scope.shouldDisplayMarker(type, $scope.filterFlags);
 	        });
@@ -330,17 +337,17 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 
 	    function loadRequests() {
 	        $scope.requestsResource.get({ eventID: $scope.eventID }, function (data) {
-				var dataChanged = data.json.requests.length != $scope.requests.length 
+	            var dataChanged = data.json.requests.length != $scope.requests.length
 					|| data.json.locations.length != $scope.locations.length
 					|| data.json.distributionCenters.length != $scope.distributionCenters.length;
-				
-				if (dataChanged) {
-					$scope.requestClusters = data.json.requestClusters;
-					$scope.requests = data.json.requests;
-					$scope.locations = data.json.locations;
-					$scope.distributionCenters = data.json.distributionCenters;
-					updateMap();
-				}
+
+	            if (dataChanged) {
+	                $scope.requestClusters = data.json.requestClusters;
+	                $scope.requests = data.json.requests;
+	                $scope.locations = data.json.locations;
+	                $scope.distributionCenters = data.json.distributionCenters;
+	                updateMap();
+	            }
 	        });
 	    }
 
@@ -423,6 +430,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            showFood: $scope.filterFlags.showFood,
 	            showWater: $scope.filterFlags.showWater,
 	            showClothing: $scope.filterFlags.showClothing,
+	            showRescue: $scope.filterFlags.showRescue,
 	            showEvacuation: $scope.filterFlags.showEvacuation,
 	            showMedicine: $scope.filterFlags.showMedicine
 	        };

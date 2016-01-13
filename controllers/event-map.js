@@ -9,7 +9,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
     $scope.urgencyResource = $resource("/api/requesturgency");
     $scope.needRequestResource = $resource("/api/resourcerequest");
 
-    $scope.helpRequest = { EventID: '', RequestStateID: '1', Notes: 'Reported from App', AreaSize: '0.25 km', UnitOfMeasure: '', Quantity: ''};
+    $scope.helpRequest = { EventID: '', RequestStateID: '1', Notes: 'Reported from App', AreaSize: '0.25 km', UnitOfMeasure: '', Quantity: '' };
 
     $scope.eventID = $routeParams.eventID * 1;
     if ($scope.events) {
@@ -42,6 +42,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
             showFood: true,
             showWater: true,
             showClothing: true,
+            showRescue: true,
             showEvacuation: true,
             showMedicine: true
         };
@@ -53,6 +54,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
         showFood: false,
         showWater: false,
         showClothing: false,
+        showRescue: false,
         showEvacuation: false,
         showMedicine: false
     };
@@ -246,6 +248,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
             showFood: $scope.filterFlags.showFood,
             showWater: $scope.filterFlags.showWater,
             showClothing: $scope.filterFlags.showClothing,
+            showRescue: $scope.filterFlags.showRescue,
             showEvacuation: $scope.filterFlags.showEvacuation,
             showMedicine: $scope.filterFlags.showMedicine
         };
@@ -316,7 +319,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
 
         if ($scope.showNeeds) {
             if (!flags.showMedical && !flags.showShelter && !flags.showFood &&
-                !flags.showMedicine && !flags.showWater && !flags.showClothing && !flags.showEvacuation) {
+                !flags.showMedicine && !flags.showWater && !flags.showClothing && !flags.showRescue && !flags.showEvacuation) {
                 hasError = true;
             }
         }
@@ -334,7 +337,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
                 postNeedRequest();
             }
             if (flags.showFood) {
-                $scope.helpRequest.ResourceTypeID = '1';
+                $scope.helpRequest.ResourceTypeID = '2';
                 postNeedRequest();
             }
             if (flags.showMedicine) {
@@ -342,11 +345,15 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
                 postNeedRequest();
             }
             if (flags.showWater) {
-                $scope.helpRequest.ResourceTypeID = '2';
+                $scope.helpRequest.ResourceTypeID = '1';
                 postNeedRequest();
             }
             if (flags.showClothing) {
                 $scope.helpRequest.ResourceTypeID = '5';
+                postNeedRequest();
+            }
+            if (flags.showRescue) {
+                $scope.helpRequest.ResourceTypeID = '8';
                 postNeedRequest();
             }
             if (flags.showEvacuation) {

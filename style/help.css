@@ -202,6 +202,16 @@ h5 {
     background-size: 20px;
 }
 
+#showRescue {
+    background-image: var(--marker-red-grad);
+}
+
+#showRescue span {
+    background-image: url("../style/images/Rescue.png");
+    background-position: 6px 5px;
+    background-size: 20px;
+}
+
 #showEvacuation {
     background-image: var(--marker-purple-grad);
 }
