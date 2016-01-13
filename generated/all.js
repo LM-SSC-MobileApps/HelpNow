@@ -1243,7 +1243,12 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
 
     function loadResourceTypes() {
         $scope.resourceTypeResource.get({}, function (data) {
-            $scope.resourceTypes = data.json;
+            
+            $scope.resourceTypes = data.json.filter(function (el) {
+                return el.Description != 'Evacuation';
+            });
+            
+            // $scope.resourceTypes = data.json;
         });
     }
 
@@ -2156,7 +2161,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        $scope.showLocationMarkers = showLocationMarkers;
 	    }
 	    else {
-	        $scope.showLocationMarkers = false;
+	        $scope.showLocationMarkers = true;
 	    }
 	    if (showDistCenterMarkers != null) {
 	        $scope.showDistCenterMarkers = showDistCenterMarkers;

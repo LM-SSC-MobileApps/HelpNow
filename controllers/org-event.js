@@ -58,7 +58,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        $scope.showLocationMarkers = showLocationMarkers;
 	    }
 	    else {
-	        $scope.showLocationMarkers = false;
+	        $scope.showLocationMarkers = true;
 	    }
 	    if (showDistCenterMarkers != null) {
 	        $scope.showDistCenterMarkers = showDistCenterMarkers;
