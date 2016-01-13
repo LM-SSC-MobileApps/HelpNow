@@ -28,7 +28,7 @@ angular.module("helpNow").directive('latitude', function () {
 
     return {
         require: 'ngModel',
-        link: function(scope, elm, attrs, ctrl) {
+        link: function (scope, elm, attrs, ctrl) {
             ctrl.$validators.latitude = function (modelValue, viewValue) {
                 if (ctrl.$isEmpty(viewValue)) {
                     // not validating for empty value, only for valid
@@ -91,10 +91,22 @@ angular.module("helpNow").directive('map', function () {
 			    maxZoom: 19,
 			    attribution: '(c) <a href="http://microsites.digitalglobe.com/interactive/basemap_vivid/">DigitalGlobe</a> , (c) OpenStreetMap, (c) Mapbox'
 			});*/
-            
+
+            var dharaharaBefore = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/dharahara_tower_before/{z}/{x}/{y}.png', {
+                minZoom: 2,
+                maxZoom: 19,
+                attribution: '(c) <a href="http://www.dmcii.com/">DMC International Imaging</a>'
+            });
+
+            var dharaharaAfter = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/dharahara_tower_after/{z}/{x}/{y}.png', {
+                minZoom: 2,
+                maxZoom: 19,
+                attribution: '(c) <a href="http://www.dmcii.com/">DMC International Imaging</a>'
+            });
+
             var nepalBefore = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/nepal/{z}/{x}/{y}.png', {
-                minZoom: 6,
-                maxZoom: 12,
+                minZoom: 2,
+                maxZoom: 19,
                 attribution: '(c) <a href="http://www.dmcii.com/">DMC International Imaging</a>'
             });
 
@@ -160,10 +172,10 @@ angular.module("helpNow").directive('map', function () {
             };
 
             var overlays = {
-                "Bangladesh Before": bangladeshBefore,
-                "Bangladesh After": bangladeshAfter,
-                "Nepal Before": nepalBefore,
-                "Nepal After": nepalAfter
+                "Bangladesh": bangladeshBefore,
+                "Nepal": nepalBefore,
+                "Dharahara Before": dharaharaBefore,
+                "Dharahara After": dharaharaAfter
             };
 
             L.control.layers(baselayers, overlays, {

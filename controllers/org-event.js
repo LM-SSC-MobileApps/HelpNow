@@ -30,21 +30,58 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	    $scope.showDeployPanel = false;
 	    $scope.showDeploymentPanel = false;
 	
-	    $scope.showHeatmap = true;
-	    $scope.showClusters = true;
-	    $scope.showNeedsMarkers = false;
-	    $scope.showLocationMarkers = true;
-	    $scope.showDistCenterMarkers = false;
+	    var showHeatmap = JSON.parse(sessionStorage.getItem("showHeatmap"));
+	    var showClusters = JSON.parse(sessionStorage.getItem("showClusters"));
+	    var showNeedsMarkers = JSON.parse(sessionStorage.getItem("showNeedsMarkers"));
+	    var showLocationMarkers = JSON.parse(sessionStorage.getItem("showLocationMarkers"));
+	    var showDistCenterMarkers = JSON.parse(sessionStorage.getItem("showDistCenterMarkers"));
 
-	    $scope.filterFlags = {
-	        showMedical: true,
-	        showShelter: true,
-	        showFood: true,
-	        showWater: true,
-	        showClothing: true,
-	        showEvacuation: true,
-	        showMedicine: true
-	    };
+	    if (showHeatmap != null) {
+	        $scope.showHeatmap = showHeatmap;
+	    }
+	    else {
+	        $scope.showHeatmap = true;
+	    }
+	    if (showClusters != null) {
+	        $scope.showClusters = showClusters;
+	    }
+	    else {
+	        $scope.showClusters = true;
+	    }
+	    if (showNeedsMarkers != null) {
+	        $scope.showNeedsMarkers = showNeedsMarkers;
+	    }
+	    else {
+	        $scope.showNeedsMarkers = false;
+	    }
+	    if (showLocationMarkers != null) {
+	        $scope.showLocationMarkers = showLocationMarkers;
+	    }
+	    else {
+	        $scope.showLocationMarkers = false;
+	    }
+	    if (showDistCenterMarkers != null) {
+	        $scope.showDistCenterMarkers = showDistCenterMarkers;
+	    }
+	    else {
+	        $scope.showDistCenterMarkers = false;
+	    }
+
+	    var filters = JSON.parse(sessionStorage.getItem("filterFlags"));
+	    if (filters != null) {
+	        $scope.filterFlags = JSON.parse(sessionStorage.getItem("filterFlags"));
+	    }
+	    else {
+	        $scope.filterFlags = {
+	            showMedical: true,
+	            showShelter: true,
+	            showFood: true,
+	            showWater: true,
+	            showClothing: true,
+	            showEvacuation: true,
+	            showMedicine: true
+	        };
+	    }
 
 	    $scope.matchingFlags = {
 	        showMedical: false,
@@ -380,6 +417,21 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	    };
 
 	    $scope.toggleFilters = function () {
+	        var sessionFilters = {
+	            showMedical: $scope.filterFlags.showMedical,
+	            showShelter: $scope.filterFlags.showShelter,
+	            showFood: $scope.filterFlags.showFood,
+	            showWater: $scope.filterFlags.showWater,
+	            showClothing: $scope.filterFlags.showClothing,
+	            showEvacuation: $scope.filterFlags.showEvacuation,
+	            showMedicine: $scope.filterFlags.showMedicine
+	        };
+	        sessionStorage.setItem("showNeedsMarkers", JSON.stringify($scope.showNeedsMarkers));
+	        sessionStorage.setItem("showLocationMarkers", JSON.stringify($scope.showLocationMarkers));
+	        sessionStorage.setItem("showDistCenterMarkers", JSON.stringify($scope.showDistCenterMarkers));
+	        sessionStorage.setItem("showClusters", JSON.stringify($scope.showClusters));
+	        sessionStorage.setItem("showHeatmap", JSON.stringify($scope.showHeatmap));
+	        sessionStorage.setItem("filterFlags", JSON.stringify(sessionFilters));
 	        $scope.showFilters = !$scope.showFilters;
 	    };
 
