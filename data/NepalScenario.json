@@ -2,6 +2,7 @@
   {
     "Type": "RequestGroup",
     "Data": {
+	  "StartDelay": 1000,
 	  "EventID": 1,
       "Diameter": 0.25,
       "Delay": 1000,
@@ -14,6 +15,7 @@
   {
     "Type": "RequestGroup",
     "Data": {
+	  "StartDelay": 1000,
 	  "EventID": 1,
       "Diameter": 0.25,
       "Delay": 1000,

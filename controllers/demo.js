@@ -107,8 +107,8 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "$http", "ResourceRe
 			});
 		};
 		
-		$scope.runPhilippinesScenario = function() {
-			loadScenario("data/PhilippinesScenario.json", function(scenarioData) {
+		$scope.runNepalScenario = function() {
+			loadScenario("data/NepalScenario.json", function(scenarioData) {
 				startDemo(scenarioData);
 			});
 		};
@@ -130,7 +130,9 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "$http", "ResourceRe
                     case "RequestGroup":
                     {
 						var groupParameters = item.Data;
-						generateRequests(groupParameters);
+						setTimeout(function() {
+							generateRequests(groupParameters);
+						}, groupParameters.StartDelay);
 						break;
                     }
                     default:
