@@ -10,12 +10,17 @@
         <span class="filter-caption">Shelter</span>
     </div>
     <div class="col-xs-4 text-center">
+        <a id="showClothing" ng-class="classfunc('showClothing')" ng-click="togglefunc('showClothing', filter)"><span></span></a>
+        <br />
+        <span class="filter-caption">Clothing</span>
+    </div>
+</div>
+<div class="row separated-small">
+    <div class="col-xs-4 text-center">
         <a id="showFood" ng-class="classfunc('showFood')" ng-click="togglefunc('showFood', filter)"><span></span></a>
         <br />
         <span class="filter-caption">Food</span>
     </div>
-</div>
-<div class="row separated-small">
     <div class="col-xs-4 text-center">
         <a id="showMedicine" ng-class="classfunc('showMedicine')" ng-click="togglefunc('showMedicine', filter)"><span></span></a>
         <br />
@@ -25,11 +30,6 @@
         <a id="showWater" ng-class="classfunc('showWater')" ng-click="togglefunc('showWater', filter)"><span></span></a>
         <br />
         <span class="filter-caption">Water</span>
-    </div>
-    <div class="col-xs-4 text-center">
-        <a id="showClothing" ng-class="classfunc('showClothing')" ng-click="togglefunc('showClothing', filter)"><span></span></a>
-        <br />
-        <span class="filter-caption">Clothing</span>
     </div>
 </div>
 <div class="row separated-small">
