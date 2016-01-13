@@ -138,12 +138,15 @@ function setupLocalAuthentication(app, passport, strategy) {
             var http = require('http');
 
             var creds = '{"username":"' + username + '","password":"' + password + '"}';
+            
+            var apiAuth = 'Basic ' + new Buffer('a1ada5ab-b8c2-11e5-847d-00ffd0ea9272:H3lpN0w2016').toString('base64');
+            
             var options = {
                 host: 'localhost',
                 path: '/api/account/login',
                 port: getHttpPort(false),
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' }
+                headers: { 'Content-Type': 'application/json', 'Authorization': apiAuth }
             };
 
             callback = function (response) {
@@ -167,6 +170,7 @@ function setupLocalAuthentication(app, passport, strategy) {
                     }                        
                 });
             }
+            console.log('here are the options: ' + JSON.stringify(options));
 
             var req = http.request(options, callback);
             req.write(creds);
