@@ -2397,7 +2397,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	    }
 
 	    function updateMap() {
-	        if (!map || !$scope.events) return;
+			if (!map || !$scope.events) return;
 
 	        var zoom = map.getZoom();
 
@@ -2413,8 +2413,8 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            var type = request.ResourceType.Description;
 	            return $scope.shouldDisplayMarker(type, $scope.filterFlags);
 	        });
-
-	        if ($scope.showHeatmap)
+			
+	        if ($scope.showHeatmap && selectedRequests.length > 0)
 	            buildHeatmap(selectedRequests);
 
 	        if ($scope.showNeedsMarkers && zoom > 7)
@@ -2428,7 +2428,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 
 	        if ($scope.showDistCenterMarkers)
 	            buildDistCenterMarkers();
-
+			
 	        angular.forEach(mapLayers, function (layer) {
 	            map.addLayer(layer);
 	        });
