@@ -316,7 +316,7 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "$http", "ResourceRe
             $location.path(path);
         };
 		
-		var resourceTypes = ["None", "Water", "Food", "Shelter", "First Aid", "Clothing", "Medicine"];
+		var resourceTypes = ["None", "Water", "Food", "Shelter", "First Aid", "Clothing", "Medicine", "Evacuation", "Rescue"];
 		
 		function generateRequest(groupParameters) {
 			var request = {
@@ -2350,8 +2350,10 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        angular.forEach($scope.locations, function (deployment) {
 	            angular.forEach(deployment.ResourceLocationInventories, function (inventory) {
 	                angular.forEach($scope.requests, function (request) {
-	                    request.fulfilled = calculateKmDistance(deployment.LAT, deployment.LONG, request.LAT, request.LONG) < 2 &&
+                        if (!request.fulfilled) {
+	                        request.fulfilled = calculateKmDistance(deployment.LAT, deployment.LONG, request.LAT, request.LONG) < 4 &&
                             request.ResourceTypeID == inventory.ResourceTypeID;
+	                    }
 	                });
 	            });
 	        });
