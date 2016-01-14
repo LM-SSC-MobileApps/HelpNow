@@ -117,6 +117,10 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
         }
     };
 
+    $scope.getCurrentLanguage = function () {
+        $scope.currentLanguage = currentLanguage;
+    };
+
     $scope.getLanguageClass = function (language) {
         return currentLanguage == language ? "active" : "";
     };
