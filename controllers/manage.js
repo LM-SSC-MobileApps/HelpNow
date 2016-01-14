@@ -86,6 +86,10 @@ angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$re
 	    $location.path('/org_address/' + $scope.currentOrg.OrganizationID);
 	};
 
+	$scope.editAPI = function () {
+	    $location.path('/add_org/' + $scope.currentOrg.OrganizationTypeID + '/' + $scope.currentOrg.OrganizationID);
+	};
+
 	$scope.go = function ( path ) {
 		$location.path( path );
 	};

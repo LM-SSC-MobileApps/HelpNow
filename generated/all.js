@@ -48,7 +48,7 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 		    templateUrl: "views/admin/administration.html"
 		});
 
-		$routeProvider.when("/add_org/:orgTypeID", {
+		$routeProvider.when("/add_org/:orgTypeID/:orgID", {
 		    templateUrl: "views/admin/add-organization.html"
 		});
 
@@ -1991,6 +1991,10 @@ angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$re
 	    $location.path('/org_address/' + $scope.currentOrg.OrganizationID);
 	};
 
+	$scope.editAPI = function () {
+	    $location.path('/add_org/' + $scope.currentOrg.OrganizationTypeID + '/' + $scope.currentOrg.OrganizationID);
+	};
+
 	$scope.go = function ( path ) {
 		$location.path( path );
 	};
@@ -2673,7 +2677,30 @@ angular.module("helpNow").controller("OrganizationAddCtrl", ["$scope", "$resourc
     $scope.orgTypeID = $routeParams.orgTypeID * 1;
     $scope.newOrg = new Organization();
     $scope.newOrg.OrganizationTypeID = $scope.orgTypeID;
+    $scope.newOrg.CreateDate = new Date();
     $scope.orgType = $scope.orgTypeID == 1 ? $scope.text.gov_name_label : $scope.text.org_name_label;
+
+    $scope.orgResource = $resource("/api/organization/:id");
+
+    $scope.orgID = $routeParams.orgID * 1;
+    if ($scope.orgID == 0) $scope.isNew = true;
+    $scope.loadOrg = function () {
+        $scope.orgResource.get({ id: $scope.orgID }, function (data) {
+            $scope.org = data.json[0];
+            if ($scope.org.Name != null) {
+                $scope.newOrg.Name = $scope.org.Name;
+            }
+            if ($scope.org.APISecret != null) {
+                $scope.newOrg.APISecret = $scope.org.APISecret;
+            }
+        });
+    };
+
+    function loadOrgAddress() {
+        if(!$scope.isNew) $scope.loadOrg();
+    }
+
+    loadOrgAddress();
 
     $scope.setTitle($scope.text.create + " " + $scope.orgType);
 
@@ -2682,20 +2709,30 @@ angular.module("helpNow").controller("OrganizationAddCtrl", ["$scope", "$resourc
     };
 
     $scope.addOrg = function (org) {
-        if (org.Name === undefined || org.Name == null) {
+        if (org.Name === undefined || org.Name == null || org.APISecret === undefined || org.APISecret == null) {
             alert($scope.text.missing_fields_alert);
             return;
         }
-        Organization.save(org).$promise.then(function (response) {
-            $location.path('/administration');
-        },
-        function (response) { // optional
-            alert("Error: " + response.data.err);
-        });;
+        if ($scope.isNew) {
+            Organization.save(org).$promise.then(function (response) {
+                $location.path('/administration');
+            },
+            function (response) { // optional
+                alert("Error: " + response.data.err);
+            });;
+        }
+        else {
+            Organization.update({id: $scope.orgID}, org).$promise.then(function (response) {
+                $location.path('/administration');
+            },
+            function (response) { // optional
+                alert("Error: " + response.data.err);
+            });;
+        }
     };
 
     $scope.enterAddress = function (org) {
-        if (org.Name === undefined || org.Name == null) {
+        if (org.Name === undefined || org.Name == null || org.APISecret === undefined || org.APISecret == null) {
             alert($scope.text.missing_fields_alert);
             return;
         }
