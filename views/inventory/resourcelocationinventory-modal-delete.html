@@ -1,0 +1,15 @@
+﻿<div class="modal-content">
+    <div class="modal-header">
+        <h3 class="modal-title">Delete Confirmation.</h3>
+    </div>
+    <div class="modal-body">
+
+        You are about to delete the current service: {{model.resourceLocationInventory.ResourceType.Name}} for the location: {{model.resourceLocationInventory.ResourceType.Name}} .
+        Are you sure?
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="$close(deleteResourceLocationInventory({model.resourceLocationInventory.ResourceLocationInventoryID))">Yes!</button>
+        <button class="btn btn-warning" ng-click="$dismiss('cancel')">No</button>
+    </div>
+</div>
