@@ -349,7 +349,7 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "$http", "ResourceRe
 			request.LONG = groupParameters.CenterLong + relLong;
 			
 			//populate urgency
-			request.RequestUrgencyID = Math.round(Math.random() * 5) + 1;
+			request.RequestUrgencyID = Math.round(Math.random() * 4) + 1;
 			
 			return request;
 		}
