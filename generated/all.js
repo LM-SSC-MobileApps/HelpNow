@@ -2970,6 +2970,26 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
 				.error(function (data) {
 				    console.log("setCurrentLanguage: " + data);
 				});
+        else if (language == "Fre") {
+            $http.get("i18n/text-FRE.json")
+                .success(function (data) {
+                    $scope.text = data;
+                    $route.reload();
+                })
+                .error(function (data) {
+                    console.log("setCurrentLanguage: " + data);
+                });
+        }
+        else if (language == "Esp") {
+            $http.get("i18n/text-ESP.json")
+				.success(function (data) {
+				    $scope.text = data;
+				    $route.reload();
+				})
+				.error(function (data) {
+				    console.log("setCurrentLanguage: " + data);
+				});
+        }
         else {
             $http.get("i18n/text-ENG.json")
 				.success(function (data) {
@@ -3414,6 +3434,12 @@ angular.module("helpNow").directive('map', function () {
                 attribution: '(c) <a href="https://www.digitalglobe.com/">DigitalGlobe 2015</a>'
             });
 
+            var khatmanduArmyMedAfter = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/KatmanduArmyMedCollege/{z}/{x}/{y}.png', {
+                minZoom: 2,
+                maxZoom: 19,
+                attribution: '(c) <a href="https://www.digitalglobe.com/">DigitalGlobe 2015</a>'
+            });
+
             var nepalBefore = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/nepal/{z}/{x}/{y}.png', {
                 minZoom: 2,
                 maxZoom: 19,
@@ -3484,7 +3510,8 @@ angular.module("helpNow").directive('map', function () {
             var overlays = {
                 "Bangladesh": bangladeshBefore,
                 "Nepal": nepalBefore,
-                "Dharahara After": dharaharaAfter
+                "Dharahara After": dharaharaAfter,
+                "Khatmandu Army Med College": khatmanduArmyMedAfter
             };
 
             L.control.layers(baselayers, overlays, {

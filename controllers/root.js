@@ -85,6 +85,26 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
 				.error(function (data) {
 				    console.log("setCurrentLanguage: " + data);
 				});
+        else if (language == "Fre") {
+            $http.get("i18n/text-FRE.json")
+                .success(function (data) {
+                    $scope.text = data;
+                    $route.reload();
+                })
+                .error(function (data) {
+                    console.log("setCurrentLanguage: " + data);
+                });
+        }
+        else if (language == "Esp") {
+            $http.get("i18n/text-ESP.json")
+				.success(function (data) {
+				    $scope.text = data;
+				    $route.reload();
+				})
+				.error(function (data) {
+				    console.log("setCurrentLanguage: " + data);
+				});
+        }
         else {
             $http.get("i18n/text-ENG.json")
 				.success(function (data) {
