@@ -7,9 +7,9 @@ var models  = require('../models'),
 models.Event.hasMany(models.EventLocation, {foreignKey: 'EventID'});
 models.EventLocation.belongsTo(models.Event, {foreignKey: 'EventID'});
 
-//Event one-to-one on EventType
-models.Event.hasOne(models.EventType, {foreignKey: 'EventTypeID'});
-models.EventType.belongsTo(models.Event, {foreignKey: 'EventTypeID'});
+//Event many-to-one on EventType
+models.Event.belongsTo(models.EventType, { foreignKey: 'EventTypeID' });
+models.EventType.hasMany(models.Event, { foreignKey: 'EventTypeID' });
 
 //Event one-to-many on ResourceRequest
 models.Event.hasMany(models.ResourceRequest, {foreignKey: 'EventID'});

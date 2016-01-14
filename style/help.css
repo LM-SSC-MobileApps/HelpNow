@@ -20,8 +20,10 @@
     --marker-orange: #ff9500;
     --marker-orange-grad: linear-gradient(to bottom, var(--marker-orange), color(var(--marker-orange) shade(40%)));
     --marker-red-grad: linear-gradient(to bottom, red, color(red shade(40%)));
-    --marker-purple: #ca62ff;
+    --marker-purple: #663399;
     --marker-purple-grad: linear-gradient(to bottom, var(--marker-purple), color(var(--marker-purple) shade(40%)));
+    --marker-magenta: #ff00ff;
+    --marker-magenta-grad: linear-gradient(to bottom, var(--marker-magenta), color(var(--marker-magenta) shade(40%)));
     --marker-yellow: #ffff00;
     --marker-yellow-grad: linear-gradient(to bottom, var(--marker-yellow), color(var(--marker-yellow) shade(40%)));
     --marker-blue: #087fff;
@@ -202,6 +204,16 @@ h5 {
     background-size: 20px;
 }
 
+#showRescue {
+    background-image: var(--marker-magenta-grad);
+}
+
+#showRescue span {
+    background-image: url("../style/images/Rescue.png");
+    background-position: 6px 5px;
+    background-size: 20px;
+}
+
 #showEvacuation {
     background-image: var(--marker-purple-grad);
 }
@@ -227,7 +239,7 @@ h5 {
 }
 
 #showMedicine span {
-    background-image: url("../style/images/medicine.png");
+    background-image: url("../style/images/Medicine.png");
     background-size: 25px;
     background-position: 4px 5px;
 }
