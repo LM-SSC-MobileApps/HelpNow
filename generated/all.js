@@ -48,7 +48,7 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 		    templateUrl: "views/admin/administration.html"
 		});
 
-		$routeProvider.when("/add_org/:orgTypeID", {
+		$routeProvider.when("/add_org/:orgTypeID/:orgID", {
 		    templateUrl: "views/admin/add-organization.html"
 		});
 
@@ -1991,6 +1991,10 @@ angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$re
 	    $location.path('/org_address/' + $scope.currentOrg.OrganizationID);
 	};
 
+	$scope.editAPI = function () {
+	    $location.path('/add_org/' + $scope.currentOrg.OrganizationTypeID + '/' + $scope.currentOrg.OrganizationID);
+	};
+
 	$scope.go = function ( path ) {
 		$location.path( path );
 	};
@@ -2397,7 +2401,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	    }
 
 	    function updateMap() {
-	        if (!map || !$scope.events) return;
+			if (!map || !$scope.events) return;
 
 	        var zoom = map.getZoom();
 
@@ -2413,8 +2417,8 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            var type = request.ResourceType.Description;
 	            return $scope.shouldDisplayMarker(type, $scope.filterFlags);
 	        });
-
-	        if ($scope.showHeatmap)
+			
+	        if ($scope.showHeatmap && selectedRequests.length > 0)
 	            buildHeatmap(selectedRequests);
 
 	        if ($scope.showNeedsMarkers && zoom > 7)
@@ -2428,7 +2432,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 
 	        if ($scope.showDistCenterMarkers)
 	            buildDistCenterMarkers();
-
+			
 	        angular.forEach(mapLayers, function (layer) {
 	            map.addLayer(layer);
 	        });
@@ -2673,7 +2677,30 @@ angular.module("helpNow").controller("OrganizationAddCtrl", ["$scope", "$resourc
     $scope.orgTypeID = $routeParams.orgTypeID * 1;
     $scope.newOrg = new Organization();
     $scope.newOrg.OrganizationTypeID = $scope.orgTypeID;
+    $scope.newOrg.CreateDate = new Date();
     $scope.orgType = $scope.orgTypeID == 1 ? $scope.text.gov_name_label : $scope.text.org_name_label;
+
+    $scope.orgResource = $resource("/api/organization/:id");
+
+    $scope.orgID = $routeParams.orgID * 1;
+    if ($scope.orgID == 0) $scope.isNew = true;
+    $scope.loadOrg = function () {
+        $scope.orgResource.get({ id: $scope.orgID }, function (data) {
+            $scope.org = data.json[0];
+            if ($scope.org.Name != null) {
+                $scope.newOrg.Name = $scope.org.Name;
+            }
+            if ($scope.org.APISecret != null) {
+                $scope.newOrg.APISecret = $scope.org.APISecret;
+            }
+        });
+    };
+
+    function loadOrgAddress() {
+        if(!$scope.isNew) $scope.loadOrg();
+    }
+
+    loadOrgAddress();
 
     $scope.setTitle($scope.text.create + " " + $scope.orgType);
 
@@ -2682,20 +2709,30 @@ angular.module("helpNow").controller("OrganizationAddCtrl", ["$scope", "$resourc
     };
 
     $scope.addOrg = function (org) {
-        if (org.Name === undefined || org.Name == null) {
+        if (org.Name === undefined || org.Name == null || org.APISecret === undefined || org.APISecret == null) {
             alert($scope.text.missing_fields_alert);
             return;
         }
-        Organization.save(org).$promise.then(function (response) {
-            $location.path('/administration');
-        },
-        function (response) { // optional
-            alert("Error: " + response.data.err);
-        });;
+        if ($scope.isNew) {
+            Organization.save(org).$promise.then(function (response) {
+                $location.path('/administration');
+            },
+            function (response) { // optional
+                alert("Error: " + response.data.err);
+            });;
+        }
+        else {
+            Organization.update({id: $scope.orgID}, org).$promise.then(function (response) {
+                $location.path('/administration');
+            },
+            function (response) { // optional
+                alert("Error: " + response.data.err);
+            });;
+        }
     };
 
     $scope.enterAddress = function (org) {
-        if (org.Name === undefined || org.Name == null) {
+        if (org.Name === undefined || org.Name == null || org.APISecret === undefined || org.APISecret == null) {
             alert($scope.text.missing_fields_alert);
             return;
         }
@@ -2970,6 +3007,26 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
 				.error(function (data) {
 				    console.log("setCurrentLanguage: " + data);
 				});
+        else if (language == "Fre") {
+            $http.get("i18n/text-FRE.json")
+                .success(function (data) {
+                    $scope.text = data;
+                    $route.reload();
+                })
+                .error(function (data) {
+                    console.log("setCurrentLanguage: " + data);
+                });
+        }
+        else if (language == "Esp") {
+            $http.get("i18n/text-ESP.json")
+				.success(function (data) {
+				    $scope.text = data;
+				    $route.reload();
+				})
+				.error(function (data) {
+				    console.log("setCurrentLanguage: " + data);
+				});
+        }
         else {
             $http.get("i18n/text-ENG.json")
 				.success(function (data) {
@@ -3414,6 +3471,12 @@ angular.module("helpNow").directive('map', function () {
                 attribution: '(c) <a href="https://www.digitalglobe.com/">DigitalGlobe 2015</a>'
             });
 
+            var khatmanduArmyMedAfter = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/KatmanduArmyMedCollege/{z}/{x}/{y}.png', {
+                minZoom: 2,
+                maxZoom: 19,
+                attribution: '(c) <a href="https://www.digitalglobe.com/">DigitalGlobe 2015</a>'
+            });
+
             var nepalBefore = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/nepal/{z}/{x}/{y}.png', {
                 minZoom: 2,
                 maxZoom: 19,
@@ -3484,7 +3547,8 @@ angular.module("helpNow").directive('map', function () {
             var overlays = {
                 "Bangladesh": bangladeshBefore,
                 "Nepal": nepalBefore,
-                "Dharahara After": dharaharaAfter
+                "Dharahara After": dharaharaAfter,
+                "Khatmandu Army Med College": khatmanduArmyMedAfter
             };
 
             L.control.layers(baselayers, overlays, {
@@ -3508,21 +3572,6 @@ angular.module("helpNow").directive('map', function () {
         }
     };
 });
-angular.module('helpNow').factory('ResourceLocationTransport', function ($resource) {
-    return $resource('api/resourcelocationtransport/:id', null, {
-        update: {
-            method: 'PUT'
-        }
-    });
-});
-angular.module('helpNow').factory('ResourceRequest', function ($resource) {
-    return $resource('api/resourcerequest/:id', null ,{
-        update: {
-            method: 'PUT'
-        }
-    });
-});
-
 angular.module('helpNow').factory('Account', function ($resource) {
     return $resource('api/account/:id', null ,{
         update: {
@@ -3635,8 +3684,22 @@ angular.module('helpNow').factory('ResourceLocationInventory', function ($resour
         }
     });
 });
+angular.module('helpNow').factory('ResourceLocationTransport', function ($resource) {
+    return $resource('api/resourcelocationtransport/:id', null, {
+        update: {
+            method: 'PUT'
+        }
+    });
+});
 angular.module('helpNow').factory('ResourceLocationType', function ($resource) {
     return $resource('api/resourcelocationtype/:id', null, {
+        update: {
+            method: 'PUT'
+        }
+    });
+});
+angular.module('helpNow').factory('ResourceRequest', function ($resource) {
+    return $resource('api/resourcerequest/:id', null ,{
         update: {
             method: 'PUT'
         }
