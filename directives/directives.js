@@ -179,9 +179,7 @@ angular.module("helpNow").directive('map', function () {
 
             var overlays = {
                 "Bangladesh": bangladeshBefore,
-                "Nepal": nepalBefore,
-                "Dharahara After": dharaharaAfter,
-                "Khatmandu Army Med College": khatmanduArmyMedAfter
+                "Nepal": nepalBefore
             };
 
             L.control.layers(baselayers, overlays, {
