@@ -6518,9 +6518,20 @@ h5 {
   background-size: 20px;
 }
 
+#showRescue {
+  background-image: -webkit-linear-gradient(top, #ff00ff, rgb(153, 0, 153));
+  background-image: linear-gradient(to bottom, #ff00ff, rgb(153, 0, 153));
+}
+
+#showRescue span {
+  background-image: url("../style/images/Rescue.png");
+  background-position: 6px 5px;
+  background-size: 20px;
+}
+
 #showEvacuation {
-  background-image: -webkit-linear-gradient(top, #ca62ff, rgb(121, 59, 153));
-  background-image: linear-gradient(to bottom, #ca62ff, rgb(121, 59, 153));
+  background-image: -webkit-linear-gradient(top, #663399, rgb(61, 31, 92));
+  background-image: linear-gradient(to bottom, #663399, rgb(61, 31, 92));
 }
 
 #showEvacuation span {
@@ -6546,7 +6557,7 @@ h5 {
 }
 
 #showMedicine span {
-  background-image: url("../style/images/medicine.png");
+  background-image: url("../style/images/Medicine.png");
   background-size: 25px;
   background-position: 4px 5px;
 }
@@ -6629,10 +6640,6 @@ h5 {
   font-size: 1em;
 }
 
-.btn-danger {
-  /*margin: 5px;*/
-}
-
 .dropdown-menu,
 .navbar-nav .open .dropdown-menu {
   background-color: rgba(38, 58, 80, 1.0);
@@ -6697,7 +6704,8 @@ h5 {
 }
 
 .btn-primary:hover {
-  background-color: #2d647b;
+  background-color: rgb(46, 119, 185);
+  background-image: none;
   color: white;
 }
 
@@ -6708,9 +6716,9 @@ h5 {
 }
 
 .btn-danger:hover {
-  background-color: #871c1c;
+  background-color: rgb(185, 39, 39);
   background-image: none;
-  border-color: #871c1c;
+  border-color: #e73131;
 }
 
 .btn .glyphicon,
@@ -6868,4 +6876,13 @@ input.switch:checked ~ label:after {
 .panel-footer {
   background-color: rgba(38, 58, 80, 0.85);
   border-color: #999;
+}
+
+.form-group .help-block {
+  display: none;
+}
+
+.form-group.has-error .help-block {
+  display: block;
+  color: red;
 }
