@@ -104,6 +104,12 @@ angular.module("helpNow").directive('map', function () {
                 attribution: '(c) <a href="https://www.digitalglobe.com/">DigitalGlobe 2015</a>'
             });
 
+            var khatmanduArmyMedAfter = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/KatmanduArmyMedCollege/{z}/{x}/{y}.png', {
+                minZoom: 2,
+                maxZoom: 19,
+                attribution: '(c) <a href="https://www.digitalglobe.com/">DigitalGlobe 2015</a>'
+            });
+
             var nepalBefore = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/nepal/{z}/{x}/{y}.png', {
                 minZoom: 2,
                 maxZoom: 19,
@@ -174,7 +180,8 @@ angular.module("helpNow").directive('map', function () {
             var overlays = {
                 "Bangladesh": bangladeshBefore,
                 "Nepal": nepalBefore,
-                "Dharahara After": dharaharaAfter
+                "Dharahara After": dharaharaAfter,
+                "Khatmandu Army Med College": khatmanduArmyMedAfter
             };
 
             L.control.layers(baselayers, overlays, {

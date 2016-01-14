@@ -62,18 +62,16 @@ function getHttp() {
     }
 }
 
-function getHost() {    
+function getHost() {
     if (getEnvironment() === 'production') {
         return "www.helpnowmap.com";
-    }
-
-    if (process.platform.indexOf("linux") >= 0) {
-        var child_process = require("child_process");
-        var hostname = child_process.execSync("curl -s http://169.254.169.254/latest/meta-data/public-hostname");
-        if (hostname.indexOf("") == 0) {
-            return "localhost";
-        } else {
+    } else if (getEnvironment() === 'qas') {
+        var os = require("os");
+        var hostname = os.hostname();
+        if (hostname) {
             return hostname;
+        } else {
+            return "localhost";
         }
     } else {
         return "localhost";
