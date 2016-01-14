@@ -316,7 +316,7 @@ angular.module("helpNow").controller("DemoCtrl", ["$scope", "$http", "ResourceRe
             $location.path(path);
         };
 		
-		var resourceTypes = ["None", "Water", "Food", "Shelter", "First Aid", "Clothing", "Medicine"];
+		var resourceTypes = ["None", "Water", "Food", "Shelter", "First Aid", "Clothing", "Medicine", "Evacuation", "Rescue"];
 		
 		function generateRequest(groupParameters) {
 			var request = {

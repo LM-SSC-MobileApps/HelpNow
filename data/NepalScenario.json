@@ -22,7 +22,7 @@
       "NumberOfRequests": 10,
       "CenterLat": 23.9,
       "CenterLong": 90.2,
-	  "RequestType": "Medicine"
+	  "RequestType": "Rescue"
     }
   }
 ]
