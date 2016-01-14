@@ -22,8 +22,10 @@ angular.module("helpNow").controller("TeamInviteCtrl", ["$scope", "$resource", "
         $scope.modalInstance = $uibModal.open(
             {
                 templateUrl: '/manage/team-invite-modal-confirm.html',
+                scope: $scope,
                 controller: function ($scope) {
                     this.invitation = invitation;
+                    this.text = $scope.text;
                     $scope.confirm = function () {
                         $location.path("/manage");
                     };
