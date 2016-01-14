@@ -1243,7 +1243,12 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
 
     function loadResourceTypes() {
         $scope.resourceTypeResource.get({}, function (data) {
-            $scope.resourceTypes = data.json;
+            
+            $scope.resourceTypes = data.json.filter(function (el) {
+                return el.Description != 'Evacuation';
+            });
+            
+            // $scope.resourceTypes = data.json;
         });
     }
 
@@ -2156,7 +2161,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        $scope.showLocationMarkers = showLocationMarkers;
 	    }
 	    else {
-	        $scope.showLocationMarkers = false;
+	        $scope.showLocationMarkers = true;
 	    }
 	    if (showDistCenterMarkers != null) {
 	        $scope.showDistCenterMarkers = showDistCenterMarkers;
@@ -2345,7 +2350,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        angular.forEach($scope.locations, function (deployment) {
 	            angular.forEach(deployment.ResourceLocationInventories, function (inventory) {
 	                angular.forEach($scope.requests, function (request) {
-	                    request.fulfilled = calculateKmDistance(deployment.LAT, deployment.LONG, request.LAT, request.LONG) < 10 &&
+	                    request.fulfilled = calculateKmDistance(deployment.LAT, deployment.LONG, request.LAT, request.LONG) < 2 &&
                             request.ResourceTypeID == inventory.ResourceTypeID;
 	                });
 	            });
