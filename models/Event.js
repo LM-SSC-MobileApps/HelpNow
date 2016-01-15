@@ -10,11 +10,11 @@ module.exports = function(sequelize, DataTypes) {
     },
     EventTypeID: {
       type: DataTypes.INTEGER(11),
-      allowNull: true,
+      allowNull: false,
     },
     OrganizationID: {
       type: DataTypes.INTEGER(11),
-      allowNull: true,
+      allowNull: false,
     },
     Summary: {
       type: DataTypes.STRING,
@@ -31,7 +31,7 @@ module.exports = function(sequelize, DataTypes) {
     CreateDate: {
         type: DataTypes.DATE,
         allowNull: true,
-        defaultValue: 'CURRENT_TIMESTAMP'
+        defaultValue: sequelize.fn("NOW")
     }
   });
 };

@@ -240,16 +240,16 @@ angular.module("helpNow").controller("AdministrationCtrl", ["$scope", "$location
  * AssignPocCtrl
  */
 
-angular.module("helpNow").controller("AssignPocCtrl", ["$scope", "$resource", "$routeParams", "Organization" , "$location", "$uibModal",
-    function ($scope, $resource, $routeParams, Organization , $location, $uibModal) {
+angular.module("helpNow").controller("AssignPocCtrl", ["$scope", "$resource", "$routeParams", "Organization", "$location", "$uibModal",
+    function ($scope, $resource, $routeParams, Organization, $location, $uibModal) {
 
 
-       $scope.teamResource  = $resource("/api/account/organizationmembers/:accountid",
+        $scope.teamResource = $resource("/api/account/organizationmembers/:accountid",
             {accountid: $scope.currentUser.AccountID});
 
 
-        $scope.loadTeam = function() {
-            $scope.teamResource.get({}, function(data) {
+        $scope.loadTeam = function () {
+            $scope.teamResource.get({}, function (data) {
                 $scope.team = data.json;
                 $scope.$broadcast("TeamDataLoaded", {});
             });
@@ -258,12 +258,12 @@ angular.module("helpNow").controller("AssignPocCtrl", ["$scope", "$resource", "$
         $scope.loadTeam();
 
 
-        $scope.orgResource  = $resource("/api/organization/:id",
+        $scope.orgResource = $resource("/api/organization/:id",
             {id: $scope.currentOrg.OrganizationID});
 
 
-        $scope.loadOrg = function() {
-            $scope.orgResource.get({}, function(data) {
+        $scope.loadOrg = function () {
+            $scope.orgResource.get({}, function (data) {
                 orgs = data.json;
                 $scope.org = orgs[0];
                 console.log("org.PrimaryPOC: " + $scope.org.PrimaryPOC);
@@ -279,7 +279,9 @@ angular.module("helpNow").controller("AssignPocCtrl", ["$scope", "$resource", "$
             $scope.modalInstance = $uibModal.open(
                 {
                     templateUrl: '/manage/team-poc-modal-confirm.html',
+                    scope: $scope,
                     controller: function ($scope) {
+                        this.text = $scope.text;
 
                         $scope.confirm = function () {
                             $location.path("/manage");
@@ -290,17 +292,12 @@ angular.module("helpNow").controller("AssignPocCtrl", ["$scope", "$resource", "$
         };
 
 
-
-
-
-
-
         $scope.go = function (path) {
-        $location.path(path);
-    };
+            $location.path(path);
+        };
 
 
-}]);
+    }]);
 /**
  * DemoCtrl
  */
@@ -1974,9 +1971,11 @@ angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$re
 		$scope.modalInstance = $uibModal.open(
 				{
 					templateUrl: '/manage/teammember-modal-delete.html',
+					scope: $scope,
 					controller: function ($scope) {
 						this.teamMember = teamMember;
 						this.Account = Account;
+						this.text = $scope.text;
 
 						$scope.deleteMember = function () {
 							Account.delete({id: teamMember.AccountID});
@@ -2868,9 +2867,11 @@ angular.module("helpNow").controller("RegulationEditCtrl", ["$scope", "$resource
         $scope.modalInstance = $uibModal.open(
             {
                 templateUrl: '/manage/regulations-modal-delete.html',
+                scope: $scope,
                 controller: function ($scope) {
                     this.regulation = regulation;
                     this.Regulation = Regulation;
+                    this.text = $scope.text;
 
                     $scope.deleteReg = function () {
                         console.log("regulation.OrganizationRegulationsID" + regulation.OrganizationRegulationsID);
@@ -3348,8 +3349,10 @@ angular.module("helpNow").controller("TeamInviteCtrl", ["$scope", "$resource", "
         $scope.modalInstance = $uibModal.open(
             {
                 templateUrl: '/manage/team-invite-modal-confirm.html',
+                scope: $scope,
                 controller: function ($scope) {
                     this.invitation = invitation;
+                    this.text = $scope.text;
                     $scope.confirm = function () {
                         $location.path("/manage");
                     };

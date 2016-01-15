@@ -1,8 +1,8 @@
 {
   "name": "HelpNowAPI",
-  "version": "0.0.0",
+  "version": "0.5.0",
   "private": true,
-  "description": "node.js ReSTful web service for the HelpNow app",
+  "description": "RESTful API web service for the HelpNow app",
   "scripts": {
     "start": "node ./bin/www"
   },

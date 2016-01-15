@@ -37,11 +37,53 @@ models.ResourceTypeUnitOfMeasure.hasMany(models.ResourceLocationInventory, {fore
 
 //ResourceLocationTransport many-to-one on TransportType
 models.ResourceLocationTransport.belongsTo(models.TransportType, {foreignKey: 'TransportTypeID'});
-models.TransportType.hasMany(models.ResourceLocationTransport, {foreignKey: 'TransportTypeID'});
+models.TransportType.hasMany(models.ResourceLocationTransport, { foreignKey: 'TransportTypeID' });
+
+/**
+* @apiDefine helpNowHeader 
+* @apiHeader {String} authorization Basic Authorization header with API Key & API Secret.
+**/
+
+/**
+* @apiDefine helpNowSuccessResult 
+* @apiSuccess {String} result Result message.
+* @apiSuccess {String} error Error message.
+**/
+
+/**
+* @apiDefine helpNowUnauthorizedResult 
+* @apiError {String} 401 Unauthorized.
+* @apiError {Object} 500 Internal Server Error.
+* @apiError {String} 500.result error.
+* @apiError {Object} 500.err Error Message.
+**/
 
 
 var routes = function(){
-  var router  = express.Router();
+    var router = express.Router();
+
+    /**
+     * @api {get} api/event Get all Events that are active
+     * @apiName GetEvent
+     * @apiGroup Event
+     *
+     * @apiUse helpNowHeader
+     * @apiUse helpNowSuccessResult
+     * @apiUse helpNowUnauthorizedResult
+     * @apiSuccess {Object[]} json    The Result data in the form of a json array.
+         * @apiSuccess {Number}   json.EventID   Unique ID for the Event.
+         * @apiSuccess {Number}   json.EventTypeID Unique ID for the Event Type.
+         * @apiSuccess {Number}   json.OrganizationID OrganziationID associated with the Organization for the Event.
+         * @apiSuccess {String}   json.Summary Event Title.
+         * @apiSuccess {String}   json.Notes Event description or additional information.
+         * @apiSuccess {Boolean}   json.Active Status of the event.
+         * @apiSuccess {Date}   json.CreateDate Date & Time the Event was created in the system.
+         * @apiSuccess {Object[]}   json.EventLocations An Array of EventLocations for the event.
+         * @apiSuccess {Object}   json.EventType the EventType object associated with the event.
+         * @apiSuccess {Object}   json.Organization the Organization object associated with the event.
+         * @apiSuccess {Object[]}   json.ResourceRequests An Array of ResourceRequests for the event.
+         * @apiSuccess {Object[]}   json.ResourceLocations An Array of ResourceLocations for the event.
+     */
     router.get('/', function(req, res) {
       models.Event.findAll(
         {
@@ -74,7 +116,7 @@ var routes = function(){
       )
       .catch(function (err) {
        console.error(err);
-       res.statusCode = 502;
+       res.statusCode = 500;
        res.send({
            result: 'error',
            err:    err.message
@@ -82,7 +124,23 @@ var routes = function(){
       });
     }
   )
-  //find Map Items for Event
+  /**
+     * @api {get} api/event/mapitems/:eventID Get map items by event ID
+     * @apiName GetMapItems
+     * @apiGroup Event
+
+     * @apiParam {Number} eventID Event unique ID
+
+     * @apiUse helpNowHeader
+     * @apiUse helpNowSuccessResult
+     * @apiUse helpNowUnauthorizedResult
+     * @apiSuccess {Object} json    The result data in the form of json.
+         * @apiSuccess {Object[]}   json.requestClusters an array of ResourceRequest Cluster objects .
+         * @apiSuccess {Object[]}   json.requests an array of ResourceRequest objects.
+         * @apiSuccess {Object[]}   json.locations an array of ResourceLocation objects of type Deployment for the event.
+         * @apiSuccess {Object[]}   json.distributionCenters an array of ResourceLocation objects of type Distribution center for the event.
+         
+     */
   .get('/mapitems/:eventID', function(req, res) {
 	  var tasks = [];
 	  
@@ -181,7 +239,7 @@ var routes = function(){
 	  })
 	  .catch(function (err) {
        console.error(err);
-       res.statusCode = 502;
+       res.statusCode = 500;
        res.send({
            result: 'error',
            err:    err.message
@@ -189,7 +247,30 @@ var routes = function(){
       });
   })
   
-  //find Event by ID
+    /**
+        * @api {get} api/event/:id Get Event by EventID
+        * @apiName GetEventByID
+        * @apiGroup Event
+   
+        * @apiParam {Number} id Event unique ID
+   
+        * @apiUse helpNowHeader
+        * @apiUse helpNowSuccessResult
+        * @apiUse helpNowUnauthorizedResult
+        * @apiSuccess {Object} json    The Result data in the form of json.
+         * @apiSuccess {Number}   json.EventID   Unique ID for the Event.
+         * @apiSuccess {Number}   json.EventTypeID Unique ID for the Event Type.
+         * @apiSuccess {Number}   json.OrganizationID OrganziationID associated with the Organization for the Event.
+         * @apiSuccess {String}   json.Summary Event Title.
+         * @apiSuccess {String}   json.Notes Event description or additional information.
+         * @apiSuccess {Boolean}   json.Active Status of the event.
+         * @apiSuccess {Date}   json.CreateDate Date & Time the Event was created in the system.
+         * @apiSuccess {Object[]}   json.EventLocations An Array of EventLocations for the event.
+         * @apiSuccess {Object}   json.EventType the EventType object associated with the event.
+         * @apiSuccess {Object}   json.Organization the Organization object associated with the event.
+         * @apiSuccess {Object[]}   json.ResourceRequests An Array of ResourceRequests for the event.
+         * @apiSuccess {Object[]}   json.ResourceLocations An Array of ResourceLocations for the event.
+     */
   .get('/:id', function(req, res) {
       models.Event.findAll(
         {
@@ -217,7 +298,7 @@ var routes = function(){
       }
      ).catch(function (err) {
        console.error(err);
-       res.statusCode = 502;
+       res.statusCode = 500;
        res.send({
            result: 'error',
            err:    err.message
@@ -225,7 +306,33 @@ var routes = function(){
       });
     }
   )
-  //insert into Event
+  /**
+        * @api {post} api/event/ Insert a new Event
+        * @apiName PostEvent
+        * @apiGroup Event
+
+        * @apiParam {JSON} body representation of the Event object to insert in JSON format
+   
+        * @apiParam {Number} body.EventTypeID An EventType ID for the EventType to be used
+        * @apiParam {Number} body.OrganizationID An Organization ID for the Organization to be used
+        * @apiParam {String} body.Summary Short title/desciption of the event
+        * @apiParam {String} body.Notes Additional information for the event.
+        * @apiParam {Boolean} body.Active Sets the state of the Event
+        * @apiParam {Date} body.CreateDate Date the event was created
+        * @apiUse helpNowHeader
+        * @apiUse helpNowSuccessResult
+        * @apiUse helpNowUnauthorizedResult
+        * @apiSuccess {Object} json The Event object created from the insert.
+
+        * @apiSuccessExample {json} Success-Response:
+             *     HTTP/1.1 200 OK
+             *     {
+             *       "result": "success",
+             *       "err": "",
+             *       "json": "<Event object>",
+             *     }
+ */
+
   .post('/', function(req, res) {
     models.Event.create(req.body)
     .then(function(event) {
@@ -241,7 +348,7 @@ var routes = function(){
       }
      ).catch(function (err) {
        console.error(err);
-       res.statusCode = 502;
+       res.statusCode = 500;
        res.send({
            result: 'error',
            err:    err.message
@@ -249,7 +356,33 @@ var routes = function(){
       });
     }
   )
-  //update into Event
+    /**
+        * @api {put} api/event/:id Update an Event
+        * @apiName UpdateEvent
+        * @apiGroup Event
+
+        * @apiParam {Number} id The unique ID of the Event to update
+   
+        * @apiParam {JSON} body representation of the Event object to update in JSON format
+        
+        * @apiUse helpNowHeader
+        * @apiUse helpNowSuccessResult
+        * @apiUse helpNowUnauthorizedResult
+        * @apiSuccess {Object} json the number of rows updated.
+
+        * @apiSuccessExample {json} Success-Response:
+             *     HTTP/1.1 200 OK
+             *     {
+             *       "result": "success",
+             *         "err": "",
+             *         "json": {
+             *           "rows": [
+              *             1
+              *           ]
+            *         },
+             *         "length": 1
+             *     }
+ */
   .put('/:id', function(req, res) {
     models.Event.update(
       req.body,
@@ -272,7 +405,7 @@ var routes = function(){
       }
      ).catch(function (err) {
        console.error(err);
-       res.statusCode = 502;
+       res.statusCode = 500;
        res.send({
            result: 'error',
            error:  err.message
@@ -280,6 +413,28 @@ var routes = function(){
       });
     }
   )
+        /**
+        * @api {delete} api/event/:id Delete an Event
+        * @apiName DeleteEvent
+        * @apiGroup Event
+
+        * @apiParam {Number} id The unique ID of the Event to delete
+        
+        * @apiUse helpNowHeader
+        * @apiUse helpNowSuccessResult
+        * @apiUse helpNowUnauthorizedResult
+        * @apiSuccess {Object} json the number of rows deleted.
+
+        * @apiSuccessExample {json} Success-Response:
+        *       HTTP/1.1 200 OK
+        *      {
+        *          "result": "success",
+        *          "err": "",
+        *          "json": {
+        *              "rows": 1
+        *          }
+        *      }
+ */
   .delete('/:id', function(req, res) {
     models.Event.destroy(
       {
@@ -300,7 +455,7 @@ var routes = function(){
       }
      ).catch(function (err) {
        console.error(err);
-       res.statusCode = 502;
+       res.statusCode = 500;
        res.send({
            result: 'error',
            err:    err.message
