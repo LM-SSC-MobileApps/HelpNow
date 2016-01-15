@@ -103,6 +103,9 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 angular.module("helpNow").controller("AboutCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function ($scope, $http, $location, $routeParams, $resource) {
     $scope.setCurrentView("about");
     $scope.setTitle($scope.text.about_title);
+
+    $scope.getCurrentLanguage();
+    if ($scope.currentLanguage == 'Eng') $scope.isEnglish = true;
 }]);
 angular.module("helpNow").controller("AdministrationCtrl", ["$scope", "$location", "$resource", "Organization", "$uibModal", function ($scope, $location, $resource, Organization, $uibModal) {
     $scope.setTitle($scope.text.admin_title);
@@ -3040,6 +3043,10 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
         }
     };
 
+    $scope.getCurrentLanguage = function () {
+        $scope.currentLanguage = currentLanguage;
+    };
+
     $scope.getLanguageClass = function (language) {
         return currentLanguage == language ? "active" : "";
     };
@@ -3549,9 +3556,7 @@ angular.module("helpNow").directive('map', function () {
 
             var overlays = {
                 "Bangladesh": bangladeshBefore,
-                "Nepal": nepalBefore,
-                "Dharahara After": dharaharaAfter,
-                "Khatmandu Army Med College": khatmanduArmyMedAfter
+                "Nepal": nepalBefore
             };
 
             L.control.layers(baselayers, overlays, {

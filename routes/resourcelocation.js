@@ -41,6 +41,34 @@ models.ResourceTypeUnitOfMeasure.hasMany(models.ResourceLocationInventory, { for
 
 var routes = function () {
     var router = express.Router();
+    /**
+        * @api {get} api/resourcelocation Get all ResourceLocations
+        * @apiName GetResourceLocations
+        * @apiGroup ResourceLocation
+        *
+        * @apiUse helpNowHeader
+        * @apiUse helpNowSuccessResult
+        * @apiUse helpNowUnauthorizedResult
+        * @apiSuccess {Object[]} json    The Result data in the form of a json array of ResourceLocation objects.
+        * @apiSuccess {Number} json.ResourceLocationID The ResourceLocation ID for the ResourceLocation object.
+        * @apiSuccess {Number} json.EventID An Event ID for the Event associated with the ResourceLocation
+        * @apiSuccess {Number} json.OrganizationID An Organization ID for the Organization associated with the ResourceLocation
+        * @apiSuccess {Number} json.ResourceLocationTypeID The ResourceLocationType ID for the ResourceLocation object.
+        * @apiSuccess {Number} json.ResourceLocationStatusID The ResourceLocationStatus ID for the ResourceLocation object.
+        * @apiSuccess {String} json.Description Title/Description for the ResourceLocation
+        * @apiSuccess {String} json.Notes General Information and notes for the ResourceLocation
+        * @apiSuccess {Float} json.LAT Lattitude coordinate for the location of the ResourceLocation
+        * @apiSuccess {Float} json.LONG Longitude coordinate for the location of the ResourceLocation
+        * @apiSuccess {String} json.PrimaryPOCName Primary Point of Contact name for the ResourceLocation
+        * @apiSuccess {String} json.PrimaryPOCPhone Primary Point of Contact phone number for the ResourceLocation
+        * @apiSuccess {String} json.SecondaryPOCName Secondary Point of Contact name for the ResourceLocation
+        * @apiSuccess {String} json.SecondaryPOCPhone Secondary Point of Contact phone number for the ResourceLocation
+        * @apiSuccess {Object}   json.Event the Event object associated with the ResourceLocation.
+        * @apiSuccess {Object}   json.Organization the Organization object associated with the ResourceLocation.
+        * @apiSuccess {Object}   json.ResourceLocationType the ResourceLocationType object for the ResourceLocation.
+        * @apiSuccess {Object[]}   json.ResourceLocationInventories An Array of ResourceLocationInventory objects available at the ResourceLocation.
+        * @apiSuccess {Object[]}   json.ResourceLocationTransports An Array of ResourceLocationTransport objects available at the ResourceLocation.
+     */
     router.get('/', function (req, res) {
         models.ResourceLocation.findAll(
           {
@@ -88,7 +116,18 @@ var routes = function () {
         });
     }
   )
-  //find ResourceLocation by ID
+  /**
+        * @api {get} api/resourcelocation/:id Get ResourceLocation by ResourceLocationID
+        * @apiName GetResourceLocationByID
+        * @apiGroup ResourceLocation
+
+        * @apiParam {Number} id ResourceLocation unique ID
+        *
+        * @apiUse helpNowHeader
+        * @apiUse helpNowSuccessResult
+        * @apiUse helpNowUnauthorizedResult
+        * @apiSuccess {Object} json    The result data in the form of a json ResourceLocation object.
+     */
   .get('/:id', function (req, res) {
       models.ResourceLocation.findAll(
         {
@@ -96,6 +135,7 @@ var routes = function () {
                 ResourceLocationID: req.params.id
             },
             include: [
+              { model: models.Event },
               { model: models.Organization },
               {
                   model: models.ResourceLocationInventory,
@@ -137,7 +177,16 @@ var routes = function () {
   }
   )
   
-	//find Distribution Centers
+	/**
+        * @api {get} api/resourcelocation/dist-center/all Get All ResourceLocations of type Distribution Center
+        * @apiName GetResourceLocationDistributionCenters
+        * @apiGroup ResourceLocation
+        *
+        * @apiUse helpNowHeader
+        * @apiUse helpNowSuccessResult
+        * @apiUse helpNowUnauthorizedResult
+        * @apiSuccess {Object[]} json    The result data in the form of a json array of ResourceLocation objects.
+     */
 	.get('/dist-center/all', function(req, res) {
 		models.ResourceLocation.findAll(
 		{
@@ -182,7 +231,18 @@ var routes = function () {
 		});
 	})
   
-  //find ResourceLocation by OrganiztionID
+  /**
+        * @api {get} api/resourcelocation/:orgid Get ResourceLocations by OrganizationID
+        * @apiName GetResourceLocationsByOrganizationID
+        * @apiGroup ResourceLocation
+        *
+        * @apiParam {Number} orgid Organization unique ID
+        *
+        * @apiUse helpNowHeader
+        * @apiUse helpNowSuccessResult
+        * @apiUse helpNowUnauthorizedResult
+        * @apiSuccess {Object[]} json    The result data in the form of a json array of ResourceLocation objects.
+     */
   .get('/organization/:orgid', function (req, res) {
       models.ResourceLocation.findAll(
         {
@@ -230,7 +290,18 @@ var routes = function () {
      });
   }
   )
-//find Distribution Centers by OrganiztionID
+    /**
+        * @api {get} api/resourcelocation/dist-center/organization/:orgid Get All ResourceLocations of type Distribution Center by Organization ID
+        * @apiName GetResourceLocationDistributionCentersByOrgID
+        * @apiGroup ResourceLocation
+        *
+        * @apiParam {Number} orgid Organization unique ID
+        *
+        * @apiUse helpNowHeader
+        * @apiUse helpNowSuccessResult
+        * @apiUse helpNowUnauthorizedResult
+        * @apiSuccess {Object[]} json    The result data in the form of a json array of ResourceLocation objects.
+     */
   .get('/dist-center/organization/:orgid', function (req, res) {
       models.ResourceLocation.findAll(
         {
@@ -283,9 +354,40 @@ var routes = function () {
      });
   }
   )
-  //insert into ResourceLocation
+  /**
+        * @api {post} api/resourcelocation/ Insert a new ResourceLocation
+        * @apiName PostResourceLocation
+        * @apiGroup ResourceLocation
+   
+        * @apiParam {JSON} body representation of the ResourceLocation object to insert in JSON format
+        
+        * @apiParam {Number} body.EventID An Event ID for the Event associated with the ResourceLocation
+        * @apiParam {Number} body.OrganizationID An Organization ID for the Organization associated with the ResourceLocation
+        * @apiParam {Number} body.ResourceLocationTypeID The ResourceLocationType ID for the ResourceLocation object.
+        * @apiParam {Number} body.ResourceLocationStatusID The ResourceLocationStatus ID for the ResourceLocation object.
+        * @apiParam {String} body.Description Title/Description for the ResourceLocation
+        * @apiParam {String} body.Notes General Information and notes for the ResourceLocation
+        * @apiParam {Float} body.LAT Lattitude coordinate for the location of the ResourceLocation
+        * @apiParam {Float} body.LONG Longitude coordinate for the location of the ResourceLocation
+        * @apiParam {String} body.PrimaryPOCName Primary Point of Contact name for the ResourceLocation
+        * @apiParam {String} body.PrimaryPOCPhone Primary Point of Contact phone number for the ResourceLocation
+        * @apiParam {String} body.SecondaryPOCName Secondary Point of Contact name for the ResourceLocation
+        * @apiParam {String} body.SecondaryPOCPhone Secondary Point of Contact phone number for the ResourceLocation
+
+        * @apiUse helpNowHeader
+        * @apiUse helpNowSuccessResult
+        * @apiUse helpNowUnauthorizedResult
+        * @apiSuccess {Object} The ResourceLocation object created from the insert in json format.
+
+        * @apiSuccessExample {json} Success-Response:
+             *     HTTP/1.1 200 OK
+             *     {
+             *       "result": "success",
+             *       "err": "",
+             *       "json": "<ResourceLocation object>",
+             *     }
+ */
   .post('/', function (req, res) {
-      //This will save a new ResourceLocation and any ResourceLocationTransports
       models.ResourceLocation.create(
           req.body
          , {
@@ -313,7 +415,33 @@ var routes = function () {
        });
   }
   )
-  //update into ResourceLocation
+  /**
+        * @api {put} api/resourcelocation/:id Update a ResourceLocation
+        * @apiName UpdateResourceLocation
+        * @apiGroup ResourceLocation
+        * @apiDescription This will update the Resource Location and will also update any associated ResourceLocationTransport objects to be assocuated with the ResourceLocation.  (Note: if no ResourceLocationTransport objects are included in the update then all current ResourceLocationTransport objects will be removed)
+        * @apiParam {Number} id The unique ID of the ResourceLocation to update
+   
+        * @apiParam {JSON} body representation of the ResourceLocation object along with associated ResourceLocationTransports to update in JSON format
+        
+        * @apiUse helpNowHeader
+        * @apiUse helpNowSuccessResult
+        * @apiUse helpNowUnauthorizedResult
+        * @apiSuccess {Object} json the number of rows updated.
+
+        * @apiSuccessExample {json} Success-Response:
+             *     HTTP/1.1 200 OK
+             *     {
+             *       "result": "success",
+             *         "err": "",
+             *         "json": {
+             *           "rows": [
+              *             3
+              *           ]
+            *         },
+             *         "length": 1
+             *     }
+ */
   .put('/:id', function (req, res) {
       //console.log("HERE IS OUR ResourceLocationTransports: " + req.body.ResourceLocationTransports);
       models.ResourceLocation.update(
@@ -364,7 +492,27 @@ var routes = function () {
        });
   }
   )
-        ///Cascade deletes in the database handle all references to the resource location id being deleted.
+    /**
+        * @api {delete} api/resourcelocation/:id Delete a ResourceLocation
+        * @apiName DeleteResourceLocation
+        * @apiGroup ResourceLocation
+        * @apiDescription This will Delete the Resource Location along with any cascading objects (ResourceLocationInventory, ResourceLocationTypes, etc).
+        * @apiParam {Number} id The unique ID of the ResourceLocation to delete
+        * @apiUse helpNowHeader
+        * @apiUse helpNowSuccessResult
+        * @apiUse helpNowUnauthorizedResult
+        * @apiSuccess {Object} json the number of rows deleted.
+
+        * @apiSuccessExample {json} Success-Response:
+        *       HTTP/1.1 200 OK
+        *      {
+        *          "result": "success",
+        *          "err": "",
+        *          "json": {
+        *              "rows": 1
+        *          }
+        *      }
+    */
   .delete('/:id', function (req, res) {
       models.ResourceLocation.destroy(
       {

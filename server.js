@@ -85,6 +85,7 @@ app.use('/api/requesturgency', requestUrgencyRouter);
 app.use('/api/inviterequest', requestInviteRequestRouter);
 
 //set the express.static locations to serve up the static files
+app.use(express.static('apidoc'));
 app.use(express.static('views'));
 app.use(express.static('controllers'));
 app.use(express.static('style'));
