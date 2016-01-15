@@ -8,6 +8,7 @@
   },
   "author": "Michael T Major",
   "dependencies": {
+    "apidoc": "^0.14.0",
     "bluebird": "^3.0.5",
     "body-parser": "~1.13.2",
     "cookie-parser": "~1.3.5",
