@@ -1,12 +1,13 @@
 define({
-  "name": "HelpNowAPI",
-  "version": "0.5.0",
+  "name": "HelpNow API",
+  "version": "0.1.0",
   "description": "RESTful API web service for the HelpNow app",
+  "title": "HelpNowAPI",
   "sampleUrl": false,
   "apidoc": "0.2.0",
   "generator": {
     "name": "apidoc",
-    "time": "2016-01-15T01:20:57.126Z",
+    "time": "2016-01-15T02:46:22.351Z",
     "url": "http://apidocjs.com",
     "version": "0.14.0"
   }

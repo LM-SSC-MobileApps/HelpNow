@@ -1482,6 +1482,996 @@ define({ "api": [
   },
   {
     "type": "delete",
+    "url": "api/resourcelocation/:id",
+    "title": "Delete a ResourceLocation",
+    "name": "DeleteResourceLocation",
+    "group": "ResourceLocation",
+    "description": "<p>This will Delete the Resource Location along with any cascading objects (ResourceLocationInventory, ResourceLocationTypes, etc).</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The unique ID of the ResourceLocation to delete</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "json",
+            "description": "<p>the number of rows deleted.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "result",
+            "description": "<p>Result message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "error",
+            "description": "<p>Error message.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n{\n    \"result\": \"success\",\n    \"err\": \"\",\n    \"json\": {\n        \"rows\": 1\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "routes/resourcelocation.js",
+    "groupTitle": "ResourceLocation",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Basic Authorization header with API Key &amp; API Secret.</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "401",
+            "description": "<p>Unauthorized.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object",
+            "optional": false,
+            "field": "500",
+            "description": "<p>Internal Server Error.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "500.result",
+            "description": "<p>error.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object",
+            "optional": false,
+            "field": "500.err",
+            "description": "<p>Error Message.</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "api/resourcelocation/:id",
+    "title": "Get ResourceLocation by ResourceLocationID",
+    "name": "GetResourceLocationByID",
+    "group": "ResourceLocation",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ResourceLocation unique ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "json",
+            "description": "<p>The result data in the form of a json ResourceLocation object.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "result",
+            "description": "<p>Result message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "error",
+            "description": "<p>Error message.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/resourcelocation.js",
+    "groupTitle": "ResourceLocation",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Basic Authorization header with API Key &amp; API Secret.</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "401",
+            "description": "<p>Unauthorized.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object",
+            "optional": false,
+            "field": "500",
+            "description": "<p>Internal Server Error.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "500.result",
+            "description": "<p>error.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object",
+            "optional": false,
+            "field": "500.err",
+            "description": "<p>Error Message.</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "api/resourcelocation/dist-center/all",
+    "title": "Get All ResourceLocations of type Distribution Center",
+    "name": "GetResourceLocationDistributionCenters",
+    "group": "ResourceLocation",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "json",
+            "description": "<p>The result data in the form of a json array of ResourceLocation objects.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "result",
+            "description": "<p>Result message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "error",
+            "description": "<p>Error message.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/resourcelocation.js",
+    "groupTitle": "ResourceLocation",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Basic Authorization header with API Key &amp; API Secret.</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "401",
+            "description": "<p>Unauthorized.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object",
+            "optional": false,
+            "field": "500",
+            "description": "<p>Internal Server Error.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "500.result",
+            "description": "<p>error.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object",
+            "optional": false,
+            "field": "500.err",
+            "description": "<p>Error Message.</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "api/resourcelocation/dist-center/organization/:orgid",
+    "title": "Get All ResourceLocations of type Distribution Center by Organization ID",
+    "name": "GetResourceLocationDistributionCentersByOrgID",
+    "group": "ResourceLocation",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "orgid",
+            "description": "<p>Organization unique ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "json",
+            "description": "<p>The result data in the form of a json array of ResourceLocation objects.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "result",
+            "description": "<p>Result message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "error",
+            "description": "<p>Error message.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/resourcelocation.js",
+    "groupTitle": "ResourceLocation",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Basic Authorization header with API Key &amp; API Secret.</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "401",
+            "description": "<p>Unauthorized.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object",
+            "optional": false,
+            "field": "500",
+            "description": "<p>Internal Server Error.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "500.result",
+            "description": "<p>error.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object",
+            "optional": false,
+            "field": "500.err",
+            "description": "<p>Error Message.</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "api/resourcelocation",
+    "title": "Get all ResourceLocations",
+    "name": "GetResourceLocations",
+    "group": "ResourceLocation",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "json",
+            "description": "<p>The Result data in the form of a json array of ResourceLocation objects.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "json.ResourceLocationID",
+            "description": "<p>The ResourceLocation ID for the ResourceLocation object.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "json.EventID",
+            "description": "<p>An Event ID for the Event associated with the ResourceLocation</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "json.OrganizationID",
+            "description": "<p>An Organization ID for the Organization associated with the ResourceLocation</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "json.ResourceLocationTypeID",
+            "description": "<p>The ResourceLocationType ID for the ResourceLocation object.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "json.ResourceLocationStatusID",
+            "description": "<p>The ResourceLocationStatus ID for the ResourceLocation object.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "json.Description",
+            "description": "<p>Title/Description for the ResourceLocation</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "json.Notes",
+            "description": "<p>General Information and notes for the ResourceLocation</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Float",
+            "optional": false,
+            "field": "json.LAT",
+            "description": "<p>Lattitude coordinate for the location of the ResourceLocation</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Float",
+            "optional": false,
+            "field": "json.LONG",
+            "description": "<p>Longitude coordinate for the location of the ResourceLocation</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "json.PrimaryPOCName",
+            "description": "<p>Primary Point of Contact name for the ResourceLocation</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "json.PrimaryPOCPhone",
+            "description": "<p>Primary Point of Contact phone number for the ResourceLocation</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "json.SecondaryPOCName",
+            "description": "<p>Secondary Point of Contact name for the ResourceLocation</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "json.SecondaryPOCPhone",
+            "description": "<p>Secondary Point of Contact phone number for the ResourceLocation</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "json.Event",
+            "description": "<p>the Event object associated with the ResourceLocation.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "json.Organization",
+            "description": "<p>the Organization object associated with the ResourceLocation.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "json.ResourceLocationType",
+            "description": "<p>the ResourceLocationType object for the ResourceLocation.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "json.ResourceLocationInventories",
+            "description": "<p>An Array of ResourceLocationInventory objects available at the ResourceLocation.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "json.ResourceLocationTransports",
+            "description": "<p>An Array of ResourceLocationTransport objects available at the ResourceLocation.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "result",
+            "description": "<p>Result message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "error",
+            "description": "<p>Error message.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/resourcelocation.js",
+    "groupTitle": "ResourceLocation",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Basic Authorization header with API Key &amp; API Secret.</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "401",
+            "description": "<p>Unauthorized.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object",
+            "optional": false,
+            "field": "500",
+            "description": "<p>Internal Server Error.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "500.result",
+            "description": "<p>error.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object",
+            "optional": false,
+            "field": "500.err",
+            "description": "<p>Error Message.</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "api/resourcelocation/:orgid",
+    "title": "Get ResourceLocations by OrganizationID",
+    "name": "GetResourceLocationsByOrganizationID",
+    "group": "ResourceLocation",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "orgid",
+            "description": "<p>Organization unique ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "json",
+            "description": "<p>The result data in the form of a json array of ResourceLocation objects.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "result",
+            "description": "<p>Result message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "error",
+            "description": "<p>Error message.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/resourcelocation.js",
+    "groupTitle": "ResourceLocation",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Basic Authorization header with API Key &amp; API Secret.</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "401",
+            "description": "<p>Unauthorized.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object",
+            "optional": false,
+            "field": "500",
+            "description": "<p>Internal Server Error.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "500.result",
+            "description": "<p>error.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object",
+            "optional": false,
+            "field": "500.err",
+            "description": "<p>Error Message.</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "api/resourcelocation/",
+    "title": "Insert a new ResourceLocation",
+    "name": "PostResourceLocation",
+    "group": "ResourceLocation",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "JSON",
+            "optional": false,
+            "field": "body",
+            "description": "<p>representation of the ResourceLocation object to insert in JSON format</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "body.EventID",
+            "description": "<p>An Event ID for the Event associated with the ResourceLocation</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "body.OrganizationID",
+            "description": "<p>An Organization ID for the Organization associated with the ResourceLocation</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "body.ResourceLocationTypeID",
+            "description": "<p>The ResourceLocationType ID for the ResourceLocation object.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "body.ResourceLocationStatusID",
+            "description": "<p>The ResourceLocationStatus ID for the ResourceLocation object.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "body.Description",
+            "description": "<p>Title/Description for the ResourceLocation</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "body.Notes",
+            "description": "<p>General Information and notes for the ResourceLocation</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Float",
+            "optional": false,
+            "field": "body.LAT",
+            "description": "<p>Lattitude coordinate for the location of the ResourceLocation</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Float",
+            "optional": false,
+            "field": "body.LONG",
+            "description": "<p>Longitude coordinate for the location of the ResourceLocation</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "body.PrimaryPOCName",
+            "description": "<p>Primary Point of Contact name for the ResourceLocation</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "body.PrimaryPOCPhone",
+            "description": "<p>Primary Point of Contact phone number for the ResourceLocation</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "body.SecondaryPOCName",
+            "description": "<p>Secondary Point of Contact name for the ResourceLocation</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "body.SecondaryPOCPhone",
+            "description": "<p>Secondary Point of Contact phone number for the ResourceLocation</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "The",
+            "description": "<p>ResourceLocation object created from the insert in json format.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "result",
+            "description": "<p>Result message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "error",
+            "description": "<p>Error message.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"result\": \"success\",\n  \"err\": \"\",\n  \"json\": \"<ResourceLocation object>\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "routes/resourcelocation.js",
+    "groupTitle": "ResourceLocation",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Basic Authorization header with API Key &amp; API Secret.</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "401",
+            "description": "<p>Unauthorized.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object",
+            "optional": false,
+            "field": "500",
+            "description": "<p>Internal Server Error.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "500.result",
+            "description": "<p>error.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object",
+            "optional": false,
+            "field": "500.err",
+            "description": "<p>Error Message.</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "put",
+    "url": "api/resourcelocation/:id",
+    "title": "Update a ResourceLocation",
+    "name": "UpdateResourceLocation",
+    "group": "ResourceLocation",
+    "description": "<p>This will update the Resource Location and will also update any associated ResourceLocationTransport objects to be assocuated with the ResourceLocation.  (Note: if no ResourceLocationTransport objects are included in the update then all current ResourceLocationTransport objects will be removed)</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The unique ID of the ResourceLocation to update</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "JSON",
+            "optional": false,
+            "field": "body",
+            "description": "<p>representation of the ResourceLocation object along with associated ResourceLocationTransports to update in JSON format</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "json",
+            "description": "<p>the number of rows updated.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "result",
+            "description": "<p>Result message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "error",
+            "description": "<p>Error message.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"result\": \"success\",\n    \"err\": \"\",\n    \"json\": {\n      \"rows\": [\n        3\n      ]\n    },\n    \"length\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "routes/resourcelocation.js",
+    "groupTitle": "ResourceLocation",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Basic Authorization header with API Key &amp; API Secret.</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "401",
+            "description": "<p>Unauthorized.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object",
+            "optional": false,
+            "field": "500",
+            "description": "<p>Internal Server Error.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "500.result",
+            "description": "<p>error.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object",
+            "optional": false,
+            "field": "500.err",
+            "description": "<p>Error Message.</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "delete",
     "url": "api/resourcerequest/:id",
     "title": "Delete a ResourceRequest",
     "name": "DeleteResourceRequest",
