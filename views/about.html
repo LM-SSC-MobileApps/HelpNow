@@ -1,5 +1,5 @@
 ﻿<div ng-controller="AboutCtrl">
-    <div class="col-md-9">
+    <div class="col-md-9" ng-show="isEnglish">
         <p>When disaster strikes, first responders need to know what areas have been hit the hardest and what resources are available to help, without delay. To meet this challenge, the Global Agenda Council on Space is leading development of <b style="color: #b5b9dc"><i>HelpNow™</i></b>, a free, open-source web tool that uses the power of space technologies to <b style="color: #b5b9dc"><i>deliver accurate, up-to-date information</i></b> rapidly to humanitarian relief efforts.</p><br />
         <h4 style="color: white;">Map-Based Interface</h4>
         <p>HelpNow integrates data from imaging satellites, communication networks and GPS as well as aid organizations and social media. From this data, the software generates a <b style="color: #b5b9dc"><i>simple, map-based user interface</i></b> that displays disaster-relief information using <b style="color: #b5b9dc"><i>intuitive icons.</i></b></p><br />
@@ -10,7 +10,15 @@
         <h4 style="color: white;">Next Steps</h4>
         <p>A select team from Lockheed Martin is developing the software, incorporating input from experts in the field of humanitarian aid. The <b style="color: #b5b9dc"><i>prototype, v0.1,</i></b> can be viewed at : <a href="http://helpnowmap.com">http://helpnowmap.com</a>. The <b style="color: #b5b9dc"><i>first version of the tool, v1.0,</i></b> will be available for use in June 2016. The site chosen for initial testing of HelpNow is <b style="color: #b5b9dc"><i>Bangladesh</i></b>, a nation challenged by severe seasonal flooding.</p><br />
     </div>
-    <div class="col-md-3">
+    <div class="col-md-12" ng-hide="isEnglish">
+        <p>{{text.about_text_para_1}}</p>
+        <p>{{text.about_text_para_2}}</p>
+        <p>{{text.about_text_para_3}}</p>
+        <p>{{text.about_text_para_4}}</p>
+        <p>{{text.about_text_para_5}}</p>
+        <p>{{text.about_text_para_6}}</p>
+    </div>
+    <div class="col-md-3" ng-show="isEnglish">
         <div class="row">
             <div class="col-md-12">
                 <div class="well">
@@ -22,13 +30,13 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3" ng-show="isEnglish">
         <div class="row">
             <div class="col-md-12">
                 <div class="well">
                     <div class="row">
                         <h4 align="center" style="color: white;">Thank You</h4>
-                        <p>Lockheed Martin, Digital Globe, Amazon, Satellite Applications Catapult, Causelabs, DMCii, Deimos Imagery, Institute of Air and Space Law at McGill University. </p>
+                        <p>Lockheed Martin, Digital Globe, Amazon, Satellite Applications Catapult, Causelabs, DMCii, Deimos Imagery, Institute of Air and Space Law at McGill University, eGEOS. </p>
                     </div>
                 </div>
             </div>
