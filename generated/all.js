@@ -2122,7 +2122,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        loadRequests();
 	    }
 
-	    var dataRefreshTaskID = setInterval(loadRequests, 2000);
+	    var dataRefreshTaskID = setInterval(loadRequests, 10000);
 
 	    $scope.$on('$destroy', function () {
 	        clearInterval(dataRefreshTaskID);
