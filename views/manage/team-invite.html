@@ -1,10 +1,10 @@
 <div ng-controller="TeamInviteCtrl">
     <div class="row">
         <div class="col-xs-1 ">
-            <img ng-src="style/images/Invitation.png" style="height: 50px; width: 45px;" alt="Team Invite"/>
+            <img ng-src="style/images/Invitation.png" style="height: 50px; width: 45px;" />
         </div>
         <div class="col-xs-1 ">
-            <h4>Invitation</h4>
+            <h4>{{text.invitation_label}}</h4>
         </div>
         <div class="col-xs-offset-8 col-xs-2">
             <button type="button" class="close" style="" ng-click="go('/manage')">&times;</button>
@@ -14,34 +14,34 @@
         <form class="form-horizontal" name="teamInviteForm" novalidate role="form" ng-submit="sendInvite(newInvite)">
             <div class="form-group"
                  ng-class="{'has-error' : (teamInviteForm.firstName.$invalid  && teamInviteForm.firstName.$touched)  }" >
-                <label for="firstName" class="col-xs-3 control-label">First Name</label>
+                <label for="firstName" class="col-xs-3 control-label">{{text.first_name_label}}</label>
 
                 <div class="col-xs-9">
                     <input type="text" id="firstName" name="firstName" class="form-control" ng-model="newInvite.FirstName"  ng-maxlength="50" required   />
                 <span class="help-block"
-                      ng-if="teamInviteForm.firstName.$error.required">First Name is required</span>
+                      ng-if="teamInviteForm.firstName.$error.required">{{text.first_name_required_label}}</span>
                 </div>
             </div>
             <div class="form-group" ng-class="{'has-error' : (teamInviteForm.lastName.$invalid  && teamInviteForm.lastName.$touched) }" >
-                <label for="firstName" class="col-sm-3 control-label">Last Name</label>
+                <label for="firstName" class="col-sm-3 control-label">{{text.last_name_label}}</label>
 
                 <div class="col-xs-9">
                     <input type="text" id="lastName" name="lastName" class="form-control"  ng-model="newInvite.LastName" required />
                 <span class="help-block"
-                      ng-if="teamInviteForm.lastName.$error.required">Last Name is required</span>
+                      ng-if="teamInviteForm.lastName.$error.required">{{text.last_name_required_label}}</span>
                 </div>
             </div>
             <div class="form-group" >
-                <label for="email" class="col-xs-3 control-label">Email</label>
+                <label for="email" class="col-xs-3 control-label">{{text.email_label}}</label>
 
                 <div class="col-xs-9">
                     <input type="email" id="email" name="email" ng-model="newInvite.Email" class="form-control"
                             ng-required="true"/>
-                    <span class="help-block hide">A valid email is required</span>
+                    <span class="help-block hide">{{text.valid_email_label}}</span>
                 </div>
             </div>
             <div class="col-xs-2 col-xs-offset-10">
-                <input type="submit" class="btn btn-primary "     value="Send Invite"/>
+                <input type="submit" class="btn btn-primary "     value="{{text.btn_send_invite}}"/>
             </div>
         </form>
     </div>

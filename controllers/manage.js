@@ -69,9 +69,11 @@ angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$re
 		$scope.modalInstance = $uibModal.open(
 				{
 					templateUrl: '/manage/teammember-modal-delete.html',
+					scope: $scope,
 					controller: function ($scope) {
 						this.teamMember = teamMember;
 						this.Account = Account;
+						this.text = $scope.text;
 
 						$scope.deleteMember = function () {
 							Account.delete({id: teamMember.AccountID});
@@ -84,6 +86,10 @@ angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$re
 
 	$scope.enterAddress = function () {
 	    $location.path('/org_address/' + $scope.currentOrg.OrganizationID);
+	};
+
+	$scope.editAPI = function () {
+	    $location.path('/add_org/' + $scope.currentOrg.OrganizationTypeID + '/' + $scope.currentOrg.OrganizationID);
 	};
 
 	$scope.go = function ( path ) {

@@ -48,7 +48,7 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 		    templateUrl: "views/admin/administration.html"
 		});
 
-		$routeProvider.when("/add_org/:orgTypeID", {
+		$routeProvider.when("/add_org/:orgTypeID/:orgID", {
 		    templateUrl: "views/admin/add-organization.html"
 		});
 
@@ -103,6 +103,9 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 angular.module("helpNow").controller("AboutCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function ($scope, $http, $location, $routeParams, $resource) {
     $scope.setCurrentView("about");
     $scope.setTitle($scope.text.about_title);
+
+    $scope.getCurrentLanguage();
+    if ($scope.currentLanguage == 'Eng') $scope.isEnglish = true;
 }]);
 angular.module("helpNow").controller("AdministrationCtrl", ["$scope", "$location", "$resource", "Organization", "$uibModal", function ($scope, $location, $resource, Organization, $uibModal) {
     $scope.setTitle($scope.text.admin_title);
@@ -240,16 +243,16 @@ angular.module("helpNow").controller("AdministrationCtrl", ["$scope", "$location
  * AssignPocCtrl
  */
 
-angular.module("helpNow").controller("AssignPocCtrl", ["$scope", "$resource", "$routeParams", "Organization" , "$location", "$uibModal",
-    function ($scope, $resource, $routeParams, Organization , $location, $uibModal) {
+angular.module("helpNow").controller("AssignPocCtrl", ["$scope", "$resource", "$routeParams", "Organization", "$location", "$uibModal",
+    function ($scope, $resource, $routeParams, Organization, $location, $uibModal) {
 
 
-       $scope.teamResource  = $resource("/api/account/organizationmembers/:accountid",
+        $scope.teamResource = $resource("/api/account/organizationmembers/:accountid",
             {accountid: $scope.currentUser.AccountID});
 
 
-        $scope.loadTeam = function() {
-            $scope.teamResource.get({}, function(data) {
+        $scope.loadTeam = function () {
+            $scope.teamResource.get({}, function (data) {
                 $scope.team = data.json;
                 $scope.$broadcast("TeamDataLoaded", {});
             });
@@ -258,12 +261,12 @@ angular.module("helpNow").controller("AssignPocCtrl", ["$scope", "$resource", "$
         $scope.loadTeam();
 
 
-        $scope.orgResource  = $resource("/api/organization/:id",
+        $scope.orgResource = $resource("/api/organization/:id",
             {id: $scope.currentOrg.OrganizationID});
 
 
-        $scope.loadOrg = function() {
-            $scope.orgResource.get({}, function(data) {
+        $scope.loadOrg = function () {
+            $scope.orgResource.get({}, function (data) {
                 orgs = data.json;
                 $scope.org = orgs[0];
                 console.log("org.PrimaryPOC: " + $scope.org.PrimaryPOC);
@@ -279,7 +282,9 @@ angular.module("helpNow").controller("AssignPocCtrl", ["$scope", "$resource", "$
             $scope.modalInstance = $uibModal.open(
                 {
                     templateUrl: '/manage/team-poc-modal-confirm.html',
+                    scope: $scope,
                     controller: function ($scope) {
+                        this.text = $scope.text;
 
                         $scope.confirm = function () {
                             $location.path("/manage");
@@ -290,17 +295,12 @@ angular.module("helpNow").controller("AssignPocCtrl", ["$scope", "$resource", "$
         };
 
 
-
-
-
-
-
         $scope.go = function (path) {
-        $location.path(path);
-    };
+            $location.path(path);
+        };
 
 
-}]);
+    }]);
 /**
  * DemoCtrl
  */
@@ -1974,9 +1974,11 @@ angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$re
 		$scope.modalInstance = $uibModal.open(
 				{
 					templateUrl: '/manage/teammember-modal-delete.html',
+					scope: $scope,
 					controller: function ($scope) {
 						this.teamMember = teamMember;
 						this.Account = Account;
+						this.text = $scope.text;
 
 						$scope.deleteMember = function () {
 							Account.delete({id: teamMember.AccountID});
@@ -1989,6 +1991,10 @@ angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$re
 
 	$scope.enterAddress = function () {
 	    $location.path('/org_address/' + $scope.currentOrg.OrganizationID);
+	};
+
+	$scope.editAPI = function () {
+	    $location.path('/add_org/' + $scope.currentOrg.OrganizationTypeID + '/' + $scope.currentOrg.OrganizationID);
 	};
 
 	$scope.go = function ( path ) {
@@ -2118,7 +2124,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        loadRequests();
 	    }
 
-	    var dataRefreshTaskID = setInterval(loadRequests, 2000);
+	    var dataRefreshTaskID = setInterval(loadRequests, 10000);
 
 	    $scope.$on('$destroy', function () {
 	        clearInterval(dataRefreshTaskID);
@@ -2701,7 +2707,30 @@ angular.module("helpNow").controller("OrganizationAddCtrl", ["$scope", "$resourc
     $scope.orgTypeID = $routeParams.orgTypeID * 1;
     $scope.newOrg = new Organization();
     $scope.newOrg.OrganizationTypeID = $scope.orgTypeID;
+    $scope.newOrg.CreateDate = new Date();
     $scope.orgType = $scope.orgTypeID == 1 ? $scope.text.gov_name_label : $scope.text.org_name_label;
+
+    $scope.orgResource = $resource("/api/organization/:id");
+
+    $scope.orgID = $routeParams.orgID * 1;
+    if ($scope.orgID == 0) $scope.isNew = true;
+    $scope.loadOrg = function () {
+        $scope.orgResource.get({ id: $scope.orgID }, function (data) {
+            $scope.org = data.json[0];
+            if ($scope.org.Name != null) {
+                $scope.newOrg.Name = $scope.org.Name;
+            }
+            if ($scope.org.APISecret != null) {
+                $scope.newOrg.APISecret = $scope.org.APISecret;
+            }
+        });
+    };
+
+    function loadOrgAddress() {
+        if(!$scope.isNew) $scope.loadOrg();
+    }
+
+    loadOrgAddress();
 
     $scope.setTitle($scope.text.create + " " + $scope.orgType);
 
@@ -2710,20 +2739,30 @@ angular.module("helpNow").controller("OrganizationAddCtrl", ["$scope", "$resourc
     };
 
     $scope.addOrg = function (org) {
-        if (org.Name === undefined || org.Name == null) {
+        if (org.Name === undefined || org.Name == null || org.APISecret === undefined || org.APISecret == null) {
             alert($scope.text.missing_fields_alert);
             return;
         }
-        Organization.save(org).$promise.then(function (response) {
-            $location.path('/administration');
-        },
-        function (response) { // optional
-            alert("Error: " + response.data.err);
-        });;
+        if ($scope.isNew) {
+            Organization.save(org).$promise.then(function (response) {
+                $location.path('/administration');
+            },
+            function (response) { // optional
+                alert("Error: " + response.data.err);
+            });;
+        }
+        else {
+            Organization.update({id: $scope.orgID}, org).$promise.then(function (response) {
+                $location.path('/administration');
+            },
+            function (response) { // optional
+                alert("Error: " + response.data.err);
+            });;
+        }
     };
 
     $scope.enterAddress = function (org) {
-        if (org.Name === undefined || org.Name == null) {
+        if (org.Name === undefined || org.Name == null || org.APISecret === undefined || org.APISecret == null) {
             alert($scope.text.missing_fields_alert);
             return;
         }
@@ -2859,9 +2898,11 @@ angular.module("helpNow").controller("RegulationEditCtrl", ["$scope", "$resource
         $scope.modalInstance = $uibModal.open(
             {
                 templateUrl: '/manage/regulations-modal-delete.html',
+                scope: $scope,
                 controller: function ($scope) {
                     this.regulation = regulation;
                     this.Regulation = Regulation;
+                    this.text = $scope.text;
 
                     $scope.deleteReg = function () {
                         console.log("regulation.OrganizationRegulationsID" + regulation.OrganizationRegulationsID);
@@ -2998,6 +3039,26 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
 				.error(function (data) {
 				    console.log("setCurrentLanguage: " + data);
 				});
+        else if (language == "Fre") {
+            $http.get("i18n/text-FRE.json")
+                .success(function (data) {
+                    $scope.text = data;
+                    $route.reload();
+                })
+                .error(function (data) {
+                    console.log("setCurrentLanguage: " + data);
+                });
+        }
+        else if (language == "Esp") {
+            $http.get("i18n/text-ESP.json")
+				.success(function (data) {
+				    $scope.text = data;
+				    $route.reload();
+				})
+				.error(function (data) {
+				    console.log("setCurrentLanguage: " + data);
+				});
+        }
         else {
             $http.get("i18n/text-ENG.json")
 				.success(function (data) {
@@ -3008,6 +3069,10 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
 				    console.log("setCurrentLanguage: " + data);
 				});
         }
+    };
+
+    $scope.getCurrentLanguage = function () {
+        $scope.currentLanguage = currentLanguage;
     };
 
     $scope.getLanguageClass = function (language) {
@@ -3319,8 +3384,10 @@ angular.module("helpNow").controller("TeamInviteCtrl", ["$scope", "$resource", "
         $scope.modalInstance = $uibModal.open(
             {
                 templateUrl: '/manage/team-invite-modal-confirm.html',
+                scope: $scope,
                 controller: function ($scope) {
                     this.invitation = invitation;
+                    this.text = $scope.text;
                     $scope.confirm = function () {
                         $location.path("/manage");
                     };
@@ -3430,42 +3497,23 @@ angular.module("helpNow").directive('map', function () {
 			    attribution: '(c) <a href="http://microsites.digitalglobe.com/interactive/basemap_vivid/">DigitalGlobe</a> , (c) OpenStreetMap, (c) Mapbox'
 			});*/
 
-            var dharaharaBefore = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/dharahara_tower_before/{z}/{x}/{y}.png', {
-                minZoom: 2,
+            var nepal = L.tileLayer('http://www.helpnowmap.com/nepal/{z}/{x}/{y}.png', {
+                minZoom: 11,
                 maxZoom: 19,
-                attribution: '(c) <a href="https://www.digitalglobe.com/">DigitalGlobe 2015</a>'
+                attribution: '(c) <a href="http://www.digitalglobe.com/">DigitalGlobe</a>'
             });
 
-            var dharaharaAfter = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/dharahara_tower_after/{z}/{x}/{y}.png', {
-                minZoom: 2,
-                maxZoom: 19,
-                attribution: '(c) <a href="https://www.digitalglobe.com/">DigitalGlobe 2015</a>'
-            });
-
-            var nepalBefore = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/nepal/{z}/{x}/{y}.png', {
-                minZoom: 2,
-                maxZoom: 19,
-                attribution: '(c) <a href="http://www.dmcii.com/">DMC International Imaging</a>'
-            });
-
-            var nepalAfter = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/nepal/{z}/{x}/{y}.png', {
-                minZoom: 2,
-                maxZoom: 19,
-                attribution: '(c) <a href="http://www.dmcii.com/">DMC International Imaging</a>'
-            });
-
-            var bangladeshBefore = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/bangladesh/{z}/{x}/{y}.png', {
+            var bangladesh = L.tileLayer('http://www.helpnowmap.com/bangladesh/{z}/{x}/{y}.png', {
                 tms: true,
-                minZoom: 2,
-                maxZoom: 19,
+                minZoom: 6,
+                maxZoom: 12,
                 attribution: '(c) <a href="http://www.dmcii.com/">DMC International Imaging</a>'
             });
 
-            var bangladeshAfter = new L.tileLayer('https://s3-ap-northeast-1.amazonaws.com/helpnowstatic/bangladesh/{z}/{x}/{y}.png', {
-                tms: true,
-                minZoom: 2,
+            var bangladeshDG = L.tileLayer('http://www.helpnowmap.com/bangladeshdg/{z}/{x}/{y}.png', {        
+                minZoom: 11,
                 maxZoom: 19,
-                attribution: '(c) <a href="http://www.dmcii.com/">DMC International Imaging</a>'
+                attribution: '(c) <a href="http://www.digitalglobe.com/">DigitalGlobe</a>'
             });
 
             var vivid = new L.tileLayer('https://{s}.tiles.mapbox.com/v4/digitalglobe.n6ngnadl/{z}/{x}/{y}.png?access_token=' + api_key, {
@@ -3506,13 +3554,13 @@ angular.module("helpNow").directive('map', function () {
             var baselayers = {
                 "Base Open Street Maps": openStreetMap,
                 "DigitalGlobe Basemap +Vivid with Streets": baseLayer,
-                "DigitalGlobe Basemap: REST": GBMREST
+                "DigitalGlobe Basemap": GBMREST
             };
 
             var overlays = {
-                "Bangladesh": bangladeshBefore,
-                "Nepal": nepalBefore,
-                "Dharahara After": dharaharaAfter
+                "Bangladesh (DG)": bangladeshDG,
+		"Bangladesh": bangladesh,
+                "Nepal (DG)": nepal
             };
 
             L.control.layers(baselayers, overlays, {
@@ -3536,6 +3584,7 @@ angular.module("helpNow").directive('map', function () {
         }
     };
 });
+
 angular.module('helpNow').factory('Account', function ($resource) {
     return $resource('api/account/:id', null ,{
         update: {

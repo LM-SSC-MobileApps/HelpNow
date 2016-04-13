@@ -18,9 +18,11 @@ angular.module("helpNow").controller("RegulationEditCtrl", ["$scope", "$resource
         $scope.modalInstance = $uibModal.open(
             {
                 templateUrl: '/manage/regulations-modal-delete.html',
+                scope: $scope,
                 controller: function ($scope) {
                     this.regulation = regulation;
                     this.Regulation = Regulation;
+                    this.text = $scope.text;
 
                     $scope.deleteReg = function () {
                         console.log("regulation.OrganizationRegulationsID" + regulation.OrganizationRegulationsID);
