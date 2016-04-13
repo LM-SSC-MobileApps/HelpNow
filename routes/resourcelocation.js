@@ -1,7 +1,8 @@
 
 var models = require('../models'),
     express = require('express'),
-    promise = require('bluebird');
+    promise = require('bluebird'),
+	geoRouting = require('../modules/routing');
 
 //ResourceLocation one-to-many on ResourceLocationInventory
 models.ResourceLocation.hasMany(models.ResourceLocationInventory, { foreignKey: 'ResourceLocationID' });
@@ -38,6 +39,34 @@ models.ResourceType.hasMany(models.ResourceLocationInventory, { foreignKey: 'Res
 //ResourceLocationInventory many-to-one on ResourceTypeUnitOfMeasure
 models.ResourceLocationInventory.belongsTo(models.ResourceTypeUnitOfMeasure, { foreignKey: 'ResourceTypeUnitOfMeasureID' });
 models.ResourceTypeUnitOfMeasure.hasMany(models.ResourceLocationInventory, { foreignKey: 'ResourceTypeUnitOfMeasureID' });
+
+function findAllDistCenters() {
+	return models.ResourceLocation.findAll(
+		{
+			include: [
+			{
+				model: models.Organization,
+				required: true
+            },
+            {
+				model: models.ResourceLocationType,
+				where: {
+					Description: "Distribution Center"
+				}
+            },
+			{
+				model: models.ResourceLocationInventory,
+				required: false,
+				include: [
+				{
+					model: models.ResourceType
+				},
+				{
+					model: models.ResourceTypeUnitOfMeasure
+				}]
+			}]
+        });
+}
 
 var routes = function () {
     var router = express.Router();
@@ -137,33 +166,9 @@ var routes = function () {
   }
   )
   
-	//find Distribution Centers
+	//find all distribution centers
 	.get('/dist-center/all', function(req, res) {
-		models.ResourceLocation.findAll(
-		{
-			include: [
-			{
-				model: models.Organization,
-				required: true
-            },
-            {
-				model: models.ResourceLocationType,
-				where: {
-					Description: "Distribution Center"
-				}
-            },
-			{
-				model: models.ResourceLocationInventory,
-				required: false,
-				include: [
-				{
-					model: models.ResourceType
-				},
-				{
-					model: models.ResourceTypeUnitOfMeasure
-				}]
-			}]
-        }).then(function (centers) {
+		findAllDistCenters().then(function (centers) {
 			res.statusCode = 200;
 			res.send(
             {
@@ -171,6 +176,31 @@ var routes = function () {
                 err: '',
                 json: centers,
                 length: centers.length
+            });
+		}).catch(function (err) {
+			console.error(err);
+			res.statusCode = 502;
+			res.send({
+				result: 'error',
+				err: err.message
+			});
+		});
+	})
+	
+	//find nearest distribution centers
+	.get('/dist-center/nearest/:loc', function(req, res) {
+		var location = req.params.loc;
+		findAllDistCenters()
+		.then(function (allCenters) {
+			return geoRouting.findNearestDistCenters(allCenters, location);
+		}).then(function (nearestCenters) {
+			res.statusCode = 200;
+			res.send(
+            {
+                result: 'success',
+                err: '',
+                json: nearestCenters,
+                length: nearestCenters.length
             });
 		}).catch(function (err) {
 			console.error(err);

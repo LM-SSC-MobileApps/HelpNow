@@ -1,11 +1,13 @@
-angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", "$resource", "$sce", "$location",
-	function ($scope, $routeParams, $resource, $sce, $location) {
+angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", "$resource", "$sce", "$location", "$http",
+	function ($scope, $routeParams, $resource, $sce, $location, $http) {
 	    var map;
 	    var mapLayers = [];
+		var routeColors = ["#fcff00", "#ff00e4", "#00ffc6"];
 	    $scope.setCurrentView("events");
 
 	    $scope.requestsResource = $resource("/api/event/mapitems/:eventID");
-
+		$scope.matchingResource = $resource("/api/resourcelocation/dist-center/nearest/:loc");
+	
 	    $scope.eventID = $routeParams.eventID * 1;
 	    if ($scope.events) {
 	        $scope.event = $scope.getEvent($scope.eventID);
@@ -292,6 +294,18 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            mapLayers.push(marker);
 	        });
 	    }
+		
+		$scope.getRouteColor = function(index) {
+			return routeColors[index];
+		}
+		
+		function buildRoutes() {
+			
+			angular.forEach($scope.matches, function(match, index) {
+				var polyline = L.polyline(match.Route, {color: routeColors[index]});
+				mapLayers.push(polyline);
+			});
+		}
 
 	    function updateMap() {
 			if (!map || !$scope.events) return;
@@ -325,6 +339,9 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 
 	        if ($scope.showDistCenterMarkers)
 	            buildDistCenterMarkers();
+			
+			if ($scope.showFindResults && $scope.matches)
+				buildRoutes();
 			
 	        angular.forEach(mapLayers, function (layer) {
 	            map.addLayer(layer);
@@ -450,10 +467,11 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        if ($scope.showFindPanel) {
 	            $scope.showDistCenterMarkers = true;
 	            requestLocation();
-	            updateMap();
 	        } else {
 	            removeLocationMarker();
+				delete $scope.matches;
 	        }
+	        updateMap();
 	    };
 
 	    $scope.toggleDeployPanel = function () {
@@ -528,8 +546,16 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            return false;
 	        }
 
-	        $scope.matches = matchDistributionCenters();
-	        $scope.showFindResults = true;
+	        //$scope.matches = matchDistributionCenters();
+			var locationString = $scope.mappingLoc.LAT + "," + $scope.mappingLoc.LONG;
+			$scope.matchingResource.get({ loc: locationString }, function (data) {
+				$scope.matches = data.json;
+				$scope.hasMatches = $scope.matches.length > 0;
+				console.log($scope.matches[0]);
+				$scope.showFindResults = true;
+				updateMap();
+	        });
+	        
 	        return false;
 	    };
 
@@ -539,7 +565,9 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	    };
 
 	    $scope.backToFind = function () {
+			delete $scope.matches;
 	        $scope.showFindResults = false;
+			updateMap();
 	        return false;
 	    };
 

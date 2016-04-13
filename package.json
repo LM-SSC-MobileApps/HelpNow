@@ -33,6 +33,7 @@
     "passport-http": "^0.3.0",
     "passport-local": "^1.0.0",
     "passport-twitter": "^1.0.2",
+    "request-promise": "^2.0.1",
     "sequelize": "^3.9.0",
     "sequelize-auto": "0.0.7",
     "sequelize-cli": "^1.9.1",

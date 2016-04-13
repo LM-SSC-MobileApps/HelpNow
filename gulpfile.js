@@ -56,6 +56,7 @@ gulp.task('default', ['scripts-min', 'style', 'watch'], function () {
             SSL_PORT: 4443,
             ENABLE_REDIRECT: false,
             NODE_ENV: 'local-dev',
+			HTTP_PROXY: 'http://proxy-den.global.lmco.com:80',
             ENVIRONMENT: 'development' // Types include development, qas & production
         },
         ignore: ['./node_modules/**', 'generated/*', 'app.js', 'controllers/*.js', 'directives/*.js', 'factories/*.js']
