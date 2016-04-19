@@ -8,6 +8,10 @@ body {
   color: #eee;
 }
 
+.well p {
+  padding: 10px;
+}
+
 footer h6 {
   color: #deefff;
 }
@@ -72,6 +76,7 @@ h5 {
 
 .resource-img {
   margin-right: 10px;
+  margin-bottom: 5px;
   width: 50px;
 }
 
@@ -552,4 +557,8 @@ input.switch:checked ~ label:after {
 .form-group.has-error .help-block {
   display: block;
   color: red;
+}
+
+#header-row {
+  margin-bottom: 10px;
 }

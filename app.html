@@ -90,19 +90,14 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <div class="row">
+                        <div id="header-row" class="row">
                             <div class="col-md-8">
                                 <h3><img id="event-header-icon" ng-show="imageSrc" src="{{imageSrc}}" />{{title}}</h3>
                             </div>
                             <div class="col-md-4" ng-show="currentUser">
-                                <table>
-                                    <tr>
-                                        <td><h5>{{text.user_label}}: {{currentUser.FirstName + " " + currentUser.LastName + ", " + currentUser.OrganizationName}}</h5></td>
-                                        <td><br /></td>
-                                        <td>&nbsp;</td>
-                                        <td><a id="btn-logout" class="btn btn-primary pull-right" ng-click="redirectToLogout()"><span></span>{{text.logout}}</a></td>
-                                    </tr>
-                                </table>
+                                <h5><a id="btn-logout" class="btn btn-primary pull-right" ng-click="redirectToLogout()"><span></span>{{text.logout}}</a>
+									{{text.user_label}}: {{currentUser.FirstName + " " + currentUser.LastName + ", " + currentUser.OrganizationName}}
+								</h5> 
                             </div>
                             <div class="col-md-4" ng-show="getShowLogin()">
                                 <a id="btn-login" class="btn btn-primary pull-right" ng-click="redirectToLogin()"><span></span>{{text.login}}</a>
