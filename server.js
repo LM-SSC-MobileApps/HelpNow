@@ -34,6 +34,7 @@ var resourceTypeUnitOfMeasureRouter = require('./routes/resourcetypeunitofmeasur
 var responseStateRouter = require('./routes/responsestate')();
 var requestUrgencyRouter = require('./routes/requesturgency')();
 var requestInviteRequestRouter = require('./routes/inviterequest')();
+var blockageRouter = require('./routes/blockage')();
 
 var app = express();
 
@@ -83,6 +84,7 @@ app.use('/api/resourcetypeunitofmeasure', resourceTypeUnitOfMeasureRouter);
 app.use('/api/responsestate', responseStateRouter);
 app.use('/api/requesturgency', requestUrgencyRouter);
 app.use('/api/inviterequest', requestInviteRequestRouter);
+app.use('/api/blockage', blockageRouter);
 
 //set the express.static locations to serve up the static files
 app.use(express.static('views'));

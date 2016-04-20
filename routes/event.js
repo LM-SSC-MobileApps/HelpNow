@@ -7,6 +7,10 @@ var models  = require('../models'),
 models.Event.hasMany(models.EventLocation, {foreignKey: 'EventID'});
 models.EventLocation.belongsTo(models.Event, {foreignKey: 'EventID'});
 
+//Event one-to-many on EventLocation    
+models.Event.hasMany(models.Blockage, {foreignKey: 'EventID'});
+models.Blockage.belongsTo(models.Event, {foreignKey: 'EventID'});
+
 //Event many-to-one on EventType
 models.Event.belongsTo(models.EventType, { foreignKey: 'EventTypeID' });
 models.EventType.hasMany(models.Event, { foreignKey: 'EventTypeID' });
@@ -78,7 +82,8 @@ var routes = function(){
          * @apiSuccess {String}   json.Notes Event description or additional information.
          * @apiSuccess {Boolean}   json.Active Status of the event.
          * @apiSuccess {Date}   json.CreateDate Date & Time the Event was created in the system.
-         * @apiSuccess {Object[]}   json.EventLocations An Array of EventLocations for the event.
+         * @apiSuccess {Object[]}   json.EventLocations An Array of EventLocations for the event
+         * @apiSuccess {Object[]}   json.Blockages An Array of Blockages for the event.
          * @apiSuccess {Object}   json.EventType the EventType object associated with the event.
          * @apiSuccess {Object}   json.Organization the Organization object associated with the event.
          * @apiSuccess {Object[]}   json.ResourceRequests An Array of ResourceRequests for the event.
@@ -94,6 +99,7 @@ var routes = function(){
           include: [
             
             {model: models.EventLocation},
+            {model: models.Blockage},
             {model: models.EventType},
             {model: models.Organization},
             {model: models.ResourceRequest},
@@ -266,6 +272,7 @@ var routes = function(){
          * @apiSuccess {Boolean}   json.Active Status of the event.
          * @apiSuccess {Date}   json.CreateDate Date & Time the Event was created in the system.
          * @apiSuccess {Object[]}   json.EventLocations An Array of EventLocations for the event.
+         * @apiSuccess {Object[]}   json.Blockages An Array of Blockages for the event.
          * @apiSuccess {Object}   json.EventType the EventType object associated with the event.
          * @apiSuccess {Object}   json.Organization the Organization object associated with the event.
          * @apiSuccess {Object[]}   json.ResourceRequests An Array of ResourceRequests for the event.
@@ -280,6 +287,7 @@ var routes = function(){
           include: [
             {model: models.ResourceLocation},
             {model: models.EventLocation},
+            {model: models.Blockage},
             {model: models.EventType},
             {model: models.Organization},
             {model: models.ResourceRequest}
