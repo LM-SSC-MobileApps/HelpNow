@@ -32,6 +32,10 @@ module.exports = function(sequelize, DataTypes) {
         type: DataTypes.DATE,
         allowNull: true,
         defaultValue: sequelize.fn("NOW")
+    },
+    Keywords: {
+      type: DataTypes.STRING,
+      allowNull: true
     }
   });
 };

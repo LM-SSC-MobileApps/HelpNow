@@ -7,6 +7,10 @@ var models  = require('../models'),
 models.Event.hasMany(models.EventLocation, {foreignKey: 'EventID'});
 models.EventLocation.belongsTo(models.Event, {foreignKey: 'EventID'});
 
+//Event one-to-many on SocialMedia
+models.Event.hasMany(models.SocialMedia, {foreignKey: 'EventID'});
+models.SocialMedia.belongsTo(models.Event, {foreignKey: 'EventID'});
+
 //Event one-to-many on Blockage
 models.Event.hasMany(models.Blockage, {foreignKey: 'EventID'});
 models.Blockage.belongsTo(models.Event, {foreignKey: 'EventID'});
@@ -99,6 +103,7 @@ var routes = function(){
           include: [
             
             {model: models.EventLocation},
+            {model: models.SocialMedia},
             {model: models.Blockage},
             {model: models.EventType},
             {model: models.Organization},
@@ -287,6 +292,7 @@ var routes = function(){
           include: [
             {model: models.ResourceLocation},
             {model: models.EventLocation},
+            {model: models.SocialMedia},
             {model: models.Blockage},
             {model: models.EventType},
             {model: models.Organization},
