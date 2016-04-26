@@ -27,6 +27,7 @@
     "gulp-nodemon": "^2.0.4",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.4.2",
+    "http": "0.0.0",
     "https": "^1.0.0",
     "jade": "~1.11.0",
     "morgan": "~1.6.1",
@@ -42,6 +43,7 @@
     "sequelize": "^3.9.0",
     "sequelize-auto": "0.0.7",
     "sequelize-cli": "^1.9.1",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "twitter": "^1.2.5"
   }
 }

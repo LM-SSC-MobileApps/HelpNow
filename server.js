@@ -35,6 +35,7 @@ var responseStateRouter = require('./routes/responsestate')();
 var requestUrgencyRouter = require('./routes/requesturgency')();
 var requestInviteRequestRouter = require('./routes/inviterequest')();
 var blockageRouter = require('./routes/blockage')();
+var socialMediaRouter = require('./routes/socialmedia')();
 
 var app = express();
 
@@ -61,6 +62,10 @@ app.use(
 var auth = require('./auth');
 auth.setupAuthentication(environment, port, ssl_port, app);
 
+var socialMedia = require('./modules/socialmedia');
+//socialMedia.setupTwitter();
+//socialMedia.searchTwitter('#HelpNow');
+
 app.use('/api/account', accountRouter);
 app.use('/api/accountrole', accountRoleRouter);
 app.use('/api/address', addressRouter);
@@ -85,6 +90,7 @@ app.use('/api/responsestate', responseStateRouter);
 app.use('/api/requesturgency', requestUrgencyRouter);
 app.use('/api/inviterequest', requestInviteRequestRouter);
 app.use('/api/blockage', blockageRouter);
+app.use('/api/socialmedia', socialMediaRouter);
 
 //set the express.static locations to serve up the static files
 app.use(express.static('views'));
