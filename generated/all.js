@@ -2116,6 +2116,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 
 	    $scope.requestsResource = $resource("/api/event/mapitems/:eventID");
 		$scope.matchingResource = $resource("/api/resourcelocation/dist-center/nearest/:loc");
+		$scope.BlockageResource = $resource("/api/blockage");
 	
 	    $scope.eventID = $routeParams.eventID * 1;
 	    if ($scope.events) {
@@ -2133,6 +2134,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	    $scope.requests = [];
 	    $scope.locations = [];
 	    $scope.distributionCenters = [];
+		$scope.blockages = [];
 
 	    $scope.showFilters = false;
 	    $scope.showFindPanel = false;
@@ -2140,6 +2142,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	    $scope.showMappingError = false;
 	    $scope.showDeployPanel = false;
 	    $scope.showDeploymentPanel = false;
+	    $scope.showBlockagePanel = false;
 
 	    var showHeatmap = JSON.parse(sessionStorage.getItem("showHeatmap"));
 	    var showClusters = JSON.parse(sessionStorage.getItem("showClusters"));
@@ -2206,8 +2209,9 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        showMedicine: false
 	    };
 
-	    $scope.mappingLoc = {}
-	    $scope.deployment = {}
+	    $scope.mappingLoc = {};
+	    $scope.deployment = {};
+		$scope.blockage = { EventID: $scope.eventID };
 
 	    $scope.locationPref = { value: 'Current' };
 
@@ -2222,6 +2226,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        $scope.showMappingError = false;
 	        $scope.showDeployPanel = false;
 	        $scope.showDeploymentPanel = false;
+			$scope.showBlockagePanel = false;
 	    };
 
 	    $scope.getMatchResources = function () {
@@ -2267,10 +2272,13 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	    function drawLocationMarker() {
 	        removeLocationMarker();
 
+			var markerOptions = { color: "#00ff00", opacity: 1, fillOpacity: 0.7 };
 	        if ($scope.showFindPanel && $scope.mappingLoc.LAT && $scope.mappingLoc.LONG) {
-	            $scope.locationOutline = L.circle([$scope.mappingLoc.LAT, $scope.mappingLoc.LONG], 250, { color: "#00ff00", opacity: 1, fillOpacity: 0.7 }).addTo(map);
+	            $scope.locationOutline = L.circle([$scope.mappingLoc.LAT, $scope.mappingLoc.LONG], 250, markerOptions).addTo(map);
 	        } else if ($scope.showDeployPanel && $scope.deployment.LAT && $scope.deployment.LONG) {
-	            $scope.locationOutline = L.circle([$scope.deployment.LAT, $scope.deployment.LONG], 250, { color: "#00ff00", opacity: 1, fillOpacity: 0.7 }).addTo(map);
+	            $scope.locationOutline = L.circle([$scope.deployment.LAT, $scope.deployment.LONG], 250, markerOptions).addTo(map);
+	        }else if ($scope.showBlockagePanel && $scope.blockage.LAT && $scope.blockage.LONG) {
+	            $scope.locationOutline = L.circle([$scope.blockage.LAT, $scope.blockage.LONG], 250, markerOptions).addTo(map);
 	        }
 	    }
 
@@ -2404,6 +2412,23 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        });
 	    }
 		
+		function buildBlockageMarkers() {
+	        if (!$scope.blockages) return;
+	        angular.forEach($scope.blockages, function (blockage) {
+	            var url = "style/images/Alert.png";
+	            var blockageIcon = L.icon({
+	                iconUrl: url,
+	                iconSize: [30, 30],
+	                iconAnchor: [15, 15]
+	            });
+
+	            var marker = L.marker([blockage.LAT, blockage.LONG], { icon: blockageIcon });
+				if (blockage.Description)
+					marker.bindPopup(blockage.Description);
+	            mapLayers.push(marker);
+	        });
+	    }
+		
 		$scope.getRouteColor = function(index) {
 			return routeColors[index];
 		}
@@ -2449,6 +2474,8 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        if ($scope.showDistCenterMarkers)
 	            buildDistCenterMarkers();
 			
+			buildBlockageMarkers();
+			
 			if ($scope.showFindResults && $scope.matches)
 				buildRoutes();
 			
@@ -2467,13 +2494,16 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        $scope.requestsResource.get({ eventID: $scope.eventID }, function (data) {
 	            var dataChanged = data.json.requests.length != $scope.requests.length
 					|| data.json.locations.length != $scope.locations.length
-					|| data.json.distributionCenters.length != $scope.distributionCenters.length;
+					|| data.json.distributionCenters.length != $scope.distributionCenters.length
+					|| data.json.blockages.length != $scope.blockages.length;
 
 	            if (dataChanged) {
 	                $scope.requestClusters = data.json.requestClusters;
 	                $scope.requests = data.json.requests;
 	                $scope.locations = data.json.locations;
 	                $scope.distributionCenters = data.json.distributionCenters;
+					$scope.blockages = data.json.blockages;
+					console.log($scope.blockages);
 	                updateMap();
 	            }
 	        });
@@ -2542,7 +2572,12 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	                $scope.deployment.LONG = e.latlng.lng.toFixed(3);
 	                drawLocationMarker();
 	                $scope.$digest();
-	            }
+	            } else if ($scope.showBlockagePanel) {
+					$scope.blockage.LAT = e.latlng.lat.toFixed(3);
+	                $scope.blockage.LONG = e.latlng.lng.toFixed(3);
+	                drawLocationMarker();
+	                $scope.$digest();
+				}
 	        });
 	        updateMap();
 	    };
@@ -2590,6 +2625,15 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            $scope.showDistCenterMarkers = true;
 	            updateMap();
 	        }
+	    }
+		
+		$scope.toggleBlockagePanel = function () {
+	        $scope.showBlockagePanel = !$scope.showBlockagePanel;
+	        if ($scope.showBlockagePanel) {
+	            requestLocation();
+	        } else {
+				removeLocationMarker();
+			}
 	    }
 
 	    function convertToRadians(degrees) {
@@ -2685,10 +2729,14 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	    };
 
 	    $scope.panelIsOpen = function () {
-	        return $scope.showFindPanel || $scope.showFilters || $scope.showDeployPanel || $scope.showDeploymentPanel;
+	        return $scope.showFindPanel || $scope.showFilters || $scope.showDeployPanel || $scope.showDeploymentPanel || $scope.showBlockagePanel;
 	    };
 
 	    $scope.createDeployment = function () {
+			if ($scope.locationPref.value == "Current") {
+				$scope.deployment.LAT = $scope.mappingLoc.LAT;
+				$scope.deployment.LONG = $scope.mappingLoc.LONG;
+			}
 	        var url = "create_deployment/" + $scope.eventID + "/" + $scope.deployment.LAT + "/" + $scope.deployment.LONG;
 	        $location.path(url);
 	    };
@@ -2696,7 +2744,26 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	    $scope.modifyDeployment = function () {
 	        var url = "modify_deployment/" + $scope.deployment.ResourceLocationID;
 	        $location.path(url);
-	    }
+	    };
+		
+		$scope.reportBlockage = function () {
+			if ($scope.locationPref.value == "Current") {
+				$scope.blockage.LAT = $scope.mappingLoc.LAT;
+				$scope.blockage.LONG = $scope.mappingLoc.LONG;
+			} else if (!$scope.blockage.LAT || !$scope.blockage.LAT) {
+				return;
+			}
+			
+			var newBlockage = new $scope.BlockageResource($scope.blockage);
+			
+			newBlockage.$save()
+				.then(function(res) {
+					$scope.toggleBlockagePanel();
+				})
+				.catch(function(req) {
+					alert(req.data.err);
+				});
+		};
 
 	    $scope.setCurrentView("org-event");
 	}]);
@@ -3585,21 +3652,6 @@ angular.module("helpNow").directive('map', function () {
     };
 });
 
-angular.module('helpNow').factory('ResourceLocationTransport', function ($resource) {
-    return $resource('api/resourcelocationtransport/:id', null, {
-        update: {
-            method: 'PUT'
-        }
-    });
-});
-angular.module('helpNow').factory('ResourceRequest', function ($resource) {
-    return $resource('api/resourcerequest/:id', null ,{
-        update: {
-            method: 'PUT'
-        }
-    });
-});
-
 angular.module('helpNow').factory('Account', function ($resource) {
     return $resource('api/account/:id', null ,{
         update: {
@@ -3712,8 +3764,22 @@ angular.module('helpNow').factory('ResourceLocationInventory', function ($resour
         }
     });
 });
+angular.module('helpNow').factory('ResourceLocationTransport', function ($resource) {
+    return $resource('api/resourcelocationtransport/:id', null, {
+        update: {
+            method: 'PUT'
+        }
+    });
+});
 angular.module('helpNow').factory('ResourceLocationType', function ($resource) {
     return $resource('api/resourcelocationtype/:id', null, {
+        update: {
+            method: 'PUT'
+        }
+    });
+});
+angular.module('helpNow').factory('ResourceRequest', function ($resource) {
+    return $resource('api/resourcerequest/:id', null ,{
         update: {
             method: 'PUT'
         }

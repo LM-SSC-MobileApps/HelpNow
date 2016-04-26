@@ -228,7 +228,13 @@ var routes = function(){
 		]
 	});
 	
-	
+	//load blockages
+	tasks[3] = models.Blockage.findAll (
+	{
+		where: {
+			EventID: req.params.eventID
+		}
+	});
 	
 	  //when all data is loaded, send the response
 	  promise.all(tasks)
@@ -237,7 +243,8 @@ var routes = function(){
 			requestClusters: results[0].requestClusters,
 			requests: results[0].requests,
 			locations: results[1],
-			distributionCenters: results[2]
+			distributionCenters: results[2],
+			blockages: results[3]
 		};
 		res.statusCode = 200;
         res.send(

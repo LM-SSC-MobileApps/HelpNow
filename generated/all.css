@@ -6895,3 +6895,7 @@ input.switch:checked ~ label:after {
 #header-row {
   margin-bottom: 10px;
 }
+
+#blockage-icon {
+  font-size: 20pt;
+}

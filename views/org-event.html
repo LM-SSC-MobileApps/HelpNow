@@ -17,6 +17,11 @@
                 <a class="btn btn-primary" ng-click="toggleDeployPanel()"><span class="glyphicon glyphicon-plus-sign"></span> {{text.btn_deploy_resources}}</a>
             </div>
         </div>
+		<div class="row separated-small" ng-hide="panelIsOpen()">
+            <div class="col-md-12">
+                <a class="btn btn-primary" ng-click="toggleBlockagePanel()"><span class="glyphicon glyphicon-exclamation-sign"></span> Report Blockage</a>
+            </div>
+        </div>
 
         <div class="row" ng-show="showFilters">
             <div class="col-md-12">
@@ -193,6 +198,52 @@
                         <div class="col-sm-12 btn-row">
                             <a class="btn btn-primary" ng-click="createDeployment()"><span class="glyphicon glyphicon-plus-sign"></span>{{text.btn_deploy}}</a>
                             <a class="btn btn-primary" ng-click="toggleDeployPanel()"><span class="glyphicon glyphicon-remove-sign"></span>{{text.btn_close}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		
+		<div class="row" ng-show="showBlockagePanel">
+            <div class="col-md-12">
+                <div class="well">
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <span id="blockage-icon" class="glyphicon glyphicon-exclamation-sign" />
+                        </div>
+                        <div id="event-title" class="col-xs-10">
+                            <h4 class="separated-tiny">Report Blockage</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <hr />
+                            <input ng-model="locationPref.value" type="radio" value="Current" ng-change="getLocation()" /><span>  {{text.my_location_label}}</span><br />
+                            <input ng-model="locationPref.value" type="radio" value="Other" ng-change="getLocation()" /><span>  {{text.map_location_label}}:</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <span>{{text.lat_label}} </span><input ng-model="blockage.LAT" type="text" class="form-control" name="lat" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
+                            <span>{{text.long_label}} </span><input ng-model="blockage.LONG" type="text" class="form-control" name="long" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
+                        </div>
+                    </div>
+                    <div class="well separated-small">
+                        <span class="glyphicon glyphicon-pushpin"></span> {{text.map_note}}
+                    </div>
+					<div class="row separated-small">
+                        <div class="col-xs-12">
+							<div class="form-group">
+								<span>Description:</span>
+								<textarea ng-model="blockage.Description" class="form-control"></textarea>
+							</div>
+                        </div>
+                    </div>
+                    <hr></hr>
+                    <div class="row separated">
+                        <div class="col-sm-12 btn-row">
+                            <a class="btn btn-primary" ng-click="reportBlockage()"><span class="glyphicon glyphicon-plus-sign"></span>Report</a>
+                            <a class="btn btn-primary" ng-click="toggleBlockagePanel()"><span class="glyphicon glyphicon-remove-sign"></span>{{text.btn_close}}</a>
                         </div>
                     </div>
                 </div>
