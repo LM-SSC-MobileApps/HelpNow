@@ -178,5 +178,6 @@
   "confirm": "Confirm",
   "inventory": "Inventory",
   "resource_location": "Resource Location",
-  "about_title": "About HelpNow™"
+  "about_title": "About HelpNow™",
+  "new_event_title":  "New Emergency Event"
 }

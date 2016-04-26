@@ -61,6 +61,10 @@ app.use(
 var auth = require('./auth');
 auth.setupAuthentication(environment, port, ssl_port, app);
 
+var socialMedia = require('./modules/socialmedia');
+//socialMedia.setupTwitter();
+//socialMedia.searchTwitter('#HelpNow');
+
 app.use('/api/account', accountRouter);
 app.use('/api/accountrole', accountRoleRouter);
 app.use('/api/address', addressRouter);
