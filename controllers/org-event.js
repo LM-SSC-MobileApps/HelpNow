@@ -7,7 +7,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 
 	    $scope.requestsResource = $resource("/api/event/mapitems/:eventID");
 		$scope.matchingResource = $resource("/api/resourcelocation/dist-center/nearest/:loc");
-		$scope.BlockageResource = $resource("/api/blockage");
+		$scope.BlockageResource = $resource("/api/blockage/:id");
 	
 	    $scope.eventID = $routeParams.eventID * 1;
 	    if ($scope.events) {
@@ -40,6 +40,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	    var showNeedsMarkers = JSON.parse(sessionStorage.getItem("showNeedsMarkers"));
 	    var showLocationMarkers = JSON.parse(sessionStorage.getItem("showLocationMarkers"));
 	    var showDistCenterMarkers = JSON.parse(sessionStorage.getItem("showDistCenterMarkers"));
+		var showBlockageMarkers = JSON.parse(sessionStorage.getItem("showBlockageMarkers"));
 
 	    if (showHeatmap != null) {
 	        $scope.showHeatmap = showHeatmap;
@@ -70,6 +71,12 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	    }
 	    else {
 	        $scope.showDistCenterMarkers = false;
+	    }
+		if (showBlockageMarkers != null) {
+	        $scope.showBlockageMarkers = showBlockageMarkers;
+	    }
+	    else {
+	        $scope.showBlockageMarkers = true;
 	    }
 
 	    var filters = JSON.parse(sessionStorage.getItem("filterFlags"));
@@ -314,8 +321,12 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            });
 
 	            var marker = L.marker([blockage.LAT, blockage.LONG], { icon: blockageIcon });
-				if (blockage.Description)
-					marker.bindPopup(blockage.Description);
+				marker.on("click", function () {
+					$scope.$apply(function () {
+						blockageClicked(blockage);
+					});
+				});
+				
 	            mapLayers.push(marker);
 	        });
 	    }
@@ -365,7 +376,8 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        if ($scope.showDistCenterMarkers)
 	            buildDistCenterMarkers();
 			
-			buildBlockageMarkers();
+			if ($scope.showBlockageMarkers)
+				buildBlockageMarkers();
 			
 			if ($scope.showFindResults && $scope.matches)
 				buildRoutes();
@@ -379,6 +391,12 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        closePanels();
 	        $scope.deployment = location;
 	        $scope.showDeploymentPanel = true;
+	    }
+		
+		function blockageClicked(blockage) {
+	        closePanels();
+	        $scope.blockage = blockage;
+	        $scope.showBlockageDetailPanel = true;
 	    }
 
 	    function loadRequests() {
@@ -521,6 +539,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 		$scope.toggleBlockagePanel = function () {
 	        $scope.showBlockagePanel = !$scope.showBlockagePanel;
 	        if ($scope.showBlockagePanel) {
+				$scope.blockage = { EventID: $scope.eventID };
 	            requestLocation();
 	        } else {
 				removeLocationMarker();
@@ -618,9 +637,14 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	    $scope.closeDeploymentPanel = function () {
 	        $scope.showDeploymentPanel = false;
 	    };
+		
+		$scope.closeBlockageDetailPanel = function () {
+	        $scope.showBlockageDetailPanel = false;
+	    };
 
 	    $scope.panelIsOpen = function () {
-	        return $scope.showFindPanel || $scope.showFilters || $scope.showDeployPanel || $scope.showDeploymentPanel || $scope.showBlockagePanel;
+	        return $scope.showFindPanel || $scope.showFilters || $scope.showDeployPanel || $scope.showDeploymentPanel 
+				|| $scope.showBlockagePanel || $scope.showBlockageDetailPanel;
 	    };
 
 	    $scope.createDeployment = function () {
@@ -636,6 +660,11 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        var url = "modify_deployment/" + $scope.deployment.ResourceLocationID;
 	        $location.path(url);
 	    };
+		
+		$scope.removeBlockage = function () {
+			$scope.BlockageResource.delete({ id: $scope.blockage.BlockageID });
+			$scope.closeBlockageDetailPanel();
+		};
 		
 		$scope.reportBlockage = function () {
 			if ($scope.locationPref.value == "Current") {

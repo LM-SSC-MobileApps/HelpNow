@@ -199,6 +199,12 @@ h5 {
     background-size: 30px;
 }
 
+#showBlockageMarkers span {
+    background-image: url("../style/images/Alert.png");
+    background-position: 7px 6px;
+    background-size: 20px;
+}
+
 #showClothing {
     background-image: var(--marker-yellow-grad);
 }
