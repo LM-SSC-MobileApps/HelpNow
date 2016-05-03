@@ -61,6 +61,42 @@ var routes = function(){
                 });
             }
         )
+        //blocked routes
+        .get('/routes/nodes', function(req, res) {
+                models.Blockage.findAll(
+                    {
+                        include: [
+                            {
+                                model: models.Event,
+                                where: {Active: true}
+                            }
+                        ]
+                    }
+                ).then(function(blockage) {
+                    //build up the result string
+                        var resultString = "blocked_nodes = {";
+                        blockage.forEach(function(block) {
+                            resultString += '{["lat"] = '+block.LAT+',';
+                            resultString += '["lon"] = '+block.LONG+'},';
+
+                        });
+                    //remove the last comma from the forEach
+                        resultString = resultString.slice(0, -1);
+                        resultString += '}';
+
+                        res.statusCode = 200;
+                        res.send(resultString);
+                    }
+                ).catch(function (err) {
+                    console.error(err);
+                    res.statusCode = 502;
+                    res.send({
+                        result: 'error',
+                        err:    err.message
+                    });
+                });
+            }
+        )
         //insert into Blockage
         .post('/', function(req, res) {
                 models.Blockage.create(req.body)
