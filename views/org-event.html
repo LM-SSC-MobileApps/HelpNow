@@ -19,7 +19,7 @@
         </div>
 		<div class="row separated-small" ng-hide="panelIsOpen()">
             <div class="col-md-12">
-                <a class="btn btn-primary" ng-click="toggleBlockagePanel()"><span class="glyphicon glyphicon-exclamation-sign"></span> Report Blockage</a>
+                <a class="btn btn-primary" ng-click="toggleBlockagePanel()"><span class="glyphicon glyphicon-exclamation-sign"></span> {{text.report_blockage_title}}</a>
             </div>
         </div>
 
@@ -31,13 +31,6 @@
                     <div id="filter-section">
                         <hr class="separated"></hr>
                         <div class="row">
-                            <div class="col-xs-4 text-center">
-                                <a id="showNeedsMarkers" ng-class="toggleButtonClass('showNeedsMarkers')" ng-click="toggleButton('showNeedsMarkers')">
-                                    <span></span>
-                                </a>
-                                <br />
-                                <span class="filter-caption">{{text.needs_label}}</span>
-                            </div>
                             <div class="col-xs-4 text-center">
                                 <a id="showClusters" ng-class="toggleButtonClass('showClusters')" ng-click="toggleButton('showClusters')">
                                     <span></span>
@@ -51,6 +44,13 @@
                                 </a>
                                 <br />
                                 <span class="filter-caption">{{text.heatmap_label}}</span>
+                            </div>
+							<div class="col-xs-4 text-center">
+                                <a id="showBlockageMarkers" ng-class="toggleButtonClass('showBlockageMarkers')" ng-click="toggleButton('showBlockageMarkers')">
+                                    <span></span>
+                                </a>
+                                <br />
+                                <span class="filter-caption">Blockages</span>
                             </div>
                         </div>
                         <div class="row separated-small">
@@ -209,10 +209,10 @@
                 <div class="well">
                     <div class="row">
                         <div class="col-xs-2">
-                            <span id="blockage-icon" class="glyphicon glyphicon-exclamation-sign" />
+                           <img width="30" src="style/images/Alert.png" />
                         </div>
                         <div id="event-title" class="col-xs-10">
-                            <h4 class="separated-tiny">Report Blockage</h4>
+                            <h4 class="separated-tiny">{{text.report_blockage_title}}</h4>
                         </div>
                     </div>
                     <div class="row">
@@ -234,7 +234,7 @@
 					<div class="row separated-small">
                         <div class="col-xs-12">
 							<div class="form-group">
-								<span>Description:</span>
+								<span>{{text.description_label}}:</span>
 								<textarea ng-model="blockage.Description" class="form-control"></textarea>
 							</div>
                         </div>
@@ -242,7 +242,7 @@
                     <hr></hr>
                     <div class="row separated">
                         <div class="col-sm-12 btn-row">
-                            <a class="btn btn-primary" ng-click="reportBlockage()"><span class="glyphicon glyphicon-plus-sign"></span>Report</a>
+                            <a class="btn btn-primary" ng-click="reportBlockage()"><span class="glyphicon glyphicon-plus-sign"></span>{{text.report_label}}</a>
                             <a class="btn btn-primary" ng-click="toggleBlockagePanel()"><span class="glyphicon glyphicon-remove-sign"></span>{{text.btn_close}}</a>
                         </div>
                     </div>
@@ -275,6 +275,30 @@
                         <div class="col-sm-12 btn-row">
                             <a class="btn btn-primary" ng-click="modifyDeployment()"><span class="glyphicon glyphicon-pencil"></span>{{text.btn_modify}}</a>
                             <a class="btn btn-primary" ng-click="closeDeploymentPanel()"><span class="glyphicon glyphicon-remove-sign"></span>{{text.btn_close}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		
+		<div class="row" ng-show="showBlockageDetailPanel">
+            <div class="col-md-12">
+                <div class="well">
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <img width="30" src="style/images/Alert.png" />
+                        </div>
+                        <div id="event-title" class="col-xs-10">
+                            <h4 class="separated-tiny">{{text.blockage_details_title}}</h4>
+                        </div>
+                    </div>
+					<h5 class="separated-small">({{blockage.LAT}}, {{blockage.LONG}})</h5>
+					<div class="separated-small">{{blockage.Description}}</div>
+                    <hr></hr>
+                    <div class="row separated">
+                        <div class="col-sm-12 btn-row">
+                            <a class="btn btn-danger" ng-click="removeBlockage()"><span class="glyphicon glyphicon-trash"></span>{{text.remove}}</a>
+                            <a class="btn btn-primary" ng-click="closeBlockageDetailPanel()"><span class="glyphicon glyphicon-remove-sign"></span>{{text.btn_close}}</a>
                         </div>
                     </div>
                 </div>

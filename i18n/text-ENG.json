@@ -179,5 +179,10 @@
   "inventory": "Inventory",
   "resource_location": "Resource Location",
   "about_title": "About HelpNow™",
-  "new_event_title":  "New Emergency Event"
+  "new_event_title":  "New Emergency Event",
+  
+  "NOTE": "Items below need translation",
+  "report_blockage_title": "Report Blockage",
+  "report_label": "Report",
+  "blockage_details_title": "Blockage Details"
 }
