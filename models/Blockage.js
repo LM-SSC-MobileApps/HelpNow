@@ -11,21 +11,33 @@ module.exports = function(sequelize, DataTypes) {
             primaryKey: true,
             autoIncrement: true
         },
+        BlockageSourceID: {
+            type: DataTypes.INTEGER(11),
+            allowNull: false
+        },
         EventID: {
             type: DataTypes.INTEGER(11),
-            allowNull: false,
+            allowNull: false
         },
         LAT: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: false
         },
         LONG: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: false
         },
         Description: {
             type: DataTypes.STRING,
-            allowNull: true,
+            allowNull: true
+        },
+        ImageURL: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        CatID: {
+            type: DataTypes.STRING,
+            allowNull: true
         }
     });
 };
