@@ -1,4 +1,4 @@
-angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$routeParams", "$resource", function ($scope, $http, $routeParams, $resource) {
+angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$routeParams", "$resource", "$location", function ($scope, $http, $routeParams, $resource, $location) {
 
     var map;
     var mapLayers = [];
@@ -61,6 +61,17 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
 
     $scope.showLocationMarkers = true;
     $scope.locationPref = { value: 'Current' };
+	
+	$scope.toggleHelp = function () {
+        $scope.showEventDetails = !$scope.showEventDetails;
+        $scope.showHelp = !$scope.showHelp;
+        requestLocation();
+        return false;
+    };
+	
+	if($location.path().search("/request_help/") == 0) {
+		$scope.toggleHelp();
+	}
 
     $scope.getLocation = function () {
         requestLocation();
@@ -254,13 +265,6 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
         };
         sessionStorage.setItem("filterFlags", JSON.stringify(sessionFilters));
         $scope.showFilters = !$scope.showFilters;
-        return false;
-    };
-
-    $scope.toggleHelp = function () {
-        $scope.showEventDetails = !$scope.showEventDetails;
-        $scope.showHelp = !$scope.showHelp;
-        requestLocation();
         return false;
     };
 

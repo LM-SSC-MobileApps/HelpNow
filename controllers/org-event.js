@@ -417,6 +417,10 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            }
 	        });
 	    }
+		
+		$scope.toggleHelp = function () {
+			$location.path("request_help/" + $scope.eventID);
+		};
 
 	    $scope.centerMapToLongLat = function (lat, long) {
 	        if (!map) return;

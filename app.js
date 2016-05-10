@@ -23,6 +23,10 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 		$routeProvider.when("/event_map/:eventID", {
 			templateUrl: "views/event-map.html"
 		});
+		
+		$routeProvider.when("/request_help/:eventID", {
+			templateUrl: "views/event-map.html"
+		});
 
 		$routeProvider.when("/inventory", {
 		    templateUrl: "views/inventory/inventory.html"
