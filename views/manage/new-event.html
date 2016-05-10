@@ -1,6 +1,6 @@
 ﻿<div ng-controller="NewEventCtrl">
     <div id="map" map map-center="20.0, 0.0" map-zoom="2" class="col-md-9" style="height: 512px; border: 1px solid #AAA;"></div>
-    <div id="eventPanel" ng-if="showEventDetails" class="col-md-3">
+    <div id="eventPanel" ng-show="showEventDetails" class="col-md-3">
         <div class="row">
             <div class="col-md-12">
                 <div class="well">
@@ -12,10 +12,10 @@
                     <div class="row">
                         <label for="eventType">Event Type:</label><br />
                         <div class="col-md-3">
-                            <img class="event-img" src="{{getEventIcon(selectedEventType.Description)}}" style="width: 40px; height: 40px;" />
+                            <img class="event-img" src="{{getEventIcon(selectedEvent.selectedEventType.Description)}}" style="width: 40px; height: 40px;" />
                         </div>
                         <div class="col-md-9" style="padding-top: 15px;">
-                            <select class="form-control" ng-model="selectedEventType" ng-options="eventType as eventType.Description for eventType in eventTypes" ng-change="getSelectedEventType()"></select>
+                            <select class="form-control" ng-model="selectedEvent.selectedEventType" ng-options="eventType as eventType.Description for eventType in eventTypes" ng-change="getSelectedEventType()"></select>
                         </div>
                     </div>
                     <div class="row">
@@ -45,7 +45,7 @@
             <a id="btn-next" class="btn btn-primary pull-right" ng-click="toggleNewEvent()"><span></span>{{text.next}}</a>
         </div>
     </div>
-    <div id="contactsPanel" ng-if="showContacts" class="col-md-3">
+    <div id="contactsPanel" ng-show="showContacts" class="col-md-3">
         <div class="row">
             <div class="col-md-12">
                 <div class="well">
@@ -56,13 +56,13 @@
                     </div>
                     <div class="row">
                         <label for="socialMediaKeywords">Social Media Keywords<br />(comma separated):</label>
-                        <input type="text" ng-model="newEvent.SocialMediaKeywords" id="socialMediaKeywords" name="socialMediaKeywords" class="form-control" ng-required="true" />
+                        <input type="text" ng-model="newEvent.Keywords" id="socialMediaKeywords" name="socialMediaKeywords" class="form-control" ng-required="true" />
                     </div>
                 </div>
             </div>
         </div>
         <div class="separated">
-            <a id="btn-submit" class="btn btn-primary pull-right" ng-click="submitNewEvent()"><span></span>{{text.btn_submit}}</a>
+            <a id="btn-submit" class="btn btn-primary pull-right" ng-click="postNewEvent()"><span></span>{{text.btn_submit}}</a>
             <a id="btn-back" class="btn btn-primary pull-left" ng-click="toggleNewEvent()"><span></span>{{text.back}}</a>
         </div>
     </div>
