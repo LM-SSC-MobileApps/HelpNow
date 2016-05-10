@@ -4,7 +4,7 @@
             <div class="col-md-4">
                 <div class="panel ">
                     <div class="panel-title text-center spacer">
-                        <img ng-src="style/images/Team.png" style="height: 44px; width: 44px;"/>
+                        <img ng-src="style/images/Team.png" style="height: 44px; width: 44px;" />
                         {{text.registered_team_members_label}}
                     </div>
                     <div class="row ">
@@ -14,7 +14,7 @@
                                 <div class="col-md-7  ">
                                     <li>
                                         <h5>
-                                            <img ng-src="style/images/Person.png" style="height: 30px; width: 13px;"/>
+                                            <img ng-src="style/images/Person.png" style="height: 30px; width: 13px;" />
                                             {{teamMember.FirstName}}&nbsp;{{teamMember.LastName}}
                                         </h5>
                                     </li>
@@ -42,7 +42,7 @@
             <div class="col-md-4">
                 <div class="panel  ">
                     <div class="panel-title  text-center  spacer  ">
-                        <img ng-src="style/images/Invitation.png" style="height: 30px; width: 25px;"/>
+                        <img ng-src="style/images/Invitation.png" style="height: 30px; width: 25px;" />
                         {{text.invitations_label}}
                     </div>
                     <div class="panel-body text-nowrap spacer">
@@ -50,7 +50,7 @@
                             <div class="col-md-6  ">
                                 <li>
                                     <h5>
-                                        <img ng-src="style/images/Person.png" style="height: 30px; width: 13px;"/>
+                                        <img ng-src="style/images/Person.png" style="height: 30px; width: 13px;" />
                                         {{invite.FirstName}}&nbsp;{{invite.LastName}}
                                     </h5>
                                 </li>
@@ -80,34 +80,35 @@
                     </div>
                     <div class="panel-primary spacer">
                         <a class="btn btn-primary " href="#/regulations">
-						<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
                             <span>{{text.btn_regulations}}</span>
                         </a>
 
                         <div class="spacer">
-                            <a class="btn btn-danger " href="#/events">
+                            <a class="btn btn-danger " href="#/new_event">
                                 <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
                                 <span>{{text.btn_new_event}}</span>
                             </a>
                         </div>
                         <div class="spacer">
                             <a class="btn btn-primary " href="#/demo">
-								<span class="glyphicon glyphicon-flash" aria-hidden="true"></span>
+                                <span class="glyphicon glyphicon-flash" aria-hidden="true"></span>
                                 <span>Demo Scenarios</span>
                             </a>
                         </div>
-						<br/>
+                        <br />
                     </div>
                 </div>
             </div>
         </div>
         <div class="separated">
-            <h5>{{text.api_key_label}}: {{org.APIKey}}
-				<a id="btn-showUser" class="btn btn-primary pull-right" ng-click="enterAddress()" style="margin-right: 10px;">
-					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-					<span>{{text.btn_manage_address}}</span>
-				</a>
-			</h5>
+            <h5>
+                {{text.api_key_label}}: {{org.APIKey}}
+                <a id="btn-showUser" class="btn btn-primary pull-right" ng-click="enterAddress()" style="margin-right: 10px;">
+                    <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                    <span>{{text.btn_manage_address}}</span>
+                </a>
+            </h5>
             <a id="btn-edit-api" class="btn btn-primary" ng-click="editAPI()" style="margin-right: 10px; margin-top: -5px;">
                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                 <span>Edit API</span>

@@ -2014,7 +2014,7 @@ angular.module("helpNow").controller("ManageCtrl", ["$scope", "$location" , "$re
 	};
 
 }]);
-angular.module("helpNow").controller("NewEventCtrl", ["$scope", "$http", "$routeParams", "$resource", function ($scope, $http, $routeParams, $resource) {
+angular.module("helpNow").controller("NewEventCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function ($scope, $http, $location, $routeParams, $resource) {
 
     var map;
     var mapLayers = [];
@@ -2024,8 +2024,9 @@ angular.module("helpNow").controller("NewEventCtrl", ["$scope", "$http", "$route
 
     $scope.eventTypesResource = $resource("/api/eventtype/");
     $scope.eventTypes = [];
-
-    $scope.newEvent = { EventID: '', AreaSize: '15 km' };
+    $scope.newEvent = { Notes: '', Keywords: '', OrganizationID: $scope.currentOrg.OrganizationID, Active: '1', AreaSize: '15 km' };
+    $scope.locationData = { Radius: '' };
+    $scope.selectedEvent = { selectedEventTypeID: '1' };
 
     $scope.overlayRadius = 15000;
     $scope.radiusRawVal = 15;
@@ -2040,13 +2041,14 @@ angular.module("helpNow").controller("NewEventCtrl", ["$scope", "$http", "$route
     function loadEventTypes() {
         $scope.eventTypesResource.get({}, function (data) {
             $scope.eventTypes = data.json;
-            $scope.selectedEventType = $scope.eventTypes[0];
-            $scope.selectedEventTypeDescription = $scope.selectedEventType.Description;
+            $scope.selectedEvent.selectedEventType = $scope.eventTypes[0];
+            $scope.selectedEvent.selectedEventTypeDescription = $scope.selectedEvent.selectedEventType.Description;
+            $scope.getSelectedEventType();
         });
     }
 
     $scope.getSelectedEventType = function () {
-        $scope.newEvent.EventTypeID = $scope.selectedEventType.EventTypeID;
+        $scope.newEvent.EventTypeID = $scope.selectedEvent.selectedEventType.EventTypeID;
     };
 
     $scope.toggleNewEvent = function () {
@@ -2069,8 +2071,57 @@ angular.module("helpNow").controller("NewEventCtrl", ["$scope", "$http", "$route
         return false;
     };
 
-    $scope.submitNewEvent = function () {
-        return false;
+    $scope.postNewEvent = function () {
+        var newEventData = JSON.stringify($scope.newEvent);
+        var webCall = $http({
+            method: 'POST',
+            url: '/api/event',
+            async: true,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: newEventData
+        });
+        webCall.then(function (response) {
+            $scope.locationData.EventID = response.data.json.EventID;
+            alert(JSON.stringify(response));
+            //alert("Request successfully submitted");
+        },
+        function (response) { // optional
+            alert("Error: " + response.data.err);
+            $scope.hasSubmissionError = true;
+        });
+        webCall.finally(function (data) {
+            if ($scope.locationData.EventID !== undefined && $scope.locationData.EventID != '') {
+                $scope.postEventLocation();
+            }
+        });
+    }
+
+    $scope.postEventLocation = function () {
+        var splitString = $scope.newEvent.AreaSize.split(" ");
+        $scope.locationData.Radius = splitString[0];
+        $scope.locationData.LAT = $scope.newEvent.LAT;
+        $scope.locationData.LONG = $scope.newEvent.LONG;
+        $scope.locationData.Description = $scope.newEvent.Summary;
+        var locationData = JSON.stringify($scope.locationData);
+        var webCall = $http({
+            method: 'POST',
+            url: '/api/eventlocation',
+            async: true,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: locationData
+        });
+        webCall.then(function (response) {
+            //alert("Request successfully submitted");
+            $location.path("#");
+        },
+        function (response) { // optional
+            alert("Error: " + response.data.err);
+            $scope.hasSubmissionError = true;
+        });
     };
 
     $scope.locationPref = { value: 'Other' };
@@ -2089,7 +2140,7 @@ angular.module("helpNow").controller("NewEventCtrl", ["$scope", "$http", "$route
             map.removeLayer($scope.locationOutline);
             $scope.newEvent.LAT = "";
             $scope.newEvent.LONG = "";
-            $scope.digest();
+            $scope.$digest();
         }
     }
 
@@ -2111,7 +2162,7 @@ angular.module("helpNow").controller("NewEventCtrl", ["$scope", "$http", "$route
 
     $scope.showValue = function () {
         if ($scope.radiusRawVal == 0)
-            $scope.radiusRawVal = 5;
+            $scope.radiusRawVal = 15;
 
         if ($scope.isMetric) {
             $scope.overlayRadius = $scope.radiusRawVal * 1000;

@@ -1,33 +1,22 @@
 /**
- * Created by major on 4/19/16.
+ * Created by mmajor on 5/5/16.
  */
-
 
 var models  = require('../models'),
     express = require('express');
 
-//Blockage many-to-one on BlockageSource
-models.Blockage.belongsTo(models.BlockageSource, { foreignKey: 'BlockageSourceID' });
-models.BlockageSource.hasMany(models.Blockage, { foreignKey: 'BlockageSourceID' });
-
 var routes = function(){
     var router  = express.Router();
     router.get('/', function(req, res) {
-            models.Blockage.findAll(
-                {
-                    include: [
-                        {model: models.BlockageSource}
-                    ]
-                }
-            )
-                .then(function(blockage) {
+            models.BlockageSource.findAll()
+                .then(function(blockageSource) {
                         res.statusCode = 200;
                         res.send(
                             {
                                 result: 'success',
                                 err:    '',
-                                json:  blockage,
-                                length: blockage.length
+                                json:  blockageSource,
+                                length: blockageSource.length
                             }
                         );
                     }
@@ -42,25 +31,22 @@ var routes = function(){
                 });
         }
         )
-        //find Blockge by ID
+        //find BlockageSource by ID
         .get('/:id', function(req, res) {
-                models.Blockage.findAll(
+                models.BlockageSource.findAll(
                     {
                         where: {
-                            BlockageID: req.params.id
-                        },
-                        include: [
-                            {model: models.BlockageSource}
-                        ]
+                            BlockageSourceID: req.params.id
+                        }
                     }
-                ).then(function(blockage) {
+                ).then(function(blockageSource) {
                         res.statusCode = 200;
                         res.send(
                             {
                                 result: 'success',
                                 err:    '',
-                                json:  blockage,
-                                length: blockage.length
+                                json:  blockageSource,
+                                length: blockageSource.length
                             }
                         );
                     }
@@ -74,53 +60,17 @@ var routes = function(){
                 });
             }
         )
-        //blocked routes
-        .get('/routes/nodes', function(req, res) {
-                models.Blockage.findAll(
-                    {
-                        include: [
-                            {
-                                model: models.Event,
-                                where: {Active: true}
-                            }
-                        ]
-                    }
-                ).then(function(blockage) {
-                    //build up the result string
-                        var resultString = "blocked_nodes = {";
-                        blockage.forEach(function(block) {
-                            resultString += '{["lat"] = '+block.LAT+',';
-                            resultString += '["lon"] = '+block.LONG+'},';
-
-                        });
-                    //remove the last comma from the forEach
-                        resultString = resultString.slice(0, -1);
-                        resultString += '}';
-
-                        res.statusCode = 200;
-                        res.send(resultString);
-                    }
-                ).catch(function (err) {
-                    console.error(err);
-                    res.statusCode = 502;
-                    res.send({
-                        result: 'error',
-                        err:    err.message
-                    });
-                });
-            }
-        )
-        //insert into Blockage
+        //insert into BlockageSource
         .post('/', function(req, res) {
-                models.Blockage.create(req.body)
-                    .then(function(blockage) {
-                            res.statusCode = 201;
+                models.BlockageSource.create(req.body)
+                    .then(function(blockageSource) {
+                            res.statusCode = 200;
                             res.send(
                                 {
                                     result: 'success',
                                     err:    '',
-                                    json:  blockage,
-                                    length: blockage.length
+                                    json:  blockageSource,
+                                    length: blockageSource.length
                                 }
                             );
                         }
@@ -134,13 +84,13 @@ var routes = function(){
                 });
             }
         )
-        //update into Blockage
+        //update into BlockageSource
         .put('/:id', function(req, res) {
-                models.Blockage.update(
+                models.BlockageSource.update(
                     req.body,
                     {
                         where: {
-                            BlockageID: req.params.id
+                            BlockageSourceID: req.params.id
                         }
                     }
                     )
@@ -166,10 +116,10 @@ var routes = function(){
             }
         )
         .delete('/:id', function(req, res) {
-                models.Blockage.destroy(
+                models.BlockageSource.destroy(
                     {
                         where: {
-                            BlockageID: req.params.id
+                            BlockageSourceID: req.params.id
                         }
                     }
                     )

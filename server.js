@@ -35,7 +35,10 @@ var responseStateRouter = require('./routes/responsestate')();
 var requestUrgencyRouter = require('./routes/requesturgency')();
 var requestInviteRequestRouter = require('./routes/inviterequest')();
 var blockageRouter = require('./routes/blockage')();
+var blockageSourceRouter = require('./routes/blockagesource')();
 var socialMediaRouter = require('./routes/socialmedia')();
+var heatMapRouter = require('./routes/heatmap')();
+
 
 var app = express();
 
@@ -90,7 +93,9 @@ app.use('/api/responsestate', responseStateRouter);
 app.use('/api/requesturgency', requestUrgencyRouter);
 app.use('/api/inviterequest', requestInviteRequestRouter);
 app.use('/api/blockage', blockageRouter);
+app.use('/api/blockagesource', blockageSourceRouter);
 app.use('/api/socialmedia', socialMediaRouter);
+app.use('/api/heatmap', heatMapRouter);
 
 //set the express.static locations to serve up the static files
 app.use(express.static('views'));
