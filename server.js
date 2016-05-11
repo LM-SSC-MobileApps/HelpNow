@@ -38,6 +38,8 @@ var blockageRouter = require('./routes/blockage')();
 var blockageSourceRouter = require('./routes/blockagesource')();
 var socialMediaRouter = require('./routes/socialmedia')();
 var heatMapRouter = require('./routes/heatmap')();
+var mapLayerRouter = require('./routes/maplayer')();
+var mapLayerTypeRouter = require('./routes/maplayertype')();
 
 
 var app = express();
@@ -96,6 +98,8 @@ app.use('/api/blockage', blockageRouter);
 app.use('/api/blockagesource', blockageSourceRouter);
 app.use('/api/socialmedia', socialMediaRouter);
 app.use('/api/heatmap', heatMapRouter);
+app.use('/api/maplayer', mapLayerRouter);
+app.use('/api/maplayertype', mapLayerTypeRouter);
 
 //set the express.static locations to serve up the static files
 app.use(express.static('views'));

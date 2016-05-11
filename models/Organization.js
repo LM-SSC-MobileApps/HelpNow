@@ -40,6 +40,11 @@ module.exports = function(sequelize, DataTypes) {
         type: DataTypes.DATE,
         allowNull: true,
         defaultValue: 'CURRENT_TIMESTAMP'
+    },
+    Active: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
     }
+
   });
 };
