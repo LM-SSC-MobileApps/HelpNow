@@ -10,10 +10,10 @@ module.exports = function(sequelize, DataTypes) {
             primaryKey: true,
             autoIncrement: true
         },
-        EventID: {
-            type: DataTypes.INTEGER(11),
-            allowNull: false,
-        },
+        // EventID: {
+        //     type: DataTypes.INTEGER(11),
+        //     allowNull: false,
+        // },
         LastRecordedID: {
             type: DataTypes.STRING,
             allowNull: true
