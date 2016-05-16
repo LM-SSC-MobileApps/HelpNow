@@ -42,6 +42,13 @@ module.exports = function(sequelize, DataTypes) {
         IsEsri: {
             type: DataTypes.BOOLEAN,
             allowNull: true,
+            defaultValue: false
+        },
+        IsTSM: {
+            type: DataTypes.BOOLEAN,
+            allowNull: true,
+            defaultValue: false
         }
+
     });
 };
