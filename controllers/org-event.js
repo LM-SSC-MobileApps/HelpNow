@@ -412,7 +412,6 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	                $scope.locations = data.json.locations;
 	                $scope.distributionCenters = data.json.distributionCenters;
 					$scope.blockages = data.json.blockages;
-					console.log($scope.blockages);
 	                updateMap();
 	            }
 	        });

@@ -112,19 +112,26 @@ var routes = function(){
         )
         //insert into Blockage
         .post('/', function(req, res) {
-                models.Blockage.create(req.body)
-                    .then(function(blockage) {
-                            res.statusCode = 201;
-                            res.send(
-                                {
-                                    result: 'success',
-                                    err:    '',
-                                    json:  blockage,
-                                    length: blockage.length
-                                }
-                            );
-                        }
-                    ).catch(function (err) {
+				models.BlockageSource.findAll( {
+					where: {
+						Description: 'HelpNow'
+					}
+				}).then(function(sources) {
+					var helpNowSource = sources[0];
+					if (!req.body.BlockageSourceID)
+						req.body.BlockageSourceID = helpNowSource.BlockageSourceID;
+					return models.Blockage.create(req.body);
+				}).then(function(blockage) {
+					res.statusCode = 201;
+					res.send(
+						{
+							result: 'success',
+							err:    '',
+							json:  blockage,
+							length: blockage.length
+						}
+					);
+				}).catch(function (err) {
                     console.error(err);
                     res.statusCode = 502;
                     res.send({
