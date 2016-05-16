@@ -35,13 +35,13 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: true
         },
-        AttributionURL: {
-            type: DataTypes.STRING,
-            allowNull: true
-        },
         EventID: {
             type: DataTypes.INTEGER(11),
             allowNull: true
+        },
+        IsEsri: {
+            type: DataTypes.BOOLEAN,
+            allowNull: true,
         }
     });
 };
