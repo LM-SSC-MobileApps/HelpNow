@@ -51,12 +51,10 @@
             data: orgAddressData
         });
         webCall.then(function (response) {
-            alert(JSON.stringify(response));
             alert("Address Successfully Submitted");
             $location.path('#');
         },
         function (response) { // optional
-            alert(JSON.stringify(response));
         });
     }
 
@@ -81,10 +79,8 @@
     }
 
     function appendToOrganization(addressID) {
-        alert(JSON.stringify($scope.org));
         $scope.org.AddressID = addressID;
         var orgAddressData = JSON.stringify($scope.org);
-        alert(orgAddressData);
         var webCall = $http({
             method: 'PUT',
             url: '/api/organization/' + $scope.org.OrganizationID,
@@ -95,11 +91,9 @@
             data: orgAddressData
         });
         webCall.then(function (response) {
-            alert(JSON.stringify(response));
             $location.path('#/manage');
         },
         function (response) { // optional
-            alert(JSON.stringify(response));
         });
     }
 }]);

@@ -67,13 +67,93 @@ angular.module("helpNow").directive("filters", function () {
     };
 });
 
-angular.module("helpNow").directive('map', function () {
+angular.module("helpNow").directive('map', ['MapLayer', function (MapLayer) {
     return {
         link: function (scope, element, attrs) {
             var center = attrs.mapCenter.split(",");
             var zoom = attrs.mapZoom;
+            var event = attrs.mapEvent;
 
-            var api_key = 'pk.eyJ1IjoiZGlnaXRhbGdsb2JlIiwiYSI6ImNpZjc5N3NiMTA5OXlzb2x6c3FyZHQ3cTUifQ.88yZYJc78Z2MAnkX2fOjuw';
+            MapLayer.get({}, function (results) {
+                var baseMapLayers = {};
+                var overlayMapLayers = {};
+                var baseMapLayer;
+                var overlayMapLayer;
+
+                for (var i = 0; i < results.json.length; i++) {
+                    var layer = results.json[i];
+                    if (layer.MapLayerTypeID == 1 && (layer.EventID == event || layer.EventID == null)) {
+                        if (layer.IsEsri == 1) {
+                            var GBMREST = L.esri.tiledMapLayer({ url: layer.ImageryURL, attribution: layer.AttributionText });
+                            baseMapLayers[layer.Name] = GBMREST;
+                        }
+                        else {
+                            baseMapLayer = new L.tileLayer(
+                                layer.ImageryURL, {
+                                    attribution: layer.AttributionText,
+                                    minZoom: layer.MinZoomLevel,
+                                    maxZoom: layer.MaxZoomLevel
+                                }
+                            );
+                            baseMapLayers[layer.Name] = baseMapLayer;
+                        }
+                    }
+                    if (layer.MapLayerTypeID == 2 && (layer.EventID == event || layer.EventID == null)) {
+                        if (layer.IsTSM == 1) {
+                            overlayMapLayer = new L.tileLayer(
+                                layer.ImageryURL, {
+                                    attribution: layer.AttributionText,
+                                    tms: true,
+                                    minZoom: layer.MinZoomLevel,
+                                    maxZoom: layer.MaxZoomLevel
+                                }
+                            );
+                            overlayMapLayers[layer.Name] = overlayMapLayer;
+                        }
+                        else {
+                            overlayMapLayer = new L.tileLayer(
+                                layer.ImageryURL, {
+                                    attribution: layer.AttributionText,
+                                    minZoom: layer.MinZoomLevel,
+                                    maxZoom: layer.MaxZoomLevel
+                                }
+                            );
+                            overlayMapLayers[layer.Name] = overlayMapLayer;
+                        }
+
+                    }
+                }
+
+                var map = new L.map('map', {
+                    layers: [baseMapLayer],
+                    maxBounds: [[-90.0, -180], [90.0, 180.0]]
+                }).setView(center, zoom);
+
+                L.control.scale().addTo(map);
+
+                map.attributionControl.setPrefix('');
+
+                L.control.layers(baseMapLayers, overlayMapLayers, null, {
+                    collapsed: true
+                }).addTo(map);
+
+                map.addControl(new L.Control.Search({
+                    url: 'http://nominatim.openstreetmap.org/search?format=json&q={s}',
+                    jsonpParam: 'json_callback',
+                    propertyName: 'display_name',
+                    propertyLoc: ['lat', 'lon'],
+                    circleLocation: false,
+                    markerLocation: false,
+                    autoType: false,
+                    autoCollapse: true,
+                    minLength: 2,
+                    zoom: 13
+                }));
+
+                if (scope.initMap) scope.initMap(map);
+            });
+
+            /*var api_key = 'pk.eyJ1IjoiZGlnaXRhbGdsb2JlIiwiYSI6ImNpZjc5N3NiMTA5OXlzb2x6c3FyZHQ3cTUifQ.88yZYJc78Z2MAnkX2fOjuw';
             var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
 				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
 				'Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -90,7 +170,7 @@ angular.module("helpNow").directive('map', function () {
 			    minZoom: 2,
 			    maxZoom: 19,
 			    attribution: '(c) <a href="http://microsites.digitalglobe.com/interactive/basemap_vivid/">DigitalGlobe</a> , (c) OpenStreetMap, (c) Mapbox'
-			});*/
+			});
 
             var nepal = L.tileLayer('http://www.helpnowmap.com/nepal/{z}/{x}/{y}.png', {
                 minZoom: 11,
@@ -176,6 +256,7 @@ angular.module("helpNow").directive('map', function () {
             }));
 
             if (scope.initMap) scope.initMap(map);
+            */
         }
     };
-});
+}]);

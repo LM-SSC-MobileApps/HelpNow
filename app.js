@@ -15,6 +15,10 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 		$routeProvider.when("/new_event", {
 		    templateUrl: "views/manage/new-event.html"
 		});
+
+		$routeProvider.when("/new_map_layer/:eventID", {
+		    templateUrl: "views/manage/new-map-layer.html"
+		});
 		
 		$routeProvider.when("/events", {
 			templateUrl: "views/events.html"

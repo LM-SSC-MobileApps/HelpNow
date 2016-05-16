@@ -68,7 +68,6 @@
         });
         webCall.then(function (response) {
             $scope.locationData.EventID = response.data.json.EventID;
-            alert(JSON.stringify(response));
             //alert("Request successfully submitted");
         },
         function (response) { // optional

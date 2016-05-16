@@ -1,0 +1,59 @@
+﻿<div ng-controller="NewMapLayerCtrl">
+    <div class="row">
+        <div class="well">
+            <div class="row">
+                <form name="newMapLayerForm" novalidate role="form">
+                    <div class="form-group" ng-class="">
+                        <div class="col-md-12">
+                            <label for="layerName">{{text.layer_name_label}}</label>
+                            <input type="text" ng-model="mapLayer.Name" id="streetPrefix" name="streetPrefix" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-md-12">
+                            <label for="layerType">{{text.layer_type_label}}</label>
+                            <select class="form-control" ng-model="mapLayer.MapLayerType">
+                                <option value="Base Map">Base Map</option>
+                                <option value="Map Overlay">Map Overlay</option>
+                            </select>
+                            <br />
+                        </div>
+                        <div class="col-md-12">
+                            <label for="layerType">{{text.layer_url_label}}</label>
+                            <input type="text" ng-model="mapLayer.ImageryURL" id="streetNumber" name="streetNumber" class="form-control" ng-required="true" />
+                        </div>
+                        <div class="col-md-2">
+                            <label for="layerType">{{text.layer_esri_label}}</label>
+                            <input type="checkbox" ng-model="mapLayer.UsesEsri" id="streetNumber" name="streetNumber" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-md-2">
+                            <label for="layerType">{{text.layer_tsm_label}}</label>
+                            <input type="checkbox" ng-model="mapLayer.UsesTSM" id="streetNumber" name="streetNumber" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-md-12">
+                            <br />
+                            <label for="layerType">{{text.layer_min_zoom_label}}</label>
+                            <input type="text" ng-model="mapLayer.MinZoomLevel" id="streetNumber" name="streetNumber" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-md-12">
+                            <label for="layerType">{{text.layer_max_zoom_label}}</label>
+                            <input type="text" ng-model="mapLayer.MaxZoomLevel" id="streetNumber" name="streetNumber" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                        <div class="col-md-12">
+                            <label for="layerType">{{text.layer_attribution_label}}</label>
+                            <input type="text" ng-model="mapLayer.AttributionText" id="streetNumber" name="streetNumber" class="form-control" ng-required="true" />
+                            <br />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="separated">
+            <a id="btn-showAddress" class="btn btn-primary pull-right" ng-click="submitNewMapLayer()"><span></span>{{text.btn_submit}}</a>
+        </div>
+    </div>
+</div>
+

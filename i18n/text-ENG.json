@@ -184,5 +184,15 @@
   "NOTE": "Items below need translation",
   "report_blockage_title": "Report Blockage",
   "report_label": "Report",
-  "blockage_details_title": "Blockage Details"
+  "blockage_details_title": "Blockage Details",
+
+  "btn_new_map_layer": "Add Satellite Imagery",
+  "layer_name_label": "Layer Name",
+  "layer_type_label": "Layer Type",
+  "layer_url_label": "Imagery URL",
+  "layer_esri_label": "Uses ESRI Tiles: ",
+  "layer_tsm_label":  "Uses TSM Tiles: ",
+  "layer_max_zoom_label": "Maximum Zoom Level",
+  "layer_min_zoom_label": "Minimum Zoom Level",
+  "layer_attribution_label":  "Attribution"
 }
