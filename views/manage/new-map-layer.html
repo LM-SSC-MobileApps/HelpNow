@@ -11,10 +11,7 @@
                         </div>
                         <div class="col-md-12">
                             <label for="layerType">{{text.layer_type_label}}</label>
-                            <select class="form-control" ng-model="mapLayer.MapLayerType">
-                                <option value="Base Map">Base Map</option>
-                                <option value="Map Overlay">Map Overlay</option>
-                            </select>
+                            <select class="form-control" ng-model="selectedMapLayerType.selectedMapLayerType" ng-options="mapLayerType as mapLayerType.Description for mapLayerType in mapLayerTypes" ng-change="getSelectedMapLayerType()"></select>
                             <br />
                         </div>
                         <div class="col-md-12">

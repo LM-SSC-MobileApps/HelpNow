@@ -7,7 +7,25 @@
     $scope.setTitle($scope.text.btn_new_map_layer);
     $scope.eventID = $routeParams.eventID * 1;
 
-    $scope.mapLayer = {MapLayerType: 'Base Map', UsesEsri: false, UsesTSM: false};
+    $scope.mapLayerTypeResource = $resource("/api/maplayertype/");
+
+    $scope.mapLayer = { MapLayerType: 'Base Map', UsesEsri: false, UsesTSM: false };
+    $scope.selectedMapLayerType = { selectedMapLayerTypeID: '1' };
+
+    loadMapLayerTypes();
+
+    function loadMapLayerTypes() {
+        $scope.mapLayerTypeResource.get({}, function (data) {
+            $scope.mapLayerTypes = data.json;
+            $scope.selectedMapLayerType.selectedMapLayerType = $scope.mapLayerTypes[0];
+            $scope.selectedMapLayerType.selectedMapLayerTypeDescription = $scope.selectedMapLayerType.selectedMapLayerType.Description;
+            $scope.getSelectedMapLayerType();
+        });
+    }
+
+    $scope.getSelectedMapLayerType = function () {
+        $scope.mapLayer.MapLayerTypeID = $scope.selectedMapLayerType.selectedMapLayerType.MapLayerTypeID;
+    };
 
     $scope.submitNewMapLayer = function () {
         var hasError = false;
@@ -20,12 +38,6 @@
 
         if ($scope.mapLayer.MapLayerType === undefined || $scope.mapLayer.MapLayerType == "") {
             hasError = true;
-        }
-        else if ($scope.mapLayer.MapLayerType === "Base Map") {
-            $scope.mapLayer.MapLayerTypeID = 1;
-        }
-        else if ($scope.mapLayer.MapLayerType === "Map Overlay") {
-            $scope.mapLayer.MapLayerTypeID = 2;
         }
 
         if ($scope.mapLayer.UsesEsri) {
