@@ -6,7 +6,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	    $scope.setCurrentView("events");
 
 	    $scope.requestsResource = $resource("/api/event/mapitems/:eventID");
-		$scope.matchingResource = $resource("/api/resourcelocation/dist-center/nearest/:loc");
+		$scope.matchingResource = $resource("/api/resourcelocation/dist-center/nearest/:loc?resources=:resources");
 		$scope.BlockageResource = $resource("/api/blockage/:id");
 	
 	    $scope.eventID = $routeParams.eventID * 1;
@@ -170,13 +170,13 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	    function drawLocationMarker() {
 	        removeLocationMarker();
 
-			var markerOptions = { color: "#00ff00", opacity: 1, fillOpacity: 0.7 };
+			var markerOptions = { color: "#00ff00", opacity: 1, fillOpacity: 0.7, radius: 15 };
 	        if ($scope.showFindPanel && $scope.mappingLoc.LAT && $scope.mappingLoc.LONG) {
-	            $scope.locationOutline = L.circle([$scope.mappingLoc.LAT, $scope.mappingLoc.LONG], 250, markerOptions).addTo(map);
+	            $scope.locationOutline = L.circleMarker([$scope.mappingLoc.LAT, $scope.mappingLoc.LONG],markerOptions).addTo(map);
 	        } else if ($scope.showDeployPanel && $scope.deployment.LAT && $scope.deployment.LONG) {
-	            $scope.locationOutline = L.circle([$scope.deployment.LAT, $scope.deployment.LONG], 250, markerOptions).addTo(map);
+	            $scope.locationOutline = L.circleMarker([$scope.deployment.LAT, $scope.deployment.LONG], markerOptions).addTo(map);
 	        }else if ($scope.showBlockagePanel && $scope.blockage.LAT && $scope.blockage.LONG) {
-	            $scope.locationOutline = L.circle([$scope.blockage.LAT, $scope.blockage.LONG], 250, markerOptions).addTo(map);
+	            $scope.locationOutline = L.circleMarker([$scope.blockage.LAT, $scope.blockage.LONG], markerOptions).addTo(map);
 	        }
 	    }
 
@@ -604,6 +604,20 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 
 	        return centersWithScores;
 	    }
+		
+		function getSelectedResourceTypes() {
+			var flags = $scope.matchingFlags;
+			var resourceList = [];
+			if (flags.showFood) resourceList.push("Food");
+			if (flags.showWater) resourceList.push("Water");
+			if (flags.showShelter) resourceList.push("Shelter");
+			if (flags.showClothing) resourceList.push("Clothing");
+			if (flags.showRescue) resourceList.push("Rescue");
+			if (flags.showEvacuation) resourceList.push("Evacuation");
+			if (flags.showMedical) resourceList.push("First+Aid");
+			if (flags.showMedicine) resourceList.push("Medicine");
+			return resourceList.join(",");
+		}
 
 	    $scope.findMatches = function () {
 	        $scope.showMappingError = false;
@@ -614,7 +628,8 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 
 	        //$scope.matches = matchDistributionCenters();
 			var locationString = $scope.mappingLoc.LAT + "," + $scope.mappingLoc.LONG;
-			$scope.matchingResource.get({ loc: locationString }, function (data) {
+			var resourceTypeString = getSelectedResourceTypes();
+			$scope.matchingResource.get({ loc:locationString, resources:resourceTypeString }, function (data) {
 				$scope.matches = data.json;
 				$scope.hasMatches = $scope.matches.length > 0;
 				console.log($scope.matches[0]);

@@ -250,9 +250,20 @@ var routes = function () {
      */
 	.get('/dist-center/nearest/:loc', function(req, res) {
 		var location = req.params.loc;
+		var resourceTypes = req.query.resources.split(",");
+		console.log(resourceTypes);
 		findAllDistCenters()
 		.then(function (allCenters) {
-			return geoRouting.findNearestDistCenters(allCenters, location);
+			var selectedCenters = allCenters.filter(function (center) {
+	            var inventories = center.ResourceLocationInventories;
+				for (var i = 0; i < inventories.length; i++) {
+					var resourceType = inventories[i].ResourceType.Description;
+					if (resourceTypes.indexOf(resourceType) != -1)
+						return true;
+				}
+				return false;
+	        });
+			return geoRouting.findNearestDistCenters(selectedCenters, location);
 		}).then(function (nearestCenters) {
 			res.statusCode = 200;
 			res.send(
