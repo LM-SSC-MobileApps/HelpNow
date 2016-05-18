@@ -4093,6 +4093,21 @@ angular.module("helpNow").directive('map', ['MapLayer', function (MapLayer) {
     };
 }]);
 
+angular.module('helpNow').factory('ResourceLocationTransport', function ($resource) {
+    return $resource('api/resourcelocationtransport/:id', null, {
+        update: {
+            method: 'PUT'
+        }
+    });
+});
+angular.module('helpNow').factory('ResourceRequest', function ($resource) {
+    return $resource('api/resourcerequest/:id', null ,{
+        update: {
+            method: 'PUT'
+        }
+    });
+});
+
 angular.module('helpNow').factory('Account', function ($resource) {
     return $resource('api/account/:id', null ,{
         update: {
@@ -4212,22 +4227,8 @@ angular.module('helpNow').factory('ResourceLocationInventory', function ($resour
         }
     });
 });
-angular.module('helpNow').factory('ResourceLocationTransport', function ($resource) {
-    return $resource('api/resourcelocationtransport/:id', null, {
-        update: {
-            method: 'PUT'
-        }
-    });
-});
 angular.module('helpNow').factory('ResourceLocationType', function ($resource) {
     return $resource('api/resourcelocationtype/:id', null, {
-        update: {
-            method: 'PUT'
-        }
-    });
-});
-angular.module('helpNow').factory('ResourceRequest', function ($resource) {
-    return $resource('api/resourcerequest/:id', null ,{
         update: {
             method: 'PUT'
         }
