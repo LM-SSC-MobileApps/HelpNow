@@ -474,7 +474,8 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            updateMap();
 	        });
 	        map.on('click', function (e) {
-	            if ($scope.showFindPanel && !$scope.showFindResults && $scope.locationPref.value == "Other") {
+	            if ($scope.showFindPanel && !$scope.showFindResults) {
+					$scope.locationPref.value = "Other";
 	                $scope.mappingLoc.LAT = e.latlng.lat.toFixed(3);
 	                $scope.mappingLoc.LONG = e.latlng.lng.toFixed(3);
 	                drawLocationMarker();
@@ -525,6 +526,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            requestLocation();
 	        } else {
 	            removeLocationMarker();
+				$scope.showFindResults = false;
 				delete $scope.matches;
 	        }
 	        updateMap();
