@@ -5,9 +5,13 @@
 var models  = require('../models'),
     express = require('express');
 
-//Blockage many-to-one on BlockageSource
+//MapLayer many-to-one on MapLayerType
 models.MapLayer.belongsTo(models.MapLayerType, { foreignKey: 'MapLayerTypeID' });
 models.MapLayerType.hasMany(models.MapLayer, { foreignKey: 'MapLayerTypeID' });
+
+//MapLayer many-to-one on Organization
+models.MapLayer.belongsTo(models.Organization, { foreignKey: 'OrganizationID' });
+models.Organization.hasMany(models.MapLayer, { foreignKey: 'OrganizationID' });
 
 var routes = function(){
     var router  = express.Router();
@@ -15,7 +19,8 @@ var routes = function(){
             models.MapLayer.findAll(
                 {
                     include: [
-                        {model: models.MapLayerType}
+                        {model: models.MapLayerType},
+                        {model: models.Organization}
                     ]
                 }
                 )
@@ -49,7 +54,8 @@ var routes = function(){
                             MapLayerID: req.params.id
                         },
                         include: [
-                            {model: models.MapLayerType}
+                            {model: models.MapLayerType},
+                            {model: models.Organization}
                         ]
                     }
                 ).then(function(maplayer) {
