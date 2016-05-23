@@ -12,11 +12,11 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 		    templateUrl: "views/about.html"
 		});
 
-		$routeProvider.when("/new_event", {
+		$routeProvider.when("/new_event/:eventID", {
 		    templateUrl: "views/manage/new-event.html"
 		});
 
-		$routeProvider.when("/new_map_layer/:eventID", {
+		$routeProvider.when("/new_map_layer/:eventID/:mapLayerID", {
 		    templateUrl: "views/manage/new-map-layer.html"
 		});
 		
@@ -54,6 +54,14 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 		
 		$routeProvider.when("/events", {
 			templateUrl: "views/events.html"
+		});
+
+		$routeProvider.when("/manage_events", {
+		    templateUrl: "views/manage/manage-events.html"
+		});
+
+		$routeProvider.when("/manage_map_layers", {
+		    templateUrl: "views/manage/manage-map-layers.html"
 		});
 
 		$routeProvider.when("/administration/", {

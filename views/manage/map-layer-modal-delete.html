@@ -1,0 +1,13 @@
+﻿<div class="modal-content">
+    <div class="modal-header">
+        <h3 class="modal-title">{{text.are_you_sure}}</h3>
+    </div>
+    <div class="modal-body">
+        {{text.disable_map_layer_confirm_label}} : {{model.deletedMapLayer.Name}} .
+        {{text.are_you_sure}}
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger" ng-click="$close(deleteMapLayer())">{{text.yes}}!</button>
+        <button class="btn btn-primary" ng-click="$dismiss('cancel')">{{text.no}}</button>
+    </div>
+</div>

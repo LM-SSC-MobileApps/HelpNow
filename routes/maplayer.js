@@ -135,7 +135,7 @@ var routes = function(){
                 });
             }
         )
-        .delete('/:id', function(req, res) {
+        .delete('/:id', function (req, res) {
                 models.MapLayer.destroy(
                     {
                         where: {

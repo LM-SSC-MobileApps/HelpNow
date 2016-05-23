@@ -62,7 +62,8 @@
             </div>
         </div>
         <div class="separated">
-            <a id="btn-submit" class="btn btn-primary pull-right" ng-click="postNewEvent()"><span></span>{{text.btn_submit}}</a>
+            <a id="btn-submit" ng-hide="existingEvent" class="btn btn-primary pull-right" ng-click="postNewEvent()"><span></span>{{text.btn_submit}}</a>
+            <a id="btn-update" ng-show="existingEvent" class="btn btn-primary pull-right" ng-click="updateNewEvent()"><span></span>{{text.btn_update}}</a>
             <a id="btn-back" class="btn btn-primary pull-left" ng-click="toggleNewEvent()"><span></span>{{text.back}}</a>
         </div>
     </div>
