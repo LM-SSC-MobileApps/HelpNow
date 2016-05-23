@@ -46,7 +46,7 @@ var routes = function(){
                 });
         }
         )
-        //find Blockge by ID
+        //find MapLayer by ID
         .get('/:id', function(req, res) {
                 models.MapLayer.findAll(
                     {
@@ -80,7 +80,7 @@ var routes = function(){
             }
         )
         
-        //insert into Blockage
+        //insert into MapLayer
         .post('/', function(req, res) {
                 models.MapLayer.create(req.body)
                     .then(function(maplayer) {
@@ -104,7 +104,7 @@ var routes = function(){
                 });
             }
         )
-        //update into Blockage
+        //update into MapLayer
         .put('/:id', function(req, res) {
                 models.MapLayer.update(
                     req.body,
