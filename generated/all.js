@@ -12,11 +12,11 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 		    templateUrl: "views/about.html"
 		});
 
-		$routeProvider.when("/new_event", {
+		$routeProvider.when("/new_event/:eventID", {
 		    templateUrl: "views/manage/new-event.html"
 		});
 
-		$routeProvider.when("/new_map_layer/:eventID", {
+		$routeProvider.when("/new_map_layer/:eventID/:mapLayerID", {
 		    templateUrl: "views/manage/new-map-layer.html"
 		});
 		
@@ -54,6 +54,14 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 		
 		$routeProvider.when("/events", {
 			templateUrl: "views/events.html"
+		});
+
+		$routeProvider.when("/manage_events", {
+		    templateUrl: "views/manage/manage-events.html"
+		});
+
+		$routeProvider.when("/manage_map_layers", {
+		    templateUrl: "views/manage/manage-map-layers.html"
 		});
 
 		$routeProvider.when("/administration/", {
@@ -1919,6 +1927,113 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
 
     $scope.checkForErrors();
 }]);
+angular.module("helpNow").controller("ManageEventsCtrl", ["$scope", "$location", "$resource", "Event", "$uibModal",
+	function ($scope, $location, $resource, Event, $uibModal) {
+
+	    $scope.orgEvents = [];
+	    $scope.noEvents = true;
+
+	    $scope.setTitle($scope.text.manage_events_title);
+	    $scope.setCurrentView("manage_events");
+
+	    filterEvents();
+	    
+
+	    function filterEvents() {
+	        angular.forEach($scope.events, function (event) {
+	            if (event.OrganizationID == $scope.currentOrg.OrganizationID) {
+	                $scope.orgEvents.push(event);
+	            }
+	        });
+	        if ($scope.orgEvents.length > 0) $scope.noEvents = false;
+	    }
+
+	    $scope.editEvent = function (event) {
+	        $location.path("/new_event/" + event.EventID);
+	    }
+	    
+	    $scope.disableEvent = function (event) {
+	        var disabledEvent = event;
+	        disabledEvent.Active = 0;
+	        //Event.update({ id: event.EventID, Active: 0 }, disabledEvent);
+	        $scope.modalInstance = $uibModal.open(
+                    {
+                        templateUrl: '/manage/event-modal-delete.html',
+                        scope: $scope,
+                        controller: function ($scope) {
+                            this.disabledEvent = disabledEvent;
+                            this.Event = Event;
+                            this.text = $scope.text;
+
+                            $scope.disableEvent = function () {
+                                Event.update({ id: disabledEvent.EventID }, disabledEvent);
+                                $location.path("/#");
+                                $scope.loadEvents();
+                            };
+                        },
+                        controllerAs: "model"
+                    });
+	    };
+
+	}]);
+angular.module("helpNow").controller("ManageMapLayersCtrl", ["$scope", "$location", "$route", "$resource", "MapLayer", "$uibModal",
+	function ($scope, $location, $route, $resource, MapLayer, $uibModal) {
+
+	    $scope.orgMapLayers = [];
+	    $scope.noLayers = true;
+
+	    $scope.setTitle($scope.text.manage_map_layers_title);
+	    $scope.setCurrentView("manage_map_layers");
+
+	    var mapLayersResource = $resource("/api/maplayer/:id");
+
+	    filterMapLayers();
+
+	    function filterMapLayers() {
+	        mapLayersResource.get({}, function (data) {
+	            $scope.mapLayers = data.json;
+	            angular.forEach($scope.mapLayers, function (mapLayer) {
+	                if (mapLayer.OrganizationID == $scope.currentOrg.OrganizationID) {
+	                    $scope.orgMapLayers.push(mapLayer);
+	                }
+	            });
+	            if ($scope.orgMapLayers.length > 0) $scope.noLayers = false;
+	        });
+	    }
+
+	    $scope.editMapLayer = function (mapLayer) {
+	        if (mapLayer.EventID != null && mapLayer.EventID > 0) {
+	            $location.path("/new_map_layer/" + mapLayer.EventID + "/" + mapLayer.MapLayerID);
+	        }
+	        else
+	        {
+	            $location.path("/new_map_layer/0/" + mapLayer.MapLayerID);
+	        }
+	        
+	    };
+
+	    $scope.deleteMapLayer = function (mapLayer) {
+	        var deletedMapLayer = mapLayer;
+	        $scope.modalInstance = $uibModal.open(
+                    {
+                        templateUrl: '/manage/map-layer-modal-delete.html',
+                        scope: $scope,
+                        controller: function ($scope) {
+                            this.deletedMapLayer = deletedMapLayer;
+                            this.MapLayer = MapLayer;
+                            this.text = $scope.text;
+
+                            $scope.deleteMapLayer = function () {
+                                mapLayersResource.delete({ id: deletedMapLayer.MapLayerID }, function (data) {
+                                    $route.reload();
+                                });
+                            };
+                        },
+                        controllerAs: "model"
+                    });
+	    };
+
+	}]);
 /**
  * ManageCtrl
  */
@@ -2026,15 +2141,37 @@ angular.module("helpNow").controller("NewEventCtrl", ["$scope", "$http", "$locat
     $scope.setCurrentView("new-event");
     $scope.setTitle($scope.text.new_event_title, "/style/images/New Emergency Event.png");
 
+    var existingEvent = false;
+
+    $scope.eventID = $routeParams.eventID * 1;
+    if ($scope.events && $scope.eventID > 0) {
+        existingEvent = true;
+        $scope.existingEvent = $scope.getEvent($scope.eventID);
+        $scope.newEvent = $scope.existingEvent;
+        $scope.newEvent.LAT = $scope.existingEvent.EventLocations[0].LAT;
+        $scope.newEvent.LONG = $scope.existingEvent.EventLocations[0].LONG;
+        $scope.radiusRawVal = $scope.newEvent.EventLocations[0].Radius;
+        $scope.overlayRadius = $scope.newEvent.EventLocations[0].Radius * 1000;
+        $scope.sliderLabel = $scope.radiusRawVal + " km";
+        $scope.selectedEvent = { selectedEventTypeID: $scope.newEvent.EventTypeID };
+        $scope.selectedEvent.selectedEventType = $scope.newEvent.EventType;
+        $scope.selectedEvent.selectedEventTypeDescription = $scope.newEvent.EventType.Description;
+        $scope.locationData = $scope.newEvent.EventLocations[0];
+        //$scope.locationOutline = L.circle([$scope.newEvent.LAT, $scope.newEvent.LONG], $scope.overlayRadius, { color: "#00ff00", opacity: 1, fillOpacity: 0.7 }).addTo(map);
+    }
+    else {
+        existingEvent = false;
+        $scope.newEvent = { Notes: '', Keywords: '', OrganizationID: $scope.currentOrg.OrganizationID, Active: '1', AreaSize: '15 km' };
+        $scope.overlayRadius = 15000;
+        $scope.radiusRawVal = 15;
+        $scope.sliderLabel = "15 km";
+        $scope.selectedEvent = { selectedEventTypeID: '1' };
+        $scope.locationData = { Radius: '' };
+    }
+
     $scope.eventTypesResource = $resource("/api/eventtype/");
     $scope.eventTypes = [];
-    $scope.newEvent = { Notes: '', Keywords: '', OrganizationID: $scope.currentOrg.OrganizationID, Active: '1', AreaSize: '15 km' };
-    $scope.locationData = { Radius: '' };
-    $scope.selectedEvent = { selectedEventTypeID: '1' };
-
-    $scope.overlayRadius = 15000;
-    $scope.radiusRawVal = 15;
-    $scope.sliderLabel = "15 km";
+    
     $scope.isMetric = true;
 
     $scope.showEventDetails = true;
@@ -2045,7 +2182,7 @@ angular.module("helpNow").controller("NewEventCtrl", ["$scope", "$http", "$locat
     function loadEventTypes() {
         $scope.eventTypesResource.get({}, function (data) {
             $scope.eventTypes = data.json;
-            $scope.selectedEvent.selectedEventType = $scope.eventTypes[0];
+            $scope.selectedEvent.selectedEventType = $scope.eventTypes[$scope.selectedEvent.selectedEventTypeID - 1];
             $scope.selectedEvent.selectedEventTypeDescription = $scope.selectedEvent.selectedEventType.Description;
             $scope.getSelectedEventType();
         });
@@ -2101,6 +2238,32 @@ angular.module("helpNow").controller("NewEventCtrl", ["$scope", "$http", "$locat
         });
     }
 
+    $scope.updateNewEvent = function () {
+        var newEventData = JSON.stringify($scope.newEvent);
+        var webCall = $http({
+            method: 'PUT',
+            url: '/api/event/' + $scope.newEvent.EventID,
+            async: true,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: newEventData
+        });
+        webCall.then(function (response) {
+            //$scope.locationData.EventID = $scope.newEvent.EventID;
+            //alert("Request successfully submitted");
+        },
+        function (response) { // optional
+            alert("Error: " + response.data.err);
+            $scope.hasSubmissionError = true;
+        });
+        webCall.finally(function (data) {
+            if ($scope.locationData.EventID !== undefined && $scope.locationData.EventID != '') {
+                $scope.updateEventLocation();
+            }
+        });
+    }
+
     $scope.postEventLocation = function () {
         var splitString = $scope.newEvent.AreaSize.split(" ");
         $scope.locationData.Radius = splitString[0];
@@ -2120,6 +2283,34 @@ angular.module("helpNow").controller("NewEventCtrl", ["$scope", "$http", "$locat
         webCall.then(function (response) {
             //alert("Request successfully submitted");
             $location.path("#");
+            $scope.loadEvents();
+        },
+        function (response) { // optional
+            alert("Error: " + response.data.err);
+            $scope.hasSubmissionError = true;
+        });
+    };
+
+    $scope.updateEventLocation = function () {
+        var splitString = $scope.newEvent.AreaSize.split(" ");
+        $scope.locationData.Radius = splitString[0];
+        $scope.locationData.LAT = $scope.newEvent.LAT;
+        $scope.locationData.LONG = $scope.newEvent.LONG;
+        $scope.locationData.Description = $scope.newEvent.Summary;
+        var locationData = JSON.stringify($scope.locationData);
+        var webCall = $http({
+            method: 'PUT',
+            url: '/api/eventlocation/' + $scope.locationData.EventLocationID,
+            async: true,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: locationData
+        });
+        webCall.then(function (response) {
+            //alert("Request successfully submitted");
+            $location.path("#");
+            $scope.loadEvents();
         },
         function (response) { // optional
             alert("Error: " + response.data.err);
@@ -2229,7 +2420,14 @@ angular.module("helpNow").controller("NewEventCtrl", ["$scope", "$http", "$locat
             }
         });
         updateMap();
+        addOverlay();
     };
+
+    function addOverlay() {
+        if ($scope.eventID > 0 && map) {
+            $scope.locationOutline = L.circle([$scope.newEvent.LAT, $scope.newEvent.LONG], $scope.overlayRadius, { color: "#00ff00", opacity: 1, fillOpacity: 0.7 }).addTo(map);
+        }
+    }
 }]);
 angular.module("helpNow").controller("NewMapLayerCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function ($scope, $http, $location, $routeParams, $resource) {
 
@@ -2237,23 +2435,67 @@ angular.module("helpNow").controller("NewMapLayerCtrl", ["$scope", "$http", "$lo
     var mapLayers = [];
 
     $scope.setCurrentView("new-map-layer");
-    $scope.setTitle($scope.text.btn_new_map_layer);
     $scope.eventID = $routeParams.eventID * 1;
+    $scope.mapLayerID = $routeParams.mapLayerID * 1;
 
     $scope.mapLayerTypeResource = $resource("/api/maplayertype/");
+    $scope.mapLayerResource = $resource("/api/maplayer/:id");
 
-    $scope.mapLayer = { MapLayerType: 'Base Map', UsesEsri: false, UsesTSM: false };
-    $scope.selectedMapLayerType = { selectedMapLayerTypeID: '1' };
+    var existingMapLayer = false;
+
+    if ($scope.mapLayerID > 0) {
+        $scope.setTitle($scope.text.btn_update_map_layer);
+        existingMapLayer = true;
+        getMapLayers();
+    }
+    else {
+        $scope.setTitle($scope.text.btn_new_map_layer);
+        existingMapLayer = false;
+        $scope.mapLayer = { MapLayerType: 'Base Map', UsesEsri: false, UsesTSM: false };
+        $scope.selectedMapLayerType = { selectedMapLayerTypeID: '1' };
+    }
 
     loadMapLayerTypes();
 
     function loadMapLayerTypes() {
         $scope.mapLayerTypeResource.get({}, function (data) {
             $scope.mapLayerTypes = data.json;
-            $scope.selectedMapLayerType.selectedMapLayerType = $scope.mapLayerTypes[0];
+            $scope.selectedMapLayerType.selectedMapLayerType = $scope.mapLayerTypes[$scope.selectedMapLayerType.selectedMapLayerTypeID - 1];
             $scope.selectedMapLayerType.selectedMapLayerTypeDescription = $scope.selectedMapLayerType.selectedMapLayerType.Description;
             $scope.getSelectedMapLayerType();
         });
+    }
+
+    function getMapLayers() {
+        $scope.mapLayerResource.get({id: $scope.mapLayerID}, function (data) {
+            $scope.existingMapLayer = data.json;
+            $scope.mapLayer = $scope.existingMapLayer[0];
+            if ($scope.mapLayer.IsEsri) {
+                $scope.mapLayer.UsesEsri = true;
+            }
+            else
+            {
+                $scope.mapLayer.UsesEsri = false;
+            }
+            if($scope.mapLayer.IsTSM)
+            {
+                $scope.mapLayer.UsesTSM = true;
+            }
+            else
+            {
+                $scope.mapLayer.UsesTSM = false;
+            }
+            if ($scope.mapLayer.MapLayerTypeID == 1)
+            {
+                $scope.mapLayer.MapLayerType = 'Base Map';
+                $scope.selectedMapLayerType = { selectedMapLayerTypeID: '1' };
+            }
+            else if ($scope.mapLayer.MapLayerTypeID == 2)
+            {
+                $scope.mapLayer.MapLayerType = 'Map Overlay';
+                $scope.selectedMapLayerType = { selectedMapLayerTypeID: '2' };
+            }
+        })
     }
 
     $scope.getSelectedMapLayerType = function () {
@@ -2290,9 +2532,53 @@ angular.module("helpNow").controller("NewMapLayerCtrl", ["$scope", "$http", "$lo
         if ($scope.eventID > 0) {
             $scope.mapLayer.EventID = $scope.eventID;
         }
+
+        $scope.mapLayer.OrganizationID = $scope.currentOrg.OrganizationID;
         
         if (!hasError) {
             $scope.postNewMapLayer();
+        }
+        else {
+            alert($scope.text.missing_fields_alert);
+        }
+        return false;
+    };
+
+    $scope.updateMapLayer = function () {
+        var hasError = false;
+        if (($scope.mapLayer.Name === undefined || $scope.mapLayer.Name == "" ||
+            $scope.mapLayer.ImageryURL === undefined || $scope.mapLayer.ImageryURL == "" ||
+            $scope.mapLayer.MinZoomLevel === undefined || $scope.mapLayer.MinZoomLevel == "" ||
+            $scope.mapLayer.MaxZoomLevel === undefined || $scope.mapLayer.MaxZoomLevel == "")) {
+            hasError = true;
+        }
+
+        if ($scope.mapLayer.MapLayerType === undefined || $scope.mapLayer.MapLayerType == "") {
+            hasError = true;
+        }
+
+        if ($scope.mapLayer.UsesEsri) {
+            $scope.mapLayer.IsEsri = 1;
+        }
+        else {
+            $scope.mapLayer.IsEsri = 0;
+        }
+
+        if ($scope.mapLayer.UsesTSM) {
+            $scope.mapLayer.IsTSM = 1;
+        }
+        else {
+            $scope.mapLayer.IsTSM = 0;
+        }
+
+        if ($scope.eventID > 0) {
+            $scope.mapLayer.EventID = $scope.eventID;
+        }
+
+        $scope.mapLayer.OrganizationID = $scope.currentOrg.OrganizationID;
+
+        if (!hasError) {
+            $scope.updateLayer();
         }
         else {
             alert($scope.text.missing_fields_alert);
@@ -2305,6 +2591,26 @@ angular.module("helpNow").controller("NewMapLayerCtrl", ["$scope", "$http", "$lo
         var webCall = $http({
             method: 'POST',
             url: '/api/maplayer',
+            async: true,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: newMapLayer
+        });
+        webCall.then(function (response) {
+            $location.path("#");
+        },
+        function (response) { // optional
+            alert("Error: " + response.data.err);
+            $scope.hasSubmissionError = true;
+        });
+    }
+
+    $scope.updateLayer = function () {
+        var newMapLayer = JSON.stringify($scope.mapLayer);
+        var webCall = $http({
+            method: 'PUT',
+            url: '/api/maplayer/' + $scope.mapLayer.MapLayerID,
             async: true,
             headers: {
                 'Content-Type': 'application/json'
@@ -2671,6 +2977,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        });
 
 	        angular.forEach(selectedClusters, function (cluster) {
+	            alert("Found Cluster");
 	            var clusterIcon = L.icon({
 	                iconUrl: getClusterIcon(cluster.ResourceType.Description),
 	                iconSize: [50, 50],
