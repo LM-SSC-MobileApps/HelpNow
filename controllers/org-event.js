@@ -249,7 +249,6 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        });
 
 	        angular.forEach(selectedClusters, function (cluster) {
-	            alert("Found Cluster");
 	            var clusterIcon = L.icon({
 	                iconUrl: getClusterIcon(cluster.ResourceType.Description),
 	                iconSize: [50, 50],

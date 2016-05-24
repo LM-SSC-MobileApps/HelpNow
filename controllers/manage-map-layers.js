@@ -2,7 +2,10 @@
 	function ($scope, $location, $route, $resource, MapLayer, $uibModal) {
 
 	    $scope.orgMapLayers = [];
-	    $scope.noLayers = true;
+	    $scope.orgBaseMaps = [];
+	    $scope.orgMapOverlays = [];
+	    $scope.noBasemaps = true;
+	    $scope.noOverlays = true;
 
 	    $scope.setTitle($scope.text.manage_map_layers_title);
 	    $scope.setCurrentView("manage_map_layers");
@@ -15,11 +18,15 @@
 	        mapLayersResource.get({}, function (data) {
 	            $scope.mapLayers = data.json;
 	            angular.forEach($scope.mapLayers, function (mapLayer) {
-	                if (mapLayer.OrganizationID == $scope.currentOrg.OrganizationID) {
-	                    $scope.orgMapLayers.push(mapLayer);
+	                if (mapLayer.OrganizationID == $scope.currentOrg.OrganizationID && mapLayer.MapLayerTypeID == 1) {
+	                    $scope.orgBaseMaps.push(mapLayer);
+	                }
+	                else if (mapLayer.OrganizationID == $scope.currentOrg.OrganizationID && mapLayer.MapLayerTypeID == 2) {
+	                    $scope.orgMapOverlays.push(mapLayer);
 	                }
 	            });
-	            if ($scope.orgMapLayers.length > 0) $scope.noLayers = false;
+	            if ($scope.orgBaseMaps.length > 0) $scope.noBasemaps = false;
+                if ($scope.orgMapOverlays.length > 0) $scope.noOverlays = false
 	        });
 	    }
 
