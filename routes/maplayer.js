@@ -5,9 +5,13 @@
 var models  = require('../models'),
     express = require('express');
 
-//Blockage many-to-one on BlockageSource
+//MapLayer many-to-one on MapLayerType
 models.MapLayer.belongsTo(models.MapLayerType, { foreignKey: 'MapLayerTypeID' });
 models.MapLayerType.hasMany(models.MapLayer, { foreignKey: 'MapLayerTypeID' });
+
+//MapLayer many-to-one on Organization
+models.MapLayer.belongsTo(models.Organization, { foreignKey: 'OrganizationID' });
+models.Organization.hasMany(models.MapLayer, { foreignKey: 'OrganizationID' });
 
 var routes = function(){
     var router  = express.Router();
@@ -15,7 +19,8 @@ var routes = function(){
             models.MapLayer.findAll(
                 {
                     include: [
-                        {model: models.MapLayerType}
+                        {model: models.MapLayerType},
+                        {model: models.Organization}
                     ]
                 }
                 )
@@ -41,7 +46,7 @@ var routes = function(){
                 });
         }
         )
-        //find Blockge by ID
+        //find MapLayer by ID
         .get('/:id', function(req, res) {
                 models.MapLayer.findAll(
                     {
@@ -49,7 +54,8 @@ var routes = function(){
                             MapLayerID: req.params.id
                         },
                         include: [
-                            {model: models.MapLayerType}
+                            {model: models.MapLayerType},
+                            {model: models.Organization}
                         ]
                     }
                 ).then(function(maplayer) {
@@ -74,7 +80,7 @@ var routes = function(){
             }
         )
         
-        //insert into Blockage
+        //insert into MapLayer
         .post('/', function(req, res) {
                 models.MapLayer.create(req.body)
                     .then(function(maplayer) {
@@ -98,7 +104,7 @@ var routes = function(){
                 });
             }
         )
-        //update into Blockage
+        //update into MapLayer
         .put('/:id', function(req, res) {
                 models.MapLayer.update(
                     req.body,
@@ -129,7 +135,7 @@ var routes = function(){
                 });
             }
         )
-        .delete('/:id', function(req, res) {
+        .delete('/:id', function (req, res) {
                 models.MapLayer.destroy(
                     {
                         where: {

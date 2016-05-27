@@ -15,6 +15,10 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false
         },
+        OrganizationID: {
+            type: DataTypes.INTEGER(11),
+            allowNull: false
+        },
         MapLayerTypeID: {
             type: DataTypes.INTEGER(11),
             allowNull: false

@@ -6,15 +6,37 @@
     $scope.setCurrentView("new-event");
     $scope.setTitle($scope.text.new_event_title, "/style/images/New Emergency Event.png");
 
+    var existingEvent = false;
+
+    $scope.eventID = $routeParams.eventID * 1;
+    if ($scope.events && $scope.eventID > 0) {
+        existingEvent = true;
+        $scope.existingEvent = $scope.getEvent($scope.eventID);
+        $scope.newEvent = $scope.existingEvent;
+        $scope.newEvent.LAT = $scope.existingEvent.EventLocations[0].LAT;
+        $scope.newEvent.LONG = $scope.existingEvent.EventLocations[0].LONG;
+        $scope.radiusRawVal = $scope.newEvent.EventLocations[0].Radius;
+        $scope.overlayRadius = $scope.newEvent.EventLocations[0].Radius * 1000;
+        $scope.sliderLabel = $scope.radiusRawVal + " km";
+        $scope.selectedEvent = { selectedEventTypeID: $scope.newEvent.EventTypeID };
+        $scope.selectedEvent.selectedEventType = $scope.newEvent.EventType;
+        $scope.selectedEvent.selectedEventTypeDescription = $scope.newEvent.EventType.Description;
+        $scope.locationData = $scope.newEvent.EventLocations[0];
+        //$scope.locationOutline = L.circle([$scope.newEvent.LAT, $scope.newEvent.LONG], $scope.overlayRadius, { color: "#00ff00", opacity: 1, fillOpacity: 0.7 }).addTo(map);
+    }
+    else {
+        existingEvent = false;
+        $scope.newEvent = { Notes: '', Keywords: '', OrganizationID: $scope.currentOrg.OrganizationID, Active: '1', AreaSize: '15 km' };
+        $scope.overlayRadius = 15000;
+        $scope.radiusRawVal = 15;
+        $scope.sliderLabel = "15 km";
+        $scope.selectedEvent = { selectedEventTypeID: '1' };
+        $scope.locationData = { Radius: '' };
+    }
+
     $scope.eventTypesResource = $resource("/api/eventtype/");
     $scope.eventTypes = [];
-    $scope.newEvent = { Notes: '', Keywords: '', OrganizationID: $scope.currentOrg.OrganizationID, Active: '1', AreaSize: '15 km' };
-    $scope.locationData = { Radius: '' };
-    $scope.selectedEvent = { selectedEventTypeID: '1' };
-
-    $scope.overlayRadius = 15000;
-    $scope.radiusRawVal = 15;
-    $scope.sliderLabel = "15 km";
+    
     $scope.isMetric = true;
 
     $scope.showEventDetails = true;
@@ -25,7 +47,7 @@
     function loadEventTypes() {
         $scope.eventTypesResource.get({}, function (data) {
             $scope.eventTypes = data.json;
-            $scope.selectedEvent.selectedEventType = $scope.eventTypes[0];
+            $scope.selectedEvent.selectedEventType = $scope.eventTypes[$scope.selectedEvent.selectedEventTypeID - 1];
             $scope.selectedEvent.selectedEventTypeDescription = $scope.selectedEvent.selectedEventType.Description;
             $scope.getSelectedEventType();
         });
@@ -81,6 +103,32 @@
         });
     }
 
+    $scope.updateNewEvent = function () {
+        var newEventData = JSON.stringify($scope.newEvent);
+        var webCall = $http({
+            method: 'PUT',
+            url: '/api/event/' + $scope.newEvent.EventID,
+            async: true,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: newEventData
+        });
+        webCall.then(function (response) {
+            //$scope.locationData.EventID = $scope.newEvent.EventID;
+            //alert("Request successfully submitted");
+        },
+        function (response) { // optional
+            alert("Error: " + response.data.err);
+            $scope.hasSubmissionError = true;
+        });
+        webCall.finally(function (data) {
+            if ($scope.locationData.EventID !== undefined && $scope.locationData.EventID != '') {
+                $scope.updateEventLocation();
+            }
+        });
+    }
+
     $scope.postEventLocation = function () {
         var splitString = $scope.newEvent.AreaSize.split(" ");
         $scope.locationData.Radius = splitString[0];
@@ -100,6 +148,34 @@
         webCall.then(function (response) {
             //alert("Request successfully submitted");
             $location.path("#");
+            $scope.loadEvents();
+        },
+        function (response) { // optional
+            alert("Error: " + response.data.err);
+            $scope.hasSubmissionError = true;
+        });
+    };
+
+    $scope.updateEventLocation = function () {
+        var splitString = $scope.newEvent.AreaSize.split(" ");
+        $scope.locationData.Radius = splitString[0];
+        $scope.locationData.LAT = $scope.newEvent.LAT;
+        $scope.locationData.LONG = $scope.newEvent.LONG;
+        $scope.locationData.Description = $scope.newEvent.Summary;
+        var locationData = JSON.stringify($scope.locationData);
+        var webCall = $http({
+            method: 'PUT',
+            url: '/api/eventlocation/' + $scope.locationData.EventLocationID,
+            async: true,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: locationData
+        });
+        webCall.then(function (response) {
+            //alert("Request successfully submitted");
+            $location.path("#");
+            $scope.loadEvents();
         },
         function (response) { // optional
             alert("Error: " + response.data.err);
@@ -209,5 +285,12 @@
             }
         });
         updateMap();
+        addOverlay();
     };
+
+    function addOverlay() {
+        if ($scope.eventID > 0 && map) {
+            $scope.locationOutline = L.circle([$scope.newEvent.LAT, $scope.newEvent.LONG], $scope.overlayRadius, { color: "#00ff00", opacity: 1, fillOpacity: 0.7 }).addTo(map);
+        }
+    }
 }]);

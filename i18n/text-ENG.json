@@ -187,6 +187,9 @@
   "blockage_details_title": "Blockage Details",
 
   "btn_new_map_layer": "Add Satellite Imagery",
+  "btn_update_map_layer": "Update Satellite Imagery",
+  "btn_manage_map_layers": "Manage Satellite Imagery",
+  "btn_manage_events": "Manage Events",
   "layer_name_label": "Layer Name",
   "layer_type_label": "Layer Type",
   "layer_url_label": "Imagery URL",
@@ -194,5 +197,12 @@
   "layer_tsm_label":  "Uses TSM Tiles: ",
   "layer_max_zoom_label": "Maximum Zoom Level",
   "layer_min_zoom_label": "Minimum Zoom Level",
-  "layer_attribution_label":  "Attribution"
+  "layer_attribution_label": "Attribution",
+  "manage_events_title": "Manage Events",
+  "manage_map_layers_title": "Manage Satellite Imagery",
+  "btn_disable": "Disable",
+  "disable_event_confirm_label": "You are about to disable event",
+  "btn_edit": "Edit",
+  "btn_update": "Update",
+  "disable_map_layer_confirm_label": "You are about to delete satellite imagery"
 }
