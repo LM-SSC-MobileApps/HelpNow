@@ -10,6 +10,10 @@ models.ResourceLocation.hasMany(models.ResourceLocationInventory, {foreignKey: '
 models.ResourceLocationInventory.belongsTo(models.ResourceType, {foreignKey: 'ResourceTypeID'});
 models.ResourceType.hasMany(models.ResourceLocationInventory, {foreignKey: 'ResourceTypeID'});
 
+//ResourceLocationInventory many-to-one on ResourceSubtype
+models.ResourceLocationInventory.belongsTo(models.ResourceSubtype, {foreignKey: 'ResourceSubtypeID'});
+models.ResourceSubtype.hasMany(models.ResourceLocationInventory, {foreignKey: 'ResourceSubtypeID'});
+
 //ResourceLocationInventory many-to-one on ResourceTypeUnitOfMeasure
 models.ResourceLocationInventory.belongsTo(models.ResourceTypeUnitOfMeasure, {foreignKey: 'ResourceTypeUnitOfMeasureID'});
 models.ResourceTypeUnitOfMeasure.hasMany(models.ResourceLocationInventory, {foreignKey: 'ResourceTypeUnitOfMeasureID'});
@@ -23,6 +27,7 @@ var routes = function(){
           include: [
             {model: models.ResourceLocation},
             {model: models.ResourceType},
+            {model: models.ResourceSubtype},
             {model: models.ResourceTypeUnitOfMeasure}
           ]
         }
@@ -59,6 +64,7 @@ var routes = function(){
           include: [
             {model: models.ResourceLocation},
             {model: models.ResourceType},
+            {model: models.ResourceSubtype},
             {model: models.ResourceTypeUnitOfMeasure}
           ]
         }

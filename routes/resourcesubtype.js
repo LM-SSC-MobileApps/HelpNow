@@ -1,22 +1,37 @@
 /**
- * Created by major on 4/25/16.
+ * Created by mmajor on 5/31/16.
  */
+
 
 var models  = require('../models'),
     express = require('express');
 
+//ResourceSubtype one-to-many on ResourceTypeUnitOfMeasure
+models.ResourceSubtype.hasMany(models.ResourceLocationInventory, {foreignKey: 'ResourceSubtypeID'});
+models.ResourceLocationInventory.belongsTo(models.ResourceSubtype, {foreignKey: 'ResourceSubtypeID'});
+
+//ResourceSubtype many-to-one on ResourceType
+models.ResourceType.hasMany(models.ResourceSubtype, {foreignKey: 'ResourceTypeID'});
+models.ResourceSubtype.belongsTo(models.ResourceType, {foreignKey: 'ResourceTypeID'});
+
 var routes = function(){
     var router  = express.Router();
     router.get('/', function(req, res) {
-            models.SocialMedia.findAll()
-                .then(function(socialMedia) {
+            models.ResourceSubtype.findAll(
+                {
+                    include: [
+                        {model: models.ResourceType}
+                    ]
+                }
+            )
+                .then(function(resourceSubtype) {
                         res.statusCode = 200;
                         res.send(
                             {
                                 result: 'success',
                                 err:    '',
-                                json:  socialMedia,
-                                length: socialMedia.length
+                                json:  resourceSubtype,
+                                length: resourceSubtype.length
                             }
                         );
                     }
@@ -30,23 +45,26 @@ var routes = function(){
                     });
                 });
         }
-        )
-        //find SocialMedia by ID
+    )
+    //find ResourceSubtype by ID
         .get('/:id', function(req, res) {
-                models.SocialMedia.findAll(
+                models.ResourceSubtype.findAll(
                     {
                         where: {
-                            SocialMediaID: req.params.id
-                        }
+                            ResourceSubtypeID: req.params.id
+                        },
+                        include: [
+                            {model: models.ResourceType}
+                        ]
                     }
-                ).then(function(socialMedia) {
+                ).then(function(resourceSubtype) {
                         res.statusCode = 200;
                         res.send(
                             {
                                 result: 'success',
                                 err:    '',
-                                json:  socialMedia,
-                                length: socialMedia.length
+                                json:  resourceSubtype,
+                                length: resourceSubtype.length
                             }
                         );
                     }
@@ -60,17 +78,17 @@ var routes = function(){
                 });
             }
         )
-        //insert into SocialMedia
+        //insert into ResourceSubtype
         .post('/', function(req, res) {
-                models.SocialMedia.create(req.body)
-                    .then(function(socialMedia) {
+                models.ResourceSubtype.create(req.body)
+                    .then(function(resourceSubtype) {
                             res.statusCode = 200;
                             res.send(
                                 {
                                     result: 'success',
                                     err:    '',
-                                    json:  socialMedia,
-                                    length: socialMedia.length
+                                    json:  resourceSubtype,
+                                    length: resourceSubtype.length
                                 }
                             );
                         }
@@ -84,16 +102,16 @@ var routes = function(){
                 });
             }
         )
-        //update into SocialMedia
+        //update into ResourceSubtype
         .put('/:id', function(req, res) {
-                models.SocialMedia.update(
+                models.ResourceSubtype.update(
                     req.body,
                     {
                         where: {
-                            SocialMediaID: req.params.id
+                            ResourceSubtypeID: req.params.id
                         }
                     }
-                    )
+                )
                     .then(function(rowsUpdated) {
                             res.statusCode = 200;
                             res.send(
@@ -116,13 +134,13 @@ var routes = function(){
             }
         )
         .delete('/:id', function(req, res) {
-                models.SocialMedia.destroy(
+                models.ResourceSubtype.destroy(
                     {
                         where: {
-                            SocialMediaID: req.params.id
+                            ResourceSubtypeID: req.params.id
                         }
                     }
-                    )
+                )
                     .then(function(numDelete) {
                             res.statusCode = 200;
                             res.send(

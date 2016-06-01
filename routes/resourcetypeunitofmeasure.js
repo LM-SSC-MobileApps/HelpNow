@@ -17,7 +17,7 @@ var routes = function(){
         }
       )
         .then(function(resourceTypeUnitOfMeasure) {
-          res.statusCode = 201;
+          res.statusCode = 200;
           res.send(
             {
               result: 'success',

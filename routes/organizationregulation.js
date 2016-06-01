@@ -22,7 +22,7 @@ var routes = function(){
     router.get('/', function(req, res) {
       models.OrganizationRegulations.findAll()
         .then(function(organizationRegulations) {
-          res.statusCode = 201;
+          res.statusCode = 200;
           res.send(
             {
               result: 'success',

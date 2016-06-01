@@ -7,7 +7,7 @@ var routes = function(){
     router.get('/', function(req, res) {
       models.AccountRole.findAll()
         .then(function(accountRole) {
-          res.statusCode = 201;
+          res.statusCode = 200;
           res.send(
             {
               result: 'success',

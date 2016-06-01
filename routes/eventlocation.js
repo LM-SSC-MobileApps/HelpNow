@@ -8,7 +8,7 @@ var routes = function(){
     router.get('/', function(req, res) {
       models.EventLocation.findAll()
         .then(function(eventLocation) {
-          res.statusCode = 201;
+          res.statusCode = 200;
           res.send(
             {
               result: 'success',

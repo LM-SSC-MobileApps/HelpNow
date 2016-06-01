@@ -29,6 +29,7 @@ var resourceLocationTransportRouter = require('./routes/resourcelocationtranspor
 var resourceRequestRouter = require('./routes/resourcerequest')();
 var resourceResponseRouter = require('./routes/resourceresponse')();
 var resourceTypeRouter = require('./routes/resourcetype')();
+var resourceSubtypeRouter = require('./routes/resourcesubtype')();
 var transportTypeRouter = require('./routes/transporttype')();
 var resourceTypeUnitOfMeasureRouter = require('./routes/resourcetypeunitofmeasure')();
 var responseStateRouter = require('./routes/responsestate')();
@@ -90,6 +91,7 @@ app.use('/api/resourcelocationtransport', resourceLocationTransportRouter);
 app.use('/api/resourcerequest', resourceRequestRouter);
 app.use('/api/resourceresponse', resourceResponseRouter);
 app.use('/api/resourcetype', resourceTypeRouter);
+app.use('/api/resourcesubtype', resourceSubtypeRouter);
 app.use('/api/transporttype', transportTypeRouter);
 app.use('/api/resourcetypeunitofmeasure', resourceTypeUnitOfMeasureRouter);
 app.use('/api/responsestate', responseStateRouter);

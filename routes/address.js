@@ -7,7 +7,7 @@ var routes = function(){
     router.get('/', function(req, res) {
       models.Address.findAll()
         .then(function(address) {
-          res.statusCode = 201;
+          res.statusCode = 200;
           res.send(
             {
               result: 'success',

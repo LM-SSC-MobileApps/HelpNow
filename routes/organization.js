@@ -48,7 +48,7 @@ var routes = function(){
         }
       )
         .then(function(organization) {
-          res.statusCode = 201;
+          res.statusCode = 200;
           res.send(
             {
               result: 'success',

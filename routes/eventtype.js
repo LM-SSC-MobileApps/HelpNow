@@ -7,7 +7,7 @@ var routes = function(){
     router.get('/', function(req, res) {
       models.EventType.findAll()
         .then(function(eventType) {
-          res.statusCode = 201;
+          res.statusCode = 200;
           res.send(
             {
               result: 'success',
