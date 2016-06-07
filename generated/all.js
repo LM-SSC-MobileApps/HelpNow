@@ -1790,10 +1790,19 @@ angular.module("helpNow").controller("InventoryCtrl", ["$scope", "$http", "$rout
         }
         return false;
     };
+	
+	function findSubtypeByID(id) {
+		var selectedSubtype = null;
+		$scope.resourceTypesFiltered[0].ResourceSubtypes.forEach(function(subtype) {
+			if (subtype.ResourceSubtypeID == id) selectedSubtype = subtype;
+		});
+		return selectedSubtype;
+	}
 
     $scope.saveNewResourceLocationInventory = function () {
         ResourceLocationInventory.save($scope.currentResourceLocationInventory)
             .$promise.then(function (value) {
+				$scope.currentResourceLocationInventory.ResourceSubtype = findSubtypeByID($scope.currentResourceLocationInventory.ResourceSubtypeID);
                 $scope.currentResourceLocation.ResourceLocationInventories.push($scope.currentResourceLocationInventory);
                 //$scope.currentResourceLocationInventory = new ResourceLocationInventory();
                 $scope.showResourceLocationDiv();

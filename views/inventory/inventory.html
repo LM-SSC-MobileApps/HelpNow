@@ -201,7 +201,7 @@
                                 <img class="event-img" src="style/images/{{inventory.ResourceType.Description}}.png" style="height: 22px; width: 22px; " />
                             </div>
                             <div class="col-sm-8">
-                                {{inventory.ResourceType.Description}}<br />
+                                {{inventory.ResourceType.Description}} <span ng-if="inventory.ResourceSubtype">({{inventory.ResourceSubtype.Description}})</span><br />
                                 {{inventory.Quantity}} - {{inventory.ResourceTypeUnitOfMeasure.Description}}
                             </div>
                             <div class="col-sm-2">
@@ -251,33 +251,41 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" ng-show="resourcesFiltered">
-                            <div class="row" style="margin-top: 15px;">
-                                <div class="col-xs-5">
-                                    <span>{{text.quantity}}</span>
-                                </div>
-                                <div class="col-xs-7 form-group" show-errors>
-                                    <input ng-model="currentResourceLocationInventory.Quantity" type="number" min="1" class="form-control pull-left" name="qty" style="margin-bottom: 7px;" required />
-                                    <div class="help-block error" ng-if="reslocinvform.qty.$error.required">{{text.required}}</div>
-                                    <div class="help-block error" ng-if="reslocinvform.qty.$error.min">{{text.invalid}}</div>
-                                </div>
-                                <div class="col-xs-5">
-                                    <span>{{text.unit_type}}</span>
-                                </div>
-                                <div class="col-xs-7">
-                                    <div class="btn-group pull-left" uib-dropdown is-open="status.isopen">
-                                        <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle>
-                                            {{currentResourceTypeUnitOfMeasure.Description}} <span class="caret"></span>
-                                        </button>
-                                        <ul class="uib-dropdown-menu" role="menu" aria-labelledby="single-button">
-                                            <li role="menuitem" ng-repeat="choice in resourceTypeUnitOfMeasuresFiltered">
-                                                <a ng-click="setResourceTypeUnitOfMeasure(choice)" style="color: whitesmoke;">{{choice.Description}}</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
+                        <div ng-show="resourcesFiltered">
+                            <div class="row separated-small form-inline">
+								<div class="col-xs-12">
+									<div class="form-group" show-errors>
+										<label>{{text.quantity}}:</label>
+										<input ng-model="currentResourceLocationInventory.Quantity" type="number" min="1" class="form-control separated-hz" name="qty" required />
+										<div class="help-block error" ng-if="reslocinvform.qty.$error.required">{{text.required}}</div>
+										<div class="help-block error" ng-if="reslocinvform.qty.$error.min">{{text.invalid}}</div>
+									</div>
+									<div class="form-group separated-small">
+										<label>{{text.unit_type}}:</label>
+										<!--div class="btn-group separated-hz" uib-dropdown is-open="status.isopen">
+											<button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle>
+												{{currentResourceTypeUnitOfMeasure.Description}} <span class="caret"></span>
+											</button>
+											<ul class="uib-dropdown-menu" role="menu" aria-labelledby="single-button">
+												<li role="menuitem" ng-repeat="choice in resourceTypeUnitOfMeasuresFiltered">
+													<a ng-click="setResourceTypeUnitOfMeasure(choice)" style="color: whitesmoke;">{{choice.Description}}</a>
+												</li>
+											</ul>
+										</div -->
+										<select class="form-control separated-hz" ng-model="currentResourceLocationInventory.ResourceTypeUnitOfMeasureID" 
+											ng-options="choice.ResourceTypeUnitOfMeasureID as choice.Description for choice in resourceTypesFiltered[0].ResourceTypeUnitOfMeasures">
+										</select>
+										
+									</div>
+									<div class="form-group separated-small">
+										<label>{{text.subtype}}:</label>
+										<select class="form-control separated-hz" ng-model="currentResourceLocationInventory.ResourceSubtypeID" 
+											ng-options="choice.ResourceSubtypeID as choice.Description for choice in resourceTypesFiltered[0].ResourceSubtypes">
+										</select>
+									</div>
+								</div>
                             </div>
-                            <div class="row" style="margin-bottom:5px; margin-top: 15px;">
+                            <div class="row separated" style="margin-bottom:5px">
                                 <div class="col-xs-6" ng-if="!resourceLocationInventoryEdit">
                                     <a id="btn-clear" class="btn btn-primary pull-left" ng-click="showResourceLocationInventoryNewForm()"><span class="glyphicon glyphicon-refresh"></span>{{text.reset}}</a>
                                 </div>

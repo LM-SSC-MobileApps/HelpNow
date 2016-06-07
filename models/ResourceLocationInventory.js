@@ -27,6 +27,10 @@ module.exports = function(sequelize, DataTypes) {
     SourceLocationID: {
       type: DataTypes.INTEGER(11),
       allowNull: true
+    },
+    ResourceSubtypeID: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true
     }
   });
 };

@@ -185,6 +185,7 @@
   "report_blockage_title": "Report Blockage",
   "report_label": "Report",
   "blockage_details_title": "Blockage Details",
+  "subtype": "Subtype",
 
   "btn_new_map_layer": "Add Satellite Imagery",
   "btn_update_map_layer": "Update Satellite Imagery",

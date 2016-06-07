@@ -6341,6 +6341,10 @@ body {
   color: #eee;
 }
 
+.form-inline input[type="number"] {
+  width: 70px;
+}
+
 .well p {
   padding: 10px;
 }
@@ -6732,6 +6736,16 @@ h5 {
   border-color: #e73131;
 }
 
+.btn-success {
+  background-image: -webkit-linear-gradient(top, #5cb85c, rgb(55, 110, 55));
+  background-image: linear-gradient(to bottom, #5cb85c, rgb(55, 110, 55));
+}
+
+.btn-success:hover {
+  background-color: rgb(74, 147, 74);
+  background-image: none;
+}
+
 .btn .glyphicon,
 .well .well .glyphicon {
   margin-right: 7px;
@@ -6822,6 +6836,10 @@ input.switch:checked ~ label:after {
 
 .separated-tiny {
   margin-top: 5px;
+}
+
+.separated-hz {
+  margin-left: 5px;
 }
 
 #event-info h4 {

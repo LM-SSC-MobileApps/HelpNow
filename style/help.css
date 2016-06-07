@@ -7,6 +7,8 @@
     --dark-blue-trans: rgba(38, 58, 80, 0.85);
     --med-blue: #365271;
     --bright-green: #e7ffd9;
+	--med-green: #5cb85c;
+	--green-grad: linear-gradient(to bottom, var(--med-green), color(var(--med-green) shade(40%)));
     --bright-blue: #deefff;
     --lightest-blue: #deebf7;
     --lighter-blue: #bdd7ee;
@@ -39,6 +41,10 @@ body {
     background-position: bottom center, top left;
     background-repeat: no-repeat, repeat;
     color: var(--light-gray);
+}
+
+.form-inline input[type="number"] {
+	width: 70px;
 }
 
 .well p {
@@ -403,6 +409,15 @@ h5 {
     border-color: #e73131;
 }
 
+.btn-success {
+	background-image: var(--green-grad);
+}
+
+.btn-success:hover {
+	background-color: color(var(--med-green) shade(20%));
+    background-image: none;
+}
+
 .btn .glyphicon, .well .well .glyphicon {
     margin-right: 7px;
 }
@@ -498,6 +513,10 @@ input.switch:checked ~ label:after
 
 .separated-tiny {
     margin-top: 5px;
+}
+
+.separated-hz {
+	margin-left: 5px;
 }
 
 #event-info h4 {
