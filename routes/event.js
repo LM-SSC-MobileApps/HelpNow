@@ -104,11 +104,11 @@ var routes = function(){
             
             {model: models.EventLocation},
             // {model: models.SocialMedia},
-            {model: models.Blockage},
+            // {model: models.Blockage},
             {model: models.EventType},
             {model: models.Organization},
-            {model: models.ResourceRequest},
-            {model: models.ResourceLocation, required: false}
+            // {model: models.ResourceRequest},
+            // {model: models.ResourceLocation, required: false}
             
           ]
         }
