@@ -602,3 +602,10 @@ input.switch:checked ~ label:after
 #blockage-icon {
 	font-size: 20pt;
 }
+
+select{
+    background-color: #337ab7;
+    height: 80x;
+    color:#fff;
+    text-shadow:0 1px 0 rgba(0,0,0,0.4);
+}

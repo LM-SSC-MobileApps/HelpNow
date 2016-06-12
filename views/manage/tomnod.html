@@ -5,10 +5,13 @@
                 <div class="panel">
                     <div class="panel-body">                        
                         <h2>Tomnod File Upload</h2>
-                        <h4>Please click the upload file button to upload a Tomnod JSON file</h4>
-                        <div class="progress">
-                            <div class="progress-bar" role="progressbar"></div>
-                        </div>
+                        <h4>1. Please select the event you want to load Tomnod data to:</h4>
+
+                        <div class="spacer">
+                            <select id="event"></select>
+                        </div> 
+                        <br/>
+                        <h4>2. Please select the Tomnod JSON file you want to upload by clicking Upload File:</h4>
 
                         <div class="spacer">
                             <a class="btn btn-primary upload-btn">
@@ -17,7 +20,14 @@
                             </a>
                         </div>                         
 
-                        <input id="upload-input" type="file" accept=".json" name="uploads[]" style="display: none;"></br>                                              
+                        <input id="upload-input" type="file" accept=".json" name="uploads[]" style="display: none;"></br>
+                        
+                        <h4><center>Import Progress</center></h4>
+
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar"></div>
+                        </div>
+                                                                      
                     </div>
                 </div>
             </div>
@@ -43,10 +53,10 @@
 
             // loop through all the selected files and add them to the formData object
             for (var i = 0; i < files.length; i++) {
-                var file = files[i];
+                var file = files[i];                
 
                 // add the files to formData object for the data payload
-                formData.append('uploads[]', file, file.name);
+                formData.append('uploads[]', file, "EventID" + $('#event').val() + "End" + file.name);
             }
 
             $.ajax({

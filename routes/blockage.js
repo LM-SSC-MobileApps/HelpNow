@@ -172,6 +172,35 @@ var routes = function(){
                 });
             }
         )
+        .delete('/tomnod/:eventid', function (req, res) {
+            models.Blockage.destroy(
+                {
+                    where: {
+                        BlockageSourceID: 2,
+                        EventID: req.params.eventid
+                    }
+                }
+                )
+                .then(function (numDelete) {
+                    res.statusCode = 200;
+                    res.send(
+                        {
+                            result: 'success',
+                            err: '',
+                            json: { rows: numDelete }
+                        }
+                    );
+                }
+                ).catch(function (err) {
+                    console.error(err);
+                    res.statusCode = 502;
+                    res.send({
+                        result: 'error',
+                        err: err.message
+                    });
+                });
+        }
+        )
         .delete('/:id', function(req, res) {
                 models.Blockage.destroy(
                     {

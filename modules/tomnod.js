@@ -1,4 +1,6 @@
-﻿module.exports =
+﻿var http = require('http');
+
+module.exports =
 {
     setupTomnod: function (app, fs, path, formidable) {
         console.log("setupTomnod");
@@ -17,11 +19,12 @@
             form.uploadDir = path.join(dir, 'tomnod_uploads');
             form.keepExtensions = true;
 
-            form.on('file', function (field, file) {
+            form.on('file', function (field, file) {               
+                var eventID = file.name.split("End")[0].split("EventID")[1];
                 var fileFullPath = form.uploadDir + path.sep + file.name;
                 var fileName = file.name;
                 var fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length);
-                console.log("Processing Tomnod File at: " + file.path);
+                console.log("Processing Tomnod File at: " + file.path);                
 
                 // Ensure JSON file type
                 if (fileExtension != "json") {
@@ -37,27 +40,37 @@
                     return;
                 }
 
-                // Validate structure of JSON
-                if (obj.features[0].properties.type_id === undefined ||
-                    obj.features[0].geometry.coordinates[0] === undefined ||
-                    obj.features[0].geometry.coordinates[1] === undefined ||
-                    obj.features[0].properties.chip_url === undefined ||
-                    obj.features[0].properties.id === undefined ||
-                    obj.features[0].properties.tag_type === undefined ||
-                    obj.features[0].properties.type_id === undefined) {
-                    processResult = "Error: JSON missing fields (i.e. type_id, coordinates[0,1], chip_url, id, tag_type or type_id).";
-                    return;
-                }
-
+                // Remove previously uploaded tomnod data based on event id
+                console.log("Remove Old Tomnod Data");
+                deleteBlockages(eventID);
+              
                 // Process JSON message
+                console.log("Saving Tomnod Data");
                 for (var i = 0; i < obj.features.length; i++) {
                     if (obj.features[i].properties.type_id == "97") {
-                        console.log("lat = " + obj.features[i].geometry.coordinates[0]);
-                        console.log("long = " + obj.features[i].geometry.coordinates[1]);
-                        console.log("url = " + obj.features[i].properties.chip_url);
-                        console.log("catid = " + obj.features[i].properties.id);
-                        console.log("desc = " + obj.features[i].properties.tag_type);
-                        console.log("type id = " + obj.features[i].properties.type_id);
+                        // Validate structure of JSON and if bad skip that record but import the rest
+                        if (obj.features[i].properties.type_id === undefined ||
+                            obj.features[i].geometry.coordinates[0] === undefined ||
+                            obj.features[i].geometry.coordinates[1] === undefined ||
+                            obj.features[i].properties.chip_url === undefined ||
+                            obj.features[i].properties.id === undefined ||
+                            obj.features[i].properties.tag_type === undefined ||
+                            obj.features[i].properties.type_id === undefined) {
+                            // SKIP BAD RECORD
+                        } else {
+                            blockage = {
+                                "BlockageSourceID": 2,
+                                "EventID": eventID,
+                                "LAT": "" + obj.features[i].geometry.coordinates[1] + "",
+                                "LONG": "" + obj.features[i].geometry.coordinates[0] + "",
+                                "Description": "" + obj.features[i].properties.tag_type + "",
+                                "ImageURL": "" + obj.features[i].properties.chip_url + "",
+                                "CatID": "" + obj.features[i].properties.id + ""
+                            }
+
+                            //console.log(JSON.stringify(blockage));
+                            saveBlockages(blockage);
+                        }
                     }
                 }
             });
@@ -84,5 +97,54 @@
     }
 };
 
+var deleteBlockageOptions = {
+    host: 'localhost',
+    port: '8080',
+    auth: 'a1ada5ab-b8c2-11e5-847d-00ffd0ea9272:H3lpN0w2016',
+    method: 'DELETE',
+    headers: {
+        "Content-Type": "application/json"
+    }
+}
 
+function deleteBlockages(eventID) {
+    deleteBlockageOptions.path = '/api/blockage/tomnod/' + eventID;
+    var req = http.request(deleteBlockageOptions, deleteBlockageCallback).end();
+}
 
+deleteBlockageCallback = function (response) {
+    var str = '';
+    response.on('data', function (chunk) {
+        str += chunk;
+    });
+
+    response.on('end', function () {
+    });
+}
+
+var saveBlockageOptions = {
+    host: 'localhost',
+    path: '/api/blockage',
+    port: '8080',
+    auth: 'a1ada5ab-b8c2-11e5-847d-00ffd0ea9272:H3lpN0w2016',
+    method: 'POST',
+    headers: {
+        "Content-Type": "application/json"
+    }
+}
+
+function saveBlockages(blockage) {    
+    var req = http.request(saveBlockageOptions, saveBlockageCallback);
+    req.write(JSON.stringify(blockage));
+    req.end();
+}
+
+saveBlockageCallback = function (response) {
+    var str = '';
+    response.on('data', function (chunk) {
+        str += chunk;
+    });
+
+    response.on('end', function () {
+    });
+}
