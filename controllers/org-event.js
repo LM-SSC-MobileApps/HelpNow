@@ -243,12 +243,12 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 
 	    function buildClusterMarkers() {
 	        if (!$scope.requestClusters) return;
-	        var selectedClusters = $scope.requestClusters.filter(function (cluster) {
+	        $scope.selectedClusters = $scope.requestClusters.filter(function (cluster) {
 	            var type = cluster.ResourceType.Description;
 	            return $scope.shouldDisplayMarker(type, $scope.filterFlags);
 	        });
 
-	        angular.forEach(selectedClusters, function (cluster) {
+	        angular.forEach($scope.selectedClusters, function (cluster) {
 	            var clusterIcon = L.icon({
 	                iconUrl: getClusterIcon(cluster.ResourceType.Description),
 	                iconSize: [50, 50],
@@ -273,7 +273,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        });
 	    }
 
-	    function buildHeatmap(selectedRequests) {
+	    function buildHeatmap(selectedClusters) {
 	        var heatmapConfig = {
 	            "radius": 100,
 	            "maxOpacity": 0.5,
@@ -285,7 +285,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        };
 
 	        var heatmapLayer = new HeatmapOverlay(heatmapConfig);
-	        var heatmapData = { data: selectedRequests };
+	        var heatmapData = { data: selectedClusters };
 	        heatmapLayer.setData(heatmapData);
 	        mapLayers.push(heatmapLayer);
 	    }
@@ -361,8 +361,8 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            return $scope.shouldDisplayMarker(type, $scope.filterFlags);
 	        });
 			
-	        if ($scope.showHeatmap && selectedRequests.length > 0)
-	            buildHeatmap(selectedRequests);
+	        if ($scope.showHeatmap && $scope.selectedClusters.length > 0)
+	            buildHeatmap($scope.selectedClusters);
 
 	        if ($scope.showNeedsMarkers && zoom > 7)
 	            buildNeedsMarkers(selectedRequests);
