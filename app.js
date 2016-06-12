@@ -80,6 +80,10 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 			templateUrl: "views/manage/manage.html"
 		});
 
+		$routeProvider.when("/tomnod", {
+		    templateUrl: "views/manage/tomnod.html"
+		});
+
 		$routeProvider.when("/regulations/", {
 			templateUrl: "views/manage/regulations.html"
 		});

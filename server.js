@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var https = require('https');
 var fs = require('fs');
+var formidable = require('formidable');
 
 //the routes for the helpnow api
 var accountRouter = require('./routes/account')();
@@ -67,6 +68,10 @@ app.use(
 // Setup for authentication (must be after all body parsers, cookie parsers and session parsers)
 var auth = require('./auth');
 auth.setupAuthentication(environment, port, ssl_port, app);
+
+// Setup for tomnod upload capability
+var tomnod = require('./modules/tomnod');
+tomnod.setupTomnod(app, fs, path, formidable);
 
 var socialMedia = require('./modules/socialmedia');
 //socialMedia.setupTwitter();

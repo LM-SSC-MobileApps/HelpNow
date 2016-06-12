@@ -201,6 +201,7 @@
   "layer_attribution_label": "Attribution",
   "manage_events_title": "Manage Events",
   "manage_map_layers_title": "Manage Satellite Imagery",
+  "tomnod_title": "Import Tomnod Data",
   "btn_disable": "Disable",
   "disable_event_confirm_label": "You are about to disable event",
   "btn_edit": "Edit",
