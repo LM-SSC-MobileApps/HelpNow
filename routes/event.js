@@ -299,7 +299,7 @@ var routes = function(){
           include: [
             {model: models.ResourceLocation},
             {model: models.EventLocation},
-            {model: models.SocialMedia},
+            // {model: models.SocialMedia},
             {model: models.Blockage},
             {model: models.EventType},
             {model: models.Organization},
