@@ -26,6 +26,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	    $scope.locations = [];
 	    $scope.distributionCenters = [];
 		$scope.blockages = [];
+		$scope.selectedClusters = [];
 
 	    $scope.showFilters = false;
 	    $scope.showFindPanel = false;
