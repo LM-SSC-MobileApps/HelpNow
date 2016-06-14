@@ -80,6 +80,10 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 			templateUrl: "views/manage/manage.html"
 		});
 
+		$routeProvider.when("/tomnod", {
+		    templateUrl: "views/manage/tomnod.html"
+		});
+
 		$routeProvider.when("/regulations/", {
 			templateUrl: "views/manage/regulations.html"
 		});
@@ -2770,6 +2774,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	    $scope.locations = [];
 	    $scope.distributionCenters = [];
 		$scope.blockages = [];
+		$scope.selectedClusters = [];
 
 	    $scope.showFilters = false;
 	    $scope.showFindPanel = false;
@@ -2987,12 +2992,12 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 
 	    function buildClusterMarkers() {
 	        if (!$scope.requestClusters) return;
-	        var selectedClusters = $scope.requestClusters.filter(function (cluster) {
+	        $scope.selectedClusters = $scope.requestClusters.filter(function (cluster) {
 	            var type = cluster.ResourceType.Description;
 	            return $scope.shouldDisplayMarker(type, $scope.filterFlags);
 	        });
 
-	        angular.forEach(selectedClusters, function (cluster) {
+	        angular.forEach($scope.selectedClusters, function (cluster) {
 	            var clusterIcon = L.icon({
 	                iconUrl: getClusterIcon(cluster.ResourceType.Description),
 	                iconSize: [50, 50],
@@ -3017,7 +3022,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        });
 	    }
 
-	    function buildHeatmap(selectedRequests) {
+	    function buildHeatmap(selectedClusters) {
 	        var heatmapConfig = {
 	            "radius": 100,
 	            "maxOpacity": 0.5,
@@ -3029,7 +3034,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        };
 
 	        var heatmapLayer = new HeatmapOverlay(heatmapConfig);
-	        var heatmapData = { data: selectedRequests };
+	        var heatmapData = { data: selectedClusters };
 	        heatmapLayer.setData(heatmapData);
 	        mapLayers.push(heatmapLayer);
 	    }
@@ -3105,8 +3110,8 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            return $scope.shouldDisplayMarker(type, $scope.filterFlags);
 	        });
 			
-	        if ($scope.showHeatmap && selectedRequests.length > 0)
-	            buildHeatmap(selectedRequests);
+	        if ($scope.showHeatmap && $scope.selectedClusters.length > 0)
+	            buildHeatmap($scope.selectedClusters);
 
 	        if ($scope.showNeedsMarkers && zoom > 7)
 	            buildNeedsMarkers(selectedRequests);
@@ -3877,13 +3882,20 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
             return "style/images/Food-" + iconType + ".png";
         }
     };
+	
+	$scope.getResourceName = function(inventory) {
+		var resourceName = inventory.ResourceType.Description;
+		if (inventory.ResourceSubtype)
+			resourceName += " (" + inventory.ResourceSubtype.Description + ")";
+		return resourceName;
+	}
 
     $scope.buildLocationDetails = function (location) {
         var popupText = "<strong>" + location.Organization.Name + "</strong><br/>" +
 			location.PrimaryPOCName + "<br/>" +
 			location.PrimaryPOCPhone + "<hr/>";
         location.ResourceLocationInventories.forEach(function (inventory) {
-            popupText += inventory.ResourceType.Description + ": " + inventory.Quantity + " " +
+            popupText += "<strong>" + $scope.getResourceName(inventory) + ":</strong> " + inventory.Quantity + " " +
 				inventory.ResourceTypeUnitOfMeasure.Description + "<br/>";
         });
         return popupText;
@@ -4154,6 +4166,21 @@ angular.module("helpNow").controller("TeamInviteCtrl", ["$scope", "$resource", "
 
 
 }]);
+angular.module("helpNow").controller("TomnodCtrl", ["$scope", "$location", "$resource", "Event", "$uibModal",
+	function ($scope, $location, $resource, Event, $uibModal) {
+
+	    $scope.orgEvents = [];
+	    $scope.noEvents = true;
+
+	    $scope.setTitle($scope.text.tomnod_title);
+	    $scope.setCurrentView("manage_events");
+
+	    //alert("data = " + JSON.stringify($scope.events));
+
+	    $.each($scope.events, function(i, option) {
+	        $('#event').append($('<option/>').attr("value", option.EventID).text(option.EventType.Description + " " + option.Summary + " (" + option.EventLocations[0].LAT + ", " + option.EventLocations[0].LONG + ", " + option.EventLocations[0].Radius + " km2)"));
+	    });
+	}]);
 angular.module("helpNow").directive('showErrors', function () {
     return {
         restrict: 'A',

@@ -56,7 +56,7 @@
                         <div class="row separated">
                             <div class="col-sm-12">
                                 <img class="resource-img pull-left" src="{{getResourceIcon(resource)}}" />
-                                <h4>{{resource.ResourceType.Description}}</h4>
+                                <h4>{{getResourceName(resource)}}</h4>
                                 <h5>{{resource.Quantity}} {{resource.ResourceTypeUnitOfMeasure.Description}}</h5>
                                 <div class="btn-row">
                                     <a class="btn btn-danger" ng-click="removeInventory(resource)"><span class="glyphicon glyphicon-trash"></span>{{text.remove}}</a>
@@ -84,7 +84,7 @@
                     <strong>Primary POC: </strong>{{center.PrimaryPOCName}}<br />
                     <strong>Primary POC Phone: </strong>{{center.PrimaryPOCPhone}}
                     <div ng-repeat="inventory in center.ResourceLocationInventories" class="separated-small">
-                        <strong>{{inventory.ResourceType.Description}}:</strong>
+                        <strong>{{getResourceName(inventory)}}:</strong>
                         <div class="input-group">
                             <input type="text" class="form-control" ng-model="inventory.Quantity">
                             <span class="input-group-addon">{{inventory.ResourceTypeUnitOfMeasure.Description}}</span>

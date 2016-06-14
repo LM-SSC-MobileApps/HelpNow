@@ -172,13 +172,20 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
             return "style/images/Food-" + iconType + ".png";
         }
     };
+	
+	$scope.getResourceName = function(inventory) {
+		var resourceName = inventory.ResourceType.Description;
+		if (inventory.ResourceSubtype)
+			resourceName += " (" + inventory.ResourceSubtype.Description + ")";
+		return resourceName;
+	}
 
     $scope.buildLocationDetails = function (location) {
         var popupText = "<strong>" + location.Organization.Name + "</strong><br/>" +
 			location.PrimaryPOCName + "<br/>" +
 			location.PrimaryPOCPhone + "<hr/>";
         location.ResourceLocationInventories.forEach(function (inventory) {
-            popupText += inventory.ResourceType.Description + ": " + inventory.Quantity + " " +
+            popupText += "<strong>" + $scope.getResourceName(inventory) + ":</strong> " + inventory.Quantity + " " +
 				inventory.ResourceTypeUnitOfMeasure.Description + "<br/>";
         });
         return popupText;

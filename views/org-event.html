@@ -271,7 +271,7 @@
                             <div class="separated-small"><strong>Primary POC: </strong>{{deployment.PrimaryPOCName}}</div>
                             <div class="separated-small"><strong>Primary POC Phone: </strong>{{deployment.PrimaryPOCPhone}}</div>
                             <div ng-repeat="inventory in deployment.ResourceLocationInventories" class="separated-small">
-                                <strong>{{inventory.ResourceType.Description}}: </strong> {{inventory.Quantity}} {{inventory.ResourceTypeUnitOfMeasure.Description}}
+                                <strong>{{getResourceName(inventory)}}: </strong> {{inventory.Quantity}} {{inventory.ResourceTypeUnitOfMeasure.Description}}
                             </div>
                         </div>
                     </div>
