@@ -36,7 +36,7 @@ models.ResourceLocationStatus.hasMany(models.ResourceLocation, { foreignKey: 'Re
 models.ResourceLocationInventory.belongsTo(models.ResourceType, { foreignKey: 'ResourceTypeID' });
 models.ResourceType.hasMany(models.ResourceLocationInventory, { foreignKey: 'ResourceTypeID' });
 
-//ResourceLocationInventory many-to-one on ResourceType
+//ResourceLocationInventory many-to-one on ResourceSubtype
 models.ResourceLocationInventory.belongsTo(models.ResourceSubtype, { foreignKey: 'ResourceSubtypeID' });
 models.ResourceSubtype.hasMany(models.ResourceLocationInventory, { foreignKey: 'ResourceSubtypeID' });
 
@@ -64,6 +64,9 @@ function findAllDistCenters() {
 				include: [
 				{
 					model: models.ResourceType
+				},
+				{
+					model: models.ResourceSubtype
 				},
 				{
 					model: models.ResourceTypeUnitOfMeasure
@@ -174,6 +177,7 @@ var routes = function () {
                   model: models.ResourceLocationInventory,
                   include: [
                       { model: models.ResourceType },
+					  { model: models.ResourceSubtype },
                       { model: models.ResourceTypeUnitOfMeasure },
                   ]
               },

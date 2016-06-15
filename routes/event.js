@@ -191,6 +191,9 @@ var routes = function(){
 					model: models.ResourceType
 				},
 				{
+					model: models.ResourceSubtype
+				},
+				{
 					model: models.ResourceTypeUnitOfMeasure
 				}]
 			}
@@ -220,6 +223,9 @@ var routes = function(){
 				include: [
 				{
 					model: models.ResourceType
+				},
+				{
+					model: models.ResourceSubtype
 				},
 				{
 					model: models.ResourceTypeUnitOfMeasure
