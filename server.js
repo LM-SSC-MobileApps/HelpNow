@@ -10,6 +10,14 @@ var cookieParser = require('cookie-parser');
 var https = require('https');
 var fs = require('fs');
 var formidable = require('formidable');
+var httpProxy = require('http-proxy');
+var http = require('http');
+//note - only version 06.0 works - 0.7.0 does not read the port #
+var proxy = require('express-http-proxy');
+
+
+
+
 
 //the routes for the helpnow api
 var accountRouter = require('./routes/account')();
@@ -50,6 +58,7 @@ var environment = process.env.ENVIRONMENT || 'qas';
 var port = process.env.PORT || 80;
 var ssl_port = process.env.SSL_PORT || 443;
 var enable_redirect = process.env.ENABLE_REDIRECT || true;
+
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
@@ -140,3 +149,33 @@ https.createServer({
 }, app).listen(ssl_port, function() {
     console.log('Running on PORT:' + ssl_port);
 });
+
+
+
+String.prototype.allReplace = function(obj) {
+    var retStr = this;
+    for (var x in obj) {
+        retStr = retStr.replace(new RegExp(x, 'g'), obj[x]);
+    }
+    return retStr;
+};
+
+
+app.use('/hxl', proxy('127.0.0.1:' + port, {
+    //only proxy get requests
+    filter: function(req, res) {
+        return req.method == 'GET';
+    },
+    forwardPath: function(req, res) {
+        return require('url').parse(req.url).path;
+    },
+    decorateRequest: function ( req ) {
+        req.headers[ 'Accept-Encoding' ] = 'utf8';
+        return req;
+    },
+    intercept: function(rsp, data, req, res, cb) {
+       var hxlTags= JSON.parse(fs.readFileSync('./data/hxl.json'));
+        data = data.toString().allReplace(hxlTags);
+        cb(null, data);
+    }
+}));
