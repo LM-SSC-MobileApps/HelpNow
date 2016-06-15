@@ -4263,6 +4263,30 @@ angular.module("helpNow").directive('map', ['MapLayer', function (MapLayer) {
                 var baseMapLayer;
                 var overlayMapLayer;
 
+                var clouds = L.OWM.clouds({ showLegend: true, opacity: 0.5 });
+                var cloudscls = L.OWM.cloudsClassic({ showLegend: true, opacity: 0.5 });
+                var precipitation = L.OWM.precipitation({ showLegend: true, opacity: 0.5 });
+                var precipitationcls = L.OWM.precipitationClassic({ showLegend: true, opacity: 0.5 });
+                var rain = L.OWM.rain({ showLegend: true, opacity: 0.5 });
+                var raincls = L.OWM.rainClassic({ showLegend: true, opacity: 0.5 });
+                var snow = L.OWM.snow({ showLegend: true, opacity: 0.5 });
+                var pressure = L.OWM.pressure({ showLegend: true, opacity: 0.5 });
+                var pressurecntr = L.OWM.pressureContour({ showLegend: true, opacity: 0.5 });
+                var temp = L.OWM.temperature({ showLegend: true, opacity: 0.5 });
+                var wind = L.OWM.wind({ showLegend: true, opacity: 0.5 });
+
+                if (event == null || event.eventID == 0)
+                {
+                    overlayMapLayers["Clouds"] = cloudscls;
+                    overlayMapLayers["Precipitation"] = precipitationcls;
+                    overlayMapLayers["Rain"] = raincls;
+                    overlayMapLayers["Snow"] = snow;
+                    overlayMapLayers["Pressure"] = pressure;
+                    overlayMapLayers["Pressure Contour"] = pressurecntr;
+                    overlayMapLayers["Temp"] = temp;
+                    overlayMapLayers["Wind"] = wind;
+                }
+
                 for (var i = 0; i < results.json.length; i++) {
                     var layer = results.json[i];
                     if (layer.MapLayerTypeID == 1 && (layer.EventID == event || layer.EventID == null)) {
@@ -4335,111 +4359,6 @@ angular.module("helpNow").directive('map', ['MapLayer', function (MapLayer) {
 
                 if (scope.initMap) scope.initMap(map);
             });
-
-            /*var api_key = 'pk.eyJ1IjoiZGlnaXRhbGdsb2JlIiwiYSI6ImNpZjc5N3NiMTA5OXlzb2x6c3FyZHQ3cTUifQ.88yZYJc78Z2MAnkX2fOjuw';
-            var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-				'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-			mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6IjZjNmRjNzk3ZmE2MTcwOTEwMGY0MzU3YjUzOWFmNWZhIn0.Y8bhBaUMqFiPrDRW9hieoQ';
-
-            var grayscale = L.tileLayer(mbUrl, { id: 'mapbox.light', attribution: mbAttr }),
-                streets = L.tileLayer(mbUrl, { id: 'mapbox.streets', attribution: mbAttr }),
-
-                GBMREST = L.esri.tiledMapLayer({ url: 'https://services.digitalglobe.com/earthservice/gis/0688362c-8f94-4016-95c3-172c2ab72023/rest/services/DigitalGlobe:ImageryTileService/MapServer', attribution: 'DigitalGlobe Basemap, 2015' }),
-                GBMWMS = L.tileLayer.wms('https://services.digitalglobe.com/mapservice/wmsaccess?connectid=0688362c-8f94-4016-95c3-172c2ab72023', { layers: 'DigitalGlobe:Imagery', format: 'image/png', transparent: true, attribution: 'DigitalGlobe 2015' }),
-                EsriImagery = L.esri.tiledMapLayer({ url: 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer', attribution: 'Esri 2015' });
-
-            /*var hybrid = new L.tileLayer('https://{s}.tiles.mapbox.com/v4/digitalglobe.n6nhclo2/{z}/{x}/{y}.png?access_token=' + api_key, {
-			    minZoom: 2,
-			    maxZoom: 19,
-			    attribution: '(c) <a href="http://microsites.digitalglobe.com/interactive/basemap_vivid/">DigitalGlobe</a> , (c) OpenStreetMap, (c) Mapbox'
-			});
-
-            var nepal = L.tileLayer('http://www.helpnowmap.com/nepal/{z}/{x}/{y}.png', {
-                minZoom: 11,
-                maxZoom: 19,
-                attribution: '(c) <a href="http://www.digitalglobe.com/">DigitalGlobe</a>'
-            });
-
-            var bangladesh = L.tileLayer('http://www.helpnowmap.com/bangladesh/{z}/{x}/{y}.png', {
-                tms: true,
-                minZoom: 6,
-                maxZoom: 12,
-                attribution: '(c) <a href="http://www.dmcii.com/">DMC International Imaging</a>'
-            });
-
-            var bangladeshDG = L.tileLayer('http://www.helpnowmap.com/bangladeshdg/{z}/{x}/{y}.png', {        
-                minZoom: 11,
-                maxZoom: 19,
-                attribution: '(c) <a href="http://www.digitalglobe.com/">DigitalGlobe</a>'
-            });
-
-            var vivid = new L.tileLayer('https://{s}.tiles.mapbox.com/v4/digitalglobe.n6ngnadl/{z}/{x}/{y}.png?access_token=' + api_key, {
-                minZoom: 2,
-                maxZoom: 19,
-                attribution: '(c) <a href="http://microsites.digitalglobe.com/interactive/basemap_vivid/">DigitalGlobe</a>'
-            });
-
-            var street = new L.tileLayer('https://{s}.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=' + api_key, {
-                minZoom: 2,
-                maxZoom: 19,
-                attribution: '(c) OpenStreetMap , (c) Mapbox'
-            });
-
-            var openStreetMap = new L.tileLayer(
-              'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                  attribution: mbAttr,
-                  noWrap: true,
-                  minZoom: 2,
-                  maxZoom: 18
-              }
-            );
-
-            var baseLayer = L.tileLayer('https://{s}.tiles.mapbox.com/v4/digitalglobe.n6nhclo2/{z}/{x}/{y}.png?access_token=' + api_key, {
-                minZoom: 2,
-                maxZoom: 19,
-                attribution: '(c) <a href="http://microsites.digitalglobe.com/interactive/basemap_vivid/">DigitalGlobe</a> , (c) OpenStreetMap, (c) Mapbox'
-            });
-
-            var map = new L.map('map', {
-                layers: [baseLayer],
-                maxBounds: [[-90.0, -180], [90.0, 180.0]]
-            }).setView(center, zoom);
-
-            L.control.scale().addTo(map);
-
-            map.attributionControl.setPrefix('');
-            var baselayers = {
-                "Base Open Street Maps": openStreetMap,
-                "DigitalGlobe Basemap +Vivid with Streets": baseLayer,
-                "DigitalGlobe Basemap": GBMREST
-            };
-
-            var overlays = {
-                "Bangladesh (DG)": bangladeshDG,
-		"Bangladesh": bangladesh,
-                "Nepal (DG)": nepal
-            };
-
-            L.control.layers(baselayers, overlays, {
-                collapsed: true
-            }).addTo(map);
-
-            map.addControl(new L.Control.Search({
-                url: 'http://nominatim.openstreetmap.org/search?format=json&q={s}',
-                jsonpParam: 'json_callback',
-                propertyName: 'display_name',
-                propertyLoc: ['lat', 'lon'],
-                circleLocation: false,
-                markerLocation: false,
-                autoType: false,
-                autoCollapse: true,
-                minLength: 2,
-                zoom: 13
-            }));
-
-            if (scope.initMap) scope.initMap(map);
-            */
         }
     };
 }]);
