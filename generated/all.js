@@ -4263,28 +4263,28 @@ angular.module("helpNow").directive('map', ['MapLayer', function (MapLayer) {
                 var baseMapLayer;
                 var overlayMapLayer;
 
-                var clouds = L.OWM.clouds({ showLegend: true, opacity: 0.5 });
-                var cloudscls = L.OWM.cloudsClassic({ showLegend: true, opacity: 0.5 });
-                var precipitation = L.OWM.precipitation({ showLegend: true, opacity: 0.5 });
-                var precipitationcls = L.OWM.precipitationClassic({ showLegend: true, opacity: 0.5 });
-                var rain = L.OWM.rain({ showLegend: true, opacity: 0.5 });
-                var raincls = L.OWM.rainClassic({ showLegend: true, opacity: 0.5 });
-                var snow = L.OWM.snow({ showLegend: true, opacity: 0.5 });
-                var pressure = L.OWM.pressure({ showLegend: true, opacity: 0.5 });
-                var pressurecntr = L.OWM.pressureContour({ showLegend: true, opacity: 0.5 });
-                var temp = L.OWM.temperature({ showLegend: true, opacity: 0.5 });
-                var wind = L.OWM.wind({ showLegend: true, opacity: 0.5 });
+                var OWMAppId = '533e5eea3d1b3eb5d9616d2723cf4b6b';
+
+                var clouds = L.OWM.clouds({ showLegend: true, opacity: 0.5, appId: OWMAppId });
+                var cloudscls = L.OWM.cloudsClassic({ showLegend: true, opacity: 0.5, appId: OWMAppId });
+                var precipitation = L.OWM.precipitation({ showLegend: true, opacity: 0.5, appId: OWMAppId });
+                var precipitationcls = L.OWM.precipitationClassic({ showLegend: true, opacity: 0.5, appId: OWMAppId });
+                var rain = L.OWM.rain({ showLegend: true, opacity: 0.5, appId: OWMAppId });
+                var raincls = L.OWM.rainClassic({ showLegend: true, opacity: 0.5, appId: OWMAppId });
+                var snow = L.OWM.snow({ showLegend: true, opacity: 0.5, appId: OWMAppId });
+                var pressure = L.OWM.pressure({ showLegend: true, opacity: 0.5, appId: OWMAppId });
+                var pressurecntr = L.OWM.pressureContour({ showLegend: true, opacity: 0.5, appId: OWMAppId });
+                var temp = L.OWM.temperature({ showLegend: true, opacity: 0.5, appId: OWMAppId });
+                var wind = L.OWM.wind({ showLegend: true, opacity: 0.5, appId: OWMAppId });
+                var city = L.OWM.current({ intervall: 0, lang: 'en', appId: OWMAppId, temperatureUnit: 'F' });
 
                 if (event == null || event.eventID == 0)
                 {
-                    overlayMapLayers["Clouds"] = cloudscls;
                     overlayMapLayers["Precipitation"] = precipitationcls;
-                    overlayMapLayers["Rain"] = raincls;
-                    overlayMapLayers["Snow"] = snow;
                     overlayMapLayers["Pressure"] = pressure;
-                    overlayMapLayers["Pressure Contour"] = pressurecntr;
                     overlayMapLayers["Temp"] = temp;
                     overlayMapLayers["Wind"] = wind;
+                    overlayMapLayers["City Data"] = city;
                 }
 
                 for (var i = 0; i < results.json.length; i++) {
