@@ -1,0 +1,5 @@
+{
+  "LAT":"#geo+lat",
+  "LONG":"#geo+long",
+  "CreateDate":"#date"
+}
