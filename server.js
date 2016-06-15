@@ -10,7 +10,6 @@ var cookieParser = require('cookie-parser');
 var https = require('https');
 var fs = require('fs');
 var formidable = require('formidable');
-var httpProxy = require('http-proxy');
 var http = require('http');
 //note - only version 06.0 works - 0.7.0 does not read the port #
 var proxy = require('express-http-proxy');
