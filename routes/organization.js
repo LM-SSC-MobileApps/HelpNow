@@ -228,6 +228,7 @@ var routes = function(){
     models.Organization.update(
       req.body,
       {
+          individualHooks: true,
         where: {
           OrganizationID: req.params.id
         }
