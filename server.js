@@ -50,6 +50,7 @@ var heatMapRouter = require('./routes/heatmap')();
 var mapLayerRouter = require('./routes/maplayer')();
 var mapLayerTypeRouter = require('./routes/maplayertype')();
 
+var hashValuesRouter = require('./routes/hashvalues')();
 
 var app = express();
 
@@ -116,6 +117,7 @@ app.use('/api/socialmedia', socialMediaRouter);
 app.use('/api/heatmap', heatMapRouter);
 app.use('/api/maplayer', mapLayerRouter);
 app.use('/api/maplayertype', mapLayerTypeRouter);
+app.use('/hashvalues', hashValuesRouter);
 
 //set the express.static locations to serve up the static files
 app.use(express.static('views'));

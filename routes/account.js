@@ -26,7 +26,7 @@ var routes = function(){
       )
       .catch(function (err) {
        console.error(err);
-       res.statusCode = 502;
+       res.statusCode = 400;
        res.send({
            result: 'error',
            err:    err.message
@@ -61,7 +61,7 @@ var routes = function(){
       }
      ).catch(function (err) {
        console.error(err);
-       res.statusCode = 502;
+       res.statusCode = 400;
        res.send({
            result: 'error',
            err:    err.message
@@ -97,7 +97,7 @@ var routes = function(){
   //     }
   //    ).catch(function (err) {
   //      console.error(err);
-  //      res.statusCode = 502;
+  //      res.statusCode = 400;
   //      res.send({
   //          result: 'error',
   //          err:    err.message
@@ -134,7 +134,7 @@ var routes = function(){
       }
      ).catch(function (err) {
          console.error(err);
-         res.statusCode = 502;
+         res.statusCode = 400;
          res.send({
              result: 'error',
              err: err.message
@@ -193,7 +193,7 @@ var routes = function(){
         }
       ).catch(function (err) {
          console.error(err);
-         res.statusCode = 502;
+         res.statusCode = 400;
          res.send({
              result: 'error',
              err: err.message
@@ -203,7 +203,16 @@ var routes = function(){
   )
   //find login which retrieves account
   .post('/login/', function (req, res) {
-        models.Account.findAll(
+      // User.find({ ... })
+      // .success(function(account) {
+      //     account.validatePassword('the password to check', function(err, isMatch)
+      //       {
+      //
+      //       }
+      // })
+      // ;
+
+      models.Account.findAll(
           {
               include: [
                 {
@@ -211,41 +220,41 @@ var routes = function(){
                 }
               ],
               where: {
-                  Username: req.body.username,
-                  Password: req.body.password
+                  Username: req.body.username
               }
           }
-        ).then(function (account) {
-            if (account.length>0)
-            {
-              // var userSessionObject = {
-              //       AccountID: account[0].AccountID,
-              //       FirstName: account[0].FirstName,
-              //       LastName: account[0].LastName,
-              //       OrganizationID: account[0].Organization.OrganizationID,
-              //       OrganizationName: account[0].Organization.Organization.Name
-              //   }
-              req.session.accountid =  account[0].AccountID;
-              req.session.organizationid =  account[0].OrganizationID;
-              res.statusCode = 200;
-              res.send(
-                {
-                    result: 'success',
-                    err: '',
-                    json: account,
-                    length: account.length
-                }
-              );
-            }
-            else
-            {
+        ).then(function(accounts) {
+          if (accounts.length>0){
+              accounts[0].validatePassword(req.body.password, function(err, isMatch)
+              {
+                  if (isMatch){
+                      req.session.accountid =  accounts[0].AccountID;
+                      req.session.organizationid =  accounts[0].OrganizationID;
+                      res.statusCode = 200;
+                      res.send(
+                          {
+                              result: 'success',
+                              err: '',
+                              json: accounts,
+                              length: accounts.length
+                          }
+                      );
+                  }
+                  else {
+                      res.sendStatus(401);
+                  }
+
+              });
+          }
+          else
+          {
               res.sendStatus(401)
-            }
-            
-        }
+          }
+              
+          }
       ).catch(function (err) {
           console.error(err);
-          res.statusCode = 502;
+          res.statusCode = 400;
           res.send({
               result: 'error',
               err: err.message
@@ -296,7 +305,7 @@ var routes = function(){
         }
       ).catch(function (err) {
           console.error(err);
-          res.statusCode = 502;
+          res.statusCode = 400;
           res.send({
               result: 'error',
               err: err.message
@@ -320,7 +329,7 @@ var routes = function(){
       }
      ).catch(function (err) {
        console.error(err);
-       res.statusCode = 502;
+       res.statusCode = 400;
        res.send({
            result: 'error',
            err:    err.message
@@ -333,6 +342,7 @@ var routes = function(){
     models.Account.update(
       req.body,
       {
+        individualHooks: true,
         where: {
           AccountID: req.params.id
         }
@@ -351,7 +361,7 @@ var routes = function(){
       }
      ).catch(function (err) {
        console.error(err);
-       res.statusCode = 502;
+       res.statusCode = 400;
        res.send({
            result: 'error',
            error:  err.message
@@ -379,7 +389,7 @@ var routes = function(){
       }
      ).catch(function (err) {
        console.error(err);
-       res.statusCode = 502;
+       res.statusCode = 400;
        res.send({
            result: 'error',
            err:    err.message

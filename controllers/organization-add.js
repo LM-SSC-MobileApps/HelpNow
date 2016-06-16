@@ -16,9 +16,10 @@
             if ($scope.org.Name != null) {
                 $scope.newOrg.Name = $scope.org.Name;
             }
-            if ($scope.org.APISecret != null) {
-                $scope.newOrg.APISecret = $scope.org.APISecret;
-            }
+            // commented out, we will no longer provide the APISecret to view.  A new Secret will need to be created if the Organization/API is updated.
+            // if ($scope.org.APISecret != null) {
+            //     $scope.newOrg.APISecret = $scope.org.APISecret;
+            // }
         });
     };
 

@@ -161,6 +161,7 @@ function setupLocalAuthentication(app, passport, strategy) {
                         console.log("unauthorized");
                         return done(null, false);
                     } else {
+                        console.log(str);
                         var jsonObj = JSON.parse(str);
                         var user = jsonObj.json[0];
                         console.log("authorized user: " + user.Email);                            
@@ -321,12 +322,27 @@ function setupBasicAuthForAPI(app, passport, strategy) {
             }
           ).then(function (organization) {
               if (organization[0] != null) {
-                  if (organization[0].APISecret == password) { 
-                      return done(null, true);
-                  }
-                  else {      
-                      return done(null, false);
-                  }
+                  organization[0].validateAPISecret(password, function(error,validated){
+                      if (validated)
+                      {
+                          return done(null, true);
+                      }
+                      else
+                      {
+                          return done(null, false);
+                      }
+                    }
+                  );
+                  
+
+                  //
+                  //
+                  // if (organization[0].validateAPISecret(password, function(error, )) {
+                  //     return done(null, true);
+                  // }
+                  // else {
+                  //     return done(null, false);
+                  // }
               }
               else {
                   return done(null, false);

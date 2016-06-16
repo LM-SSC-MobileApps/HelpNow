@@ -149,7 +149,6 @@ var routes = function(){
         orgIDs.forEach(
           function(element)
           {
-            console.info("here is the org id: "+element.OrganizationID);
             promises.push(
               models.Organization.findAll(
                 {
