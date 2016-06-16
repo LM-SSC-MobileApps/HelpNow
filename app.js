@@ -112,7 +112,7 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 			templateUrl: "views/manage/assign-poc.html"
 		});
 
-		$routeProvider.when("/reg_account/", {
+		$routeProvider.when("/reg_account/:inviteID", {
 		    templateUrl: "views/reg-account.html"
 		});
 

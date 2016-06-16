@@ -94,16 +94,7 @@ angular.module("helpNow").directive('map', ['MapLayer', function (MapLayer) {
                 var temp = L.OWM.temperature({ showLegend: true, opacity: 0.5, appId: OWMAppId });
                 var wind = L.OWM.wind({ showLegend: true, opacity: 0.5, appId: OWMAppId });
                 var city = L.OWM.current({ intervall: 0, lang: 'en', appId: OWMAppId, temperatureUnit: 'F' });
-
-                if (event == null || event.eventID == 0)
-                {
-                    overlayMapLayers["Precipitation"] = precipitationcls;
-                    overlayMapLayers["Pressure"] = pressure;
-                    overlayMapLayers["Temp"] = temp;
-                    overlayMapLayers["Wind"] = wind;
-                    overlayMapLayers["City Data"] = city;
-                }
-
+                
                 for (var i = 0; i < results.json.length; i++) {
                     var layer = results.json[i];
                     if (layer.MapLayerTypeID == 1 && (layer.EventID == event || layer.EventID == null)) {
@@ -147,6 +138,12 @@ angular.module("helpNow").directive('map', ['MapLayer', function (MapLayer) {
 
                     }
                 }
+
+                overlayMapLayers["Precipitation"] = precipitationcls;
+                overlayMapLayers["Pressure"] = pressure;
+                overlayMapLayers["Temp"] = temp;
+                overlayMapLayers["Wind"] = wind;
+                overlayMapLayers["City Data"] = city;
 
                 var map = new L.map('map', {
                     layers: [baseMapLayer],
