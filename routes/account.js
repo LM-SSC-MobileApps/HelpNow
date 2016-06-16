@@ -40,7 +40,7 @@ var routes = function(){
         {
           include: [
             {
-              model: models.Organization,
+              model: models.Organization
             }
           ],
           where: {
@@ -216,7 +216,7 @@ var routes = function(){
           {
               include: [
                 {
-                  model: models.Organization,
+                  model: models.Organization
                 }
               ],
               where: {
@@ -268,7 +268,7 @@ var routes = function(){
           {
               include: [
                 {
-                  model: models.Organization,
+                  model: models.Organization
                 }
               ],
               where: {
