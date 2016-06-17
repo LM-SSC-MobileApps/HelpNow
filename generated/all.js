@@ -112,7 +112,7 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 			templateUrl: "views/manage/assign-poc.html"
 		});
 
-		$routeProvider.when("/reg_account/", {
+		$routeProvider.when("/reg_account/:inviteID", {
 		    templateUrl: "views/reg-account.html"
 		});
 
@@ -3541,6 +3541,8 @@ angular.module("helpNow").controller("RegAccountCtrl", ["$scope", "$http", "$loc
     $scope.showUsername = true;
     $scope.showUser = false;
 
+    $scope.inviteID = $routeParams.inviteID;
+
     $scope.userAccount = { OrganizationGroupID: 1, Active: true, AccountRoleID: 3, CreateDate: new Date() };
 
     $scope.showUserForm = function () {
@@ -4278,16 +4280,7 @@ angular.module("helpNow").directive('map', ['MapLayer', function (MapLayer) {
                 var temp = L.OWM.temperature({ showLegend: true, opacity: 0.5, appId: OWMAppId });
                 var wind = L.OWM.wind({ showLegend: true, opacity: 0.5, appId: OWMAppId });
                 var city = L.OWM.current({ intervall: 0, lang: 'en', appId: OWMAppId, temperatureUnit: 'F' });
-
-                if (event == null || event.eventID == 0)
-                {
-                    overlayMapLayers["Precipitation"] = precipitationcls;
-                    overlayMapLayers["Pressure"] = pressure;
-                    overlayMapLayers["Temp"] = temp;
-                    overlayMapLayers["Wind"] = wind;
-                    overlayMapLayers["City Data"] = city;
-                }
-
+                
                 for (var i = 0; i < results.json.length; i++) {
                     var layer = results.json[i];
                     if (layer.MapLayerTypeID == 1 && (layer.EventID == event || layer.EventID == null)) {
@@ -4332,6 +4325,12 @@ angular.module("helpNow").directive('map', ['MapLayer', function (MapLayer) {
                     }
                 }
 
+                overlayMapLayers["Precipitation"] = precipitationcls;
+                overlayMapLayers["Pressure"] = pressure;
+                overlayMapLayers["Temp"] = temp;
+                overlayMapLayers["Wind"] = wind;
+                overlayMapLayers["City Data"] = city;
+
                 var map = new L.map('map', {
                     layers: [baseMapLayer],
                     maxBounds: [[-90.0, -180], [90.0, 180.0]]
@@ -4363,21 +4362,6 @@ angular.module("helpNow").directive('map', ['MapLayer', function (MapLayer) {
         }
     };
 }]);
-
-angular.module('helpNow').factory('ResourceLocationTransport', function ($resource) {
-    return $resource('api/resourcelocationtransport/:id', null, {
-        update: {
-            method: 'PUT'
-        }
-    });
-});
-angular.module('helpNow').factory('ResourceRequest', function ($resource) {
-    return $resource('api/resourcerequest/:id', null ,{
-        update: {
-            method: 'PUT'
-        }
-    });
-});
 
 angular.module('helpNow').factory('Account', function ($resource) {
     return $resource('api/account/:id', null ,{
@@ -4498,8 +4482,22 @@ angular.module('helpNow').factory('ResourceLocationInventory', function ($resour
         }
     });
 });
+angular.module('helpNow').factory('ResourceLocationTransport', function ($resource) {
+    return $resource('api/resourcelocationtransport/:id', null, {
+        update: {
+            method: 'PUT'
+        }
+    });
+});
 angular.module('helpNow').factory('ResourceLocationType', function ($resource) {
     return $resource('api/resourcelocationtype/:id', null, {
+        update: {
+            method: 'PUT'
+        }
+    });
+});
+angular.module('helpNow').factory('ResourceRequest', function ($resource) {
+    return $resource('api/resourcerequest/:id', null ,{
         update: {
             method: 'PUT'
         }

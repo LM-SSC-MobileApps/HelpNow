@@ -5,6 +5,8 @@
     $scope.showUsername = true;
     $scope.showUser = false;
 
+    $scope.inviteID = $routeParams.inviteID;
+
     $scope.userAccount = { OrganizationGroupID: 1, Active: true, AccountRoleID: 3, CreateDate: new Date() };
 
     $scope.showUserForm = function () {
