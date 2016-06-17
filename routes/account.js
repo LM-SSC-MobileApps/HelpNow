@@ -1,4 +1,3 @@
-
 var models  = require('../models'),
     express = require('express');
 
@@ -203,14 +202,6 @@ var routes = function(){
   )
   //find login which retrieves account
   .post('/login/', function (req, res) {
-      // User.find({ ... })
-      // .success(function(account) {
-      //     account.validatePassword('the password to check', function(err, isMatch)
-      //       {
-      //
-      //       }
-      // })
-      // ;
 
       models.Account.findAll(
           {

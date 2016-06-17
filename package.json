@@ -34,6 +34,7 @@
     "https": "^1.0.0",
     "morgan": "~1.6.1",
     "mysql": "^2.9.0",
+    "njwt": "^0.3.0",
     "node-kmeans": "0.0.1",
     "passport": "^0.2.0",
     "passport-facebook": "^1.0.3",
@@ -43,8 +44,6 @@
     "passport-twitter": "^1.0.2",
     "request-promise": "^2.0.1",
     "sequelize": "^3.23.3",
-    "sequelize-auto": "0.0.7",
-    "sequelize-cli": "^1.9.1",
     "serve-favicon": "~2.3.0",
     "twitter": "^1.2.5"
   }

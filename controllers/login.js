@@ -16,7 +16,8 @@
 
         var webCall = $http({
             method: 'POST',
-            url: '/auth/login',
+            url: '/authenticate/login',
+            // url: '/auth/login',
             async: true,
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'

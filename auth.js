@@ -1,6 +1,8 @@
 var environment = "";
 var port = "";
 var ssl_port = "";
+var env       = process.env.NODE_ENV || 'aws-development';
+var config    = require(__dirname + '/config/config.json')[env];
 
 module.exports =
 {
@@ -311,7 +313,7 @@ function setupBasicAuthForAPI(app, passport, strategy) {
     var models = require('./models');
     var BasicStrategy = require('passport-http').BasicStrategy;
 
-    passport.use(new BasicStrategy(
+    passport.use('api-basic', new BasicStrategy(
       function (username, password, done) {
           
           models.Organization.findAll(
@@ -333,16 +335,7 @@ function setupBasicAuthForAPI(app, passport, strategy) {
                       }
                     }
                   );
-                  
 
-                  //
-                  //
-                  // if (organization[0].validateAPISecret(password, function(error, )) {
-                  //     return done(null, true);
-                  // }
-                  // else {
-                  //     return done(null, false);
-                  // }
               }
               else {
                   return done(null, false);
@@ -356,50 +349,53 @@ function setupBasicAuthForAPI(app, passport, strategy) {
       }
         ));
 
-    //we capture all api requests and authenticate them.
+    // exports.isAPIAuthenticated = passport.authenticate('api-basic', {session:false});
+
+    // we capture all api requests and authenticate them.
     app.all('/api/*',
-        passport.authenticate('basic', { session: false })
+        passport.authenticate('api-basic', { session: false })
     );
 }
 
-//function setupDigestAuthForAPI(app, passport) {
-//    console.log("setupDigestAuthForAPI");
-//    var models = require('./models');
-//    var DigestStrategy = require('passport-http').DigestStrategy;
-//    passport.use(new DigestStrategy(
-//        { qop: 'auth' },
-//      function (username, done) {
-//          console.log("HERE WE GO!  : username: " + username);
-//          models.Organization.findAll(
-//            {
-//                where: {
-//                    APIKey: username
-//                }
-//            }
-//          ).then(function (organization) {
-//              if (organization[0] != null) {
-//                  console.error("org found!: " + organization[0].APISecret);
-//                  return done(null, organization[0], organization[0].APISecret);
-//              }
-//              else {
-//                  console.error("no organization found!");
-//                  return done(null, false);
-//              }
-//          }
-//         ).catch(function (err) {
-//             console.error(err);
-//             return done(err);
-//         });;
-//      },
-//      function (params, done) {
-//          console.log("validate nonces as necessary");
-//          // validate nonces as necessary
-//          done(null, true)
-//      }
-//    ));
+// function setupBearerAuthentication(passport){
+//     var Token = require('./models/Token');
+//
+//     passport.use(new BearerStrategy(
+//         function(accessToken, callback) {
+//             Token.find(
+//                 {
+//                     where:{
+//                         value: accessToken
+//                     }
+//                 }
+//             ).then(function(token){
+//                 if (!token){
+//                     return callback(null, false);
+//                 }
+//
+//             }).catch(function (err) {
+//                 console.error(err);
+//                 return callback(err);
+//             });
+//             Token.findOne({value: accessToken }, function (err, token) {
+//                 if (err) { return callback(err); }
+//
+//                 // No token found
+//                 if (!token) { return callback(null, false); }
+//
+//                 User.findOne({ _id: token.userId }, function (err, user) {
+//                     if (err) { return callback(err); }
+//
+//                     // No user found
+//                     if (!user) { return callback(null, false); }
+//
+//                     // Simple example with no scope
+//                     callback(null, user, { scope: '*' });
+//                 });
+//             });
+//         }
+//     ));
+//
+//     exports.isBearerAuthenticated = passport.authenticate('bearer', { session: true });
+// }
 
-//    //we capture all api requests and authenticate them.
-//    app.all('/api/*',
-//        passport.authenticate('digest', { session: false })
-//    );
-//}
