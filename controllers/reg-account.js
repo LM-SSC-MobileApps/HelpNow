@@ -5,9 +5,23 @@
     $scope.showUsername = true;
     $scope.showUser = false;
 
-    $scope.inviteID = $routeParams.inviteID;
+    $scope.inviteid = $routeParams.inviteID;
 
-    $scope.userAccount = { OrganizationGroupID: 1, Active: true, AccountRoleID: 3, CreateDate: new Date() };
+    $scope.inviteResource = $resource("/api/inviteRequest/:inviteid");
+
+    $scope.userAccount = { Active: true, AccountRoleID: 2, CreateDate: new Date(), IsHashed: 0 };
+
+    loadInviteRequest();
+
+    function loadInviteRequest() {
+        $scope.inviteResource.get({inviteid: $scope.inviteid}, function (data) {
+            $scope.inviteRequest = data.json;
+            $scope.userAccount.OrganizationID = $scope.inviteRequest[0].OrganizationID;
+            $scope.userAccount.FirstName = $scope.inviteRequest[0].FirstName;
+            $scope.userAccount.LastName = $scope.inviteRequest[0].LastName;
+            $scope.userAccount.Email = $scope.inviteRequest[0].Email;
+        });
+    }
 
     $scope.showUserForm = function () {
         var hasError = false;
