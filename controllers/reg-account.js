@@ -1,4 +1,4 @@
-﻿angular.module("helpNow").controller("RegAccountCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function ($scope, $http, $location, $routeParams, $resource) {
+﻿angular.module("helpNow").controller("RegAccountCtrl", ["$scope", "$http", "$location", "Invitation", "$routeParams", "$resource", function ($scope, $http, $location, Invitation, $routeParams, $resource) {
     $scope.setCurrentView("reg-account");
     $scope.setTitle($scope.text.reg_account_title);
 
@@ -16,10 +16,17 @@
     function loadInviteRequest() {
         $scope.inviteResource.get({inviteid: $scope.inviteid}, function (data) {
             $scope.inviteRequest = data.json;
-            $scope.userAccount.OrganizationID = $scope.inviteRequest[0].OrganizationID;
-            $scope.userAccount.FirstName = $scope.inviteRequest[0].FirstName;
-            $scope.userAccount.LastName = $scope.inviteRequest[0].LastName;
-            $scope.userAccount.Email = $scope.inviteRequest[0].Email;
+
+            if ($scope.inviteRequest == null || $scope.inviteRequest[0] == null || $scope.inviteRequest[0].OrganizationID <= 0) {
+                alert("Invitation information could not be found.  Contact your organization's administrator for a new invitation.");
+                $location.path('#');
+            }
+            else {
+                $scope.userAccount.OrganizationID = $scope.inviteRequest[0].OrganizationID;
+                $scope.userAccount.FirstName = $scope.inviteRequest[0].FirstName;
+                $scope.userAccount.LastName = $scope.inviteRequest[0].LastName;
+                $scope.userAccount.Email = $scope.inviteRequest[0].Email;
+            }
         });
     }
 
@@ -68,6 +75,7 @@
         });
         webCall.then(function (response) {
             alert("Account Successfully Created");
+            Invitation.delete({inviteid: $scope.inviteid});
             $location.path('#');
         },
         function (response) { // optional
