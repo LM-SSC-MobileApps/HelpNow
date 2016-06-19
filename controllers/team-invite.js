@@ -14,6 +14,7 @@ angular.module("helpNow").controller("TeamInviteCtrl", ["$scope", "$resource", "
 
     $scope.sendInvite = function (invitation) {
         Invitation.save(invitation);
+        //send email here.....
         $scope.confirmEmail(invitation);
     };
 
