@@ -1919,7 +1919,6 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
         var webCall = $http({
             method: 'POST',
             url: '/authenticate/login',
-            // url: '/auth/login',
             async: true,
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -4095,7 +4094,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
         // Logout server
         var webCall = $http({
             method: 'POST',
-            url: '/auth/logout',
+            url: '/authenticate/logout',
             async: true,
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -4452,6 +4451,21 @@ angular.module("helpNow").directive('map', ['MapLayer', function (MapLayer) {
     };
 }]);
 
+angular.module('helpNow').factory('ResourceLocationTransport', function ($resource) {
+    return $resource('api/resourcelocationtransport/:id', null, {
+        update: {
+            method: 'PUT'
+        }
+    });
+});
+angular.module('helpNow').factory('ResourceRequest', function ($resource) {
+    return $resource('api/resourcerequest/:id', null ,{
+        update: {
+            method: 'PUT'
+        }
+    });
+});
+
 angular.module('helpNow').factory('Account', function ($resource) {
     return $resource('api/account/:id', null ,{
         update: {
@@ -4460,19 +4474,8 @@ angular.module('helpNow').factory('Account', function ($resource) {
     });
 });
 
-angular.module('helpNow').factory('api_interceptor', function($cookies){
+angular.module('helpNow').factory('api_interceptor', function($cookies, $location){
     return {
-        // request: function (config) {
-        //     config.headers = config.headers || {};
-        //     config.headers.Authorization = 'Basic ' + btoa('a1ada5ab-b8c2-11e5-847d-00ffd0ea9272' + ':' + 'H3lpN0w2016');
-        //
-        //     config.headers.Authorization =
-        //
-        //     //if (authManager.authToken) {
-        //     //    config.headers.Authorization = 'Basic ' + authManager.authToken;
-        //     //}
-        //     return config;
-        // }
         'request': function (config) {
             config.headers = config.headers || {};
             if ($cookies.get('cookie.helpnowmap.org')) {
@@ -4482,9 +4485,10 @@ angular.module('helpNow').factory('api_interceptor', function($cookies){
         },
         'responseError': function (response) {
             if (response.status === 401 || response.status === 403) {
+                alert("Unauthorized.  ");
                 $location.path('/login');
             }
-            return $q.reject(response);
+            return response;
         }
     };
 });
@@ -4585,22 +4589,8 @@ angular.module('helpNow').factory('ResourceLocationInventory', function ($resour
         }
     });
 });
-angular.module('helpNow').factory('ResourceLocationTransport', function ($resource) {
-    return $resource('api/resourcelocationtransport/:id', null, {
-        update: {
-            method: 'PUT'
-        }
-    });
-});
 angular.module('helpNow').factory('ResourceLocationType', function ($resource) {
     return $resource('api/resourcelocationtype/:id', null, {
-        update: {
-            method: 'PUT'
-        }
-    });
-});
-angular.module('helpNow').factory('ResourceRequest', function ($resource) {
-    return $resource('api/resourcerequest/:id', null ,{
         update: {
             method: 'PUT'
         }

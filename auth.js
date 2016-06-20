@@ -5,8 +5,9 @@ var env       = process.env.NODE_ENV || 'aws-development';
 var config    = require(__dirname + '/config/config.json')[env];
 var jwtStrategy = require('passport-jwt').Strategy;
 var jwtExtractor = require('passport-jwt').ExtractJwt;
-var nJwt = require("njwt");
+var nJwt = require('njwt');
 var passport = require('passport');
+var authheader = require('auth-header');
 // var localStrategy = require('passport-local').Strategy;
 var facebookStrategy = require('passport-facebook').Strategy;
 
@@ -31,24 +32,11 @@ module.exports =
             done(null, user);
         });
 
-        // app.post('/auth/logout',
-        //     function (req, res) {
-        //         logout(req, res);
-        //     }
-        // );
-        
         setupFacebookAuthentication(app);
         setupJWTAuthentication(app);
     }
 };
 
-// function logout(req, res) {
-//     req.logout();
-//    
-//     res.writeHead(200, { 'Content-Type': 'text/plain' });
-//     res.write("User successfully logged out.");
-//     res.end();
-// }
 
 function getEnvironment() {
     return environment;
@@ -158,48 +146,44 @@ function setupFacebookAuthentication(app) {
               //console.log(JSON.stringify(profile));
               //var profileStr = profile.name.givenName + '|' + profile.name.familyName + '|' + profile.emails[0].value
               //console.log(profileStr);
-              
-              models.Account.findAll()
 
-              var http = require('http');
-              
-              var apiAuth = 'Basic ' + new Buffer('a1ada5ab-b8c2-11e5-847d-00ffd0ea9272:H3lpN0w2016').toString('base64');
-
-              var creds = '{"email":"' + profile.emails[0].value + '"}';
-              var options = {
-                  host: 'localhost',
-                  path: '/api/account/external_login',
-                  port: getHttpPort(false),
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json', 'Authorization': apiAuth }
-              };
-
-              callback = function (response) {
-                  var str = '';
-
-                  // Another chunk of data has been recieved, so append it to `str`
-                  response.on('data', function (chunk) {
-                      str += chunk;
-                  });
-
-                  // The whole response has been recieved, so know we can use it
-                  response.on('end', function () {
-                      if (str === "Unauthorized") {
-                          console.log("unauthorized");
-                          return done(null, false);
-                      } else {
-                          var jsonObj = JSON.parse(str);
-                          var user = jsonObj.json[0];
-                          console.log("authorized user: " + user.Email);
-                          //return done(null, user.Email, { message: str });
-                          return done(null, str);
+              models.Account.findAll(
+                  {
+                      include: [
+                          {
+                              model: models.Organization
+                          }
+                      ],
+                      where: {
+                          Username: profile.emails[0].value
                       }
-                  });
-              }
+                  }
+              ).then(function(account){
+                  if (accounts.length>0){
+                      var claims = {
+                          iss: "https://helpnowmap.org",
+                          sub: accounts[0].Username,
+                          scope: "user"
+                      }
+                      var jwt = nJwt.create(claims, signingKey);
 
-              var req = http.request(options, callback);
-              req.write(creds);
-              req.end();
+                      var token = jwt.compact();
+
+                      res.cookie("cookie.helpnowmap.org", token);
+                      req.session.accountid =  accounts[0].AccountID;
+                      req.session.organizationid =  accounts[0].OrganizationID;
+                      res.statusCode = 200;
+                      done(null, true);
+
+                  }
+                  else {
+                    done(null, false);
+                  }
+              }).catch(function (err) {
+                  console.error(err);
+                  return done(err, null);
+              });
+
           });
       }
     ));
@@ -239,66 +223,40 @@ function setupFacebookAuthentication(app) {
     });
 }
 
-// function setupBasicAuthForAPI(app) {
-//     console.log("setupBasicAuthForAPI");
-//     var models = require('./models');
-//     var BasicStrategy = require('passport-http').BasicStrategy;
-//
-//     passport.use('api-basic', new BasicStrategy(
-//       function (username, password, done) {
-//
-//           models.Organization.findAll(
-//             {
-//                 where: {
-//                     APIKey: username
-//                 }
-//             }
-//           ).then(function (organization) {
-//               if (organization[0] != null) {
-//                   organization[0].validateAPISecret(password, function(error,validated){
-//                       if (validated)
-//                       {
-//                           return done(null, true);
-//                       }
-//                       else
-//                       {
-//                           return done(null, false);
-//                       }
-//                     }
-//                   );
-//
-//               }
-//               else {
-//                   return done(null, false);
-//               }
-//           }
-//          ).catch(function (err) {
-//              console.error(err);
-//              return done(err);
-//          });
-//
-//       }
-//         ));
-//
-//     // exports.isAPIAuthenticated = passport.authenticate('api-basic', {session:false});
-//
-//     // we capture all api requests and authenticate them.
-//     // app.all('/api/*',
-//     //     passport.authenticate('api-basic', { session: false })
-//     // );
-// }
 
 function setupJWTAuthentication(app) {
     var opts = {};
     opts.jwtFromRequest = jwtExtractor.fromAuthHeader();
     opts.secretOrKey = config.jwt_secret;
     opts.issuer = config.jwt_issuer;
+    opts.passReqToCallback = true;
 
     var models = require('./models');
 
-    passport.use('jwt-auth-api', new jwtStrategy(opts, function(jwt_payload, done) {
-        console.log("here is the id: "+jwt_payload.id);
-        console.log("here is the sub: "+jwt_payload.sub);
+    passport.use('jwt-auth-api', new jwtStrategy(opts, function(req, jwt_payload, done) {
+
+        // Get authorization header.
+        var auth = authheader.parse(req.get('authorization'));
+
+        // models.AuthToken.Find(
+        //     {
+        //         where: {
+        //             Value: auth.token
+        //         }
+        //     }
+        // ).then(function(authcode) {
+        //     if (authcode)
+        //     {
+        //         return done(null, true);
+        //     }
+        //     else {
+        //         return done(null, false);
+        //     }
+        //
+        // }).catch(function (err) {
+        //     console.error(err);
+        //     return done(err, null);
+        // });
 
         models.Account.findAll(
             {
@@ -337,11 +295,6 @@ function setupJWTAuthentication(app) {
         });
     }));
 
-    // module.exports.isAPIAuthenticated = passport.authenticate('jwt-auth-api', {session:false});
-
-    // app.all('/api/*',
-    //     passport.authenticate('jwt-auth-api', { session: false })
-    // );
 }
 
 var cookieExtractor = function(req) {

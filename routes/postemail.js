@@ -11,7 +11,7 @@ var sesconfig    = require(__dirname + '/../config/ses_secret.json');
 
 var routes = function () {
     var router = express.Router();
-    router.post('/',  passport.authenticate('jwt-auth-api', {session:false}), function (req, res) {
+    router.post('/', function (req, res) {
 
             var transport = nodemailer.createTransport((sesTransport({
                 accessKeyId:  sesconfig.AccessKeyId,

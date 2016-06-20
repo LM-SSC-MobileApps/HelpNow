@@ -1,6 +1,7 @@
 
 var models  = require('../models'),
-    express = require('express');
+    express = require('express'),
+    passport = require('passport');
     
 //ResourceType one-to-many on ResourceTypeUnitOfMeasure    
 models.ResourceType.hasMany(models.ResourceTypeUnitOfMeasure, {foreignKey: 'ResourceTypeID'});
@@ -77,7 +78,7 @@ var routes = function(){
     }
   )
   //insert into ResourceType
-  .post('/', function(req, res) {
+  .post('/', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.ResourceType.create(req.body)
     .then(function(resourceType) {
         res.statusCode = 200;
@@ -101,7 +102,7 @@ var routes = function(){
     }
   )
   //update into ResourceType
-  .put('/:id', function(req, res) {
+  .put('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.ResourceType.update(
       req.body,
       {
@@ -131,7 +132,7 @@ var routes = function(){
       });
     }
   )
-  .delete('/:id', function(req, res) {
+  .delete('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.ResourceType.destroy(
       {
         where: {

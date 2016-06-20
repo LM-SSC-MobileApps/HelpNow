@@ -4,7 +4,7 @@
 
 var models  = require('../models'),
     express = require('express'),
-    passport = require('passport'),
+    passport = require('passport')
     // uuid = require('uuid'),
     nJwt = require('njwt');
 
@@ -35,13 +35,18 @@ var routes = function(){
                             if (isMatch){
 
                                 var claims = {
-                                    iss: "http://helpnowmap.org",
+                                    iss: config.jwt_issuer,
                                     sub: accounts[0].Username,
                                     scope: "user"
                                 }
                                 var jwt = nJwt.create(claims, signingKey);
 
                                 var token = jwt.compact();
+
+                                // models.AuthToken.create({
+                                //     Value:token,
+                                //     Username:accounts[0].Username
+                                // });
 
                                 res.cookie("cookie.helpnowmap.org", token);
                                 req.session.accountid =  accounts[0].AccountID;
@@ -94,13 +99,18 @@ var routes = function(){
                         if (isMatch){
 
                             var claims = {
-                                iss: "http://helpnowmap.org",
+                                iss: config.jwt_issuer,
                                 sub: org.APIKey,
                                 scope: "organization"
                             }
                             var jwt = nJwt.create(claims, signingKey);
 
                             var token = jwt.compact();
+
+                            // models.AuthToken.create({
+                            //     Value:token,
+                            //     APIKey:org.APIKey
+                            // });
 
                             res.statusCode = 200;
                             res.send(

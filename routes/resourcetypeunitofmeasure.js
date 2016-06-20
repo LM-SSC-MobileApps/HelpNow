@@ -1,6 +1,7 @@
 
 var models  = require('../models'),
-    express = require('express');
+    express = require('express'),
+    passport = require('passport');
     
 //ResourceTypeUnitOfMeasure many-to-one on ResourceType
 models.ResourceTypeUnitOfMeasure.belongsTo(models.ResourceType, {foreignKey: 'ResourceTypeID'});
@@ -71,7 +72,7 @@ var routes = function(){
     }
   )
   //insert into ResourceTypeUnitOfMeasure
-  .post('/', function(req, res) {
+  .post('/', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.ResourceTypeUnitOfMeasure.create(req.body)
     .then(function(resourceTypeUnitOfMeasure) {
         res.statusCode = 200;
@@ -95,7 +96,7 @@ var routes = function(){
     }
   )
   //update into ResourceTypeUnitOfMeasure
-  .put('/:id', function(req, res) {
+  .put('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.ResourceTypeUnitOfMeasure.update(
       req.body,
       {
@@ -125,7 +126,7 @@ var routes = function(){
       });
     }
   )
-  .delete('/:id', function(req, res) {
+  .delete('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.ResourceTypeUnitOfMeasure.destroy(
       {
         where: {

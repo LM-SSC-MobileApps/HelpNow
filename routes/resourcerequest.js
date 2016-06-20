@@ -1,6 +1,7 @@
 
 var models  = require('../models'),
-    express = require('express');
+    express = require('express'),
+    passport = require('passport');
 
 //ResourceRequest one-to-one on RequestState
 models.ResourceRequest.belongsTo(models.RequestState, {foreignKey: 'RequestStateID'});
@@ -265,7 +266,7 @@ var routes = function(){
              *         "length": 1
              *     }
  */
-  .put('/:id', function(req, res) {
+  .put('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.ResourceRequest.update(
       req.body,
       {
@@ -318,7 +319,7 @@ var routes = function(){
         *      }
  */
 
-  .delete('/:id', function(req, res) {
+  .delete('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.ResourceRequest.destroy(
       {
         where: {
@@ -347,7 +348,7 @@ var routes = function(){
     }
   )
 
-  .delete('/', function(req, res) {
+  .delete('/', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.ResourceRequest.destroy(
 	{
 		where: {}

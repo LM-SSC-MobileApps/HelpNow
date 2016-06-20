@@ -1,6 +1,7 @@
 
 var models  = require('../models'),
-    express = require('express');
+    express = require('express'),
+    passport = require('passport');
     
 //ResourceLocationType one-to-many on ResourceLocation   
 models.ResourceLocationType.hasMany(models.ResourceLocation, {foreignKey: 'ResourceLocationTypeID'});
@@ -71,7 +72,7 @@ var routes = function(){
     }
   )
   //insert into ResourceLocationType
-  .post('/', function(req, res) {
+  .post('/', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.ResourceLocationType.create(req.body)
     .then(function(resourceLocationType) {
         res.statusCode = 200;
@@ -95,7 +96,7 @@ var routes = function(){
     }
   )
   //update into ResourceLocationType
-  .put('/:id', function(req, res) {
+  .put('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.ResourceLocationType.update(
       req.body,
       {
@@ -125,7 +126,7 @@ var routes = function(){
       });
     }
   )
-  .delete('/:id', function(req, res) {
+  .delete('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.ResourceLocationType.destroy(
       {
         where: {

@@ -4,7 +4,8 @@
 
 
 var models  = require('../models'),
-    express = require('express');
+    express = require('express'),
+    passport = require('passport');
 
 //ResourceSubtype one-to-many on ResourceTypeUnitOfMeasure
 models.ResourceSubtype.hasMany(models.ResourceLocationInventory, {foreignKey: 'ResourceSubtypeID'});
@@ -79,7 +80,7 @@ var routes = function(){
             }
         )
         //insert into ResourceSubtype
-        .post('/', function(req, res) {
+        .post('/', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
                 models.ResourceSubtype.create(req.body)
                     .then(function(resourceSubtype) {
                             res.statusCode = 200;
@@ -103,7 +104,7 @@ var routes = function(){
             }
         )
         //update into ResourceSubtype
-        .put('/:id', function(req, res) {
+        .put('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
                 models.ResourceSubtype.update(
                     req.body,
                     {
@@ -133,7 +134,7 @@ var routes = function(){
                 });
             }
         )
-        .delete('/:id', function(req, res) {
+        .delete('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
                 models.ResourceSubtype.destroy(
                     {
                         where: {
