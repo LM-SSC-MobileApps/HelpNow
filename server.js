@@ -121,7 +121,7 @@ app.use('/api/maplayer', mapLayerRouter);
 app.use('/api/maplayertype', mapLayerTypeRouter);
 app.use('/hashvalues', hashValuesRouter);
 app.use('/authenticate', authRouter);
-app.use('/postEmail', postEmailRouter);
+app.use('/postemail', postEmailRouter);
 
 //set the express.static locations to serve up the static files
 app.use(express.static('views'));

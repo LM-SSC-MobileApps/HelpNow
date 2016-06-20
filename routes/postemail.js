@@ -7,6 +7,7 @@ var env       = process.env.NODE_ENV || 'aws-development';
 var config    = require(__dirname + '/../config/config.json')[env];
 var sesconfig    = require(__dirname + '/../config/ses_secret.json');
 
+
 var routes = function () {
     var router = express.Router();
     router.post('/', function (req, res) {
@@ -20,16 +21,16 @@ var routes = function () {
                 sessionToken: ""
             })));
 
-            console.log('SES Configured');
+        var data =req.body;
 
-
-            // setup e-mail data with unicode symbols
+            console.log("email: " + data.Email);
+            console.log("InviteID: " + data.InviteID);
             var mailOptions = {
-                from: "HelpNowMap.com ✔ <dave.s.jennings@gmail.com>", // sender address
-                to: "dave.s.jennings@gmail.com", // list of receivers
-                subject: "Test from AWS ✔", // Subject line
-                text: "Test from AWS ✔", // plaintext body
-                html: "<b>Test from AWS ✔</b>" // html body
+                from: "HelpNowMap.com  <invite@helpnowmap.com>", // sender address
+                to: data.Email, // list of receivers
+                subject: "Registration Invitation from HelpNowMap.com", // Subject line
+                //text: "Test from AWS ", // plaintext body
+                html: "Please click on link to register:  http://" + config.ses_host_name + "/#/reg_account/" + data.InviteID
             };
 
 

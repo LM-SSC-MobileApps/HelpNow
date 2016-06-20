@@ -2,7 +2,7 @@
  * TeamInviteCtrl
  */
 
-angular.module("helpNow").controller("TeamInviteCtrl", ["$scope", "$resource", "$routeParams", "Invitation" , "$location", "$uibModal", function ($scope, $resource, $routeParams, Invitation , $location, $uibModal) {
+angular.module("helpNow").controller("TeamInviteCtrl", ["$scope", "$resource", "$routeParams", "Invitation", "$http", "$location", "$uibModal", function ($scope, $resource, $routeParams, Invitation, $http, $location, $uibModal) {
 
     $scope.newInvite = new Invitation();
 
@@ -12,10 +12,16 @@ angular.module("helpNow").controller("TeamInviteCtrl", ["$scope", "$resource", "
     //$scope.newInvite.OrganizationID = 1;
 
 
-    $scope.sendInvite = function (invitation) {
-        Invitation.save(invitation);
-        //send email here.....
-        $scope.confirmEmail(invitation);
+     $scope.sendInvite = function (invitation) {
+      data= Invitation.save(invitation);
+         
+      $http.post('/postemail', $scope.invite).success(function (data, status,headers,config){
+          $scope.confirmEmail(invitation);
+      }).error(function (data, status,headers,config) {
+
+      });
+
+
     };
 
 
