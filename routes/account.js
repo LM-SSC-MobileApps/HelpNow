@@ -1,5 +1,6 @@
 var models  = require('../models'),
-    express = require('express');
+    express = require('express'),
+    passport = require('passport');
 
 //Account many-to-one on Organization
 models.Account.belongsTo(models.Organization, {foreignKey: 'OrganizationID'});
@@ -9,7 +10,7 @@ models.Organization.hasMany(models.Account, {foreignKey: 'OrganizationID'});
 
 var routes = function(){
   var router  = express.Router();
-    router.get('/', function(req, res) {
+    router.get('/', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
       models.Account.findAll()
         .then(function(account) {
           res.statusCode = 200;
@@ -34,7 +35,7 @@ var routes = function(){
     }
   )
   //find Account by AccountID
-  .get('/:id', function(req, res) {
+  .get('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
       models.Account.findAll(
         {
           include: [
@@ -69,7 +70,7 @@ var routes = function(){
     }
   )
   //find Account by Email
-    .get('/email/:email', function(req, res) {
+    .get('/email/:email', passport.authenticate('jwt-auth-api', {session:false}),  function(req, res) {
             models.Account.findAll(
                 {
                     include: [
@@ -104,44 +105,9 @@ var routes = function(){
         }
     )
 
-  //find Account by ID on session
-  // .get('/accountid/', function(req, res) {
-  //     console.log('here is our session account id: '+req.session.accountid);
-  //     console.log('here is the sessionid: '+req.sessionID);
-  //     models.Account.findAll(
-  //       {
-  //         include: [
-  //           {
-  //             model: models.Organization,
-  //           }
-  //         ],
-  //         where: {
-  //           AccountID: req.session.accountid
-  //         }
-  //       }
-  //     ).then(function(account) {
-  //       res.statusCode = 200;
-  //       res.send(
-  //         {
-  //           result: 'success',
-  //           err:    '',
-  //           json:  account,
-  //           length: account.length
-  //         }
-  //       );
-  //     }
-  //    ).catch(function (err) {
-  //      console.error(err);
-  //      res.statusCode = 400;
-  //      res.send({
-  //          result: 'error',
-  //          err:    err.message
-  //      });
-  //     });
-  //   }
-  // )
+
   //find Accounts by organizationid
-  .get('/organization/:id', function (req, res) {
+  .get('/organization/:id', passport.authenticate('jwt-auth-api', {session:false}), function (req, res) {
       models.Account.findAll(
         {
             where: {
@@ -178,7 +144,7 @@ var routes = function(){
     }
   )
   //find organzation team members by accountid (will not include account passed by parameter)
-  .get('/organizationmembers/:id', function (req, res) {
+  .get('/organizationmembers/:id', passport.authenticate('jwt-auth-api', {session:false}), function (req, res) {
       models.Account.findAll(
         {
           include: [
@@ -236,59 +202,7 @@ var routes = function(){
      });
     }
   )
-  // find login which retrieves account
-  .post('/login/', function (req, res) {
-
-      models.Account.findAll(
-          {
-              include: [
-                {
-                  model: models.Organization
-                }
-              ],
-              where: {
-                  Username: req.body.username
-              }
-          }
-        ).then(function(accounts) {
-          if (accounts.length>0){
-              accounts[0].validatePassword(req.body.password, function(err, isMatch)
-              {
-                  if (isMatch){
-                      req.session.accountid =  accounts[0].AccountID;
-                      req.session.organizationid =  accounts[0].OrganizationID;
-                      res.statusCode = 200;
-                      res.send(
-                          {
-                              result: 'success',
-                              err: '',
-                              json: accounts,
-                              length: accounts.length
-                          }
-                      );
-                  }
-                  else {
-                      res.sendStatus(401);
-                  }
-
-              });
-          }
-          else
-          {
-              res.sendStatus(401)
-          }
-
-          }
-      ).catch(function (err) {
-          console.error(err);
-          res.statusCode = 400;
-          res.send({
-              result: 'error',
-              err: err.message
-          });
-      });
-    }
-  )
+  
   //find login which retrieves account
   .post('/external_login/', function (req, res) {
         models.Account.findAll(
@@ -341,7 +255,7 @@ var routes = function(){
     }
   )
   //insert into Account
-  .post('/', function(req, res) {
+  .post('/', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.Account.create(req.body)
     .then(function(account) {
         res.statusCode = 200;
@@ -365,7 +279,7 @@ var routes = function(){
     }
   )
   //update into Account
-  .put('/:id', function(req, res) {
+  .put('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.Account.update(
       req.body,
       {
@@ -396,7 +310,7 @@ var routes = function(){
       });
     }
   )
-  .delete('/:id', function(req, res) {
+  .delete('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.Account.destroy(
       {
         where: {

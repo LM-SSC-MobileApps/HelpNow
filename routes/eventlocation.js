@@ -1,7 +1,8 @@
 
 var models  = require('../models'),
     express = require('express'),
-    boundingbox = require('../modules/boundingbox');
+    boundingbox = require('../modules/boundingbox'),
+    passport = require('passport');
 
 var routes = function(){
   var router  = express.Router();
@@ -94,7 +95,7 @@ var routes = function(){
 
 
   //insert into EventLocation
-  .post('/', function(req, res) {
+  .post('/', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.EventLocation.create(req.body)
     .then(function(eventLocation) {
         res.statusCode = 200;
@@ -118,7 +119,7 @@ var routes = function(){
     }
   )
   //update into EventLocation
-  .put('/:id', function(req, res) {
+  .put('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.EventLocation.update(
       req.body,
       {
@@ -148,7 +149,7 @@ var routes = function(){
       });
     }
   )
-  .delete('/:id', function(req, res) {
+  .delete('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.EventLocation.destroy(
       {
         where: {

@@ -2,7 +2,8 @@
 var models = require('../models'),
     express = require('express'),
     promise = require('bluebird'),
-	geoRouting = require('../modules/routing');
+	geoRouting = require('../modules/routing'),
+    passport = require('passport');
 
 //ResourceLocation one-to-many on ResourceLocationInventory
 models.ResourceLocation.hasMany(models.ResourceLocationInventory, { foreignKey: 'ResourceLocationID' });
@@ -448,7 +449,7 @@ var routes = function () {
              *       "json": "<ResourceLocation object>",
              *     }
  */
-  .post('/', function (req, res) {
+  .post('/', passport.authenticate('jwt-auth-api', {session:false}), function (req, res) {
       models.ResourceLocation.create(
           req.body
          , {
@@ -503,7 +504,7 @@ var routes = function () {
              *         "length": 1
              *     }
  */
-  .put('/:id', function (req, res) {
+  .put('/:id', passport.authenticate('jwt-auth-api', {session:false}), function (req, res) {
       //console.log("HERE IS OUR ResourceLocationTransports: " + req.body.ResourceLocationTransports);
       models.ResourceLocation.update(
         req.body,
@@ -574,7 +575,7 @@ var routes = function () {
         *          }
         *      }
     */
-  .delete('/:id', function (req, res) {
+  .delete('/:id', passport.authenticate('jwt-auth-api', {session:false}), function (req, res) {
       models.ResourceLocation.destroy(
       {
           where: {
@@ -603,7 +604,7 @@ var routes = function () {
   }
   )
   
-  .delete('/deployments/all', function (req, res) {
+  .delete('/deployments/all', passport.authenticate('jwt-auth-api', {session:false}), function (req, res) {
       models.ResourceLocation.destroy(
 		{
           where: {

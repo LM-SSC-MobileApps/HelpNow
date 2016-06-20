@@ -1,7 +1,8 @@
 
 var models  = require('../models'),
     express = require('express'),
-    promise = require('bluebird');
+    promise = require('bluebird'),
+    passport = require('passport');
 
 
 //Organization one-to-many on OrganizationRegulations    
@@ -36,7 +37,7 @@ models.Organization.belongsTo(models.Account, {as: 'SecondaryPOCAccount', foreig
 
 var routes = function(){
   var router  = express.Router();
-    router.get('/', function(req, res) {
+    router.get('/', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
       models.Organization.findAll(
         {
           include: [
@@ -70,7 +71,7 @@ var routes = function(){
     }
   )
   //find Organization by ID
-  .get('/:id', function(req, res) {
+  .get('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
       models.Organization.findAll(
         {
           where: {
@@ -105,7 +106,7 @@ var routes = function(){
     }
   )
   //find Organization by type
-  .get('/type/:id', function (req, res) {
+  .get('/type/:id', passport.authenticate('jwt-auth-api', {session:false}), function (req, res) {
       models.Organization.findAll(
         {
             where: {
@@ -140,7 +141,7 @@ var routes = function(){
   }
   )
   //find Orgainzation by AccountID
-  .get('/account/:id', function(req, res) {
+  .get('/account/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
         //get the distinct organizations where the account is either primary or secondary poc
         var query = "select distinct(OrganizationID) from OrganizationGroup WHERE (PrimaryPOC = "+req.params.id+" OR SecondaryPOC = "+req.params.id+")";
         models.sequelize.query(query, { type: models.sequelize.QueryTypes.SELECT}
@@ -192,7 +193,7 @@ var routes = function(){
     }
   )
   //insert into Organization
-  .post('/', function(req, res) {
+  .post('/', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.Organization.create(req.body)
     .then(function(result) {
         models.Organization.findAll(
@@ -224,7 +225,7 @@ var routes = function(){
     }
   )
   //update into Organization
-  .put('/:id', function(req, res) {
+  .put('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.Organization.update(
       req.body,
       {
@@ -256,7 +257,7 @@ var routes = function(){
     }
   )
   ///Cascade deletes in the database handle all references to the org id being deleted.
-  .delete('/:id', function (req, res) {
+  .delete('/:id', passport.authenticate('jwt-auth-api', {session:false}), function (req, res) {
     models.Organization.destroy(
         {
             where: {

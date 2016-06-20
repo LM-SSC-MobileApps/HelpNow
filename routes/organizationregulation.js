@@ -1,6 +1,7 @@
 
 var models  = require('../models'),
-    express = require('express');
+    express = require('express'),
+    passport = require('passport');
 
 var routes = function(){
     var router = express.Router();
@@ -19,7 +20,7 @@ var routes = function(){
         * @apiSuccess {String} json.Summary Title/Description of the OrganizationRegulation
         * @apiSuccess {String} json.Narrative Text of the OrganizationRegulation
      */
-    router.get('/', function(req, res) {
+    router.get('/', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
       models.OrganizationRegulations.findAll()
         .then(function(organizationRegulations) {
           res.statusCode = 200;
@@ -56,7 +57,7 @@ var routes = function(){
         * @apiUse helpNowUnauthorizedResult
         * @apiSuccess {Object} json    The result data in the form of a json OrganizationRegulation object.
     */
-  .get('/:id', function(req, res) {
+  .get('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
       models.OrganizationRegulations.findAll(
         {
           where: {
@@ -96,7 +97,7 @@ var routes = function(){
         * @apiUse helpNowUnauthorizedResult
         * @apiSuccess {Object} json    The result data in the form of a json array of OrganizationRegulation objects.
     */
-  .get('/account/:id', function (req, res) {
+  .get('/account/:id', passport.authenticate('jwt-auth-api', {session:false}), function (req, res) {
       models.Account.findAll(
         {
           include: [
@@ -178,7 +179,7 @@ var routes = function(){
              *       "json": "<OrganizationRegulation object>",
              *     }
  */
-  .post('/', function(req, res) {
+  .post('/', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.OrganizationRegulations.create(req.body)
     .then(function(organizationRegulations) {
         res.statusCode = 200;
@@ -228,7 +229,7 @@ var routes = function(){
              *         "length": 1
              *     }
  */
-  .put('/:id', function(req, res) {
+  .put('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.OrganizationRegulations.update(
       req.body,
       {
@@ -280,7 +281,7 @@ var routes = function(){
         *          }
         *      }
  */
-  .delete('/:id', function(req, res) {
+  .delete('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.OrganizationRegulations.destroy(
       {
         where: {

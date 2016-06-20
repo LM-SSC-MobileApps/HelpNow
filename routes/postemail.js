@@ -1,6 +1,7 @@
 var nodemailer = require('nodemailer'),
     sesTransport = require('nodemailer-ses-transport'),
-    express = require('express');
+    express = require('express'),
+    passport = require('passport');
 
 
 var env       = process.env.NODE_ENV || 'aws-development';
@@ -10,7 +11,7 @@ var sesconfig    = require(__dirname + '/../config/ses_secret.json');
 
 var routes = function () {
     var router = express.Router();
-    router.post('/', function (req, res) {
+    router.post('/',  passport.authenticate('jwt-auth-api', {session:false}), function (req, res) {
 
             var transport = nodemailer.createTransport((sesTransport({
                 accessKeyId:  sesconfig.AccessKeyId,

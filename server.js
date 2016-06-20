@@ -14,46 +14,6 @@ var http = require('http');
 //note - only version 06.0 works - 0.7.0 does not read the port #
 var proxy = require('express-http-proxy');
 
-
-
-
-
-//the routes for the helpnow api
-var accountRouter = require('./routes/account')();
-var accountRoleRouter = require('./routes/accountrole')();
-var addressRouter = require('./routes/address')();
-var eventRouter = require('./routes/event')();
-var eventLocationRouter = require('./routes/eventlocation')();
-var eventTypeRouter = require('./routes/eventtype')();
-var organizationRouter = require('./routes/organization')();
-var organizationRegulationRouter = require('./routes/organizationregulation')();
-var organizationTypeRouter = require('./routes/organizationtype')();
-var requestStateRouter = require('./routes/requeststate')();
-var resourceLocationRouter = require('./routes/resourcelocation')();
-var resourceLocationTypeRouter = require('./routes/resourcelocationtype')();
-var resourceLocationStatusRouter = require('./routes/resourcelocationstatus')();
-var resourceLocationInventoryRouter = require('./routes/resourcelocationinventory')();
-var resourceLocationTransportRouter = require('./routes/resourcelocationtransport')();
-var resourceRequestRouter = require('./routes/resourcerequest')();
-var resourceResponseRouter = require('./routes/resourceresponse')();
-var resourceTypeRouter = require('./routes/resourcetype')();
-var resourceSubtypeRouter = require('./routes/resourcesubtype')();
-var transportTypeRouter = require('./routes/transporttype')();
-var resourceTypeUnitOfMeasureRouter = require('./routes/resourcetypeunitofmeasure')();
-var responseStateRouter = require('./routes/responsestate')();
-var requestUrgencyRouter = require('./routes/requesturgency')();
-var requestInviteRequestRouter = require('./routes/inviterequest')();
-var blockageRouter = require('./routes/blockage')();
-var blockageSourceRouter = require('./routes/blockagesource')();
-var socialMediaRouter = require('./routes/socialmedia')();
-var heatMapRouter = require('./routes/heatmap')();
-var mapLayerRouter = require('./routes/maplayer')();
-var mapLayerTypeRouter = require('./routes/maplayertype')();
-
-var hashValuesRouter = require('./routes/hashvalues')();
-var authRouter = require('./routes/authenticate')();
-var postEmailRouter = require('./routes/postemail')();
-
 var app = express();
 
 var environment = process.env.ENVIRONMENT || 'qas';
@@ -88,6 +48,42 @@ var socialMedia = require('./modules/socialmedia');
 //socialMedia.setupTwitter();
 //socialMedia.getSocialMediaKeywords();
 //socialMedia.searchTwitter('#HelpNow');
+
+//the routes for the helpnow api
+var accountRouter = require('./routes/account')(module.exports.isAPIAuthenticated);
+var accountRoleRouter = require('./routes/accountrole')();
+var addressRouter = require('./routes/address')();
+var eventRouter = require('./routes/event')();
+var eventLocationRouter = require('./routes/eventlocation')();
+var eventTypeRouter = require('./routes/eventtype')();
+var organizationRouter = require('./routes/organization')();
+var organizationRegulationRouter = require('./routes/organizationregulation')();
+var organizationTypeRouter = require('./routes/organizationtype')();
+var requestStateRouter = require('./routes/requeststate')();
+var resourceLocationRouter = require('./routes/resourcelocation')();
+var resourceLocationTypeRouter = require('./routes/resourcelocationtype')();
+var resourceLocationStatusRouter = require('./routes/resourcelocationstatus')();
+var resourceLocationInventoryRouter = require('./routes/resourcelocationinventory')();
+var resourceLocationTransportRouter = require('./routes/resourcelocationtransport')();
+var resourceRequestRouter = require('./routes/resourcerequest')();
+var resourceResponseRouter = require('./routes/resourceresponse')();
+var resourceTypeRouter = require('./routes/resourcetype')();
+var resourceSubtypeRouter = require('./routes/resourcesubtype')();
+var transportTypeRouter = require('./routes/transporttype')();
+var resourceTypeUnitOfMeasureRouter = require('./routes/resourcetypeunitofmeasure')();
+var responseStateRouter = require('./routes/responsestate')();
+var requestUrgencyRouter = require('./routes/requesturgency')();
+var requestInviteRequestRouter = require('./routes/inviterequest')();
+var blockageRouter = require('./routes/blockage')();
+var blockageSourceRouter = require('./routes/blockagesource')();
+var socialMediaRouter = require('./routes/socialmedia')();
+var heatMapRouter = require('./routes/heatmap')();
+var mapLayerRouter = require('./routes/maplayer')();
+var mapLayerTypeRouter = require('./routes/maplayertype')();
+var hashValuesRouter = require('./routes/hashvalues')();
+var authRouter = require('./routes/authenticate')();
+var postEmailRouter = require('./routes/postemail')();
+
 
 app.use('/api/account', accountRouter);
 app.use('/api/accountrole', accountRoleRouter);

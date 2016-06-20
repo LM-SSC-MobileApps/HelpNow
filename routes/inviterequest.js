@@ -1,6 +1,7 @@
 
 var models  = require('../models'),
-    express = require('express');
+    express = require('express'),
+    passport = require('passport');
 
 
 var routes = function(){
@@ -117,7 +118,7 @@ var routes = function(){
     }
   )
   //insert into InviteRequest
-  .post('/', function(req, res) {
+  .post('/', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.InviteRequest.create(req.body)
     .then(function(result) {
         models.InviteRequest.findAll(
@@ -149,7 +150,7 @@ var routes = function(){
     }
   )
   //must send inviteid GUID to delete.
-  .delete('/:inviteid', function(req, res) {
+  .delete('/:inviteid', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.InviteRequest.destroy(
       {
         where: {

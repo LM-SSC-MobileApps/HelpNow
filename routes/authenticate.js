@@ -4,6 +4,7 @@
 
 var models  = require('../models'),
     express = require('express'),
+    passport = require('passport'),
     // uuid = require('uuid'),
     nJwt = require('njwt');
 
@@ -128,6 +129,73 @@ var routes = function(){
                 err: err.message
             });
         });
+    })
+    //this is a password update to validate the old password first
+    router.post('/validate/', passport.authenticate('jwt-auth-api', {session:false}), function (req, res) {
+            models.Account.findAll(
+                {
+                    where: {
+                        Username: req.body.username
+                    }
+                }
+            ).then(function(accounts) {
+                    if (accounts.length>0){
+                        accounts[0].validatePassword(req.body.password, function(err, isMatch)
+                        {
+                            if (isMatch){
+                                res.statusCode = 200;
+                                res.send(
+                                    {
+                                        result: 'success',
+                                        err: '',
+                                        json: true
+                                    }
+                                );
+                            }
+                            else {
+                                res.statusCode = 200;
+                                res.send(
+                                    {
+                                        result: 'success',
+                                        err: '',
+                                        json: false
+                                    }
+                                );
+                            }
+
+                        });
+                    }
+                    else
+                    {
+                        res.statusCode = 200;
+                        res.send(
+                            {
+                                result: 'success',
+                                err: '',
+                                json: false
+                            }
+                        );
+                    }
+
+                }
+            ).catch(function (err) {
+                console.error(err);
+                res.statusCode = 400;
+                res.send({
+                    result: 'error',
+                    err: err.message
+                });
+            });
+        }
+    )
+    //this is for client (organization) login, , returns JWT
+    .post('/logout/', function (req, res) {
+        req.logout();
+        res.clearCookie("cookie.helpnowmap.org");
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.write("User successfully logged out.");
+        res.end();
+
     });
 
 

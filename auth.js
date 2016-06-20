@@ -7,7 +7,7 @@ var jwtStrategy = require('passport-jwt').Strategy;
 var jwtExtractor = require('passport-jwt').ExtractJwt;
 var nJwt = require("njwt");
 var passport = require('passport');
-var localStrategy = require('passport-local').Strategy;
+// var localStrategy = require('passport-local').Strategy;
 var facebookStrategy = require('passport-facebook').Strategy;
 
 module.exports =
@@ -31,29 +31,24 @@ module.exports =
             done(null, user);
         });
 
-        app.post('/auth/logout',
-            function (req, res) {
-                logout(req, res);
-            }
-        );
-
-        // setupLocalAuthentication(app);
+        // app.post('/auth/logout',
+        //     function (req, res) {
+        //         logout(req, res);
+        //     }
+        // );
+        
         setupFacebookAuthentication(app);
-        // setupBasicAuthForAPI(app);
-
         setupJWTAuthentication(app);
-
-        //setupDigestAuthForAPI(app, passport);
     }
 };
 
-function logout(req, res) {
-    req.logout();
-
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.write("User successfully logged out.");
-    res.end();
-}
+// function logout(req, res) {
+//     req.logout();
+//    
+//     res.writeHead(200, { 'Content-Type': 'text/plain' });
+//     res.write("User successfully logged out.");
+//     res.end();
+// }
 
 function getEnvironment() {
     return environment;
@@ -133,79 +128,6 @@ function getClientSecret() {
     }
 }
 
-// function setupLocalAuthentication(app) {
-//     console.log("setupLocalAuthentication");
-//     passport.use('local', new localStrategy({
-//         usernameField: 'username',
-//         passwordField: 'password'
-//     },
-//         function (username, password, done) {
-//             var http = require('http');
-//
-//             var creds = '{"username":"' + username + '","password":"' + password + '"}';
-//
-//             var apiAuth = 'Basic ' + new Buffer('a1ada5ab-b8c2-11e5-847d-00ffd0ea9272:H3lpN0w2016').toString('base64');
-//
-//             var options = {
-//                 host: 'localhost',
-//                 path: '/api/account/login',
-//                 port: getHttpPort(false),
-//                 method: 'POST',
-//                 headers: { 'Content-Type': 'application/json', 'Authorization': apiAuth }
-//             };
-//
-//             callback = function (response) {
-//                 var str = '';
-//
-//                 // Another chunk of data has been recieved, so append it to `str`
-//                 response.on('data', function (chunk) {
-//                     str += chunk;
-//                 });
-//
-//                 // The whole response has been recieved, so know we can use it
-//                 response.on('end', function () {
-//                     if (str === "Unauthorized") {
-//                         console.log("unauthorized");
-//                         return done(null, false);
-//                     } else {
-//                         console.log(str);
-//                         var jsonObj = JSON.parse(str);
-//                         var user = jsonObj.json[0];
-//                         console.log("authorized user: " + user.Email);
-//                         return done(null, user.Email, { message: str });
-//                     }
-//                 });
-//             }
-//             console.log('here are the options: ' + JSON.stringify(options));
-//
-//             var req = http.request(options, callback);
-//             req.write(creds);
-//             req.end();
-//         }
-//     ));
-//
-//
-//     app.post('/auth/login', function (req, res, next) {
-//         passport.authenticate('local', function (err, user, info) {
-//             //console.log("err = " + err + " user = " + user + " next = " + next + " info = " + info);
-//             if (err) { return next(err) }
-//             if (!user) {
-//                 res.writeHead(502, { 'Content-Type': 'application/json' });
-//                 res.write("Incorrect username or password. Please try again.");
-//                 res.end();
-//                 return;
-//             }
-//             req.logIn(user, function (err) {
-//                 if (err) { return next(err); }
-//
-//                 res.writeHead(200, { 'Content-Type': 'application/json' });
-//                 res.write(info.message);
-//                 res.end();
-//                 return;
-//             });
-//         })(req, res, next);
-//     });
-// }
 
 function setupFacebookAuthentication(app) {
     console.log("setupFacebookAuthentication");
@@ -406,24 +328,16 @@ function setupJWTAuthentication(app) {
                     }
                 }).catch(function (err) {
                     console.error(err);
-                    res.statusCode = 400;
-                    res.send({
-                        result: 'error',
-                        err: err.message
-                    });
+                    return done(err, null);
                 });
             }
         }).catch(function (err) {
             console.error(err);
-            res.statusCode = 400;
-            res.send({
-                result: 'error',
-                err: err.message
-            });
+            return done(err, null);
         });
     }));
 
-    exports.isAPIAuthenticated = passport.authenticate('jwt-auth-api', {session:false});
+    // module.exports.isAPIAuthenticated = passport.authenticate('jwt-auth-api', {session:false});
 
     // app.all('/api/*',
     //     passport.authenticate('jwt-auth-api', { session: false })
@@ -438,47 +352,3 @@ var cookieExtractor = function(req) {
     }
     return token;
 };
-
-
-// function setupBearerAuthentication(passport){
-//     var Token = require('./models/Token');
-//
-//     passport.use(new BearerStrategy(
-//         function(accessToken, callback) {
-//             Token.find(
-//                 {
-//                     where:{
-//                         value: accessToken
-//                     }
-//                 }
-//             ).then(function(token){
-//                 if (!token){
-//                     return callback(null, false);
-//                 }
-//
-//             }).catch(function (err) {
-//                 console.error(err);
-//                 return callback(err);
-//             });
-//             Token.findOne({value: accessToken }, function (err, token) {
-//                 if (err) { return callback(err); }
-//
-//                 // No token found
-//                 if (!token) { return callback(null, false); }
-//
-//                 User.findOne({ _id: token.userId }, function (err, user) {
-//                     if (err) { return callback(err); }
-//
-//                     // No user found
-//                     if (!user) { return callback(null, false); }
-//
-//                     // Simple example with no scope
-//                     callback(null, user, { scope: '*' });
-//                 });
-//             });
-//         }
-//     ));
-//
-//     exports.isBearerAuthenticated = passport.authenticate('bearer', { session: true });
-// }
-
