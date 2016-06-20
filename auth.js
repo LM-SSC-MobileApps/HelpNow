@@ -7,7 +7,7 @@ var jwtStrategy = require('passport-jwt').Strategy;
 var jwtExtractor = require('passport-jwt').ExtractJwt;
 var nJwt = require('njwt');
 var passport = require('passport');
-var authheader = require('auth-header');
+// var authheader = require('auth-header');
 // var localStrategy = require('passport-local').Strategy;
 var facebookStrategy = require('passport-facebook').Strategy;
 
