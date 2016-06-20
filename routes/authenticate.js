@@ -13,71 +13,72 @@ var config    = require(__dirname + '/../config/config.json')[env];
 var routes = function(){
     var router  = express.Router();
     var signingKey = config.jwt_secret;
+
     //this is for user login, returns JWT
     router.post('/login/', function (req, res) {
-                models.Account.findAll(
-                    {
-                        include: [
-                            {
-                                model: models.Organization
-                            }
-                        ],
-                        where: {
-                            Username: req.body.username
-                        }
-                    }
-                ).then(function(accounts) {
-                        if (accounts.length>0){
-                            accounts[0].validatePassword(req.body.password, function(err, isMatch)
-                            {
-                                if (isMatch){
-
-                                    var claims = {
-                                        iss: "http://helpnowmap.org",
-                                        sub: accounts[0].Username,
-                                        scope: "user"
-                                    }
-                                    var jwt = nJwt.create(claims, signingKey);
-
-                                    var token = jwt.compact();
-
-                                    res.cookie("helpnowmap.com_cookie", token);
-                                    req.session.accountid =  accounts[0].AccountID;
-                                    req.session.organizationid =  accounts[0].OrganizationID;
-                                    res.statusCode = 200;
-                                    res.send(
-                                        {
-                                            result: 'success',
-                                            err: '',
-                                            json: accounts,
-                                            length: accounts.length
-                                        }
-                                    );
-                                }
-                                else {
-                                    res.sendStatus(401);
-                                }
-
-                            });
-                        }
-                        else
+            models.Account.findAll(
+                {
+                    include: [
                         {
-                            res.sendStatus(401)
+                            model: models.Organization
                         }
-
+                    ],
+                    where: {
+                        Username: req.body.username
                     }
-                ).catch(function (err) {
-                    console.error(err);
-                    res.statusCode = 400;
-                    res.send({
-                        result: 'error',
-                        err: err.message
-                    });
+                }
+            ).then(function(accounts) {
+                    if (accounts.length>0){
+                        accounts[0].validatePassword(req.body.password, function(err, isMatch)
+                        {
+                            if (isMatch){
+
+                                var claims = {
+                                    iss: "http://helpnowmap.org",
+                                    sub: accounts[0].Username,
+                                    scope: "user"
+                                }
+                                var jwt = nJwt.create(claims, signingKey);
+
+                                var token = jwt.compact();
+
+                                res.cookie("cookie.helpnowmap.org", token);
+                                req.session.accountid =  accounts[0].AccountID;
+                                req.session.organizationid =  accounts[0].OrganizationID;
+                                res.statusCode = 200;
+                                res.send(
+                                    {
+                                        result: 'success',
+                                        err: '',
+                                        json: accounts,
+                                        length: accounts.length
+                                    }
+                                );
+                            }
+                            else {
+                                res.sendStatus(401);
+                            }
+
+                        });
+                    }
+                    else
+                    {
+                        res.sendStatus(401)
+                    }
+
+                }
+            ).catch(function (err) {
+                console.error(err);
+                res.statusCode = 400;
+                res.send({
+                    result: 'error',
+                    err: err.message
                 });
-            }
-        )
+            });
+        }
+    )
     //this is for client (organization) login, , returns JWT
-    .post('/client_login/', function (req, res) {
+    .post('/client/', function (req, res) {
         console.log("we are in the client login!: key: "+req.body.apikey+" secret: "+req.body.apisecret);
         models.Organization.find(
             {
