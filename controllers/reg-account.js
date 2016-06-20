@@ -1,13 +1,34 @@
-﻿angular.module("helpNow").controller("RegAccountCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function ($scope, $http, $location, $routeParams, $resource) {
+﻿angular.module("helpNow").controller("RegAccountCtrl", ["$scope", "$http", "$location", "Invitation", "$routeParams", "$resource", function ($scope, $http, $location, Invitation, $routeParams, $resource) {
     $scope.setCurrentView("reg-account");
     $scope.setTitle($scope.text.reg_account_title);
 
     $scope.showUsername = true;
     $scope.showUser = false;
 
-    $scope.inviteID = $routeParams.inviteID;
+    $scope.inviteid = $routeParams.inviteID;
 
-    $scope.userAccount = { OrganizationGroupID: 1, Active: true, AccountRoleID: 3, CreateDate: new Date() };
+    $scope.inviteResource = $resource("/api/inviteRequest/:inviteid");
+
+    $scope.userAccount = { Active: true, AccountRoleID: 2, CreateDate: new Date(), IsHashed: 0 };
+
+    loadInviteRequest();
+
+    function loadInviteRequest() {
+        $scope.inviteResource.get({inviteid: $scope.inviteid}, function (data) {
+            $scope.inviteRequest = data.json;
+
+            if ($scope.inviteRequest == null || $scope.inviteRequest[0] == null || $scope.inviteRequest[0].OrganizationID <= 0) {
+                alert("Invitation information could not be found.  Contact your organization's administrator for a new invitation.");
+                $location.path('#');
+            }
+            else {
+                $scope.userAccount.OrganizationID = $scope.inviteRequest[0].OrganizationID;
+                $scope.userAccount.FirstName = $scope.inviteRequest[0].FirstName;
+                $scope.userAccount.LastName = $scope.inviteRequest[0].LastName;
+                $scope.userAccount.Email = $scope.inviteRequest[0].Email;
+            }
+        });
+    }
 
     $scope.showUserForm = function () {
         var hasError = false;
@@ -54,6 +75,7 @@
         });
         webCall.then(function (response) {
             alert("Account Successfully Created");
+            Invitation.delete({inviteid: $scope.inviteid});
             $location.path('#');
         },
         function (response) { // optional
