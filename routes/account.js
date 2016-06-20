@@ -68,6 +68,42 @@ var routes = function(){
       });
     }
   )
+  //find Account by Email
+    .get('/email/:email', function(req, res) {
+            models.Account.findAll(
+                {
+                    include: [
+                        {
+                            model: models.Organization
+                        }
+                    ],
+                    where: {
+                        Email: req.params.email,
+                        Active: true
+                    }
+                }
+            ).then(function(account) {
+                    res.statusCode = 200;
+                    res.send(
+                        {
+                            result: 'success',
+                            err:    '',
+                            json:  account,
+                            length: account.length
+                        }
+                    );
+                }
+            ).catch(function (err) {
+                console.error(err);
+                res.statusCode = 400;
+                res.send({
+                    result: 'error',
+                    err:    err.message
+                });
+            });
+        }
+    )
+
   //find Account by ID on session
   // .get('/accountid/', function(req, res) {
   //     console.log('here is our session account id: '+req.session.accountid);
@@ -200,7 +236,7 @@ var routes = function(){
      });
     }
   )
-  //find login which retrieves account
+  // find login which retrieves account
   .post('/login/', function (req, res) {
 
       models.Account.findAll(
@@ -241,7 +277,7 @@ var routes = function(){
           {
               res.sendStatus(401)
           }
-              
+
           }
       ).catch(function (err) {
           console.error(err);
