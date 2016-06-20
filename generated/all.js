@@ -1,4 +1,4 @@
-angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize" ])
+angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize", "ngCookies" ])
 	.config(["$routeProvider", function ($routeProvider) {
 	    $routeProvider.when("/ind_login", {
 	        templateUrl: "views/ind-login.html"
@@ -114,6 +114,14 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 
 		$routeProvider.when("/reg_account/:inviteID", {
 		    templateUrl: "views/reg-account.html"
+		});
+
+		$routeProvider.when("/password_reset/:accountID", {
+		    templateUrl: "views/manage/password-reset.html"
+		});
+
+		$routeProvider.when("/forgot_password/", {
+		    templateUrl: "views/manage/forgot-password.html"
 		});
 
 		$routeProvider.when("/demo/", {
@@ -1165,6 +1173,24 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
 		    });
 		}
 	};*/
+}]);
+angular.module("helpNow").controller("ForgotPasswordCtrl", ["$scope", "$http", "Account", "$location", "$routeParams", "$resource", function ($scope, $http, Account, $location, $routeParams, $resource) {
+    $scope.setCurrentView("forgot_password");
+    $scope.setTitle($scope.text.forgot_password_title);
+
+    $scope.emailAddress = '';
+
+    $scope.accountResource = $resource("/api/account/email/:email");
+
+    $scope.loadAccount = function () {
+        $scope.accountResource.get({ email: $scope.emailAddress }, function (data) {
+            $scope.account = data.json;
+            if ($scope.account == null)// || $scope.account[0] == null || $scope.account[0].AccountID <= 0)
+                alert("Account could not be found");
+            else
+                alert(JSON.stringify($scope.account));
+        });
+    };
 }]);
 angular.module("helpNow").controller("GovLoginCtrl", ["$scope", function($scope) {
 	$scope.setCurrentView("govs");
@@ -3535,6 +3561,39 @@ angular.module("helpNow").controller("OrganizationAddCtrl", ["$scope", "$resourc
 
 }]);
 
+angular.module("helpNow").controller("PasswordResetCtrl", ["$scope", "$http", "Account", "$location", "$routeParams", "$resource", function ($scope, $http, Account, $location, $routeParams, $resource) {
+    $scope.setCurrentView("password_reset");
+    $scope.setTitle($scope.text.reset_password_title);
+
+    $scope.accountID = $routeParams.accountID * 1;
+
+    $scope.accountResource = $resource("/api/account/:id");
+
+    loadAccount();
+
+    function loadAccount() {
+        $scope.accountResource.get({ id: $scope.accountID }, function (data) {
+            $scope.account = data.json;
+            if ($scope.account == null)
+                alert("Account could not be found");
+        });
+    }
+
+    $scope.updatePassword = function () {
+        if ($scope.newPassword === $scope.confirmedPassword) {
+            $scope.account[0].Password = $scope.newPassword;
+            Account.update({id: $scope.accountID}, JSON.stringify($scope.account[0])).$promise.then(function (response) {
+                $location.path('#');
+            },
+            function (response) { // optional
+                alert("Error: " + response.data.err);
+            });
+        }
+        else {
+            alert("Passwords do not match.")
+        }
+    };
+}]);
 angular.module("helpNow").controller("RegAccountCtrl", ["$scope", "$http", "$location", "Invitation", "$routeParams", "$resource", function ($scope, $http, $location, Invitation, $routeParams, $resource) {
     $scope.setCurrentView("reg-account");
     $scope.setTitle($scope.text.reg_account_title);
@@ -4153,7 +4212,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
  * TeamInviteCtrl
  */
 
-angular.module("helpNow").controller("TeamInviteCtrl", ["$scope", "$resource", "$routeParams", "Invitation" , "$location", "$uibModal", function ($scope, $resource, $routeParams, Invitation , $location, $uibModal) {
+angular.module("helpNow").controller("TeamInviteCtrl", ["$scope", "$resource", "$routeParams", "Invitation", "$http", "$location", "$uibModal", function ($scope, $resource, $routeParams, Invitation, $http, $location, $uibModal) {
 
     $scope.newInvite = new Invitation();
 
@@ -4163,9 +4222,16 @@ angular.module("helpNow").controller("TeamInviteCtrl", ["$scope", "$resource", "
     //$scope.newInvite.OrganizationID = 1;
 
 
-    $scope.sendInvite = function (invitation) {
-        Invitation.save(invitation);
-        $scope.confirmEmail(invitation);
+     $scope.sendInvite = function (invitation) {
+      data= Invitation.save(invitation);
+         
+      $http.post('/postemail', $scope.invite).success(function (data, status,headers,config){
+          $scope.confirmEmail(invitation);
+      }).error(function (data, status,headers,config) {
+
+      });
+
+
     };
 
 
@@ -4394,17 +4460,31 @@ angular.module('helpNow').factory('Account', function ($resource) {
     });
 });
 
-angular.module('helpNow').factory('api_interceptor',
-    function () {
+angular.module('helpNow').factory('api_interceptor', function($cookies){
     return {
-        request: function (config) {
+        // request: function (config) {
+        //     config.headers = config.headers || {};
+        //     config.headers.Authorization = 'Basic ' + btoa('a1ada5ab-b8c2-11e5-847d-00ffd0ea9272' + ':' + 'H3lpN0w2016');
+        //
+        //     config.headers.Authorization =
+        //
+        //     //if (authManager.authToken) {
+        //     //    config.headers.Authorization = 'Basic ' + authManager.authToken;
+        //     //}
+        //     return config;
+        // }
+        'request': function (config) {
             config.headers = config.headers || {};
-            config.headers.Authorization = 'Basic ' + btoa('a1ada5ab-b8c2-11e5-847d-00ffd0ea9272' + ':' + 'H3lpN0w2016');
-
-            //if (authManager.authToken) {
-            //    config.headers.Authorization = 'Basic ' + authManager.authToken;
-            //}
+            if ($cookies.get('cookie.helpnowmap.org')) {
+                config.headers.Authorization = 'JWT '+$cookies.get('cookie.helpnowmap.org');
+            }
             return config;
+        },
+        'responseError': function (response) {
+            if (response.status === 401 || response.status === 403) {
+                $location.path('/login');
+            }
+            return $q.reject(response);
         }
     };
 });

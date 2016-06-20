@@ -77,6 +77,13 @@
                         <li ng-class="getMenuClass('administration')" ng-show="isSuperAdmin"><a href="#/administration">{{text.menu_admin}}</a></li>
                         <li ng-class="getMenuClass('about')"><a href="#/about">{{text.menu_about}}</a></li>
                         <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{text.menu_account}} <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#/password_reset/{{currentUser.AccountID}}">{{text.reset_password_title}}</a></li>
+                                <li><a href="#/update_account/{{currentUser.AccountID}}">{{text.update_contact_info}}</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{text.menu_lang}} <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a ng-click="setCurrentLanguage('Eng')" ng-class="getLanguageClass('Eng')"><img class="lang-img" src="style/images/uk_flag.png" /> English</a></li>
