@@ -1,4 +1,4 @@
-angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize" ])
+angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize", "ngCookies" ])
 	.config(["$routeProvider", function ($routeProvider) {
 	    $routeProvider.when("/ind_login", {
 	        templateUrl: "views/ind-login.html"
@@ -112,8 +112,16 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 			templateUrl: "views/manage/assign-poc.html"
 		});
 
-		$routeProvider.when("/reg_account/", {
+		$routeProvider.when("/reg_account/:inviteID", {
 		    templateUrl: "views/reg-account.html"
+		});
+
+		$routeProvider.when("/password_reset/:accountID", {
+		    templateUrl: "views/manage/password-reset.html"
+		});
+
+		$routeProvider.when("/forgot_password/", {
+		    templateUrl: "views/manage/forgot-password.html"
 		});
 
 		$routeProvider.when("/demo/", {

@@ -10,9 +10,47 @@ var cookieParser = require('cookie-parser');
 var https = require('https');
 var fs = require('fs');
 var formidable = require('formidable');
+var http = require('http');
+//note - only version 06.0 works - 0.7.0 does not read the port #
+var proxy = require('express-http-proxy');
+
+var app = express();
+
+var environment = process.env.ENVIRONMENT || 'qas';
+var port = process.env.PORT || 80;
+var ssl_port = process.env.SSL_PORT || 443;
+var enable_redirect = process.env.ENABLE_REDIRECT || true;
+
+
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json());
+app.use(cookieParser());
+
+//for creating the session availability
+app.use(
+    session({
+        secret: 'H3LbN0M_LM',
+        resave: false,
+        saveUninitialized: false,
+        cookie: { maxAge: 600000 }  //max cookie age is 60 minutes
+    })
+);
+
+// Setup for authentication (must be after all body parsers, cookie parsers and session parsers)
+var auth = require('./auth');
+auth.setupAuthentication(environment, port, ssl_port, app);
+
+// Setup for tomnod upload capability
+var tomnod = require('./modules/tomnod');
+tomnod.setupTomnod(app, fs, path, formidable);
+
+var socialMedia = require('./modules/socialmedia');
+//socialMedia.setupTwitter();
+//socialMedia.getSocialMediaKeywords();
+//socialMedia.searchTwitter('#HelpNow');
 
 //the routes for the helpnow api
-var accountRouter = require('./routes/account')();
+var accountRouter = require('./routes/account')(module.exports.isAPIAuthenticated);
 var accountRoleRouter = require('./routes/accountrole')();
 var addressRouter = require('./routes/address')();
 var eventRouter = require('./routes/event')();
@@ -42,41 +80,10 @@ var socialMediaRouter = require('./routes/socialmedia')();
 var heatMapRouter = require('./routes/heatmap')();
 var mapLayerRouter = require('./routes/maplayer')();
 var mapLayerTypeRouter = require('./routes/maplayertype')();
+var hashValuesRouter = require('./routes/hashvalues')();
+var authRouter = require('./routes/authenticate')();
+var postEmailRouter = require('./routes/postemail')();
 
-
-var app = express();
-
-var environment = process.env.ENVIRONMENT || 'qas';
-var port = process.env.PORT || 80;
-var ssl_port = process.env.SSL_PORT || 443;
-var enable_redirect = process.env.ENABLE_REDIRECT || true;
-
-app.use(bodyParser.urlencoded({extended:true}));
-app.use(bodyParser.json());
-app.use(cookieParser());
-
-//for creating the session availability
-app.use(
-    session({
-        secret: 'H3LbN0M_LM',
-        resave: false,
-        saveUninitialized: false,
-        cookie: { maxAge: 600000 }  //max cookie age is 60 minutes
-    })
-);
-
-// Setup for authentication (must be after all body parsers, cookie parsers and session parsers)
-var auth = require('./auth');
-auth.setupAuthentication(environment, port, ssl_port, app);
-
-// Setup for tomnod upload capability
-var tomnod = require('./modules/tomnod');
-tomnod.setupTomnod(app, fs, path, formidable);
-
-var socialMedia = require('./modules/socialmedia');
-//socialMedia.setupTwitter();
-//socialMedia.getSocialMediaKeywords();
-//socialMedia.searchTwitter('#HelpNow');
 
 app.use('/api/account', accountRouter);
 app.use('/api/accountrole', accountRoleRouter);
@@ -108,6 +115,9 @@ app.use('/api/socialmedia', socialMediaRouter);
 app.use('/api/heatmap', heatMapRouter);
 app.use('/api/maplayer', mapLayerRouter);
 app.use('/api/maplayertype', mapLayerTypeRouter);
+app.use('/hashvalues', hashValuesRouter);
+app.use('/authenticate', authRouter);
+app.use('/postemail', postEmailRouter);
 
 //set the express.static locations to serve up the static files
 app.use(express.static('views'));
@@ -140,3 +150,33 @@ https.createServer({
 }, app).listen(ssl_port, function() {
     console.log('Running on PORT:' + ssl_port);
 });
+
+
+
+String.prototype.allReplace = function(obj) {
+    var retStr = this;
+    for (var x in obj) {
+        retStr = retStr.replace(new RegExp(x, 'g'), obj[x]);
+    }
+    return retStr;
+};
+
+
+app.use('/hxl', proxy('127.0.0.1:' + port, {
+    //only proxy get requests
+    filter: function(req, res) {
+        return req.method == 'GET';
+    },
+    forwardPath: function(req, res) {
+        return require('url').parse(req.url).path;
+    },
+    decorateRequest: function ( req ) {
+        req.headers[ 'Accept-Encoding' ] = 'utf8';
+        return req;
+    },
+    intercept: function(rsp, data, req, res, cb) {
+       var hxlTags= JSON.parse(fs.readFileSync('./data/hxl.json'));
+        data = data.toString().allReplace(hxlTags);
+        cb(null, data);
+    }
+}));

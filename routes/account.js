@@ -1,16 +1,41 @@
-
 var models  = require('../models'),
-    express = require('express');
+    express = require('express'),
+    passport = require('passport');
 
 //Account many-to-one on Organization
 models.Account.belongsTo(models.Organization, {foreignKey: 'OrganizationID'});
 models.Organization.hasMany(models.Account, {foreignKey: 'OrganizationID'});
 
 
+/**
+ * @api {get} api/account/ Get all Accounts
+ * @apiName GetAccounts
+ * @apiGroup Account
 
+ * @apiUse helpNowHeader
+ * @apiUse helpNowSuccessResult
+ * @apiUse helpNowUnauthorizedResult
+ * @apiSuccess {Object} json    The Result data in the form of json.
+ * @apiSuccess {Number}   json.AccountID Unique ID for the Account.
+ * @apiSuccess {String}   json.Username A users unique Username.
+ * @apiSuccess {String}   json.FirstName A users first name.
+ * @apiSuccess {String}   json.LastName A users last name.
+ * @apiSuccess {String}   json.MiddleInitial A users middile initial.
+ * @apiSuccess {Number}   json.OrganizationID OrganziationID associated with the Organization for the Event.
+ * @apiSuccess {String}   json.Summary Event Title.
+ * @apiSuccess {String}   json.Notes Event description or additional information.
+ * @apiSuccess {Boolean}   json.Active Status of the event.
+ * @apiSuccess {Date}   json.CreateDate Date & Time the Event was created in the system.
+ * @apiSuccess {Object[]}   json.EventLocations An Array of EventLocations for the event.
+ * @apiSuccess {Object[]}   json.Blockages An Array of Blockages for the event.
+ * @apiSuccess {Object}   json.EventType the EventType object associated with the event.
+ * @apiSuccess {Object}   json.Organization the Organization object associated with the event.
+ * @apiSuccess {Object[]}   json.ResourceRequests An Array of ResourceRequests for the event.
+ * @apiSuccess {Object[]}   json.ResourceLocations An Array of ResourceLocations for the event.
+ */
 var routes = function(){
   var router  = express.Router();
-    router.get('/', function(req, res) {
+    router.get('/', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
       models.Account.findAll()
         .then(function(account) {
           res.statusCode = 200;
@@ -26,7 +51,7 @@ var routes = function(){
       )
       .catch(function (err) {
        console.error(err);
-       res.statusCode = 502;
+       res.statusCode = 400;
        res.send({
            result: 'error',
            err:    err.message
@@ -35,12 +60,12 @@ var routes = function(){
     }
   )
   //find Account by AccountID
-  .get('/:id', function(req, res) {
+  .get('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
       models.Account.findAll(
         {
           include: [
             {
-              model: models.Organization,
+              model: models.Organization
             }
           ],
           where: {
@@ -61,7 +86,7 @@ var routes = function(){
       }
      ).catch(function (err) {
        console.error(err);
-       res.statusCode = 502;
+       res.statusCode = 400;
        res.send({
            result: 'error',
            err:    err.message
@@ -69,44 +94,45 @@ var routes = function(){
       });
     }
   )
-  //find Account by ID on session
-  // .get('/accountid/', function(req, res) {
-  //     console.log('here is our session account id: '+req.session.accountid);
-  //     console.log('here is the sessionid: '+req.sessionID);
-  //     models.Account.findAll(
-  //       {
-  //         include: [
-  //           {
-  //             model: models.Organization,
-  //           }
-  //         ],
-  //         where: {
-  //           AccountID: req.session.accountid
-  //         }
-  //       }
-  //     ).then(function(account) {
-  //       res.statusCode = 200;
-  //       res.send(
-  //         {
-  //           result: 'success',
-  //           err:    '',
-  //           json:  account,
-  //           length: account.length
-  //         }
-  //       );
-  //     }
-  //    ).catch(function (err) {
-  //      console.error(err);
-  //      res.statusCode = 502;
-  //      res.send({
-  //          result: 'error',
-  //          err:    err.message
-  //      });
-  //     });
-  //   }
-  // )
+  //find Account by Email
+    .get('/email/:email', passport.authenticate('jwt-auth-api', {session:false}),  function(req, res) {
+            models.Account.findAll(
+                {
+                    include: [
+                        {
+                            model: models.Organization
+                        }
+                    ],
+                    where: {
+                        Email: req.params.email,
+                        Active: true
+                    }
+                }
+            ).then(function(account) {
+                    res.statusCode = 200;
+                    res.send(
+                        {
+                            result: 'success',
+                            err:    '',
+                            json:  account,
+                            length: account.length
+                        }
+                    );
+                }
+            ).catch(function (err) {
+                console.error(err);
+                res.statusCode = 400;
+                res.send({
+                    result: 'error',
+                    err:    err.message
+                });
+            });
+        }
+    )
+
+
   //find Accounts by organizationid
-  .get('/organization/:id', function (req, res) {
+  .get('/organization/:id', passport.authenticate('jwt-auth-api', {session:false}), function (req, res) {
       models.Account.findAll(
         {
             where: {
@@ -134,7 +160,7 @@ var routes = function(){
       }
      ).catch(function (err) {
          console.error(err);
-         res.statusCode = 502;
+         res.statusCode = 400;
          res.send({
              result: 'error',
              err: err.message
@@ -143,7 +169,7 @@ var routes = function(){
     }
   )
   //find organzation team members by accountid (will not include account passed by parameter)
-  .get('/organizationmembers/:id', function (req, res) {
+  .get('/organizationmembers/:id', passport.authenticate('jwt-auth-api', {session:false}), function (req, res) {
       models.Account.findAll(
         {
           include: [
@@ -193,7 +219,7 @@ var routes = function(){
         }
       ).catch(function (err) {
          console.error(err);
-         res.statusCode = 502;
+         res.statusCode = 400;
          res.send({
              result: 'error',
              err: err.message
@@ -201,65 +227,14 @@ var routes = function(){
      });
     }
   )
-  //find login which retrieves account
-  .post('/login/', function (req, res) {
-        models.Account.findAll(
-          {
-              include: [
-                {
-                  model: models.Organization,
-                }
-              ],
-              where: {
-                  Username: req.body.username,
-                  Password: req.body.password
-              }
-          }
-        ).then(function (account) {
-            if (account.length>0)
-            {
-              // var userSessionObject = {
-              //       AccountID: account[0].AccountID,
-              //       FirstName: account[0].FirstName,
-              //       LastName: account[0].LastName,
-              //       OrganizationID: account[0].Organization.OrganizationID,
-              //       OrganizationName: account[0].Organization.Organization.Name
-              //   }
-              req.session.accountid =  account[0].AccountID;
-              req.session.organizationid =  account[0].OrganizationID;
-              res.statusCode = 200;
-              res.send(
-                {
-                    result: 'success',
-                    err: '',
-                    json: account,
-                    length: account.length
-                }
-              );
-            }
-            else
-            {
-              res.sendStatus(401)
-            }
-            
-        }
-      ).catch(function (err) {
-          console.error(err);
-          res.statusCode = 502;
-          res.send({
-              result: 'error',
-              err: err.message
-          });
-      });
-    }
-  )
+  
   //find login which retrieves account
   .post('/external_login/', function (req, res) {
         models.Account.findAll(
           {
               include: [
                 {
-                  model: models.Organization,
+                  model: models.Organization
                 }
               ],
               where: {
@@ -296,7 +271,7 @@ var routes = function(){
         }
       ).catch(function (err) {
           console.error(err);
-          res.statusCode = 502;
+          res.statusCode = 400;
           res.send({
               result: 'error',
               err: err.message
@@ -305,7 +280,7 @@ var routes = function(){
     }
   )
   //insert into Account
-  .post('/', function(req, res) {
+  .post('/', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.Account.create(req.body)
     .then(function(account) {
         res.statusCode = 200;
@@ -320,7 +295,7 @@ var routes = function(){
       }
      ).catch(function (err) {
        console.error(err);
-       res.statusCode = 502;
+       res.statusCode = 400;
        res.send({
            result: 'error',
            err:    err.message
@@ -329,10 +304,11 @@ var routes = function(){
     }
   )
   //update into Account
-  .put('/:id', function(req, res) {
+  .put('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.Account.update(
       req.body,
       {
+        individualHooks: true,
         where: {
           AccountID: req.params.id
         }
@@ -351,7 +327,7 @@ var routes = function(){
       }
      ).catch(function (err) {
        console.error(err);
-       res.statusCode = 502;
+       res.statusCode = 400;
        res.send({
            result: 'error',
            error:  err.message
@@ -359,7 +335,7 @@ var routes = function(){
       });
     }
   )
-  .delete('/:id', function(req, res) {
+  .delete('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.Account.destroy(
       {
         where: {
@@ -379,7 +355,7 @@ var routes = function(){
       }
      ).catch(function (err) {
        console.error(err);
-       res.statusCode = 502;
+       res.statusCode = 400;
        res.send({
            result: 'error',
            err:    err.message

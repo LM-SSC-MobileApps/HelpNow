@@ -1,4 +1,4 @@
-angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize" ])
+angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize", "ngCookies" ])
 	.config(["$routeProvider", function ($routeProvider) {
 	    $routeProvider.when("/ind_login", {
 	        templateUrl: "views/ind-login.html"
@@ -112,8 +112,16 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 			templateUrl: "views/manage/assign-poc.html"
 		});
 
-		$routeProvider.when("/reg_account/", {
+		$routeProvider.when("/reg_account/:inviteID", {
 		    templateUrl: "views/reg-account.html"
+		});
+
+		$routeProvider.when("/password_reset/:accountID", {
+		    templateUrl: "views/manage/password-reset.html"
+		});
+
+		$routeProvider.when("/forgot_password/", {
+		    templateUrl: "views/manage/forgot-password.html"
 		});
 
 		$routeProvider.when("/demo/", {
@@ -1166,6 +1174,24 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
 		}
 	};*/
 }]);
+angular.module("helpNow").controller("ForgotPasswordCtrl", ["$scope", "$http", "Account", "$location", "$routeParams", "$resource", function ($scope, $http, Account, $location, $routeParams, $resource) {
+    $scope.setCurrentView("forgot_password");
+    $scope.setTitle($scope.text.forgot_password_title);
+
+    $scope.emailAddress = '';
+
+    $scope.accountResource = $resource("/api/account/email/:email");
+
+    $scope.loadAccount = function () {
+        $scope.accountResource.get({ email: $scope.emailAddress }, function (data) {
+            $scope.account = data.json;
+            if ($scope.account == null)// || $scope.account[0] == null || $scope.account[0].AccountID <= 0)
+                alert("Account could not be found");
+            else
+                alert(JSON.stringify($scope.account));
+        });
+    };
+}]);
 angular.module("helpNow").controller("GovLoginCtrl", ["$scope", function($scope) {
 	$scope.setCurrentView("govs");
 }]);
@@ -1892,7 +1918,7 @@ angular.module("helpNow").controller("LoginCtrl", ["$scope", "$http", "$location
 
         var webCall = $http({
             method: 'POST',
-            url: '/auth/login',
+            url: '/authenticate/login',
             async: true,
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -3476,9 +3502,10 @@ angular.module("helpNow").controller("OrganizationAddCtrl", ["$scope", "$resourc
             if ($scope.org.Name != null) {
                 $scope.newOrg.Name = $scope.org.Name;
             }
-            if ($scope.org.APISecret != null) {
-                $scope.newOrg.APISecret = $scope.org.APISecret;
-            }
+            // commented out, we will no longer provide the APISecret to view.  A new Secret will need to be created if the Organization/API is updated.
+            // if ($scope.org.APISecret != null) {
+            //     $scope.newOrg.APISecret = $scope.org.APISecret;
+            // }
         });
     };
 
@@ -3533,14 +3560,70 @@ angular.module("helpNow").controller("OrganizationAddCtrl", ["$scope", "$resourc
 
 }]);
 
-angular.module("helpNow").controller("RegAccountCtrl", ["$scope", "$http", "$location", "$routeParams", "$resource", function ($scope, $http, $location, $routeParams, $resource) {
+angular.module("helpNow").controller("PasswordResetCtrl", ["$scope", "$http", "Account", "$location", "$routeParams", "$resource", function ($scope, $http, Account, $location, $routeParams, $resource) {
+    $scope.setCurrentView("password_reset");
+    $scope.setTitle($scope.text.reset_password_title);
+
+    $scope.accountID = $routeParams.accountID * 1;
+
+    $scope.accountResource = $resource("/api/account/:id");
+
+    loadAccount();
+
+    function loadAccount() {
+        $scope.accountResource.get({ id: $scope.accountID }, function (data) {
+            $scope.account = data.json;
+            if ($scope.account == null)
+                alert("Account could not be found");
+        });
+    }
+
+    $scope.updatePassword = function () {
+        if ($scope.newPassword === $scope.confirmedPassword) {
+            $scope.account[0].Password = $scope.newPassword;
+            Account.update({id: $scope.accountID}, JSON.stringify($scope.account[0])).$promise.then(function (response) {
+                $location.path('#');
+            },
+            function (response) { // optional
+                alert("Error: " + response.data.err);
+            });
+        }
+        else {
+            alert("Passwords do not match.")
+        }
+    };
+}]);
+angular.module("helpNow").controller("RegAccountCtrl", ["$scope", "$http", "$location", "Invitation", "$routeParams", "$resource", function ($scope, $http, $location, Invitation, $routeParams, $resource) {
     $scope.setCurrentView("reg-account");
     $scope.setTitle($scope.text.reg_account_title);
 
     $scope.showUsername = true;
     $scope.showUser = false;
 
-    $scope.userAccount = { OrganizationGroupID: 1, Active: true, AccountRoleID: 3, CreateDate: new Date() };
+    $scope.inviteid = $routeParams.inviteID;
+
+    $scope.inviteResource = $resource("/api/inviteRequest/:inviteid");
+
+    $scope.userAccount = { Active: true, AccountRoleID: 2, CreateDate: new Date(), IsHashed: 0 };
+
+    loadInviteRequest();
+
+    function loadInviteRequest() {
+        $scope.inviteResource.get({inviteid: $scope.inviteid}, function (data) {
+            $scope.inviteRequest = data.json;
+
+            if ($scope.inviteRequest == null || $scope.inviteRequest[0] == null || $scope.inviteRequest[0].OrganizationID <= 0) {
+                alert("Invitation information could not be found.  Contact your organization's administrator for a new invitation.");
+                $location.path('#');
+            }
+            else {
+                $scope.userAccount.OrganizationID = $scope.inviteRequest[0].OrganizationID;
+                $scope.userAccount.FirstName = $scope.inviteRequest[0].FirstName;
+                $scope.userAccount.LastName = $scope.inviteRequest[0].LastName;
+                $scope.userAccount.Email = $scope.inviteRequest[0].Email;
+            }
+        });
+    }
 
     $scope.showUserForm = function () {
         var hasError = false;
@@ -3587,6 +3670,7 @@ angular.module("helpNow").controller("RegAccountCtrl", ["$scope", "$http", "$loc
         });
         webCall.then(function (response) {
             alert("Account Successfully Created");
+            Invitation.delete({inviteid: $scope.inviteid});
             $location.path('#');
         },
         function (response) { // optional
@@ -4010,7 +4094,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
         // Logout server
         var webCall = $http({
             method: 'POST',
-            url: '/auth/logout',
+            url: '/authenticate/logout',
             async: true,
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -4127,7 +4211,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
  * TeamInviteCtrl
  */
 
-angular.module("helpNow").controller("TeamInviteCtrl", ["$scope", "$resource", "$routeParams", "Invitation" , "$location", "$uibModal", function ($scope, $resource, $routeParams, Invitation , $location, $uibModal) {
+angular.module("helpNow").controller("TeamInviteCtrl", ["$scope", "$resource", "$routeParams", "Invitation", "$http", "$location", "$uibModal", function ($scope, $resource, $routeParams, Invitation, $http, $location, $uibModal) {
 
     $scope.newInvite = new Invitation();
 
@@ -4137,9 +4221,16 @@ angular.module("helpNow").controller("TeamInviteCtrl", ["$scope", "$resource", "
     //$scope.newInvite.OrganizationID = 1;
 
 
-    $scope.sendInvite = function (invitation) {
-        Invitation.save(invitation);
-        $scope.confirmEmail(invitation);
+     $scope.sendInvite = function (invitation) {
+      data= Invitation.save(invitation);
+         
+      $http.post('/postemail', $scope.invite).success(function (data, status,headers,config){
+          $scope.confirmEmail(invitation);
+      }).error(function (data, status,headers,config) {
+
+      });
+
+
     };
 
 
@@ -4263,6 +4354,21 @@ angular.module("helpNow").directive('map', ['MapLayer', function (MapLayer) {
                 var baseMapLayer;
                 var overlayMapLayer;
 
+                var OWMAppId = '533e5eea3d1b3eb5d9616d2723cf4b6b';
+
+                var clouds = L.OWM.clouds({ showLegend: true, opacity: 0.5, appId: OWMAppId });
+                var cloudscls = L.OWM.cloudsClassic({ showLegend: true, opacity: 0.5, appId: OWMAppId });
+                var precipitation = L.OWM.precipitation({ showLegend: true, opacity: 0.5, appId: OWMAppId });
+                var precipitationcls = L.OWM.precipitationClassic({ showLegend: true, opacity: 0.5, appId: OWMAppId });
+                var rain = L.OWM.rain({ showLegend: true, opacity: 0.5, appId: OWMAppId });
+                var raincls = L.OWM.rainClassic({ showLegend: true, opacity: 0.5, appId: OWMAppId });
+                var snow = L.OWM.snow({ showLegend: true, opacity: 0.5, appId: OWMAppId });
+                var pressure = L.OWM.pressure({ showLegend: true, opacity: 0.5, appId: OWMAppId });
+                var pressurecntr = L.OWM.pressureContour({ showLegend: true, opacity: 0.5, appId: OWMAppId });
+                var temp = L.OWM.temperature({ showLegend: true, opacity: 0.5, appId: OWMAppId });
+                var wind = L.OWM.wind({ showLegend: true, opacity: 0.5, appId: OWMAppId });
+                var city = L.OWM.current({ intervall: 0, lang: 'en', appId: OWMAppId, temperatureUnit: 'F' });
+                
                 for (var i = 0; i < results.json.length; i++) {
                     var layer = results.json[i];
                     if (layer.MapLayerTypeID == 1 && (layer.EventID == event || layer.EventID == null)) {
@@ -4307,6 +4413,12 @@ angular.module("helpNow").directive('map', ['MapLayer', function (MapLayer) {
                     }
                 }
 
+                overlayMapLayers["Precipitation"] = precipitationcls;
+                overlayMapLayers["Pressure"] = pressure;
+                overlayMapLayers["Temp"] = temp;
+                overlayMapLayers["Wind"] = wind;
+                overlayMapLayers["City Data"] = city;
+
                 var map = new L.map('map', {
                     layers: [baseMapLayer],
                     maxBounds: [[-90.0, -180], [90.0, 180.0]]
@@ -4335,114 +4447,24 @@ angular.module("helpNow").directive('map', ['MapLayer', function (MapLayer) {
 
                 if (scope.initMap) scope.initMap(map);
             });
-
-            /*var api_key = 'pk.eyJ1IjoiZGlnaXRhbGdsb2JlIiwiYSI6ImNpZjc5N3NiMTA5OXlzb2x6c3FyZHQ3cTUifQ.88yZYJc78Z2MAnkX2fOjuw';
-            var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-				'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-			mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6IjZjNmRjNzk3ZmE2MTcwOTEwMGY0MzU3YjUzOWFmNWZhIn0.Y8bhBaUMqFiPrDRW9hieoQ';
-
-            var grayscale = L.tileLayer(mbUrl, { id: 'mapbox.light', attribution: mbAttr }),
-                streets = L.tileLayer(mbUrl, { id: 'mapbox.streets', attribution: mbAttr }),
-
-                GBMREST = L.esri.tiledMapLayer({ url: 'https://services.digitalglobe.com/earthservice/gis/0688362c-8f94-4016-95c3-172c2ab72023/rest/services/DigitalGlobe:ImageryTileService/MapServer', attribution: 'DigitalGlobe Basemap, 2015' }),
-                GBMWMS = L.tileLayer.wms('https://services.digitalglobe.com/mapservice/wmsaccess?connectid=0688362c-8f94-4016-95c3-172c2ab72023', { layers: 'DigitalGlobe:Imagery', format: 'image/png', transparent: true, attribution: 'DigitalGlobe 2015' }),
-                EsriImagery = L.esri.tiledMapLayer({ url: 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer', attribution: 'Esri 2015' });
-
-            /*var hybrid = new L.tileLayer('https://{s}.tiles.mapbox.com/v4/digitalglobe.n6nhclo2/{z}/{x}/{y}.png?access_token=' + api_key, {
-			    minZoom: 2,
-			    maxZoom: 19,
-			    attribution: '(c) <a href="http://microsites.digitalglobe.com/interactive/basemap_vivid/">DigitalGlobe</a> , (c) OpenStreetMap, (c) Mapbox'
-			});
-
-            var nepal = L.tileLayer('http://www.helpnowmap.com/nepal/{z}/{x}/{y}.png', {
-                minZoom: 11,
-                maxZoom: 19,
-                attribution: '(c) <a href="http://www.digitalglobe.com/">DigitalGlobe</a>'
-            });
-
-            var bangladesh = L.tileLayer('http://www.helpnowmap.com/bangladesh/{z}/{x}/{y}.png', {
-                tms: true,
-                minZoom: 6,
-                maxZoom: 12,
-                attribution: '(c) <a href="http://www.dmcii.com/">DMC International Imaging</a>'
-            });
-
-            var bangladeshDG = L.tileLayer('http://www.helpnowmap.com/bangladeshdg/{z}/{x}/{y}.png', {        
-                minZoom: 11,
-                maxZoom: 19,
-                attribution: '(c) <a href="http://www.digitalglobe.com/">DigitalGlobe</a>'
-            });
-
-            var vivid = new L.tileLayer('https://{s}.tiles.mapbox.com/v4/digitalglobe.n6ngnadl/{z}/{x}/{y}.png?access_token=' + api_key, {
-                minZoom: 2,
-                maxZoom: 19,
-                attribution: '(c) <a href="http://microsites.digitalglobe.com/interactive/basemap_vivid/">DigitalGlobe</a>'
-            });
-
-            var street = new L.tileLayer('https://{s}.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=' + api_key, {
-                minZoom: 2,
-                maxZoom: 19,
-                attribution: '(c) OpenStreetMap , (c) Mapbox'
-            });
-
-            var openStreetMap = new L.tileLayer(
-              'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                  attribution: mbAttr,
-                  noWrap: true,
-                  minZoom: 2,
-                  maxZoom: 18
-              }
-            );
-
-            var baseLayer = L.tileLayer('https://{s}.tiles.mapbox.com/v4/digitalglobe.n6nhclo2/{z}/{x}/{y}.png?access_token=' + api_key, {
-                minZoom: 2,
-                maxZoom: 19,
-                attribution: '(c) <a href="http://microsites.digitalglobe.com/interactive/basemap_vivid/">DigitalGlobe</a> , (c) OpenStreetMap, (c) Mapbox'
-            });
-
-            var map = new L.map('map', {
-                layers: [baseLayer],
-                maxBounds: [[-90.0, -180], [90.0, 180.0]]
-            }).setView(center, zoom);
-
-            L.control.scale().addTo(map);
-
-            map.attributionControl.setPrefix('');
-            var baselayers = {
-                "Base Open Street Maps": openStreetMap,
-                "DigitalGlobe Basemap +Vivid with Streets": baseLayer,
-                "DigitalGlobe Basemap": GBMREST
-            };
-
-            var overlays = {
-                "Bangladesh (DG)": bangladeshDG,
-		"Bangladesh": bangladesh,
-                "Nepal (DG)": nepal
-            };
-
-            L.control.layers(baselayers, overlays, {
-                collapsed: true
-            }).addTo(map);
-
-            map.addControl(new L.Control.Search({
-                url: 'http://nominatim.openstreetmap.org/search?format=json&q={s}',
-                jsonpParam: 'json_callback',
-                propertyName: 'display_name',
-                propertyLoc: ['lat', 'lon'],
-                circleLocation: false,
-                markerLocation: false,
-                autoType: false,
-                autoCollapse: true,
-                minLength: 2,
-                zoom: 13
-            }));
-
-            if (scope.initMap) scope.initMap(map);
-            */
         }
     };
 }]);
+
+angular.module('helpNow').factory('ResourceLocationTransport', function ($resource) {
+    return $resource('api/resourcelocationtransport/:id', null, {
+        update: {
+            method: 'PUT'
+        }
+    });
+});
+angular.module('helpNow').factory('ResourceRequest', function ($resource) {
+    return $resource('api/resourcerequest/:id', null ,{
+        update: {
+            method: 'PUT'
+        }
+    });
+});
 
 angular.module('helpNow').factory('Account', function ($resource) {
     return $resource('api/account/:id', null ,{
@@ -4452,17 +4474,21 @@ angular.module('helpNow').factory('Account', function ($resource) {
     });
 });
 
-angular.module('helpNow').factory('api_interceptor',
-    function () {
+angular.module('helpNow').factory('api_interceptor', function($cookies, $location){
     return {
-        request: function (config) {
+        'request': function (config) {
             config.headers = config.headers || {};
-            config.headers.Authorization = 'Basic ' + btoa('a1ada5ab-b8c2-11e5-847d-00ffd0ea9272' + ':' + 'H3lpN0w2016');
-
-            //if (authManager.authToken) {
-            //    config.headers.Authorization = 'Basic ' + authManager.authToken;
-            //}
+            if ($cookies.get('cookie.helpnowmap.org')) {
+                config.headers.Authorization = 'JWT '+$cookies.get('cookie.helpnowmap.org');
+            }
             return config;
+        },
+        'responseError': function (response) {
+            if (response.status === 401 || response.status === 403) {
+                alert("Unauthorized.  ");
+                $location.path('/login');
+            }
+            return response;
         }
     };
 });
@@ -4563,22 +4589,8 @@ angular.module('helpNow').factory('ResourceLocationInventory', function ($resour
         }
     });
 });
-angular.module('helpNow').factory('ResourceLocationTransport', function ($resource) {
-    return $resource('api/resourcelocationtransport/:id', null, {
-        update: {
-            method: 'PUT'
-        }
-    });
-});
 angular.module('helpNow').factory('ResourceLocationType', function ($resource) {
     return $resource('api/resourcelocationtype/:id', null, {
-        update: {
-            method: 'PUT'
-        }
-    });
-});
-angular.module('helpNow').factory('ResourceRequest', function ($resource) {
-    return $resource('api/resourcerequest/:id', null ,{
         update: {
             method: 'PUT'
         }

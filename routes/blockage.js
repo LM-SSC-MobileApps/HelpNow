@@ -4,7 +4,8 @@
 
 
 var models  = require('../models'),
-    express = require('express');
+    express = require('express'),
+    passport = require('passport');
 
 //Blockage many-to-one on BlockageSource
 models.Blockage.belongsTo(models.BlockageSource, { foreignKey: 'BlockageSourceID' });
@@ -111,7 +112,7 @@ var routes = function(){
             }
         )
         //insert into Blockage
-        .post('/', function(req, res) {
+        .post('/', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
 				models.BlockageSource.findAll( {
 					where: {
 						Description: 'HelpNow'
@@ -142,7 +143,7 @@ var routes = function(){
             }
         )
         //update into Blockage
-        .put('/:id', function(req, res) {
+        .put('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
                 models.Blockage.update(
                     req.body,
                     {
@@ -172,7 +173,7 @@ var routes = function(){
                 });
             }
         )
-        .delete('/tomnod/:eventid', function (req, res) {
+        .delete('/tomnod/:eventid', passport.authenticate('jwt-auth-api', {session:false}), function (req, res) {
             models.Blockage.destroy(
                 {
                     where: {
@@ -201,7 +202,7 @@ var routes = function(){
                 });
         }
         )
-        .delete('/:id', function(req, res) {
+        .delete('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
                 models.Blockage.destroy(
                     {
                         where: {

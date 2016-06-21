@@ -1,6 +1,7 @@
 
 var models  = require('../models'),
-    express = require('express');
+    express = require('express'),
+    passport = require('passport');
 
 var routes = function(){
   var router  = express.Router();
@@ -58,7 +59,7 @@ var routes = function(){
     }
   )
   //insert into RequestUrgency
-  .post('/', function(req, res) {
+  .post('/', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.RequestUrgency.create(req.body)
     .then(function(requestUrgency) {
         res.statusCode = 200;
@@ -82,7 +83,7 @@ var routes = function(){
     }
   )
   //update into RequestUrgency
-  .put('/:id', function(req, res) {
+  .put('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.RequestUrgency.update(
       req.body,
       {
@@ -112,7 +113,7 @@ var routes = function(){
       });
     }
   )
-  .delete('/:id', function(req, res) {
+  .delete('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.RequestUrgency.destroy(
       {
         where: {

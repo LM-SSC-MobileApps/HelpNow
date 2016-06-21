@@ -206,5 +206,14 @@
   "disable_event_confirm_label": "You are about to disable event",
   "btn_edit": "Edit",
   "btn_update": "Update",
-  "disable_map_layer_confirm_label": "You are about to delete satellite imagery"
+  "disable_map_layer_confirm_label": "You are about to delete satellite imagery",
+  "forgot_password_label": "Forgot username or password?",
+  "send_password_reset_btn": "Send Reset Email",
+  "forgot_password_title": "Forgot Your Password",
+  "reset_password_title": "Reset Password",
+  "update_contact_info": "Update Contact Info",
+  "new_password_label": "New Password",
+  "confirm_new_password_label": "Confirm New Password",
+  "menu_account": "Account",
+  "current_password_label":  "Current Password"
 }

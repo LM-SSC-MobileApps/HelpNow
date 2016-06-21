@@ -300,7 +300,7 @@ angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location
         // Logout server
         var webCall = $http({
             method: 'POST',
-            url: '/auth/logout',
+            url: '/authenticate/logout',
             async: true,
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'

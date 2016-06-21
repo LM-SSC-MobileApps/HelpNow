@@ -3,7 +3,8 @@
  */
 
 var models  = require('../models'),
-    express = require('express');
+    express = require('express'),
+    passport = require('passport');
 
 var routes = function(){
     var router  = express.Router();
@@ -61,7 +62,7 @@ var routes = function(){
             }
         )
         //insert into BlockageSource
-        .post('/', function(req, res) {
+        .post('/', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
                 models.BlockageSource.create(req.body)
                     .then(function(blockageSource) {
                             res.statusCode = 200;
@@ -85,7 +86,7 @@ var routes = function(){
             }
         )
         //update into BlockageSource
-        .put('/:id', function(req, res) {
+        .put('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
                 models.BlockageSource.update(
                     req.body,
                     {
@@ -115,7 +116,7 @@ var routes = function(){
                 });
             }
         )
-        .delete('/:id', function(req, res) {
+        .delete('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
                 models.BlockageSource.destroy(
                     {
                         where: {

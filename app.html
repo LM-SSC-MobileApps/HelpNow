@@ -13,6 +13,7 @@
     <script type="text/javascript" src="angular/angular.js"></script>
     <script type="text/javascript" src="angular/angular-route.js"></script>
     <script type="text/javascript" src="angular/angular-resource.js"></script>
+    <script type="text/javascript" src="angular/angular-cookies.js"></script>
     <script type="text/javascript" src="angular/angular-sanitize.min.js"></script>
     <script type="text/javascript" src="lib/bootstrap.js"></script>
     <script type="text/javascript" src="lib/ui-bootstrap-tpls-0.14.2.js"></script>
@@ -21,9 +22,11 @@
     <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
     <!--<link rel="stylesheet" href="http://labs.easyblog.it/maps/leaflet-search/src/leaflet-search.css" />-->
     <link rel="stylesheet" type="text/css" href="style/leaflet-search.css" />
+    <link rel="stylesheet" type="text/css" href="style/leaflet-openweathermap.css" />
     <script type='text/javascript' src='http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js'></script>
     <script type="text/javascript" src="leaflet/heatmap.js"></script>
     <script type="text/javascript" src="leaflet/leaflet-heatmap.js"></script>
+    <script type="text/javascript" src="leaflet/leaflet-openweathermap.js"></script>
 
     <!-- Load Esri Leaflet from CDN -->
     <script src="http://cdn.jsdelivr.net/leaflet.esri/1.0.0/esri-leaflet.js"></script>
@@ -73,6 +76,13 @@
                         <li ng-class="getMenuClass('mng')" ng-show="currentUser"><a href="#/manage">{{text.menu_manage}}</a></li>
                         <li ng-class="getMenuClass('administration')" ng-show="isSuperAdmin"><a href="#/administration">{{text.menu_admin}}</a></li>
                         <li ng-class="getMenuClass('about')"><a href="#/about">{{text.menu_about}}</a></li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{text.menu_account}} <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#/password_reset/{{currentUser.AccountID}}">{{text.reset_password_title}}</a></li>
+                                <li><a href="#/update_account/{{currentUser.AccountID}}">{{text.update_contact_info}}</a></li>
+                            </ul>
+                        </li>
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{text.menu_lang}} <span class="caret"></span></a>
                             <ul class="dropdown-menu">

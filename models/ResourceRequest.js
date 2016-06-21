@@ -67,9 +67,9 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true,
     },
     CreateDate: {
-        type: DataTypes.DATE,
-        allowNull: true,
-        defaultValue: sequelize.fn("NOW")
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: sequelize.fn('NOW')
     }
   });
 };

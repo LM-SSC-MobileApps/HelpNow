@@ -1,6 +1,15 @@
 var environment = "";
 var port = "";
 var ssl_port = "";
+var env       = process.env.NODE_ENV || 'aws-development';
+var config    = require(__dirname + '/config/config.json')[env];
+var jwtStrategy = require('passport-jwt').Strategy;
+var jwtExtractor = require('passport-jwt').ExtractJwt;
+var nJwt = require('njwt');
+var passport = require('passport');
+// var authheader = require('auth-header');
+// var localStrategy = require('passport-local').Strategy;
+var facebookStrategy = require('passport-facebook').Strategy;
 
 module.exports =
 {
@@ -11,9 +20,6 @@ module.exports =
         port = port_val;
         ssl_port = ssl_port_val;
 
-        var passport = require('passport');
-        var LocalStrategy = require('passport-local').Strategy;
-        var FacebookStrategy = require('passport-facebook').Strategy;
 
         app.use(passport.initialize());
         app.use(passport.session());
@@ -26,27 +32,11 @@ module.exports =
             done(null, user);
         });
 
-        app.post('/auth/logout',
-            function (req, res) {
-                logout(req, res);
-            }
-        );
-
-        setupLocalAuthentication(app, passport, LocalStrategy);
-        setupFacebookAuthentication(app, passport, FacebookStrategy);
-        setupBasicAuthForAPI(app, passport);
-
-        //setupDigestAuthForAPI(app, passport);
+        setupFacebookAuthentication(app);
+        setupJWTAuthentication(app);
     }
 };
 
-function logout(req, res) {
-    req.logout();
-
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.write("User successfully logged out.");
-    res.end();
-}
 
 function getEnvironment() {
     return environment;
@@ -126,90 +116,20 @@ function getClientSecret() {
     }
 }
 
-function setupLocalAuthentication(app, passport, strategy) {
-    console.log("setupLocalAuthentication");
-    passport.use('local', new strategy({
-        usernameField: 'username',
-        passwordField: 'password'
-    },
-        function (username, password, done) {
-            var http = require('http');
 
-            var creds = '{"username":"' + username + '","password":"' + password + '"}';
-            
-            var apiAuth = 'Basic ' + new Buffer('a1ada5ab-b8c2-11e5-847d-00ffd0ea9272:H3lpN0w2016').toString('base64');
-            
-            var options = {
-                host: 'localhost',
-                path: '/api/account/login',
-                port: getHttpPort(false),
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': apiAuth }
-            };
-
-            callback = function (response) {
-                var str = '';
-
-                // Another chunk of data has been recieved, so append it to `str`
-                response.on('data', function (chunk) {
-                    str += chunk;
-                });
-
-                // The whole response has been recieved, so know we can use it
-                response.on('end', function () {
-                    if (str === "Unauthorized") {
-                        console.log("unauthorized");
-                        return done(null, false);
-                    } else {
-                        var jsonObj = JSON.parse(str);
-                        var user = jsonObj.json[0];
-                        console.log("authorized user: " + user.Email);                            
-                        return done(null, user.Email, { message: str });
-                    }                        
-                });
-            }
-            console.log('here are the options: ' + JSON.stringify(options));
-
-            var req = http.request(options, callback);
-            req.write(creds);
-            req.end();
-        }
-    ));
-
-
-    app.post('/auth/login', function (req, res, next) {            
-        passport.authenticate('local', function (err, user, info) {
-            //console.log("err = " + err + " user = " + user + " next = " + next + " info = " + info);
-            if (err) { return next(err) }
-            if (!user) {
-                res.writeHead(502, { 'Content-Type': 'application/json' });
-                res.write("Incorrect username or password. Please try again.");
-                res.end();
-                return;
-            }
-            req.logIn(user, function (err) {
-                if (err) { return next(err); }
-
-                res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.write(info.message);
-                res.end();
-                return;
-            });
-        })(req, res, next);
-    });
-}
-
-function setupFacebookAuthentication(app, passport, strategy) {
+function setupFacebookAuthentication(app) {
     console.log("setupFacebookAuthentication");
 
     var callbackURL = getHttp() + getHost() + getHttpPort(true) + "/auth/facebook/callback";
     console.log("callbackURL = " + callbackURL + " clientID = " + getClientID() + " clientSecret = " + getClientSecret());
 
+    var models = require('./models');
+
     // Use the FacebookStrategy within Passport.
     // Strategies in Passport require a `verify` function, which accept
     // credentials (in this case, an accessToken, refreshToken, and Facebook
     // profile), and invoke a callback with a user object.
-    passport.use('facebook', new strategy({
+    passport.use('facebook', new facebookStrategy({
         clientID: getClientID(),
         clientSecret: getClientSecret(),
         callbackURL: callbackURL,
@@ -227,45 +147,43 @@ function setupFacebookAuthentication(app, passport, strategy) {
               //var profileStr = profile.name.givenName + '|' + profile.name.familyName + '|' + profile.emails[0].value
               //console.log(profileStr);
 
-              var http = require('http');
-              
-              var apiAuth = 'Basic ' + new Buffer('a1ada5ab-b8c2-11e5-847d-00ffd0ea9272:H3lpN0w2016').toString('base64');
-
-              var creds = '{"email":"' + profile.emails[0].value + '"}';
-              var options = {
-                  host: 'localhost',
-                  path: '/api/account/external_login',
-                  port: getHttpPort(false),
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json', 'Authorization': apiAuth }
-              };
-
-              callback = function (response) {
-                  var str = '';
-
-                  // Another chunk of data has been recieved, so append it to `str`
-                  response.on('data', function (chunk) {
-                      str += chunk;
-                  });
-
-                  // The whole response has been recieved, so know we can use it
-                  response.on('end', function () {
-                      if (str === "Unauthorized") {
-                          console.log("unauthorized");
-                          return done(null, false);
-                      } else {
-                          var jsonObj = JSON.parse(str);
-                          var user = jsonObj.json[0];
-                          console.log("authorized user: " + user.Email);
-                          //return done(null, user.Email, { message: str });
-                          return done(null, str);
+              models.Account.findAll(
+                  {
+                      include: [
+                          {
+                              model: models.Organization
+                          }
+                      ],
+                      where: {
+                          Username: profile.emails[0].value
                       }
-                  });
-              }
+                  }
+              ).then(function(account){
+                  if (accounts.length>0){
+                      var claims = {
+                          iss: "https://helpnowmap.org",
+                          sub: accounts[0].Username,
+                          scope: "user"
+                      }
+                      var jwt = nJwt.create(claims, signingKey);
 
-              var req = http.request(options, callback);
-              req.write(creds);
-              req.end();
+                      var token = jwt.compact();
+
+                      res.cookie("cookie.helpnowmap.org", token);
+                      req.session.accountid =  accounts[0].AccountID;
+                      req.session.organizationid =  accounts[0].OrganizationID;
+                      res.statusCode = 200;
+                      done(null, true);
+
+                  }
+                  else {
+                    done(null, false);
+                  }
+              }).catch(function (err) {
+                  console.error(err);
+                  return done(err, null);
+              });
+
           });
       }
     ));
@@ -305,85 +223,85 @@ function setupFacebookAuthentication(app, passport, strategy) {
     });
 }
 
-function setupBasicAuthForAPI(app, passport, strategy) {
-    console.log("setupBasicAuthForAPI");
-    var models = require('./models');
-    var BasicStrategy = require('passport-http').BasicStrategy;
 
-    passport.use(new BasicStrategy(
-      function (username, password, done) {
-          
-          models.Organization.findAll(
+function setupJWTAuthentication(app) {
+    var opts = {};
+    opts.jwtFromRequest = jwtExtractor.fromAuthHeader();
+    opts.secretOrKey = config.jwt_secret;
+    opts.issuer = config.jwt_issuer;
+    opts.passReqToCallback = true;
+
+    var models = require('./models');
+
+    passport.use('jwt-auth-api', new jwtStrategy(opts, function(req, jwt_payload, done) {
+
+        // Get authorization header.
+        // var auth = authheader.parse(req.get('authorization'));
+
+        // models.AuthToken.Find(
+        //     {
+        //         where: {
+        //             Value: auth.token
+        //         }
+        //     }
+        // ).then(function(authcode) {
+        //     if (authcode)
+        //     {
+        //         return done(null, true);
+        //     }
+        //     else {
+        //         return done(null, false);
+        //     }
+        //
+        // }).catch(function (err) {
+        //     console.error(err);
+        //     return done(err, null);
+        // });
+
+        models.Account.findAll(
             {
                 where: {
-                    APIKey: username
+                    Username: jwt_payload.sub
                 }
             }
-          ).then(function (organization) {
-              if (organization[0] != null) {
-                  if (organization[0].APISecret == password) { 
-                      return done(null, true);
-                  }
-                  else {      
-                      return done(null, false);
-                  }
-              }
-              else {
-                  return done(null, false);
-              }
-          }
-         ).catch(function (err) {
-             console.error(err);
-             return done(err);
-         });
-         
-      }
-        ));
+        ).then(function(account){
+            if (account){
+                return done(null, true);
+            }
+            else{
+                //sub may be APIKey
+                models.Organization.findAll(
+                    {
+                        where: {
+                            APIKey: jwt_payload.sub
+                        }
+                    }
+                ).then(function(org){
+                    if (org){
+                        return done(null, true);
+                    }
+                    else
+                    {
+                        return done(null, false);
+                    }
+                }).catch(function (err) {
+                    console.error(err);
+                    return done(err, null);
+                });
+            }
+        }).catch(function (err) {
+            console.error(err);
+            return done(err, null);
+        });
+    }));
 
-    //we capture all api requests and authenticate them.
-    app.all('/api/*',
-        passport.authenticate('basic', { session: false })
-    );
 }
 
-//function setupDigestAuthForAPI(app, passport) {
-//    console.log("setupDigestAuthForAPI");
-//    var models = require('./models');
-//    var DigestStrategy = require('passport-http').DigestStrategy;
-//    passport.use(new DigestStrategy(
-//        { qop: 'auth' },
-//      function (username, done) {
-//          console.log("HERE WE GO!  : username: " + username);
-//          models.Organization.findAll(
-//            {
-//                where: {
-//                    APIKey: username
-//                }
-//            }
-//          ).then(function (organization) {
-//              if (organization[0] != null) {
-//                  console.error("org found!: " + organization[0].APISecret);
-//                  return done(null, organization[0], organization[0].APISecret);
-//              }
-//              else {
-//                  console.error("no organization found!");
-//                  return done(null, false);
-//              }
-//          }
-//         ).catch(function (err) {
-//             console.error(err);
-//             return done(err);
-//         });;
-//      },
-//      function (params, done) {
-//          console.log("validate nonces as necessary");
-//          // validate nonces as necessary
-//          done(null, true)
-//      }
-//    ));
-
-//    //we capture all api requests and authenticate them.
-//    app.all('/api/*',
-//        passport.authenticate('digest', { session: false })
-//    );
-//}
+var cookieExtractor = function(req) {
+    var token = null;
+    if (req && req.cookies)
+    {
+        token = req.cookies["cookie.helpnowmap.org"];
+    }
+    return token;
+};

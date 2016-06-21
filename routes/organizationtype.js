@@ -1,6 +1,7 @@
 
 var models  = require('../models'),
-    express = require('express');
+    express = require('express'),
+    passport = require('passport');
 
 var routes = function(){
   var router  = express.Router();
@@ -58,7 +59,7 @@ var routes = function(){
     }
   )
   //insert into OrganizationType
-  .post('/', function(req, res) {
+  .post('/', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.OrganizationType.create(req.body)
     .then(function(organizationType) {
         res.statusCode = 200;
@@ -82,7 +83,7 @@ var routes = function(){
     }
   )
   //update into OrganizationType
-  .put('/:id', function(req, res) {
+  .put('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.OrganizationType.update(
       req.body
       ,
@@ -113,7 +114,7 @@ var routes = function(){
       });
     }
   )
-  .delete('/:id', function(req, res) {
+  .delete('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.OrganizationType.destroy(
       {
         where: {

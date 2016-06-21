@@ -1,7 +1,8 @@
 var promise = require('bluebird');
 var cluster = require('../modules/cluster');
 var models  = require('../models'),
-    express = require('express');
+    express = require('express'),
+    passport = require('passport');
 
 //Event one-to-many on EventLocation    
 models.Event.hasMany(models.EventLocation, {foreignKey: 'EventID'});
@@ -360,7 +361,7 @@ var routes = function(){
              *     }
  */
 
-  .post('/', function(req, res) {
+  .post('/', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.Event.create(req.body)
     .then(function(event) {
         res.statusCode = 200;
@@ -410,7 +411,7 @@ var routes = function(){
              *         "length": 1
              *     }
  */
-  .put('/:id', function(req, res) {
+  .put('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.Event.update(
       req.body,
       {
@@ -462,7 +463,7 @@ var routes = function(){
         *          }
         *      }
  */
-  .delete('/:id', function(req, res) {
+  .delete('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.Event.destroy(
       {
         where: {
