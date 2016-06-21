@@ -40,8 +40,8 @@
                     <div class="form-group">
                         <label>{{text.status_label}}:</label>
                         <select name="ResourceLocationStatusID" ng-model="deployment.ResourceLocationStatusID" class="form-control">
-                            <option value="1">Planned</option>
-                            <option value="2">Active</option>
+                            <option value="1">{{text.planned_description}}</option>
+                            <option value="2">{{text.active_description}}</option>
                         </select>
                     </div>
                 </div>
@@ -81,8 +81,8 @@
             <div ng-repeat="center in distCenters">
                 <div class="col-xs-4 separated-large">
                     <h4>{{center.Description}}</h4>
-                    <strong>Primary POC: </strong>{{center.PrimaryPOCName}}<br />
-                    <strong>Primary POC Phone: </strong>{{center.PrimaryPOCPhone}}
+                    <strong>{{text.primary_poc_label}}: </strong>{{center.PrimaryPOCName}}<br />
+                    <strong>{{text.primary_poc_phone_label}}: </strong>{{center.PrimaryPOCPhone}}
                     <div ng-repeat="inventory in center.ResourceLocationInventories" class="separated-small">
                         <strong>{{getResourceName(inventory)}}:</strong>
                         <div class="input-group">

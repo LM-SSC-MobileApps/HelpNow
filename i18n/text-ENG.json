@@ -215,5 +215,11 @@
   "new_password_label": "New Password",
   "confirm_new_password_label": "Confirm New Password",
   "menu_account": "Account",
-  "current_password_label":  "Current Password"
+  "current_password_label":  "Current Password",
+  "version":  "Version",
+  "planned_description": "Planned",
+  "active_description": "Active",
+  "blockages_header": "Blockages",
+  "no_dist_ctr_match_label": "No matching distribution centers found.",
+  "minutes_label": "Minutes"
 }
