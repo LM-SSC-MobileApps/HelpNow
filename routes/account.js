@@ -7,7 +7,32 @@ models.Account.belongsTo(models.Organization, {foreignKey: 'OrganizationID'});
 models.Organization.hasMany(models.Account, {foreignKey: 'OrganizationID'});
 
 
+/**
+ * @api {get} api/account/ Get all Accounts
+ * @apiName GetAccounts
+ * @apiGroup Account
 
+ * @apiUse helpNowHeader
+ * @apiUse helpNowSuccessResult
+ * @apiUse helpNowUnauthorizedResult
+ * @apiSuccess {Object} json    The Result data in the form of json.
+ * @apiSuccess {Number}   json.AccountID Unique ID for the Account.
+ * @apiSuccess {String}   json.Username A users unique Username.
+ * @apiSuccess {String}   json.FirstName A users first name.
+ * @apiSuccess {String}   json.LastName A users last name.
+ * @apiSuccess {String}   json.MiddleInitial A users middile initial.
+ * @apiSuccess {Number}   json.OrganizationID OrganziationID associated with the Organization for the Event.
+ * @apiSuccess {String}   json.Summary Event Title.
+ * @apiSuccess {String}   json.Notes Event description or additional information.
+ * @apiSuccess {Boolean}   json.Active Status of the event.
+ * @apiSuccess {Date}   json.CreateDate Date & Time the Event was created in the system.
+ * @apiSuccess {Object[]}   json.EventLocations An Array of EventLocations for the event.
+ * @apiSuccess {Object[]}   json.Blockages An Array of Blockages for the event.
+ * @apiSuccess {Object}   json.EventType the EventType object associated with the event.
+ * @apiSuccess {Object}   json.Organization the Organization object associated with the event.
+ * @apiSuccess {Object[]}   json.ResourceRequests An Array of ResourceRequests for the event.
+ * @apiSuccess {Object[]}   json.ResourceLocations An Array of ResourceLocations for the event.
+ */
 var routes = function(){
   var router  = express.Router();
     router.get('/', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
