@@ -4218,9 +4218,9 @@ angular.module("helpNow").controller("TeamInviteCtrl", ["$scope", "$resource", "
      $scope.sendInvite = function (invitation) {
      Invitation.save(invitation, function (data) {
          $scope.inviteResponse = angular.fromJson(data.json[0]);
-        console.log("inviteResponse.InviteRequestID: " + $scope.inviteResponse.InviteRequestID )
-         console.log("inviteResponse.Email: " + $scope.inviteResponse.Email )
-         var postdata = 'email=' +  $scope.inviteResponse.Email +  '&' + 'InviteRequestID=' +  $scope.inviteResponse.InviteRequestID;
+        //console.log("inviteResponse.InviteID: " + $scope.inviteResponse.InviteID )
+        // console.log("inviteResponse.Email: " + $scope.inviteResponse.Email )
+         var postdata = 'email=' +  $scope.inviteResponse.Email +  '&' + 'InviteID=' +  $scope.inviteResponse.InviteID;
          var webCall = $http({
              method: 'POST',
              url: '/postemail',
