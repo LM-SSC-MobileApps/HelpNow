@@ -22,20 +22,13 @@ var routes = function () {
                 sessionToken: ""
             })));
 
-        var data =req.body;
-
-            console.log("email: " + data.Email);
-            console.log("InviteID: " + data.InviteID);
             var mailOptions = {
                 from: "HelpNowMap.com  <invite@helpnowmap.com>", // sender address
-                to: data.Email, // list of receivers
+                to: req.body.email , // list of receivers
                 subject: "Registration Invitation from HelpNowMap.com", // Subject line
                 //text: "Test from AWS ", // plaintext body
-                html: "Please click on link to register:  http://" + config.ses_host_name + "/#/reg_account/" + data.InviteID
+                html: "Please click on link to register:  http://" + config.ses_host_name + "/#/reg_account/"   + req.body.InviteRequestID
             };
-
-
-            console.log('Sending Mail');
 
             // send mail with defined transport object
             transport.sendMail(mailOptions, function (error, response) {
