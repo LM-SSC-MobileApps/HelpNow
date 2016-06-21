@@ -1,0 +1,3470 @@
+{
+    "abbrev@1.0.7": {
+        "licenses": "ISC",
+        "repository": "git+ssh://git@github.com/isaacs/abbrev-js",
+        "licenseUrl": "git+ssh://git@github.com/isaacs/abbrev-js/raw/master/LICENSE",
+        "parents": "nopt:node-pre-gyp:fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "abbrev@1.0.9": {
+        "licenses": "ISC",
+        "repository": "git+ssh://git@github.com/isaacs/abbrev-js",
+        "licenseUrl": "git+ssh://git@github.com/isaacs/abbrev-js/raw/master/LICENSE",
+        "parents": "nopt:touch:nodemon:gulp-nodemon:HelpNow"
+    },
+    "accepts@1.2.13": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jshttp/accepts",
+        "licenseUrl": "git+https://github.com/jshttp/accepts/raw/master/LICENSE",
+        "parents": "express:HelpNow"
+    },
+    "addressparser@1.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/andris9/addressparser",
+        "licenseUrl": "git+https://github.com/andris9/addressparser/raw/master/LICENSE",
+        "parents": "buildmail:mailcomposer:nodemailer:HelpNow"
+    },
+    "align-text@0.1.4": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jonschlinkert/align-text",
+        "licenseUrl": "https://github.com/jonschlinkert/align-text/raw/master/LICENSE",
+        "parents": "center-align:cliui:yargs:uglify-js:gulp-uglify:HelpNow"
+    },
+    "amdefine@1.0.0": {
+        "licenses": "BSD-3-Clause AND MIT",
+        "repository": "git+https://github.com/jrburke/amdefine",
+        "licenseUrl": "git+https://github.com/jrburke/amdefine/raw/master/LICENSE",
+        "parents": "source-map:postcss:myth:gulp-myth:HelpNow"
+    },
+    "ansi-regex@2.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/ansi-regex",
+        "licenseUrl": "git+https://github.com/sindresorhus/ansi-regex/raw/master/license",
+        "parents": "has-ansi:chalk:gulp:HelpNow"
+    },
+    "ansi-styles@2.2.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/chalk/ansi-styles",
+        "licenseUrl": "git+https://github.com/chalk/ansi-styles/raw/master/license",
+        "parents": "chalk:gulp:HelpNow"
+    },
+    "ansi@0.3.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/TooTallNate/ansi.js",
+        "licenseUrl": "https://github.com/TooTallNate/ansi.js/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "anymatch@1.3.0": {
+        "licenses": "ISC",
+        "repository": "git+https://github.com/es128/anymatch",
+        "licenseUrl": "git+https://github.com/es128/anymatch/raw/master/LICENSE",
+        "parents": "chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "archy@1.0.0": {
+        "licenses": "MIT",
+        "repository": "git+ssh://git@github.com/substack/node-archy",
+        "licenseUrl": "git+ssh://git@github.com/substack/node-archy/raw/master/LICENSE",
+        "parents": "gulp:HelpNow"
+    },
+    "are-we-there-yet@1.1.2": {
+        "licenses": "ISC",
+        "repository": "git+https://github.com/iarna/are-we-there-yet",
+        "licenseUrl": "git+https://github.com/iarna/are-we-there-yet/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "arr-diff@2.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/arr-diff",
+        "licenseUrl": "git+https://github.com/jonschlinkert/arr-diff/raw/master/LICENSE",
+        "parents": "micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "arr-flatten@1.0.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jonschlinkert/arr-flatten",
+        "licenseUrl": "https://github.com/jonschlinkert/arr-flatten/blob/master/LICENSE",
+        "parents": "arr-diff:micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "array-differ@1.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/sindresorhus/array-differ",
+        "licenseUrl": "https://github.com/sindresorhus/array-differ",
+        "parents": "gulp-util:gulp:HelpNow"
+    },
+    "array-find-index@1.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/array-find-index",
+        "licenseUrl": "git+https://github.com/sindresorhus/array-find-index/raw/master/license",
+        "parents": "currently-unhandled:loud-rejection:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "array-flatten@1.1.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/blakeembrey/array-flatten",
+        "licenseUrl": "https://github.com/blakeembrey/array-flatten/raw/master/LICENSE",
+        "parents": "express:HelpNow"
+    },
+    "array-uniq@1.0.3": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/array-uniq",
+        "licenseUrl": "git+https://github.com/sindresorhus/array-uniq/raw/master/license",
+        "parents": "gulp-util:gulp:HelpNow"
+    },
+    "array-unique@0.2.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jonschlinkert/array-unique",
+        "licenseUrl": "https://github.com/jonschlinkert/array-unique/blob/master/LICENSE",
+        "parents": "micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "arrify@1.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/arrify",
+        "licenseUrl": "git+https://github.com/sindresorhus/arrify/raw/master/license",
+        "parents": "anymatch:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "asn1@0.2.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/mcavage/node-asn1",
+        "licenseUrl": "https://github.com/mcavage/node-asn1/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "assert-plus@0.2.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/mcavage/node-assert-plus",
+        "licenseUrl": "git+https://github.com/mcavage/node-assert-plus",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "assert-plus@1.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/mcavage/node-assert-plus",
+        "licenseUrl": "git+https://github.com/mcavage/node-assert-plus",
+        "parents": "dashdash:fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "async-each@1.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/paulmillr/async-each",
+        "licenseUrl": "https://github.com/paulmillr/async-each",
+        "parents": "chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "async@0.2.10": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/caolan/async",
+        "licenseUrl": "https://github.com/caolan/async/raw/master/LICENSE",
+        "parents": "uglify-js:gulp-uglify:HelpNow"
+    },
+    "async@1.5.2": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/caolan/async",
+        "licenseUrl": "git+https://github.com/caolan/async",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "atob@1.1.3": {
+        "licenses": "(MIT OR Apache-2.0)",
+        "repository": "https://github.com/coolaj86/node-browser-compat",
+        "licenseUrl": "https://github.com/coolaj86/node-browser-compat/raw/master/LICENSE",
+        "parents": "source-map-resolve:css:rework:myth:gulp-myth:HelpNow"
+    },
+    "autoprefixer-core@5.2.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/postcss/autoprefixer-core",
+        "licenseUrl": "git+https://github.com/postcss/autoprefixer-core/raw/master/LICENSE",
+        "parents": "myth:gulp-myth:HelpNow"
+    },
+    "aws-sdk@2.4.0": {
+        "licenses": "Apache-2.0",
+        "repository": "https://github.com/aws/aws-sdk-js",
+        "licenseUrl": "https://github.com/aws/aws-sdk-js/raw/master/LICENSE.txt",
+        "parents": "nodemailer-ses-transport:HelpNow"
+    },
+    "aws-sign2@0.6.0": {
+        "licenses": "Apache-2.0",
+        "repository": "git+https://github.com/mikeal/aws-sign",
+        "licenseUrl": "git+https://github.com/mikeal/aws-sign/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "aws4@1.3.2": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/mhart/aws4",
+        "licenseUrl": "git+https://github.com/mhart/aws4/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "aws4@1.4.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/mhart/aws4",
+        "licenseUrl": "git+https://github.com/mhart/aws4/raw/master/LICENSE",
+        "parents": "request:request-promise:HelpNow"
+    },
+    "balanced-match@0.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/juliangruber/balanced-match",
+        "licenseUrl": "https://github.com/juliangruber/balanced-match",
+        "parents": "rework-color-function:myth:gulp-myth:HelpNow"
+    },
+    "balanced-match@0.1.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/juliangruber/balanced-match",
+        "licenseUrl": "https://github.com/juliangruber/balanced-match",
+        "parents": "rework-calc:myth:gulp-myth:HelpNow"
+    },
+    "balanced-match@0.3.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/juliangruber/balanced-match",
+        "licenseUrl": "https://github.com/juliangruber/balanced-match/raw/master/LICENSE.md",
+        "parents": "brace-expansion:minimatch:glob:rimraf:fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "balanced-match@0.4.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/juliangruber/balanced-match",
+        "licenseUrl": "https://github.com/juliangruber/balanced-match/raw/master/LICENSE.md",
+        "parents": "brace-expansion:minimatch:glob-stream:vinyl-fs:gulp:HelpNow"
+    },
+    "base64-url@1.2.2": {
+        "licenses": "ISC",
+        "repository": "https://github.com/joaquimserafim/base64-url",
+        "licenseUrl": "https://github.com/joaquimserafim/base64-url/raw/master/LICENSE",
+        "parents": "ecdsa-sig-formatter:jwa:jws:jsonwebtoken:passport-jwt:HelpNow"
+    },
+    "base64url@1.0.6": {
+        "licenses": "MIT",
+        "repository": "https://github.com/brianloveswords/base64url",
+        "licenseUrl": "https://github.com/brianloveswords/base64url/raw/master/LICENSE",
+        "parents": "jws:jsonwebtoken:passport-jwt:HelpNow"
+    },
+    "basic-auth@1.0.4": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jshttp/basic-auth",
+        "licenseUrl": "git+https://github.com/jshttp/basic-auth/raw/master/LICENSE",
+        "parents": "morgan:HelpNow"
+    },
+    "bcrypt-nodejs@0.0.3": {
+        "licenses": "UNKNOWN",
+        "repository": "git+https://github.com/shaneGirish/bcryptJS",
+        "licenseUrl": "git+https://github.com/shaneGirish/bcryptJS/raw/master/LICENSE",
+        "parents": "HelpNow"
+    },
+    "beeper@1.1.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/beeper",
+        "licenseUrl": "git+https://github.com/sindresorhus/beeper/raw/master/license",
+        "parents": "gulp-util:gulp:HelpNow"
+    },
+    "bignumber.js@2.3.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/MikeMcl/bignumber.js",
+        "licenseUrl": "git+https://github.com/MikeMcl/bignumber.js/raw/master/LICENCE",
+        "parents": "mysql:HelpNow"
+    },
+    "binary-extensions@1.4.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/binary-extensions",
+        "licenseUrl": "git+https://github.com/sindresorhus/binary-extensions/raw/master/license",
+        "parents": "is-binary-path:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "bl@1.0.3": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/rvagg/bl",
+        "licenseUrl": "git+https://github.com/rvagg/bl/raw/master/LICENSE.md",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "bl@1.1.2": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/rvagg/bl",
+        "licenseUrl": "git+https://github.com/rvagg/bl/raw/master/LICENSE.md",
+        "parents": "request:request-promise:HelpNow"
+    },
+    "block-stream@0.0.8": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/block-stream",
+        "licenseUrl": "https://github.com/isaacs/block-stream/raw/master/LICENCE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "bluebird@2.10.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/petkaantonov/bluebird",
+        "licenseUrl": "https://github.com/petkaantonov/bluebird/raw/master/LICENSE",
+        "parents": "request-promise:HelpNow"
+    },
+    "bluebird@3.4.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/petkaantonov/bluebird",
+        "licenseUrl": "https://github.com/petkaantonov/bluebird/raw/master/LICENSE",
+        "parents": "HelpNow"
+    },
+    "body-parser@1.13.3": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/expressjs/body-parser",
+        "licenseUrl": "git+https://github.com/expressjs/body-parser/raw/master/LICENSE",
+        "parents": "HelpNow"
+    },
+    "boom@2.10.1": {
+        "licenses": "BSD-3-Clause",
+        "repository": "https://github.com/hapijs/boom",
+        "licenseUrl": "https://github.com/hapijs/boom/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "brace-expansion@1.1.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/juliangruber/brace-expansion",
+        "licenseUrl": "https://github.com/juliangruber/brace-expansion",
+        "parents": "minimatch:glob:rimraf:fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "brace-expansion@1.1.5": {
+        "licenses": "MIT",
+        "repository": "https://github.com/juliangruber/brace-expansion",
+        "licenseUrl": "https://github.com/juliangruber/brace-expansion",
+        "parents": "minimatch:glob-stream:vinyl-fs:gulp:HelpNow"
+    },
+    "braces@1.8.5": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/braces",
+        "licenseUrl": "git+https://github.com/jonschlinkert/braces/raw/master/LICENSE",
+        "parents": "micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "browserslist@0.4.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/ai/browserslist",
+        "licenseUrl": "git+https://github.com/ai/browserslist/raw/master/LICENSE",
+        "parents": "autoprefixer-core:myth:gulp-myth:HelpNow"
+    },
+    "buffer-equal-constant-time@1.0.1": {
+        "licenses": "BSD-3-Clause",
+        "repository": "git+ssh://git@github.com/goinstant/buffer-equal-constant-time",
+        "licenseUrl": "git+ssh://git@github.com/goinstant/buffer-equal-constant-time/raw/master/LICENSE.txt",
+        "parents": "jwa:jws:jsonwebtoken:passport-jwt:HelpNow"
+    },
+    "buffer-shims@1.0.0": {
+        "licenses": "MIT",
+        "repository": "git+ssh://git@github.com/calvinmetcalf/buffer-shims",
+        "licenseUrl": "git+ssh://git@github.com/calvinmetcalf/buffer-shims/raw/master/license.md",
+        "parents": "readable-stream:readdirp:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "buildmail@3.7.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/andris9/buildmail",
+        "licenseUrl": "https://github.com/andris9/buildmail/raw/master/LICENSE",
+        "parents": "mailcomposer:nodemailer:HelpNow"
+    },
+    "builtin-modules@1.1.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/builtin-modules",
+        "licenseUrl": "git+https://github.com/sindresorhus/builtin-modules/raw/master/license",
+        "parents": "is-builtin-module:normalize-package-data:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "bytes@1.0.0": {
+        "licenses": "UNKNOWN",
+        "repository": "git+https://github.com/visionmedia/bytes.js",
+        "licenseUrl": "git+https://github.com/visionmedia/bytes.js",
+        "parents": "raw-body:express-http-proxy:HelpNow"
+    },
+    "bytes@2.1.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/visionmedia/bytes.js",
+        "licenseUrl": "https://github.com/visionmedia/bytes.js",
+        "parents": "body-parser:HelpNow"
+    },
+    "bytes@2.4.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/visionmedia/bytes.js",
+        "licenseUrl": "git+https://github.com/visionmedia/bytes.js/raw/master/LICENSE",
+        "parents": "raw-body:body-parser:HelpNow"
+    },
+    "camelcase-keys@1.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/camelcase-keys",
+        "licenseUrl": "git+https://github.com/sindresorhus/camelcase-keys",
+        "parents": "meow:base64url:jws:jsonwebtoken:passport-jwt:HelpNow"
+    },
+    "camelcase-keys@2.1.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/camelcase-keys",
+        "licenseUrl": "git+https://github.com/sindresorhus/camelcase-keys/raw/master/license",
+        "parents": "meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "camelcase@1.2.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/camelcase",
+        "licenseUrl": "git+https://github.com/sindresorhus/camelcase/raw/master/license",
+        "parents": "yargs:uglify-js:gulp-uglify:HelpNow"
+    },
+    "camelcase@2.1.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/camelcase",
+        "licenseUrl": "git+https://github.com/sindresorhus/camelcase/raw/master/license",
+        "parents": "camelcase-keys:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "caniuse-db@1.0.30000485": {
+        "licenses": "CC-BY-4.0",
+        "repository": "git+https://github.com/Fyrd/caniuse",
+        "licenseUrl": "git+https://github.com/Fyrd/caniuse/raw/master/LICENSE",
+        "parents": "autoprefixer-core:myth:gulp-myth:HelpNow"
+    },
+    "caseless@0.11.0": {
+        "licenses": "Apache-2.0",
+        "repository": "git+https://github.com/mikeal/caseless",
+        "licenseUrl": "git+https://github.com/mikeal/caseless/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "center-align@0.1.3": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/center-align",
+        "licenseUrl": "git+https://github.com/jonschlinkert/center-align/raw/master/LICENSE",
+        "parents": "cliui:yargs:uglify-js:gulp-uglify:HelpNow"
+    },
+    "chalk@1.1.3": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/chalk/chalk",
+        "licenseUrl": "git+https://github.com/chalk/chalk/raw/master/license",
+        "parents": "gulp:HelpNow"
+    },
+    "chokidar@1.5.2": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/paulmillr/chokidar",
+        "licenseUrl": "git+https://github.com/paulmillr/chokidar",
+        "parents": "nodemon:gulp-nodemon:HelpNow"
+    },
+    "cli@0.6.6": {
+        "licenses": "MIT",
+        "repository": "git+ssh://git@github.com/chriso/cli",
+        "licenseUrl": "git+ssh://git@github.com/chriso/cli",
+        "parents": "jshint:gulp-jshint:HelpNow"
+    },
+    "cliui@2.1.0": {
+        "licenses": "ISC",
+        "repository": "git+ssh://git@github.com/bcoe/cliui",
+        "licenseUrl": "git+ssh://git@github.com/bcoe/cliui/raw/master/LICENSE.txt",
+        "parents": "yargs:uglify-js:gulp-uglify:HelpNow"
+    },
+    "clone-component@0.2.2": {
+        "licenses": "UNKNOWN",
+        "repository": "git+https://github.com/component/clone",
+        "licenseUrl": "git+https://github.com/component/clone",
+        "parents": "myth:gulp-myth:HelpNow"
+    },
+    "clone-stats@0.0.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/hughsk/clone-stats",
+        "licenseUrl": "https://github.com/hughsk/clone-stats/raw/master/LICENSE.md",
+        "parents": "vinyl:gulp-util:gulp:HelpNow"
+    },
+    "clone@0.2.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/pvorb/node-clone",
+        "licenseUrl": "https://github.com/pvorb/node-clone/raw/master/LICENSE",
+        "parents": "vinyl:vinyl-fs:gulp:HelpNow"
+    },
+    "clone@1.0.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/pvorb/node-clone",
+        "licenseUrl": "https://github.com/pvorb/node-clone/raw/master/LICENSE",
+        "parents": "vinyl:gulp-util:gulp:HelpNow"
+    },
+    "color-convert@1.3.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/qix-/color-convert",
+        "licenseUrl": "git+https://github.com/qix-/color-convert/raw/master/LICENSE",
+        "parents": "color:css-color-function:rework-color-function:myth:gulp-myth:HelpNow"
+    },
+    "color-name@1.1.1": {
+        "licenses": "MIT",
+        "repository": "git+ssh://git@github.com/dfcreative/color-name",
+        "licenseUrl": "git+ssh://git@github.com/dfcreative/color-name/raw/master/LICENSE",
+        "parents": "color-string:color:css-color-function:rework-color-function:myth:gulp-myth:HelpNow"
+    },
+    "color-string@0.3.0": {
+        "licenses": "MIT",
+        "repository": "git+ssh://git@github.com/harthur/color-string",
+        "licenseUrl": "git+ssh://git@github.com/harthur/color-string/raw/master/LICENSE",
+        "parents": "color:css-color-function:rework-color-function:myth:gulp-myth:HelpNow"
+    },
+    "color@0.11.2": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/qix-/color",
+        "licenseUrl": "git+https://github.com/qix-/color/raw/master/LICENSE",
+        "parents": "css-color-function:rework-color-function:myth:gulp-myth:HelpNow"
+    },
+    "colors@0.6.2": {
+        "licenses": "UNKNOWN",
+        "repository": "git+ssh://git@github.com/Marak/colors.js",
+        "licenseUrl": "git+ssh://git@github.com/Marak/colors.js/raw/master/MIT-LICENSE.txt",
+        "parents": "myth:gulp-myth:HelpNow"
+    },
+    "colors@1.1.2": {
+        "licenses": "MIT",
+        "repository": "git+ssh://git@github.com/Marak/colors.js",
+        "licenseUrl": "git+ssh://git@github.com/Marak/colors.js/raw/master/LICENSE",
+        "parents": "gulp-nodemon:HelpNow"
+    },
+    "combined-stream@1.0.5": {
+        "licenses": "MIT",
+        "repository": "https://github.com/felixge/node-combined-stream",
+        "licenseUrl": "https://github.com/felixge/node-combined-stream/raw/master/License",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "commander@2.9.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/tj/commander.js",
+        "licenseUrl": "git+https://github.com/tj/commander.js/raw/master/LICENSE",
+        "parents": "myth:gulp-myth:HelpNow"
+    },
+    "component-type@1.2.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/component/type",
+        "licenseUrl": "git+https://github.com/component/type",
+        "parents": "clone-component:myth:gulp-myth:HelpNow"
+    },
+    "concat-map@0.0.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/substack/node-concat-map",
+        "licenseUrl": "https://github.com/substack/node-concat-map/raw/master/LICENSE",
+        "parents": "brace-expansion:minimatch:glob-stream:vinyl-fs:gulp:HelpNow"
+    },
+    "concat-stream@1.4.10": {
+        "licenses": "MIT",
+        "repository": "git+ssh://git@github.com/maxogden/concat-stream",
+        "licenseUrl": "git+ssh://git@github.com/maxogden/concat-stream/raw/master/LICENSE",
+        "parents": "base64url:jws:jsonwebtoken:passport-jwt:HelpNow"
+    },
+    "concat-with-sourcemaps@1.0.4": {
+        "licenses": "ISC",
+        "repository": "https://github.com/floridoo/concat-with-sourcemaps",
+        "licenseUrl": "https://github.com/floridoo/concat-with-sourcemaps/raw/master/LICENSE.md",
+        "parents": "gulp-concat:HelpNow"
+    },
+    "configstore@1.4.0": {
+        "licenses": "BSD-2-Clause",
+        "repository": "git+https://github.com/yeoman/configstore",
+        "licenseUrl": "git+https://github.com/yeoman/configstore",
+        "parents": "update-notifier:nodemon:gulp-nodemon:HelpNow"
+    },
+    "console-browserify@1.1.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/Raynos/console-browserify",
+        "licenseUrl": "http://github.com/Raynos/console-browserify/raw/master/LICENSE",
+        "parents": "jshint:gulp-jshint:HelpNow"
+    },
+    "content-disposition@0.5.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jshttp/content-disposition",
+        "licenseUrl": "git+https://github.com/jshttp/content-disposition/raw/master/LICENSE",
+        "parents": "express:HelpNow"
+    },
+    "content-type@1.0.2": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jshttp/content-type",
+        "licenseUrl": "git+https://github.com/jshttp/content-type/raw/master/LICENSE",
+        "parents": "body-parser:HelpNow"
+    },
+    "convert-source-map@0.3.5": {
+        "licenses": "MIT",
+        "repository": "https://github.com/thlorenz/convert-source-map",
+        "licenseUrl": "https://github.com/thlorenz/convert-source-map/raw/master/LICENSE",
+        "parents": "rework:myth:gulp-myth:HelpNow"
+    },
+    "cookie-parser@1.3.5": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/expressjs/cookie-parser",
+        "licenseUrl": "git+https://github.com/expressjs/cookie-parser/raw/master/LICENSE",
+        "parents": "HelpNow"
+    },
+    "cookie-signature@1.0.6": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/visionmedia/node-cookie-signature",
+        "licenseUrl": "git+https://github.com/visionmedia/node-cookie-signature",
+        "parents": "cookie-parser:HelpNow"
+    },
+    "cookie@0.1.3": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jshttp/cookie",
+        "licenseUrl": "git+https://github.com/jshttp/cookie/raw/master/LICENSE",
+        "parents": "cookie-parser:HelpNow"
+    },
+    "cookie@0.1.5": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jshttp/cookie",
+        "licenseUrl": "git+https://github.com/jshttp/cookie/raw/master/LICENSE",
+        "parents": "express:HelpNow"
+    },
+    "core-util-is@1.0.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/isaacs/core-util-is",
+        "licenseUrl": "https://github.com/isaacs/core-util-is/raw/master/LICENSE",
+        "parents": "readable-stream:duplexer2:multipipe:gulp-util:gulp:HelpNow"
+    },
+    "cryptiles@2.0.5": {
+        "licenses": "BSD-3-Clause",
+        "repository": "https://github.com/hapijs/cryptiles",
+        "licenseUrl": "https://github.com/hapijs/cryptiles/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "css-color-function@1.3.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/ianstormtaylor/css-color-function",
+        "licenseUrl": "https://github.com/ianstormtaylor/css-color-function",
+        "parents": "rework-color-function:myth:gulp-myth:HelpNow"
+    },
+    "css@2.2.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/reworkcss/css",
+        "licenseUrl": "git+https://github.com/reworkcss/css/raw/master/LICENSE",
+        "parents": "rework:myth:gulp-myth:HelpNow"
+    },
+    "currently-unhandled@0.4.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jamestalmage/currently-unhandled",
+        "licenseUrl": "git+https://github.com/jamestalmage/currently-unhandled/raw/master/license",
+        "parents": "loud-rejection:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "dashdash@1.13.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/trentm/node-dashdash",
+        "licenseUrl": "https://github.com/trentm/node-dashdash",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "date-now@0.1.4": {
+        "licenses": "MIT",
+        "repository": "https://github.com/Colingo/date-now",
+        "licenseUrl": "http://github.com/Colingo/date-now/raw/master/LICENSE",
+        "parents": "console-browserify:jshint:gulp-jshint:HelpNow"
+    },
+    "dateformat@1.0.12": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/felixge/node-dateformat",
+        "licenseUrl": "git+https://github.com/felixge/node-dateformat/raw/master/LICENSE",
+        "parents": "gulp-util:gulp:HelpNow"
+    },
+    "deap@1.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/selfcontained/deap",
+        "licenseUrl": "https://github.com/selfcontained/deap/raw/master/LICENSE",
+        "parents": "gulp-uglify:HelpNow"
+    },
+    "debug@0.7.4": {
+        "licenses": "UNKNOWN",
+        "repository": "https://github.com/visionmedia/debug",
+        "licenseUrl": "https://github.com/visionmedia/debug",
+        "parents": "css-color-function:rework-color-function:myth:gulp-myth:HelpNow"
+    },
+    "debug@2.2.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/visionmedia/debug",
+        "licenseUrl": "https://github.com/visionmedia/debug",
+        "parents": "HelpNow"
+    },
+    "decamelize@1.2.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/decamelize",
+        "licenseUrl": "git+https://github.com/sindresorhus/decamelize/raw/master/license",
+        "parents": "meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "deep-extend@0.3.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/unclechu/node-deep-extend",
+        "licenseUrl": "https://github.com/unclechu/node-deep-extend/raw/master/LICENSE",
+        "parents": "twitter:HelpNow"
+    },
+    "deep-extend@0.4.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/unclechu/node-deep-extend",
+        "licenseUrl": "https://github.com/unclechu/node-deep-extend",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "defaults@1.0.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/tmpvar/defaults",
+        "licenseUrl": "https://github.com/tmpvar/defaults/raw/master/LICENSE",
+        "parents": "vinyl-fs:gulp:HelpNow"
+    },
+    "delayed-stream@1.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/felixge/node-delayed-stream",
+        "licenseUrl": "https://github.com/felixge/node-delayed-stream/raw/master/License",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "delegates@1.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/visionmedia/node-delegates",
+        "licenseUrl": "git+https://github.com/visionmedia/node-delegates/raw/master/License",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "depd@1.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/dougwilson/nodejs-depd",
+        "licenseUrl": "git+https://github.com/dougwilson/nodejs-depd/raw/master/LICENSE",
+        "parents": "body-parser:HelpNow"
+    },
+    "depd@1.1.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/dougwilson/nodejs-depd",
+        "licenseUrl": "git+https://github.com/dougwilson/nodejs-depd/raw/master/LICENSE",
+        "parents": "express:HelpNow"
+    },
+    "deprecated@0.0.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/wearefractal/deprecated",
+        "licenseUrl": "http://github.com/wearefractal/deprecated/raw/master/LICENSE",
+        "parents": "gulp:HelpNow"
+    },
+    "destroy@1.0.4": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/stream-utils/destroy",
+        "licenseUrl": "git+https://github.com/stream-utils/destroy/raw/master/LICENSE",
+        "parents": "send:express:HelpNow"
+    },
+    "dom-serializer@0.1.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/cheeriojs/dom-renderer",
+        "licenseUrl": "https://github.com/cheeriojs/dom-renderer/raw/master/LICENSE",
+        "parents": "domutils:htmlparser2:jshint:gulp-jshint:HelpNow"
+    },
+    "domelementtype@1.1.3": {
+        "licenses": "UNKNOWN",
+        "repository": "https://github.com/FB55/domelementtype",
+        "licenseUrl": "https://github.com/FB55/domelementtype/raw/master/LICENSE",
+        "parents": "dom-serializer:domutils:htmlparser2:jshint:gulp-jshint:HelpNow"
+    },
+    "domelementtype@1.3.0": {
+        "licenses": "UNKNOWN",
+        "repository": "https://github.com/FB55/domelementtype",
+        "licenseUrl": "https://github.com/FB55/domelementtype/raw/master/LICENSE",
+        "parents": "htmlparser2:jshint:gulp-jshint:HelpNow"
+    },
+    "domhandler@2.3.0": {
+        "licenses": "UNKNOWN",
+        "repository": "https://github.com/fb55/DomHandler",
+        "licenseUrl": "https://github.com/fb55/DomHandler/raw/master/LICENSE",
+        "parents": "htmlparser2:jshint:gulp-jshint:HelpNow"
+    },
+    "domutils@1.5.1": {
+        "licenses": "UNKNOWN",
+        "repository": "https://github.com/FB55/domutils",
+        "licenseUrl": "https://github.com/FB55/domutils/raw/master/LICENSE",
+        "parents": "htmlparser2:jshint:gulp-jshint:HelpNow"
+    },
+    "dottie@1.1.1": {
+        "licenses": "UNKNOWN",
+        "repository": "https://github.com/mickhansen/dottie.js",
+        "licenseUrl": "https://github.com/mickhansen/dottie.js/raw/master/LICENSE",
+        "parents": "sequelize:HelpNow"
+    },
+    "duplexer2@0.0.2": {
+        "licenses": "BSD",
+        "repository": "https://github.com/deoxxa/duplexer2",
+        "licenseUrl": "https://github.com/deoxxa/duplexer2/raw/master/LICENSE.md",
+        "parents": "multipipe:gulp-util:gulp:HelpNow"
+    },
+    "duplexer@0.1.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/Raynos/duplexer",
+        "licenseUrl": "http://github.com/Raynos/duplexer/raw/master/LICENSE",
+        "parents": "event-stream:gulp-nodemon:HelpNow"
+    },
+    "duplexify@3.4.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/mafintosh/duplexify",
+        "licenseUrl": "https://github.com/mafintosh/duplexify/raw/master/LICENSE",
+        "parents": "got:package-json:latest-version:update-notifier:nodemon:gulp-nodemon:HelpNow"
+    },
+    "ecc-jsbn@0.1.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/quartzjer/ecc-jsbn",
+        "licenseUrl": "git+https://github.com/quartzjer/ecc-jsbn/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "ecdsa-sig-formatter@1.0.7": {
+        "licenses": "Apache-2.0",
+        "repository": "git+ssh://git@github.com/Brightspace/node-ecdsa-sig-formatter",
+        "licenseUrl": "git+ssh://git@github.com/Brightspace/node-ecdsa-sig-formatter/raw/master/LICENSE",
+        "parents": "jwa:jws:jsonwebtoken:passport-jwt:HelpNow"
+    },
+    "ee-first@1.1.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonathanong/ee-first",
+        "licenseUrl": "git+https://github.com/jonathanong/ee-first/raw/master/LICENSE",
+        "parents": "on-finished:body-parser:HelpNow"
+    },
+    "end-of-stream@0.1.5": {
+        "licenses": "MIT",
+        "repository": "https://github.com/mafintosh/end-of-stream",
+        "licenseUrl": "https://github.com/mafintosh/end-of-stream",
+        "parents": "orchestrator:gulp:HelpNow"
+    },
+    "end-of-stream@1.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/mafintosh/end-of-stream",
+        "licenseUrl": "https://github.com/mafintosh/end-of-stream",
+        "parents": "duplexify:got:package-json:latest-version:update-notifier:nodemon:gulp-nodemon:HelpNow"
+    },
+    "entities@1.0.0": {
+        "licenses": "BSD-like",
+        "repository": "https://github.com/fb55/node-entities",
+        "licenseUrl": "https://github.com/fb55/node-entities/raw/master/LICENSE",
+        "parents": "htmlparser2:jshint:gulp-jshint:HelpNow"
+    },
+    "entities@1.1.1": {
+        "licenses": "BSD-like",
+        "repository": "https://github.com/fb55/node-entities",
+        "licenseUrl": "https://github.com/fb55/node-entities/raw/master/LICENSE",
+        "parents": "dom-serializer:domutils:htmlparser2:jshint:gulp-jshint:HelpNow"
+    },
+    "error-ex@1.3.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/qix-/node-error-ex",
+        "licenseUrl": "git+https://github.com/qix-/node-error-ex/raw/master/LICENSE",
+        "parents": "parse-json:load-json-file:read-pkg:read-pkg-up:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "es6-promise@2.3.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jakearchibald/ES6-Promises",
+        "licenseUrl": "https://github.com/jakearchibald/ES6-Promises/raw/master/LICENSE",
+        "parents": "postcss:myth:gulp-myth:HelpNow"
+    },
+    "es6-promise@3.2.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jakearchibald/ES6-Promises",
+        "licenseUrl": "https://github.com/jakearchibald/ES6-Promises/raw/master/LICENSE",
+        "parents": "nodemon:gulp-nodemon:HelpNow"
+    },
+    "escape-html@1.0.3": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/component/escape-html",
+        "licenseUrl": "git+https://github.com/component/escape-html/raw/master/LICENSE",
+        "parents": "express:HelpNow"
+    },
+    "escape-string-regexp@1.0.5": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/escape-string-regexp",
+        "licenseUrl": "git+https://github.com/sindresorhus/escape-string-regexp/raw/master/license",
+        "parents": "chalk:gulp:HelpNow"
+    },
+    "etag@1.7.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jshttp/etag",
+        "licenseUrl": "git+https://github.com/jshttp/etag/raw/master/LICENSE",
+        "parents": "express:HelpNow"
+    },
+    "event-stream@3.3.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/dominictarr/event-stream",
+        "licenseUrl": "https://github.com/dominictarr/event-stream/raw/master/LICENCE",
+        "parents": "gulp-nodemon:HelpNow"
+    },
+    "exit@0.1.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/cowboy/node-exit",
+        "licenseUrl": "https://github.com/cowboy/node-exit/blob/master/LICENSE-MIT",
+        "parents": "jshint:gulp-jshint:HelpNow"
+    },
+    "expand-brackets@0.1.5": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/expand-brackets",
+        "licenseUrl": "git+https://github.com/jonschlinkert/expand-brackets/raw/master/LICENSE",
+        "parents": "micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "expand-range@1.8.2": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/expand-range",
+        "licenseUrl": "git+https://github.com/jonschlinkert/expand-range/raw/master/LICENSE",
+        "parents": "braces:micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "expand-tilde@1.2.2": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/expand-tilde",
+        "licenseUrl": "git+https://github.com/jonschlinkert/expand-tilde/raw/master/LICENSE",
+        "parents": "resolve-dir:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "express-http-proxy@0.6.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/villadora/express-http-proxy",
+        "licenseUrl": "https://github.com/villadora/express-http-proxy/raw/master/LICENSE-MIT",
+        "parents": "HelpNow"
+    },
+    "express@4.13.4": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/expressjs/express",
+        "licenseUrl": "git+https://github.com/expressjs/express/raw/master/LICENSE",
+        "parents": "HelpNow"
+    },
+    "extend@3.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/justmoon/node-extend",
+        "licenseUrl": "git+https://github.com/justmoon/node-extend/raw/master/LICENSE",
+        "parents": "liftoff:gulp:HelpNow"
+    },
+    "extglob@0.3.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jonschlinkert/extglob",
+        "licenseUrl": "https://github.com/jonschlinkert/extglob/raw/master/LICENSE",
+        "parents": "micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "extsprintf@1.0.2": {
+        "licenses": "UNKNOWN",
+        "repository": "https://github.com/davepacheco/node-extsprintf",
+        "licenseUrl": "https://github.com/davepacheco/node-extsprintf/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "fancy-log@1.2.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/phated/fancy-log",
+        "licenseUrl": "git+https://github.com/phated/fancy-log/raw/master/LICENSE",
+        "parents": "gulp-util:gulp:HelpNow"
+    },
+    "filename-regex@2.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/regexps/filename-regex",
+        "licenseUrl": "https://github.com/regexps/filename-regex/blob/master/LICENSE-MIT",
+        "parents": "micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "fill-range@2.2.3": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/fill-range",
+        "licenseUrl": "git+https://github.com/jonschlinkert/fill-range/raw/master/LICENSE",
+        "parents": "expand-range:braces:micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "finalhandler@0.4.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/pillarjs/finalhandler",
+        "licenseUrl": "git+https://github.com/pillarjs/finalhandler/raw/master/LICENSE",
+        "parents": "express:HelpNow"
+    },
+    "find-file@0.1.4": {
+        "licenses": "MIT",
+        "repository": "https://github.com/kevva/find-file",
+        "licenseUrl": "https://github.com/kevva/find-file",
+        "parents": "rework-import:myth:gulp-myth:HelpNow"
+    },
+    "find-index@0.1.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jsdf/find-index",
+        "licenseUrl": "https://github.com/jsdf/find-index",
+        "parents": "glob2base:glob-stream:vinyl-fs:gulp:HelpNow"
+    },
+    "find-up@1.1.2": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/find-up",
+        "licenseUrl": "git+https://github.com/sindresorhus/find-up/raw/master/license",
+        "parents": "read-pkg-up:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "findup-sync@0.4.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/cowboy/node-findup-sync",
+        "licenseUrl": "git+https://github.com/cowboy/node-findup-sync",
+        "parents": "liftoff:gulp:HelpNow"
+    },
+    "first-chunk-stream@1.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/first-chunk-stream",
+        "licenseUrl": "git+https://github.com/sindresorhus/first-chunk-stream",
+        "parents": "strip-bom:vinyl-fs:gulp:HelpNow"
+    },
+    "flagged-respawn@0.3.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/js-cli/js-flagged-respawn",
+        "licenseUrl": "https://github.com/js-cli/js-flagged-respawn/blob/master/LICENSE",
+        "parents": "liftoff:gulp:HelpNow"
+    },
+    "for-in@0.1.5": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/for-in",
+        "licenseUrl": "git+https://github.com/jonschlinkert/for-in/raw/master/LICENSE",
+        "parents": "for-own:object.omit:micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "for-own@0.1.4": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/for-own",
+        "licenseUrl": "git+https://github.com/jonschlinkert/for-own/raw/master/LICENSE",
+        "parents": "object.omit:micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "forever-agent@0.6.1": {
+        "licenses": "Apache-2.0",
+        "repository": "git+https://github.com/mikeal/forever-agent",
+        "licenseUrl": "git+https://github.com/mikeal/forever-agent/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "form-data@1.0.0-rc4": {
+        "licenses": "MIT",
+        "repository": "https://github.com/form-data/form-data",
+        "licenseUrl": "https://github.com/form-data/form-data/raw/master/License",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "formidable@1.0.17": {
+        "licenses": "UNKNOWN",
+        "repository": "https://github.com/felixge/node-formidable",
+        "licenseUrl": "https://github.com/felixge/node-formidable/raw/master/LICENSE",
+        "parents": "HelpNow"
+    },
+    "forwarded@0.1.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jshttp/forwarded",
+        "licenseUrl": "git+https://github.com/jshttp/forwarded/raw/master/LICENSE",
+        "parents": "proxy-addr:express:HelpNow"
+    },
+    "fresh@0.3.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jshttp/fresh",
+        "licenseUrl": "git+https://github.com/jshttp/fresh/raw/master/LICENSE",
+        "parents": "express:HelpNow"
+    },
+    "from@0.1.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/dominictarr/from",
+        "licenseUrl": "https://github.com/dominictarr/from/raw/master/LICENSE.APACHE2",
+        "parents": "event-stream:gulp-nodemon:HelpNow"
+    },
+    "fs-exists-sync@0.1.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/fs-exists-sync",
+        "licenseUrl": "git+https://github.com/jonschlinkert/fs-exists-sync/raw/master/LICENSE",
+        "parents": "findup-sync:liftoff:gulp:HelpNow"
+    },
+    "fs@0.0.2": {
+        "licenses": "MIT",
+        "parents": "HelpNow"
+    },
+    "fsevents@1.0.12": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/strongloop/fsevents",
+        "licenseUrl": "git+https://github.com/strongloop/fsevents/raw/master/LICENSE",
+        "parents": "chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "fstream-ignore@1.0.3": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/fstream-ignore",
+        "licenseUrl": "https://github.com/isaacs/fstream-ignore/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "fstream@1.0.8": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/fstream",
+        "licenseUrl": "https://github.com/isaacs/fstream/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "gather-stream@1.0.0": {
+        "licenses": "ISC",
+        "repository": "https://github.com/natevw/gather-stream",
+        "licenseUrl": "https://github.com/natevw/gather-stream",
+        "parents": "read-file-stdin:myth:gulp-myth:HelpNow"
+    },
+    "gauge@1.2.7": {
+        "licenses": "ISC",
+        "repository": "git+https://github.com/iarna/gauge",
+        "licenseUrl": "git+https://github.com/iarna/gauge/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "gaze@0.5.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/shama/gaze",
+        "licenseUrl": "https://github.com/shama/gaze/blob/master/LICENSE-MIT",
+        "parents": "glob-watcher:vinyl-fs:gulp:HelpNow"
+    },
+    "generate-function@2.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/mafintosh/generate-function",
+        "licenseUrl": "git+https://github.com/mafintosh/generate-function",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "generate-object-property@1.2.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/mafintosh/generate-object-property",
+        "licenseUrl": "git+https://github.com/mafintosh/generate-object-property/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "generic-pool@2.4.2": {
+        "licenses": "MIT",
+        "repository": "git+ssh://git@github.com/coopernurse/node-pool",
+        "licenseUrl": "git+ssh://git@github.com/coopernurse/node-pool",
+        "parents": "sequelize:HelpNow"
+    },
+    "get-stdin@4.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/get-stdin",
+        "licenseUrl": "git+https://github.com/sindresorhus/get-stdin",
+        "parents": "dateformat:gulp-util:gulp:HelpNow"
+    },
+    "glob-base@0.3.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jonschlinkert/glob-base",
+        "licenseUrl": "https://github.com/jonschlinkert/glob-base/blob/master/LICENSE",
+        "parents": "parse-glob:micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "glob-parent@2.0.0": {
+        "licenses": "ISC",
+        "repository": "git+https://github.com/es128/glob-parent",
+        "licenseUrl": "git+https://github.com/es128/glob-parent/raw/master/LICENSE",
+        "parents": "glob-base:parse-glob:micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "glob-stream@3.1.18": {
+        "licenses": "MIT",
+        "repository": "https://github.com/wearefractal/glob-stream",
+        "licenseUrl": "http://github.com/wearefractal/glob-stream/raw/master/LICENSE",
+        "parents": "vinyl-fs:gulp:HelpNow"
+    },
+    "glob-watcher@0.0.6": {
+        "licenses": "MIT",
+        "repository": "https://github.com/wearefractal/glob-watcher",
+        "licenseUrl": "http://github.com/wearefractal/glob-watcher/raw/master/LICENSE",
+        "parents": "vinyl-fs:gulp:HelpNow"
+    },
+    "glob2base@0.0.12": {
+        "licenses": "MIT",
+        "repository": "https://github.com/wearefractal/glob2base",
+        "licenseUrl": "http://github.com/wearefractal/glob2base/raw/master/LICENSE",
+        "parents": "glob-stream:vinyl-fs:gulp:HelpNow"
+    },
+    "glob@3.1.21": {
+        "licenses": "BSD",
+        "repository": "https://github.com/isaacs/node-glob",
+        "licenseUrl": "https://github.com/isaacs/node-glob/raw/master/LICENSE",
+        "parents": "globule:gaze:glob-watcher:vinyl-fs:gulp:HelpNow"
+    },
+    "glob@3.2.11": {
+        "licenses": "BSD",
+        "repository": "https://github.com/isaacs/node-glob",
+        "licenseUrl": "https://github.com/isaacs/node-glob/raw/master/LICENSE",
+        "parents": "cli:jshint:gulp-jshint:HelpNow"
+    },
+    "glob@4.5.3": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/node-glob",
+        "licenseUrl": "https://github.com/isaacs/node-glob/raw/master/LICENSE",
+        "parents": "glob-stream:vinyl-fs:gulp:HelpNow"
+    },
+    "glob@7.0.3": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/node-glob",
+        "licenseUrl": "https://github.com/isaacs/node-glob",
+        "parents": "rimraf:fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "global-modules@0.2.2": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/global-modules",
+        "licenseUrl": "git+https://github.com/jonschlinkert/global-modules/raw/master/LICENSE",
+        "parents": "resolve-dir:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "global-prefix@0.1.4": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/global-prefix",
+        "licenseUrl": "git+https://github.com/jonschlinkert/global-prefix/raw/master/LICENSE",
+        "parents": "global-modules:resolve-dir:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "globule@0.1.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/cowboy/node-globule",
+        "licenseUrl": "https://github.com/cowboy/node-globule/blob/master/LICENSE-MIT",
+        "parents": "gaze:glob-watcher:vinyl-fs:gulp:HelpNow"
+    },
+    "glogg@1.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/undertakerjs/glogg",
+        "licenseUrl": "git+https://github.com/undertakerjs/glogg/raw/master/LICENSE",
+        "parents": "gulplog:gulp-util:gulp:HelpNow"
+    },
+    "got@3.3.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/got",
+        "licenseUrl": "git+https://github.com/sindresorhus/got",
+        "parents": "package-json:latest-version:update-notifier:nodemon:gulp-nodemon:HelpNow"
+    },
+    "graceful-fs@1.2.3": {
+        "licenses": "BSD",
+        "repository": "https://github.com/isaacs/node-graceful-fs",
+        "licenseUrl": "https://github.com/isaacs/node-graceful-fs/raw/master/LICENSE",
+        "parents": "glob:globule:gaze:glob-watcher:vinyl-fs:gulp:HelpNow"
+    },
+    "graceful-fs@3.0.8": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/node-graceful-fs",
+        "licenseUrl": "https://github.com/isaacs/node-graceful-fs/raw/master/LICENSE",
+        "parents": "vinyl-fs:gulp:HelpNow"
+    },
+    "graceful-fs@4.1.3": {
+        "licenses": "ISC",
+        "repository": "git+https://github.com/isaacs/node-graceful-fs",
+        "licenseUrl": "git+https://github.com/isaacs/node-graceful-fs",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "graceful-fs@4.1.4": {
+        "licenses": "ISC",
+        "repository": "git+https://github.com/isaacs/node-graceful-fs",
+        "licenseUrl": "git+https://github.com/isaacs/node-graceful-fs/raw/master/LICENSE",
+        "parents": "load-json-file:read-pkg:read-pkg-up:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "graceful-readlink@1.0.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/zhiyelee/graceful-readlink",
+        "licenseUrl": "https://github.com/zhiyelee/graceful-readlink/raw/master/LICENSE",
+        "parents": "commander:myth:gulp-myth:HelpNow"
+    },
+    "gulp-concat@2.6.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/wearefractal/gulp-concat",
+        "licenseUrl": "git+https://github.com/wearefractal/gulp-concat/raw/master/LICENSE",
+        "parents": "HelpNow"
+    },
+    "gulp-jshint@1.12.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/spalger/gulp-jshint",
+        "licenseUrl": "https://github.com/spalger/gulp-jshint/raw/master/LICENSE",
+        "parents": "HelpNow"
+    },
+    "gulp-myth@1.1.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/gulp-myth",
+        "licenseUrl": "git+https://github.com/sindresorhus/gulp-myth/raw/master/license",
+        "parents": "HelpNow"
+    },
+    "gulp-nodemon@2.1.0": {
+        "licenses": "BSD-2-Clause",
+        "repository": "git+https://github.com/JacksonGariety/gulp-nodemon",
+        "licenseUrl": "git+https://github.com/JacksonGariety/gulp-nodemon",
+        "parents": "HelpNow"
+    },
+    "gulp-rename@1.2.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/hparra/gulp-rename",
+        "licenseUrl": "https://github.com/hparra/gulp-rename",
+        "parents": "HelpNow"
+    },
+    "gulp-uglify@1.5.3": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/terinjokes/gulp-uglify",
+        "licenseUrl": "git+https://github.com/terinjokes/gulp-uglify/raw/master/LICENSE.md",
+        "parents": "HelpNow"
+    },
+    "gulp-util@3.0.7": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/gulpjs/gulp-util",
+        "licenseUrl": "git+https://github.com/gulpjs/gulp-util/raw/master/LICENSE",
+        "parents": "gulp:HelpNow"
+    },
+    "gulp@3.9.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/gulpjs/gulp",
+        "licenseUrl": "git+https://github.com/gulpjs/gulp/raw/master/LICENSE",
+        "parents": "HelpNow"
+    },
+    "gulplog@1.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/gulpjs/gulplog",
+        "licenseUrl": "git+https://github.com/gulpjs/gulplog/raw/master/LICENSE",
+        "parents": "gulp-util:gulp:HelpNow"
+    },
+    "har-validator@2.0.6": {
+        "licenses": "ISC",
+        "repository": "git+https://github.com/ahmadnassri/har-validator",
+        "licenseUrl": "git+https://github.com/ahmadnassri/har-validator",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "has-ansi@2.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/has-ansi",
+        "licenseUrl": "git+https://github.com/sindresorhus/has-ansi/raw/master/license",
+        "parents": "chalk:gulp:HelpNow"
+    },
+    "has-gulplog@0.1.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/gulpjs/has-gulplog",
+        "licenseUrl": "git+https://github.com/gulpjs/has-gulplog/raw/master/LICENSE",
+        "parents": "gulp-util:gulp:HelpNow"
+    },
+    "has-unicode@2.0.0": {
+        "licenses": "ISC",
+        "repository": "git+https://github.com/iarna/has-unicode",
+        "licenseUrl": "git+https://github.com/iarna/has-unicode/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "hawk@3.1.3": {
+        "licenses": "BSD-3-Clause",
+        "repository": "https://github.com/hueniverse/hawk",
+        "licenseUrl": "https://github.com/hueniverse/hawk/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "hoek@2.16.3": {
+        "licenses": "BSD-3-Clause",
+        "repository": "https://github.com/hapijs/hoek",
+        "licenseUrl": "https://github.com/hapijs/hoek/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "hosted-git-info@2.1.5": {
+        "licenses": "ISC",
+        "repository": "git+https://github.com/npm/hosted-git-info",
+        "licenseUrl": "git+https://github.com/npm/hosted-git-info/raw/master/LICENSE",
+        "parents": "normalize-package-data:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "htmlparser2@3.8.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/fb55/htmlparser2",
+        "licenseUrl": "https://github.com/fb55/htmlparser2/raw/master/LICENSE",
+        "parents": "jshint:gulp-jshint:HelpNow"
+    },
+    "http-errors@1.3.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jshttp/http-errors",
+        "licenseUrl": "git+https://github.com/jshttp/http-errors/raw/master/LICENSE",
+        "parents": "body-parser:HelpNow"
+    },
+    "http-signature@1.1.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/joyent/node-http-signature",
+        "licenseUrl": "https://github.com/joyent/node-http-signature/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "http@0.0.0": {
+        "licenses": "BSD-2-Clause",
+        "parents": "HelpNow"
+    },
+    "httpntlm@1.6.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/SamDecrock/node-http-ntlm",
+        "licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
+        "parents": "smtp-connection:nodemailer-direct-transport:nodemailer:HelpNow"
+    },
+    "httpreq@0.4.22": {
+        "licenses": "MIT",
+        "repository": "https://github.com/SamDecrock/node-httpreq",
+        "licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
+        "parents": "httpntlm:smtp-connection:nodemailer-direct-transport:nodemailer:HelpNow"
+    },
+    "https@1.0.0": {
+        "licenses": "ISC",
+        "parents": "HelpNow"
+    },
+    "iconv-lite@0.4.11": {
+        "licenses": "MIT",
+        "repository": "https://github.com/ashtuchkin/iconv-lite",
+        "licenseUrl": "https://github.com/ashtuchkin/iconv-lite/raw/master/LICENSE",
+        "parents": "body-parser:HelpNow"
+    },
+    "iconv-lite@0.4.13": {
+        "licenses": "MIT",
+        "repository": "https://github.com/ashtuchkin/iconv-lite",
+        "licenseUrl": "https://github.com/ashtuchkin/iconv-lite/raw/master/LICENSE",
+        "parents": "raw-body:body-parser:HelpNow"
+    },
+    "iconv-lite@0.4.8": {
+        "licenses": "MIT",
+        "repository": "https://github.com/ashtuchkin/iconv-lite",
+        "licenseUrl": "https://github.com/ashtuchkin/iconv-lite/raw/master/LICENSE",
+        "parents": "raw-body:express-http-proxy:HelpNow"
+    },
+    "ignore-by-default@1.0.1": {
+        "licenses": "ISC",
+        "repository": "git+https://github.com/novemberborn/ignore-by-default",
+        "licenseUrl": "git+https://github.com/novemberborn/ignore-by-default/raw/master/LICENSE",
+        "parents": "nodemon:gulp-nodemon:HelpNow"
+    },
+    "imurmurhash@0.1.4": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jensyt/imurmurhash-js",
+        "licenseUrl": "git+https://github.com/jensyt/imurmurhash-js",
+        "parents": "write-file-atomic:configstore:update-notifier:nodemon:gulp-nodemon:HelpNow"
+    },
+    "indent-string@1.2.2": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/indent-string",
+        "licenseUrl": "git+https://github.com/sindresorhus/indent-string/raw/master/license",
+        "parents": "meow:base64url:jws:jsonwebtoken:passport-jwt:HelpNow"
+    },
+    "indent-string@2.1.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/indent-string",
+        "licenseUrl": "git+https://github.com/sindresorhus/indent-string/raw/master/license",
+        "parents": "redent:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "infinity-agent@2.0.3": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/floatdrop/infinity-agent",
+        "licenseUrl": "git+https://github.com/floatdrop/infinity-agent",
+        "parents": "got:package-json:latest-version:update-notifier:nodemon:gulp-nodemon:HelpNow"
+    },
+    "inflection@1.10.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/dreamerslab/node.inflection",
+        "licenseUrl": "git+https://github.com/dreamerslab/node.inflection",
+        "parents": "sequelize:HelpNow"
+    },
+    "inflight@1.0.4": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/inflight",
+        "licenseUrl": "https://github.com/isaacs/inflight/raw/master/LICENSE",
+        "parents": "glob:rimraf:fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "inflight@1.0.5": {
+        "licenses": "ISC",
+        "repository": "git+https://github.com/npm/inflight",
+        "licenseUrl": "git+https://github.com/npm/inflight/raw/master/LICENSE",
+        "parents": "glob:glob-stream:vinyl-fs:gulp:HelpNow"
+    },
+    "inherits@1.0.2": {
+        "licenses": "UNKNOWN",
+        "repository": "git+https://github.com/isaacs/inherits",
+        "licenseUrl": "git+https://github.com/isaacs/inherits/raw/master/LICENSE",
+        "parents": "glob:globule:gaze:glob-watcher:vinyl-fs:gulp:HelpNow"
+    },
+    "inherits@2.0.1": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/inherits",
+        "licenseUrl": "https://github.com/isaacs/inherits/raw/master/LICENSE",
+        "parents": "http-errors:body-parser:HelpNow"
+    },
+    "ini@1.3.4": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/ini",
+        "licenseUrl": "https://github.com/isaacs/ini/raw/master/LICENSE",
+        "parents": "global-prefix:global-modules:resolve-dir:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "interpret@1.0.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/tkellen/node-interpret",
+        "licenseUrl": "https://github.com/tkellen/node-interpret/raw/master/LICENSE",
+        "parents": "gulp:HelpNow"
+    },
+    "ip@1.1.3": {
+        "licenses": "MIT",
+        "repository": "git+ssh://git@github.com/indutny/node-ip",
+        "licenseUrl": "git+ssh://git@github.com/indutny/node-ip",
+        "parents": "socks:nodemailer:HelpNow"
+    },
+    "ipaddr.js@1.0.5": {
+        "licenses": "MIT",
+        "repository": "https://github.com/whitequark/ipaddr.js",
+        "licenseUrl": "https://github.com/whitequark/ipaddr.js/raw/master/LICENSE",
+        "parents": "proxy-addr:express:HelpNow"
+    },
+    "is-arrayish@0.2.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/qix-/node-is-arrayish",
+        "licenseUrl": "git+https://github.com/qix-/node-is-arrayish/raw/master/LICENSE",
+        "parents": "error-ex:parse-json:load-json-file:read-pkg:read-pkg-up:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "is-binary-path@1.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/is-binary-path",
+        "licenseUrl": "git+https://github.com/sindresorhus/is-binary-path/raw/master/license",
+        "parents": "chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "is-browser@2.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/ForbesLindesay/is-browser",
+        "licenseUrl": "git+https://github.com/ForbesLindesay/is-browser/raw/master/LICENSE",
+        "parents": "myth:gulp-myth:HelpNow"
+    },
+    "is-buffer@1.1.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/feross/is-buffer",
+        "licenseUrl": "https://github.com/feross/is-buffer/raw/master/LICENSE",
+        "parents": "kind-of:micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "is-builtin-module@1.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/is-builtin-module",
+        "licenseUrl": "git+https://github.com/sindresorhus/is-builtin-module/raw/master/license",
+        "parents": "normalize-package-data:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "is-dotfile@1.0.2": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/is-dotfile",
+        "licenseUrl": "git+https://github.com/jonschlinkert/is-dotfile/raw/master/LICENSE",
+        "parents": "parse-glob:micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "is-equal-shallow@0.1.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jonschlinkert/is-equal-shallow",
+        "licenseUrl": "https://github.com/jonschlinkert/is-equal-shallow/raw/master/LICENSE",
+        "parents": "regex-cache:micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "is-extendable@0.1.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/is-extendable",
+        "licenseUrl": "git+https://github.com/jonschlinkert/is-extendable/raw/master/LICENSE",
+        "parents": "object.omit:micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "is-extglob@1.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/is-extglob",
+        "licenseUrl": "git+https://github.com/jonschlinkert/is-extglob/raw/master/LICENSE",
+        "parents": "is-glob:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "is-finite@1.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/is-finite",
+        "licenseUrl": "git+https://github.com/sindresorhus/is-finite/raw/master/license",
+        "parents": "repeating:indent-string:redent:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "is-glob@2.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/is-glob",
+        "licenseUrl": "git+https://github.com/jonschlinkert/is-glob/raw/master/LICENSE",
+        "parents": "findup-sync:liftoff:gulp:HelpNow"
+    },
+    "is-my-json-valid@2.13.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/mafintosh/is-my-json-valid",
+        "licenseUrl": "git+https://github.com/mafintosh/is-my-json-valid/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "is-npm@1.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/sindresorhus/is-npm",
+        "licenseUrl": "https://github.com/sindresorhus/is-npm",
+        "parents": "update-notifier:nodemon:gulp-nodemon:HelpNow"
+    },
+    "is-number@2.1.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/is-number",
+        "licenseUrl": "git+https://github.com/jonschlinkert/is-number/raw/master/LICENSE",
+        "parents": "fill-range:expand-range:braces:micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "is-posix-bracket@0.1.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/is-posix-bracket",
+        "licenseUrl": "git+https://github.com/jonschlinkert/is-posix-bracket/raw/master/LICENSE",
+        "parents": "expand-brackets:micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "is-primitive@2.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jonschlinkert/is-primitive",
+        "licenseUrl": "https://github.com/jonschlinkert/is-primitive/blob/master/LICENSE",
+        "parents": "regex-cache:micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "is-property@1.0.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/mikolalysenko/is-property",
+        "licenseUrl": "https://github.com/mikolalysenko/is-property/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "is-redirect@1.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/is-redirect",
+        "licenseUrl": "git+https://github.com/sindresorhus/is-redirect/raw/master/license",
+        "parents": "got:package-json:latest-version:update-notifier:nodemon:gulp-nodemon:HelpNow"
+    },
+    "is-stream@1.1.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/is-stream",
+        "licenseUrl": "git+https://github.com/sindresorhus/is-stream/raw/master/license",
+        "parents": "got:package-json:latest-version:update-notifier:nodemon:gulp-nodemon:HelpNow"
+    },
+    "is-typedarray@1.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/hughsk/is-typedarray",
+        "licenseUrl": "https://github.com/hughsk/is-typedarray/raw/master/LICENSE.md",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "is-utf8@0.2.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/wayfind/is-utf8",
+        "licenseUrl": "git+https://github.com/wayfind/is-utf8/raw/master/LICENSE",
+        "parents": "strip-bom:load-json-file:read-pkg:read-pkg-up:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "is-windows@0.2.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/is-windows",
+        "licenseUrl": "git+https://github.com/jonschlinkert/is-windows/raw/master/LICENSE",
+        "parents": "global-modules:resolve-dir:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "isarray@0.0.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/juliangruber/isarray",
+        "licenseUrl": "https://github.com/juliangruber/isarray",
+        "parents": "readable-stream:duplexer2:multipipe:gulp-util:gulp:HelpNow"
+    },
+    "isarray@1.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/juliangruber/isarray",
+        "licenseUrl": "https://github.com/juliangruber/isarray",
+        "parents": "readable-stream:through2:gulp-util:gulp:HelpNow"
+    },
+    "isexe@1.1.2": {
+        "licenses": "ISC",
+        "repository": "git+https://github.com/isaacs/isexe",
+        "licenseUrl": "git+https://github.com/isaacs/isexe/raw/master/LICENSE",
+        "parents": "which:global-prefix:global-modules:resolve-dir:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "isobject@2.1.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/isobject",
+        "licenseUrl": "git+https://github.com/jonschlinkert/isobject/raw/master/LICENSE",
+        "parents": "fill-range:expand-range:braces:micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "isstream@0.1.2": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/rvagg/isstream",
+        "licenseUrl": "git+https://github.com/rvagg/isstream/raw/master/LICENSE.md",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "jmespath@0.15.0": {
+        "licenses": "Apache 2.0",
+        "repository": "https://github.com/jmespath/jmespath.js",
+        "licenseUrl": "http://github.com/jmespath/jmespath.js/raw/master/LICENSE",
+        "parents": "aws-sdk:nodemailer-ses-transport:HelpNow"
+    },
+    "jodid25519@1.0.2": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/meganz/jodid25519",
+        "licenseUrl": "git+https://github.com/meganz/jodid25519/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "js-base64@2.1.9": {
+        "licenses": "BSD",
+        "repository": "https://github.com/dankogai/js-base64",
+        "licenseUrl": "https://github.com/dankogai/js-base64/raw/master/LICENSE.md",
+        "parents": "postcss:myth:gulp-myth:HelpNow"
+    },
+    "jsbn@0.1.0": {
+        "licenses": "BSD",
+        "repository": "git+https://github.com/andyperlitch/jsbn",
+        "licenseUrl": "git+https://github.com/andyperlitch/jsbn/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "jshint@2.9.2": {
+        "licenses": "(MIT AND JSON)",
+        "repository": "git+https://github.com/jshint/jshint",
+        "licenseUrl": "git+https://github.com/jshint/jshint/raw/master/LICENSE",
+        "parents": "gulp-jshint:HelpNow"
+    },
+    "json-schema@0.2.2": {
+        "licenses": "AFLv2.1,BSD",
+        "repository": "git+ssh://git@github.com/kriszyp/json-schema",
+        "licenseUrl": "http://trac.dojotoolkit.org/browser/dojo/trunk/LICENSE#L43,http://trac.dojotoolkit.org/browser/dojo/trunk/LICENSE#L13",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "json-stringify-safe@5.0.1": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/json-stringify-safe",
+        "licenseUrl": "https://github.com/isaacs/json-stringify-safe/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "jsonpointer@2.0.0": {
+        "licenses": "MIT",
+        "repository": "git+ssh://git@github.com/janl/node-jsonpointer",
+        "licenseUrl": "git+ssh://git@github.com/janl/node-jsonpointer",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "jsonwebtoken@5.7.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/auth0/node-jsonwebtoken",
+        "licenseUrl": "git+https://github.com/auth0/node-jsonwebtoken/raw/master/LICENSE",
+        "parents": "passport-jwt:HelpNow"
+    },
+    "jsprim@1.2.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/davepacheco/node-jsprim",
+        "licenseUrl": "https://github.com/davepacheco/node-jsprim/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "jwa@1.1.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/brianloveswords/node-jwa",
+        "licenseUrl": "https://github.com/brianloveswords/node-jwa/raw/master/LICENSE",
+        "parents": "jws:jsonwebtoken:passport-jwt:HelpNow"
+    },
+    "jws@3.1.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/brianloveswords/node-jws",
+        "licenseUrl": "https://github.com/brianloveswords/node-jws/raw/master/LICENSE",
+        "parents": "jsonwebtoken:passport-jwt:HelpNow"
+    },
+    "kind-of@3.0.3": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/kind-of",
+        "licenseUrl": "git+https://github.com/jonschlinkert/kind-of/raw/master/LICENSE",
+        "parents": "micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "latest-version@1.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/latest-version",
+        "licenseUrl": "git+https://github.com/sindresorhus/latest-version/raw/master/license",
+        "parents": "update-notifier:nodemon:gulp-nodemon:HelpNow"
+    },
+    "lazy-cache@1.0.4": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/lazy-cache",
+        "licenseUrl": "git+https://github.com/jonschlinkert/lazy-cache/raw/master/LICENSE",
+        "parents": "center-align:cliui:yargs:uglify-js:gulp-uglify:HelpNow"
+    },
+    "libbase64@0.1.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/andris9/libbase64",
+        "licenseUrl": "https://github.com/andris9/libbase64/raw/master/LICENSE",
+        "parents": "libmime:nodemailer:HelpNow"
+    },
+    "libmime@2.0.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/andris9/libmime",
+        "licenseUrl": "https://github.com/andris9/libmime/raw/master/LICENSE",
+        "parents": "nodemailer:HelpNow"
+    },
+    "libqp@1.1.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/andris9/libqp",
+        "licenseUrl": "https://github.com/andris9/libqp/raw/master/LICENSE",
+        "parents": "libmime:nodemailer:HelpNow"
+    },
+    "liftoff@2.2.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/js-cli/js-liftoff",
+        "licenseUrl": "https://github.com/js-cli/js-liftoff/raw/master/LICENSE",
+        "parents": "gulp:HelpNow"
+    },
+    "load-json-file@1.1.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/load-json-file",
+        "licenseUrl": "git+https://github.com/sindresorhus/load-json-file/raw/master/license",
+        "parents": "read-pkg:read-pkg-up:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "lodash._baseassign@3.2.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE.txt",
+        "parents": "lodash.assign:lodash.defaults:nodemon:gulp-nodemon:HelpNow"
+    },
+    "lodash._baseclone@4.5.7": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE",
+        "parents": "lodash.clonedeep:rcfinder:rcloader:gulp-jshint:HelpNow"
+    },
+    "lodash._basecopy@3.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE.txt",
+        "parents": "lodash.template:gulp-util:gulp:HelpNow"
+    },
+    "lodash._basetostring@3.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE",
+        "parents": "lodash.template:gulp-util:gulp:HelpNow"
+    },
+    "lodash._basevalues@3.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE.txt",
+        "parents": "lodash.template:gulp-util:gulp:HelpNow"
+    },
+    "lodash._bindcallback@3.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE.txt",
+        "parents": "lodash._createassigner:lodash.assign:lodash.defaults:nodemon:gulp-nodemon:HelpNow"
+    },
+    "lodash._createassigner@3.1.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE.txt",
+        "parents": "lodash.assign:lodash.defaults:nodemon:gulp-nodemon:HelpNow"
+    },
+    "lodash._getnative@3.9.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE",
+        "parents": "lodash.keys:lodash.template:gulp-util:gulp:HelpNow"
+    },
+    "lodash._isiterateecall@3.0.9": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE.txt",
+        "parents": "lodash.template:gulp-util:gulp:HelpNow"
+    },
+    "lodash._reescape@3.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE.txt",
+        "parents": "gulp-util:gulp:HelpNow"
+    },
+    "lodash._reevaluate@3.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE.txt",
+        "parents": "gulp-util:gulp:HelpNow"
+    },
+    "lodash._reinterpolate@3.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE.txt",
+        "parents": "gulp-util:gulp:HelpNow"
+    },
+    "lodash._root@3.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE",
+        "parents": "lodash.escape:lodash.template:gulp-util:gulp:HelpNow"
+    },
+    "lodash.assign@3.2.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE.txt",
+        "parents": "lodash.defaults:nodemon:gulp-nodemon:HelpNow"
+    },
+    "lodash.clonedeep@4.3.2": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE",
+        "parents": "rcfinder:rcloader:gulp-jshint:HelpNow"
+    },
+    "lodash.defaults@3.1.2": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE",
+        "parents": "nodemon:gulp-nodemon:HelpNow"
+    },
+    "lodash.escape@3.2.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE",
+        "parents": "lodash.template:gulp-util:gulp:HelpNow"
+    },
+    "lodash.isarguments@3.0.8": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE",
+        "parents": "lodash.keys:lodash.template:gulp-util:gulp:HelpNow"
+    },
+    "lodash.isarray@3.0.4": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE",
+        "parents": "lodash.keys:lodash.template:gulp-util:gulp:HelpNow"
+    },
+    "lodash.keys@3.1.2": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE",
+        "parents": "lodash.template:gulp-util:gulp:HelpNow"
+    },
+    "lodash.pad@4.1.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "lodash.padend@4.2.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "lodash.padstart@4.2.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "lodash.repeat@4.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "lodash.restparam@3.6.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE.txt",
+        "parents": "lodash.template:gulp-util:gulp:HelpNow"
+    },
+    "lodash.template@3.6.2": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE",
+        "parents": "gulp-util:gulp:HelpNow"
+    },
+    "lodash.templatesettings@3.1.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE",
+        "parents": "lodash.template:gulp-util:gulp:HelpNow"
+    },
+    "lodash.tostring@4.1.2": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "lodash@1.0.2": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE.txt",
+        "parents": "globule:gaze:glob-watcher:vinyl-fs:gulp:HelpNow"
+    },
+    "lodash@2.4.2": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE.txt",
+        "parents": "rcloader:gulp-jshint:HelpNow"
+    },
+    "lodash@3.10.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE",
+        "parents": "gulp-jshint:HelpNow"
+    },
+    "lodash@3.5.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE.txt",
+        "parents": "xmlbuilder:aws-sdk:nodemailer-ses-transport:HelpNow"
+    },
+    "lodash@3.7.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE.txt",
+        "parents": "jshint:gulp-jshint:HelpNow"
+    },
+    "lodash@4.12.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE",
+        "parents": "sequelize:HelpNow"
+    },
+    "lodash@4.13.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lodash/lodash",
+        "licenseUrl": "git+https://github.com/lodash/lodash/raw/master/LICENSE",
+        "parents": "request-promise:HelpNow"
+    },
+    "longest@1.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/longest",
+        "licenseUrl": "https://github.com/jonschlinkert/longest/blob/master/LICENSE",
+        "parents": "align-text:center-align:cliui:yargs:uglify-js:gulp-uglify:HelpNow"
+    },
+    "loud-rejection@1.5.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/loud-rejection",
+        "licenseUrl": "git+https://github.com/sindresorhus/loud-rejection/raw/master/license",
+        "parents": "meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "lowercase-keys@1.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/lowercase-keys",
+        "licenseUrl": "git+https://github.com/sindresorhus/lowercase-keys",
+        "parents": "got:package-json:latest-version:update-notifier:nodemon:gulp-nodemon:HelpNow"
+    },
+    "lru-cache@2.7.3": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/node-lru-cache",
+        "licenseUrl": "https://github.com/isaacs/node-lru-cache/raw/master/LICENSE",
+        "parents": "minimatch:globule:gaze:glob-watcher:vinyl-fs:gulp:HelpNow"
+    },
+    "lru-cache@4.0.1": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/node-lru-cache",
+        "licenseUrl": "https://github.com/isaacs/node-lru-cache",
+        "parents": "aws4:fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "mailcomposer@3.9.0": {
+        "licenses": "MIT",
+        "repository": "git+ssh://git@github.com/andris9/mailcomposer",
+        "licenseUrl": "git+ssh://git@github.com/andris9/mailcomposer/raw/master/LICENSE",
+        "parents": "nodemailer:HelpNow"
+    },
+    "map-obj@1.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/map-obj",
+        "licenseUrl": "git+https://github.com/sindresorhus/map-obj/raw/master/license",
+        "parents": "meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "map-stream@0.1.0": {
+        "licenses": "UNKNOWN",
+        "repository": "https://github.com/dominictarr/map-stream",
+        "licenseUrl": "https://github.com/dominictarr/map-stream/raw/master/LICENCE",
+        "parents": "event-stream:gulp-nodemon:HelpNow"
+    },
+    "media-typer@0.3.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jshttp/media-typer",
+        "licenseUrl": "git+https://github.com/jshttp/media-typer/raw/master/LICENSE",
+        "parents": "type-is:body-parser:HelpNow"
+    },
+    "meow@2.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/meow",
+        "licenseUrl": "git+https://github.com/sindresorhus/meow",
+        "parents": "base64url:jws:jsonwebtoken:passport-jwt:HelpNow"
+    },
+    "meow@3.7.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/meow",
+        "licenseUrl": "git+https://github.com/sindresorhus/meow/raw/master/license",
+        "parents": "dateformat:gulp-util:gulp:HelpNow"
+    },
+    "merge-descriptors@1.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/component/merge-descriptors",
+        "licenseUrl": "git+https://github.com/component/merge-descriptors/raw/master/LICENSE",
+        "parents": "express:HelpNow"
+    },
+    "methods@1.1.2": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jshttp/methods",
+        "licenseUrl": "git+https://github.com/jshttp/methods/raw/master/LICENSE",
+        "parents": "express:HelpNow"
+    },
+    "micromatch@2.3.8": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/micromatch",
+        "licenseUrl": "git+https://github.com/jonschlinkert/micromatch/raw/master/LICENSE",
+        "parents": "findup-sync:liftoff:gulp:HelpNow"
+    },
+    "mime-db@1.22.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jshttp/mime-db",
+        "licenseUrl": "git+https://github.com/jshttp/mime-db/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "mime-db@1.23.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jshttp/mime-db",
+        "licenseUrl": "git+https://github.com/jshttp/mime-db/raw/master/LICENSE",
+        "parents": "mime-types:type-is:body-parser:HelpNow"
+    },
+    "mime-types@2.1.10": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jshttp/mime-types",
+        "licenseUrl": "git+https://github.com/jshttp/mime-types/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "mime-types@2.1.11": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jshttp/mime-types",
+        "licenseUrl": "git+https://github.com/jshttp/mime-types/raw/master/LICENSE",
+        "parents": "type-is:body-parser:HelpNow"
+    },
+    "mime@1.3.4": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/broofa/node-mime",
+        "licenseUrl": "https://raw.github.com/broofa/node-mime/master/LICENSE",
+        "parents": "send:express:HelpNow"
+    },
+    "minimatch@0.2.14": {
+        "licenses": "MIT",
+        "repository": "https://github.com/isaacs/minimatch",
+        "licenseUrl": "http://github.com/isaacs/minimatch/raw/master/LICENSE",
+        "parents": "globule:gaze:glob-watcher:vinyl-fs:gulp:HelpNow"
+    },
+    "minimatch@0.3.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/isaacs/minimatch",
+        "licenseUrl": "http://github.com/isaacs/minimatch/raw/master/LICENSE",
+        "parents": "glob:cli:jshint:gulp-jshint:HelpNow"
+    },
+    "minimatch@2.0.10": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/minimatch",
+        "licenseUrl": "https://github.com/isaacs/minimatch/raw/master/LICENSE",
+        "parents": "glob-stream:vinyl-fs:gulp:HelpNow"
+    },
+    "minimatch@3.0.0": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/minimatch",
+        "licenseUrl": "https://github.com/isaacs/minimatch",
+        "parents": "glob:rimraf:fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "minimatch@3.0.2": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/minimatch",
+        "licenseUrl": "https://github.com/isaacs/minimatch/raw/master/LICENSE",
+        "parents": "nodemon:gulp-nodemon:HelpNow"
+    },
+    "minimist@0.0.8": {
+        "licenses": "MIT",
+        "repository": "https://github.com/substack/minimist",
+        "licenseUrl": "https://github.com/substack/minimist/raw/master/LICENSE",
+        "parents": "mkdirp:vinyl-fs:gulp:HelpNow"
+    },
+    "minimist@1.2.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/substack/minimist",
+        "licenseUrl": "https://github.com/substack/minimist/raw/master/LICENSE",
+        "parents": "gulp:HelpNow"
+    },
+    "mkdirp@0.5.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/substack/node-mkdirp",
+        "licenseUrl": "git+https://github.com/substack/node-mkdirp/raw/master/LICENSE",
+        "parents": "vinyl-fs:gulp:HelpNow"
+    },
+    "moment-timezone@0.5.4": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/moment/moment-timezone",
+        "licenseUrl": "git+https://github.com/moment/moment-timezone/raw/master/LICENSE",
+        "parents": "sequelize:HelpNow"
+    },
+    "moment@2.13.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/moment/moment",
+        "licenseUrl": "git+https://github.com/moment/moment/raw/master/LICENSE",
+        "parents": "sequelize:HelpNow"
+    },
+    "morgan@1.6.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/expressjs/morgan",
+        "licenseUrl": "git+https://github.com/expressjs/morgan/raw/master/LICENSE",
+        "parents": "HelpNow"
+    },
+    "ms@0.7.1": {
+        "licenses": "UNKNOWN",
+        "repository": "https://github.com/guille/ms.js",
+        "licenseUrl": "https://github.com/guille/ms.js/raw/master/LICENSE",
+        "parents": "debug:HelpNow"
+    },
+    "multipipe@0.1.2": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/juliangruber/multipipe",
+        "licenseUrl": "git+https://github.com/juliangruber/multipipe",
+        "parents": "gulp-util:gulp:HelpNow"
+    },
+    "mysql@2.11.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/felixge/node-mysql",
+        "licenseUrl": "git+https://github.com/felixge/node-mysql/raw/master/License",
+        "parents": "HelpNow"
+    },
+    "myth@1.5.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/segmentio/myth",
+        "licenseUrl": "https://github.com/segmentio/myth",
+        "parents": "gulp-myth:HelpNow"
+    },
+    "nan@2.3.5": {
+        "licenses": "MIT",
+        "repository": "https://github.com/nodejs/nan",
+        "licenseUrl": "https://github.com/nodejs/nan/raw/master/LICENSE.md",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "negotiator@0.5.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jshttp/negotiator",
+        "licenseUrl": "https://github.com/jshttp/negotiator/raw/master/LICENSE",
+        "parents": "accepts:express:HelpNow"
+    },
+    "nested-error-stacks@1.0.2": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/mdlavin/nested-error-stacks",
+        "licenseUrl": "git+https://github.com/mdlavin/nested-error-stacks/raw/master/LICENSE",
+        "parents": "got:package-json:latest-version:update-notifier:nodemon:gulp-nodemon:HelpNow"
+    },
+    "njwt@0.3.0": {
+        "licenses": "Apache 2.0",
+        "repository": "git+https://github.com/jwtk/njwt",
+        "licenseUrl": "git+https://github.com/jwtk/njwt/raw/master/LICENSE",
+        "parents": "HelpNow"
+    },
+    "node-kmeans@0.0.1": {
+        "licenses": "BSD",
+        "repository": "https://github.com/Philmod/node-kmeans",
+        "licenseUrl": "https://github.com/Philmod/node-kmeans",
+        "parents": "HelpNow"
+    },
+    "node-pre-gyp@0.6.25": {
+        "licenses": "BSD",
+        "repository": "https://github.com/mapbox/node-pre-gyp",
+        "licenseUrl": "https://github.com/mapbox/node-pre-gyp/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "node-uuid@1.4.7": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/broofa/node-uuid",
+        "licenseUrl": "https://raw.github.com/broofa/node-uuid/master/LICENSE.md",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "node-watch@0.3.5": {
+        "licenses": "MIT",
+        "repository": "https://github.com/yuanchuan/node-watch",
+        "licenseUrl": "https://github.com/yuanchuan/node-watch/raw/master/LICENSE",
+        "parents": "myth:gulp-myth:HelpNow"
+    },
+    "nodemailer-direct-transport@3.1.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/andris9/nodemailer-direct-transport",
+        "licenseUrl": "https://github.com/andris9/nodemailer-direct-transport/raw/master/LICENSE",
+        "parents": "nodemailer:HelpNow"
+    },
+    "nodemailer-fetch@1.4.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/nodemailer/nodemailer-fetch",
+        "licenseUrl": "git+https://github.com/nodemailer/nodemailer-fetch/raw/master/LICENSE",
+        "parents": "buildmail:mailcomposer:nodemailer:HelpNow"
+    },
+    "nodemailer-ses-transport@1.3.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/andris9/nodemailer-ses-transport",
+        "licenseUrl": "https://github.com/andris9/nodemailer-ses-transport/raw/master/LICENSE",
+        "parents": "HelpNow"
+    },
+    "nodemailer-shared@1.0.5": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/nodemailer/nodemailer-shared",
+        "licenseUrl": "git+https://github.com/nodemailer/nodemailer-shared/raw/master/LICENSE",
+        "parents": "nodemailer:HelpNow"
+    },
+    "nodemailer-smtp-pool@2.6.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/andris9/nodemailer-smtp-pool",
+        "licenseUrl": "https://github.com/andris9/nodemailer-smtp-pool/raw/master/LICENSE",
+        "parents": "nodemailer:HelpNow"
+    },
+    "nodemailer-smtp-transport@2.5.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/andris9/nodemailer-smtp-transport",
+        "licenseUrl": "https://github.com/andris9/nodemailer-smtp-transport/raw/master/LICENSE",
+        "parents": "nodemailer:HelpNow"
+    },
+    "nodemailer-wellknown@0.1.9": {
+        "licenses": "MIT",
+        "repository": "https://github.com/andris9/nodemailer-wellknown",
+        "licenseUrl": "https://github.com/andris9/nodemailer-wellknown/raw/master/LICENSE",
+        "parents": "nodemailer-smtp-pool:nodemailer:HelpNow"
+    },
+    "nodemailer@2.4.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/nodemailer/nodemailer",
+        "licenseUrl": "https://github.com/nodemailer/nodemailer/raw/master/LICENSE",
+        "parents": "HelpNow"
+    },
+    "nodemon@1.9.2": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/remy/nodemon",
+        "licenseUrl": "git+https://github.com/remy/nodemon",
+        "parents": "gulp-nodemon:HelpNow"
+    },
+    "nopt@1.0.10": {
+        "licenses": "MIT",
+        "repository": "https://github.com/isaacs/nopt",
+        "licenseUrl": "https://github.com/isaacs/nopt/raw/master/LICENSE",
+        "parents": "touch:nodemon:gulp-nodemon:HelpNow"
+    },
+    "nopt@3.0.6": {
+        "licenses": "ISC",
+        "repository": "git+https://github.com/npm/nopt",
+        "licenseUrl": "git+https://github.com/npm/nopt/raw/master/LICENSE",
+        "parents": "node-pre-gyp:fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "normalize-package-data@2.3.5": {
+        "licenses": "BSD-2-Clause",
+        "repository": "https://github.com/npm/normalize-package-data",
+        "licenseUrl": "https://github.com/npm/normalize-package-data/raw/master/LICENSE",
+        "parents": "meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "normalize-path@2.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/normalize-path",
+        "licenseUrl": "git+https://github.com/jonschlinkert/normalize-path/raw/master/LICENSE",
+        "parents": "micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "npmlog@2.0.3": {
+        "licenses": "ISC",
+        "repository": "git+https://github.com/npm/npmlog",
+        "licenseUrl": "git+https://github.com/npm/npmlog/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "num2fraction@1.2.2": {
+        "licenses": "MIT",
+        "repository": "git+ssh://git@github.com/yisibl/num2fraction",
+        "licenseUrl": "git+ssh://git@github.com/yisibl/num2fraction/raw/master/LICENSE",
+        "parents": "autoprefixer-core:myth:gulp-myth:HelpNow"
+    },
+    "number-is-nan@1.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/number-is-nan",
+        "licenseUrl": "git+https://github.com/sindresorhus/number-is-nan/raw/master/license",
+        "parents": "is-finite:repeating:indent-string:redent:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "oauth-sign@0.8.1": {
+        "licenses": "Apache-2.0",
+        "repository": "git+https://github.com/mikeal/oauth-sign",
+        "licenseUrl": "git+https://github.com/mikeal/oauth-sign/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "oauth-sign@0.8.2": {
+        "licenses": "Apache-2.0",
+        "repository": "git+https://github.com/mikeal/oauth-sign",
+        "licenseUrl": "git+https://github.com/mikeal/oauth-sign/raw/master/LICENSE",
+        "parents": "request:request-promise:HelpNow"
+    },
+    "object-assign@1.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/object-assign",
+        "licenseUrl": "git+https://github.com/sindresorhus/object-assign",
+        "parents": "meow:base64url:jws:jsonwebtoken:passport-jwt:HelpNow"
+    },
+    "object-assign@3.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/object-assign",
+        "licenseUrl": "git+https://github.com/sindresorhus/object-assign/raw/master/license",
+        "parents": "gulp-util:gulp:HelpNow"
+    },
+    "object-assign@4.1.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/object-assign",
+        "licenseUrl": "git+https://github.com/sindresorhus/object-assign/raw/master/license",
+        "parents": "meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "object.omit@2.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/object.omit",
+        "licenseUrl": "git+https://github.com/jonschlinkert/object.omit/raw/master/LICENSE",
+        "parents": "micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "on-finished@2.3.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jshttp/on-finished",
+        "licenseUrl": "git+https://github.com/jshttp/on-finished/raw/master/LICENSE",
+        "parents": "body-parser:HelpNow"
+    },
+    "on-headers@1.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jshttp/on-headers",
+        "licenseUrl": "git+https://github.com/jshttp/on-headers/raw/master/LICENSE",
+        "parents": "morgan:HelpNow"
+    },
+    "once@1.3.3": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/once",
+        "licenseUrl": "https://github.com/isaacs/once/raw/master/LICENSE",
+        "parents": "end-of-stream:orchestrator:gulp:HelpNow"
+    },
+    "orchestrator@0.3.7": {
+        "licenses": "MIT",
+        "repository": "https://github.com/robrich/orchestrator",
+        "licenseUrl": "http://github.com/robrich/orchestrator/raw/master/LICENSE",
+        "parents": "gulp:HelpNow"
+    },
+    "ordered-read-streams@0.1.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/armed/ordered-read-streams",
+        "licenseUrl": "https://github.com/armed/ordered-read-streams/raw/master/LICENSE",
+        "parents": "glob-stream:vinyl-fs:gulp:HelpNow"
+    },
+    "os-homedir@1.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/os-homedir",
+        "licenseUrl": "git+https://github.com/sindresorhus/os-homedir/raw/master/license",
+        "parents": "expand-tilde:resolve-dir:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "os-tmpdir@1.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/os-tmpdir",
+        "licenseUrl": "git+https://github.com/sindresorhus/os-tmpdir/raw/master/license",
+        "parents": "osenv:global-prefix:global-modules:resolve-dir:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "osenv@0.1.3": {
+        "licenses": "ISC",
+        "repository": "git+https://github.com/npm/osenv",
+        "licenseUrl": "git+https://github.com/npm/osenv/raw/master/LICENSE",
+        "parents": "global-prefix:global-modules:resolve-dir:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "package-json@1.2.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/package-json",
+        "licenseUrl": "git+https://github.com/sindresorhus/package-json/raw/master/license",
+        "parents": "latest-version:update-notifier:nodemon:gulp-nodemon:HelpNow"
+    },
+    "pad-component@0.0.1": {
+        "licenses": "MIT*",
+        "parents": "myth:gulp-myth:HelpNow"
+    },
+    "parse-glob@3.0.4": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/parse-glob",
+        "licenseUrl": "git+https://github.com/jonschlinkert/parse-glob/raw/master/LICENSE",
+        "parents": "micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "parse-import@0.1.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/kevva/parse-import",
+        "licenseUrl": "https://github.com/kevva/parse-import",
+        "parents": "rework-import:myth:gulp-myth:HelpNow"
+    },
+    "parse-json@2.2.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/parse-json",
+        "licenseUrl": "git+https://github.com/sindresorhus/parse-json/raw/master/license",
+        "parents": "load-json-file:read-pkg:read-pkg-up:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "parseurl@1.3.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/pillarjs/parseurl",
+        "licenseUrl": "git+https://github.com/pillarjs/parseurl/raw/master/LICENSE",
+        "parents": "express:HelpNow"
+    },
+    "passport-http@0.3.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jaredhanson/passport-http",
+        "licenseUrl": "http://www.opensource.org/licenses/MIT",
+        "parents": "HelpNow"
+    },
+    "passport-jwt@2.1.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/themikenicholson/passport-jwt",
+        "licenseUrl": "git+https://github.com/themikenicholson/passport-jwt/raw/master/LICENSE",
+        "parents": "HelpNow"
+    },
+    "passport-local@1.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jaredhanson/passport-local",
+        "licenseUrl": "http://www.opensource.org/licenses/MIT",
+        "parents": "HelpNow"
+    },
+    "passport-strategy@1.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jaredhanson/passport-strategy",
+        "licenseUrl": "http://www.opensource.org/licenses/MIT",
+        "parents": "passport:HelpNow"
+    },
+    "passport@0.2.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jaredhanson/passport",
+        "licenseUrl": "https://github.com/jaredhanson/passport/raw/master/LICENSE",
+        "parents": "HelpNow"
+    },
+    "path-exists@2.1.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/path-exists",
+        "licenseUrl": "git+https://github.com/sindresorhus/path-exists/raw/master/license",
+        "parents": "find-up:read-pkg-up:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "path-is-absolute@1.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/path-is-absolute",
+        "licenseUrl": "git+https://github.com/sindresorhus/path-is-absolute/raw/master/license",
+        "parents": "chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "path-to-regexp@0.1.7": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/component/path-to-regexp",
+        "licenseUrl": "git+https://github.com/component/path-to-regexp/raw/master/LICENSE",
+        "parents": "express:HelpNow"
+    },
+    "path-type@1.1.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/path-type",
+        "licenseUrl": "git+https://github.com/sindresorhus/path-type/raw/master/license",
+        "parents": "read-pkg:read-pkg-up:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "pause-stream@0.0.11": {
+        "licenses": "MIT,Apache2",
+        "repository": "https://github.com/dominictarr/pause-stream",
+        "licenseUrl": ",",
+        "parents": "event-stream:gulp-nodemon:HelpNow"
+    },
+    "pause@0.0.1": {
+        "licenses": "UNKNOWN",
+        "parents": "passport:HelpNow"
+    },
+    "pify@2.3.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/pify",
+        "licenseUrl": "git+https://github.com/sindresorhus/pify/raw/master/license",
+        "parents": "load-json-file:read-pkg:read-pkg-up:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "pinkie-promise@2.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/floatdrop/pinkie-promise",
+        "licenseUrl": "git+https://github.com/floatdrop/pinkie-promise",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "pinkie-promise@2.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/floatdrop/pinkie-promise",
+        "licenseUrl": "git+https://github.com/floatdrop/pinkie-promise/raw/master/license",
+        "parents": "find-up:read-pkg-up:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "pinkie@2.0.4": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/floatdrop/pinkie",
+        "licenseUrl": "git+https://github.com/floatdrop/pinkie/raw/master/license",
+        "parents": "pinkie-promise:find-up:read-pkg-up:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "postcss@4.1.16": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/postcss/postcss",
+        "licenseUrl": "git+https://github.com/postcss/postcss/raw/master/LICENSE",
+        "parents": "myth:gulp-myth:HelpNow"
+    },
+    "prepend-http@1.0.4": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/prepend-http",
+        "licenseUrl": "git+https://github.com/sindresorhus/prepend-http/raw/master/license",
+        "parents": "got:package-json:latest-version:update-notifier:nodemon:gulp-nodemon:HelpNow"
+    },
+    "preserve@0.2.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jonschlinkert/preserve",
+        "licenseUrl": "https://github.com/jonschlinkert/preserve/blob/master/LICENSE-MIT",
+        "parents": "braces:micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "pretty-hrtime@1.0.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/robrich/pretty-hrtime",
+        "licenseUrl": "https://github.com/robrich/pretty-hrtime/raw/master/LICENSE",
+        "parents": "gulp:HelpNow"
+    },
+    "process-nextick-args@1.0.6": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/calvinmetcalf/process-nextick-args",
+        "licenseUrl": "git+https://github.com/calvinmetcalf/process-nextick-args/raw/master/license.md",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "process-nextick-args@1.0.7": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/calvinmetcalf/process-nextick-args",
+        "licenseUrl": "git+https://github.com/calvinmetcalf/process-nextick-args/raw/master/license.md",
+        "parents": "readable-stream:through2:gulp-util:gulp:HelpNow"
+    },
+    "proxy-addr@1.0.10": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jshttp/proxy-addr",
+        "licenseUrl": "git+https://github.com/jshttp/proxy-addr/raw/master/LICENSE",
+        "parents": "express:HelpNow"
+    },
+    "ps-tree@1.1.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/indexzero/ps-tree",
+        "licenseUrl": "git+https://github.com/indexzero/ps-tree/raw/master/LICENSE",
+        "parents": "nodemon:gulp-nodemon:HelpNow"
+    },
+    "pseudomap@1.0.2": {
+        "licenses": "ISC",
+        "repository": "git+https://github.com/isaacs/pseudomap",
+        "licenseUrl": "git+https://github.com/isaacs/pseudomap/raw/master/LICENSE",
+        "parents": "lru-cache:aws4:fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "qs@4.0.0": {
+        "licenses": "BSD-3-Clause",
+        "repository": "git+https://github.com/hapijs/qs",
+        "licenseUrl": "git+https://github.com/hapijs/qs/raw/master/LICENSE",
+        "parents": "body-parser:HelpNow"
+    },
+    "qs@6.0.2": {
+        "licenses": "BSD-3-Clause",
+        "repository": "git+https://github.com/ljharb/qs",
+        "licenseUrl": "git+https://github.com/ljharb/qs/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "qs@6.1.0": {
+        "licenses": "BSD-3-Clause",
+        "repository": "git+https://github.com/ljharb/qs",
+        "licenseUrl": "git+https://github.com/ljharb/qs/raw/master/LICENSE",
+        "parents": "request:request-promise:HelpNow"
+    },
+    "randomatic@1.1.5": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/randomatic",
+        "licenseUrl": "git+https://github.com/jonschlinkert/randomatic/raw/master/LICENSE",
+        "parents": "fill-range:expand-range:braces:micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "range-parser@1.0.3": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jshttp/range-parser",
+        "licenseUrl": "git+https://github.com/jshttp/range-parser/raw/master/LICENSE",
+        "parents": "express:HelpNow"
+    },
+    "raw-body@1.3.4": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/stream-utils/raw-body",
+        "licenseUrl": "git+https://github.com/stream-utils/raw-body/raw/master/LICENSE",
+        "parents": "express-http-proxy:HelpNow"
+    },
+    "raw-body@2.1.7": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/stream-utils/raw-body",
+        "licenseUrl": "git+https://github.com/stream-utils/raw-body/raw/master/LICENSE",
+        "parents": "body-parser:HelpNow"
+    },
+    "rc@1.1.6": {
+        "licenses": "(BSD-2-Clause OR MIT OR Apache-2.0)",
+        "repository": "git+https://github.com/dominictarr/rc",
+        "licenseUrl": "git+https://github.com/dominictarr/rc/raw/master/LICENSE.APACHE2",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "rcfinder@0.1.9": {
+        "licenses": "MIT",
+        "repository": "https://github.com/spenceralger/rcfinder",
+        "licenseUrl": "https://github.com/spenceralger/rcfinder",
+        "parents": "rcloader:gulp-jshint:HelpNow"
+    },
+    "rcloader@0.1.2": {
+        "licenses": "MIT",
+        "repository": "git+ssh://git@github.com/spenceralger/rcloader",
+        "licenseUrl": "git+ssh://git@github.com/spenceralger/rcloader",
+        "parents": "gulp-jshint:HelpNow"
+    },
+    "read-all-stream@3.1.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/floatdrop/read-all-stream",
+        "licenseUrl": "git+https://github.com/floatdrop/read-all-stream/raw/master/license",
+        "parents": "got:package-json:latest-version:update-notifier:nodemon:gulp-nodemon:HelpNow"
+    },
+    "read-file-stdin@0.2.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/ianstormtaylor/read-file-stdin",
+        "licenseUrl": "https://github.com/ianstormtaylor/read-file-stdin",
+        "parents": "myth:gulp-myth:HelpNow"
+    },
+    "read-pkg-up@1.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/read-pkg-up",
+        "licenseUrl": "git+https://github.com/sindresorhus/read-pkg-up/raw/master/license",
+        "parents": "meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "read-pkg@1.1.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/read-pkg",
+        "licenseUrl": "git+https://github.com/sindresorhus/read-pkg/raw/master/license",
+        "parents": "read-pkg-up:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "readable-stream@1.0.34": {
+        "licenses": "MIT",
+        "repository": "https://github.com/isaacs/readable-stream",
+        "licenseUrl": "https://github.com/isaacs/readable-stream/raw/master/LICENSE",
+        "parents": "through2:vinyl-fs:gulp:HelpNow"
+    },
+    "readable-stream@1.1.14": {
+        "licenses": "MIT",
+        "repository": "https://github.com/isaacs/readable-stream",
+        "licenseUrl": "https://github.com/isaacs/readable-stream/raw/master/LICENSE",
+        "parents": "duplexer2:multipipe:gulp-util:gulp:HelpNow"
+    },
+    "readable-stream@2.0.6": {
+        "licenses": "MIT",
+        "repository": "https://github.com/nodejs/readable-stream",
+        "licenseUrl": "https://github.com/nodejs/readable-stream/raw/master/LICENSE",
+        "parents": "through2:gulp-util:gulp:HelpNow"
+    },
+    "readable-stream@2.1.4": {
+        "licenses": "MIT",
+        "repository": "https://github.com/nodejs/readable-stream",
+        "licenseUrl": "https://github.com/nodejs/readable-stream/raw/master/LICENSE",
+        "parents": "readdirp:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "readdirp@2.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/thlorenz/readdirp",
+        "licenseUrl": "https://github.com/thlorenz/readdirp/raw/master/LICENSE",
+        "parents": "chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "rechoir@0.6.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/tkellen/node-rechoir",
+        "licenseUrl": "https://github.com/tkellen/node-rechoir/blob/master/LICENSE",
+        "parents": "liftoff:gulp:HelpNow"
+    },
+    "redent@1.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/redent",
+        "licenseUrl": "git+https://github.com/sindresorhus/redent/raw/master/license",
+        "parents": "meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "regex-cache@0.4.3": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/regex-cache",
+        "licenseUrl": "git+https://github.com/jonschlinkert/regex-cache/raw/master/LICENSE",
+        "parents": "micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "registry-url@3.1.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/registry-url",
+        "licenseUrl": "git+https://github.com/sindresorhus/registry-url/raw/master/license",
+        "parents": "package-json:latest-version:update-notifier:nodemon:gulp-nodemon:HelpNow"
+    },
+    "repeat-element@1.1.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jonschlinkert/repeat-element",
+        "licenseUrl": "https://github.com/jonschlinkert/repeat-element/blob/master/LICENSE",
+        "parents": "braces:micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "repeat-string@1.5.4": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/repeat-string",
+        "licenseUrl": "git+https://github.com/jonschlinkert/repeat-string/raw/master/LICENSE",
+        "parents": "fill-range:expand-range:braces:micromatch:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "repeating@1.1.3": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/repeating",
+        "licenseUrl": "git+https://github.com/sindresorhus/repeating/raw/master/license",
+        "parents": "update-notifier:nodemon:gulp-nodemon:HelpNow"
+    },
+    "repeating@2.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/repeating",
+        "licenseUrl": "git+https://github.com/sindresorhus/repeating/raw/master/license",
+        "parents": "indent-string:redent:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "replace-ext@0.0.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/wearefractal/replace-ext",
+        "licenseUrl": "http://github.com/wearefractal/replace-ext/raw/master/LICENSE",
+        "parents": "gulp-util:gulp:HelpNow"
+    },
+    "request-promise@2.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/request/request-promise",
+        "licenseUrl": "git+https://github.com/request/request-promise/raw/master/LICENSE",
+        "parents": "HelpNow"
+    },
+    "request@2.69.0": {
+        "licenses": "Apache-2.0",
+        "repository": "git+https://github.com/request/request",
+        "licenseUrl": "git+https://github.com/request/request/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "request@2.72.0": {
+        "licenses": "Apache-2.0",
+        "repository": "git+https://github.com/request/request",
+        "licenseUrl": "git+https://github.com/request/request/raw/master/LICENSE",
+        "parents": "request-promise:HelpNow"
+    },
+    "resolve-dir@0.1.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/resolve-dir",
+        "licenseUrl": "git+https://github.com/jonschlinkert/resolve-dir/raw/master/LICENSE",
+        "parents": "findup-sync:liftoff:gulp:HelpNow"
+    },
+    "resolve-url@0.2.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/lydell/resolve-url",
+        "licenseUrl": "https://github.com/lydell/resolve-url/raw/master/LICENSE",
+        "parents": "source-map-resolve:css:rework:myth:gulp-myth:HelpNow"
+    },
+    "resolve@1.1.7": {
+        "licenses": "MIT",
+        "repository": "https://github.com/substack/node-resolve",
+        "licenseUrl": "https://github.com/substack/node-resolve/raw/master/LICENSE",
+        "parents": "liftoff:gulp:HelpNow"
+    },
+    "retry-as-promised@2.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/mickhansen/retry-as-promised",
+        "licenseUrl": "git+https://github.com/mickhansen/retry-as-promised/raw/master/LICENSE",
+        "parents": "sequelize:HelpNow"
+    },
+    "rework-calc@1.1.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/reworkcss/rework-calc",
+        "licenseUrl": "git+https://github.com/reworkcss/rework-calc",
+        "parents": "myth:gulp-myth:HelpNow"
+    },
+    "rework-color-function@1.2.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/ianstormtaylor/rework-color-function",
+        "licenseUrl": "https://github.com/ianstormtaylor/rework-color-function",
+        "parents": "myth:gulp-myth:HelpNow"
+    },
+    "rework-custom-media@0.1.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/reworkcss/rework-custom-media",
+        "licenseUrl": "git+https://github.com/reworkcss/rework-custom-media",
+        "parents": "myth:gulp-myth:HelpNow"
+    },
+    "rework-font-variant@1.0.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/ianstormtaylor/rework-font-variant",
+        "licenseUrl": "https://github.com/ianstormtaylor/rework-font-variant",
+        "parents": "myth:gulp-myth:HelpNow"
+    },
+    "rework-hex-alpha@1.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/ianstormtaylor/rework-hex-alpha",
+        "licenseUrl": "https://github.com/ianstormtaylor/rework-hex-alpha",
+        "parents": "myth:gulp-myth:HelpNow"
+    },
+    "rework-import@1.2.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/reworkcss/rework-import",
+        "licenseUrl": "https://github.com/reworkcss/rework-import",
+        "parents": "myth:gulp-myth:HelpNow"
+    },
+    "rework-rebeccapurple@1.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonathanKingston/rework-rebeccapurple",
+        "licenseUrl": "git+https://github.com/jonathanKingston/rework-rebeccapurple",
+        "parents": "myth:gulp-myth:HelpNow"
+    },
+    "rework-vars@3.1.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/reworkcss/rework-vars",
+        "licenseUrl": "git+https://github.com/reworkcss/rework-vars",
+        "parents": "myth:gulp-myth:HelpNow"
+    },
+    "rework-visit@1.0.0": {
+        "licenses": "MIT",
+        "parents": "rework-calc:myth:gulp-myth:HelpNow"
+    },
+    "rework@1.0.1": {
+        "licenses": "UNKNOWN",
+        "repository": "https://github.com/reworkcss/rework",
+        "licenseUrl": "https://github.com/reworkcss/rework",
+        "parents": "myth:gulp-myth:HelpNow"
+    },
+    "rgb@0.0.1": {
+        "licenses": "MIT (http://mootools.net/license.txt)",
+        "repository": "git+https://github.com/kamicane/rgb",
+        "licenseUrl": "git+https://github.com/kamicane/rgb",
+        "parents": "rework-hex-alpha:myth:gulp-myth:HelpNow"
+    },
+    "rgb@0.1.0": {
+        "licenses": "MIT (http://mootools.net/license.txt)",
+        "repository": "git+https://github.com/kamicane/rgb",
+        "licenseUrl": "git+https://github.com/kamicane/rgb",
+        "parents": "css-color-function:rework-color-function:myth:gulp-myth:HelpNow"
+    },
+    "right-align@0.1.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jonschlinkert/right-align",
+        "licenseUrl": "https://github.com/jonschlinkert/right-align/raw/master/LICENSE",
+        "parents": "cliui:yargs:uglify-js:gulp-uglify:HelpNow"
+    },
+    "rimraf@2.5.2": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/rimraf",
+        "licenseUrl": "https://github.com/isaacs/rimraf/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "sax@1.1.5": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/sax-js",
+        "licenseUrl": "https://github.com/isaacs/sax-js/raw/master/LICENSE",
+        "parents": "aws-sdk:nodemailer-ses-transport:HelpNow"
+    },
+    "semver-diff@2.1.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/semver-diff",
+        "licenseUrl": "git+https://github.com/sindresorhus/semver-diff/raw/master/license",
+        "parents": "update-notifier:nodemon:gulp-nodemon:HelpNow"
+    },
+    "semver@4.3.6": {
+        "licenses": "ISC",
+        "repository": "https://github.com/npm/node-semver",
+        "licenseUrl": "https://github.com/npm/node-semver/raw/master/LICENSE",
+        "parents": "gulp:HelpNow"
+    },
+    "semver@5.1.0": {
+        "licenses": "ISC",
+        "repository": "git+https://github.com/npm/node-semver",
+        "licenseUrl": "git+https://github.com/npm/node-semver/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "send@0.13.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/pillarjs/send",
+        "licenseUrl": "https://github.com/pillarjs/send/raw/master/LICENSE",
+        "parents": "express:HelpNow"
+    },
+    "send@0.13.2": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/pillarjs/send",
+        "licenseUrl": "git+https://github.com/pillarjs/send/raw/master/LICENSE",
+        "parents": "serve-static:express:HelpNow"
+    },
+    "sequelize@3.23.3": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sequelize/sequelize",
+        "licenseUrl": "git+https://github.com/sequelize/sequelize/raw/master/LICENSE",
+        "parents": "HelpNow"
+    },
+    "sequencify@0.0.7": {
+        "licenses": "MIT",
+        "repository": "https://github.com/robrich/sequencify",
+        "licenseUrl": "http://github.com/robrich/sequencify/raw/master/LICENSE",
+        "parents": "orchestrator:gulp:HelpNow"
+    },
+    "serve-favicon@2.3.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/expressjs/serve-favicon",
+        "licenseUrl": "git+https://github.com/expressjs/serve-favicon/raw/master/LICENSE",
+        "parents": "HelpNow"
+    },
+    "serve-static@1.10.3": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/expressjs/serve-static",
+        "licenseUrl": "git+https://github.com/expressjs/serve-static/raw/master/LICENSE",
+        "parents": "express:HelpNow"
+    },
+    "shelljs@0.3.0": {
+        "licenses": "BSD*",
+        "repository": "https://github.com/arturadib/shelljs",
+        "licenseUrl": "https://github.com/arturadib/shelljs/raw/master/LICENSE",
+        "parents": "jshint:gulp-jshint:HelpNow"
+    },
+    "shimmer@1.1.0": {
+        "licenses": "BSD-2-Clause",
+        "repository": "git+https://github.com/othiym23/shimmer",
+        "licenseUrl": "git+https://github.com/othiym23/shimmer",
+        "parents": "sequelize:HelpNow"
+    },
+    "sigmund@1.0.1": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/sigmund",
+        "licenseUrl": "https://github.com/isaacs/sigmund/raw/master/LICENSE",
+        "parents": "minimatch:globule:gaze:glob-watcher:vinyl-fs:gulp:HelpNow"
+    },
+    "signal-exit@3.0.0": {
+        "licenses": "ISC",
+        "repository": "git+https://github.com/tapjs/signal-exit",
+        "licenseUrl": "git+https://github.com/tapjs/signal-exit/raw/master/LICENSE.txt",
+        "parents": "loud-rejection:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "slide@1.1.6": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/slide-flow-control",
+        "licenseUrl": "https://github.com/isaacs/slide-flow-control/raw/master/LICENSE",
+        "parents": "write-file-atomic:configstore:update-notifier:nodemon:gulp-nodemon:HelpNow"
+    },
+    "smart-buffer@1.0.11": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/JoshGlazebrook/smart-buffer",
+        "licenseUrl": "git+https://github.com/JoshGlazebrook/smart-buffer/raw/master/LICENSE",
+        "parents": "socks:nodemailer:HelpNow"
+    },
+    "smtp-connection@2.5.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/andris9/smtp-connection",
+        "licenseUrl": "https://github.com/andris9/smtp-connection/raw/master/LICENSE",
+        "parents": "nodemailer-direct-transport:nodemailer:HelpNow"
+    },
+    "sntp@1.0.9": {
+        "licenses": "BSD",
+        "repository": "https://github.com/hueniverse/sntp",
+        "licenseUrl": "http://github.com/hueniverse/sntp/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "socks@1.1.9": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/JoshGlazebrook/socks",
+        "licenseUrl": "git+https://github.com/JoshGlazebrook/socks/raw/master/LICENSE",
+        "parents": "nodemailer:HelpNow"
+    },
+    "source-map-resolve@0.3.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lydell/source-map-resolve",
+        "licenseUrl": "git+https://github.com/lydell/source-map-resolve",
+        "parents": "css:rework:myth:gulp-myth:HelpNow"
+    },
+    "source-map-url@0.3.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/lydell/source-map-url",
+        "licenseUrl": "git+https://github.com/lydell/source-map-url",
+        "parents": "source-map-resolve:css:rework:myth:gulp-myth:HelpNow"
+    },
+    "source-map@0.1.43": {
+        "licenses": "BSD",
+        "repository": "git+ssh://git@github.com/mozilla/source-map",
+        "licenseUrl": "http://opensource.org/licenses/BSD-3-Clause",
+        "parents": "css:rework:myth:gulp-myth:HelpNow"
+    },
+    "source-map@0.4.4": {
+        "licenses": "BSD-3-Clause",
+        "repository": "git+ssh://git@github.com/mozilla/source-map",
+        "licenseUrl": "git+ssh://git@github.com/mozilla/source-map",
+        "parents": "postcss:myth:gulp-myth:HelpNow"
+    },
+    "source-map@0.5.6": {
+        "licenses": "BSD-3-Clause",
+        "repository": "git+ssh://git@github.com/mozilla/source-map",
+        "licenseUrl": "git+ssh://git@github.com/mozilla/source-map/raw/master/LICENSE",
+        "parents": "concat-with-sourcemaps:gulp-concat:HelpNow"
+    },
+    "sparkles@1.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/phated/sparkles",
+        "licenseUrl": "git+https://github.com/phated/sparkles/raw/master/LICENSE",
+        "parents": "glogg:gulplog:gulp-util:gulp:HelpNow"
+    },
+    "spdx-correct@1.0.2": {
+        "licenses": "Apache-2.0",
+        "repository": "git+https://github.com/kemitchell/spdx-correct.js",
+        "licenseUrl": "git+https://github.com/kemitchell/spdx-correct.js/raw/master/LICENSE",
+        "parents": "validate-npm-package-license:normalize-package-data:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "spdx-exceptions@1.0.4": {
+        "licenses": "CC-BY-3.0",
+        "repository": "git+https://github.com/kemitchell/spdx-exceptions.json",
+        "licenseUrl": "git+https://github.com/kemitchell/spdx-exceptions.json",
+        "parents": "spdx-expression-parse:validate-npm-package-license:normalize-package-data:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "spdx-expression-parse@1.0.2": {
+        "licenses": "(MIT AND CC-BY-3.0)",
+        "repository": "git+https://github.com/kemitchell/spdx-expression-parse.js",
+        "licenseUrl": "git+https://github.com/kemitchell/spdx-expression-parse.js/raw/master/LICENSE",
+        "parents": "validate-npm-package-license:normalize-package-data:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "spdx-license-ids@1.2.1": {
+        "licenses": "Unlicense",
+        "repository": "git+https://github.com/shinnn/spdx-license-ids",
+        "licenseUrl": "git+https://github.com/shinnn/spdx-license-ids/raw/master/LICENSE",
+        "parents": "spdx-correct:validate-npm-package-license:normalize-package-data:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "split@0.3.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/dominictarr/split",
+        "licenseUrl": "https://github.com/dominictarr/split/raw/master/LICENCE",
+        "parents": "event-stream:gulp-nodemon:HelpNow"
+    },
+    "sqlstring@2.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/mysqljs/sqlstring",
+        "licenseUrl": "git+https://github.com/mysqljs/sqlstring/raw/master/LICENSE",
+        "parents": "mysql:HelpNow"
+    },
+    "sshpk@1.7.4": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/arekinath/node-sshpk",
+        "licenseUrl": "git+https://github.com/arekinath/node-sshpk/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "statuses@1.2.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jshttp/statuses",
+        "licenseUrl": "git+https://github.com/jshttp/statuses/raw/master/LICENSE",
+        "parents": "send:express:HelpNow"
+    },
+    "statuses@1.3.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jshttp/statuses",
+        "licenseUrl": "git+https://github.com/jshttp/statuses/raw/master/LICENSE",
+        "parents": "http-errors:body-parser:HelpNow"
+    },
+    "stream-combiner@0.0.4": {
+        "licenses": "MIT",
+        "repository": "https://github.com/dominictarr/stream-combiner",
+        "licenseUrl": "https://github.com/dominictarr/stream-combiner/raw/master/LICENSE",
+        "parents": "event-stream:gulp-nodemon:HelpNow"
+    },
+    "stream-consume@0.1.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/aroneous/stream-consume",
+        "licenseUrl": "git+https://github.com/aroneous/stream-consume",
+        "parents": "orchestrator:gulp:HelpNow"
+    },
+    "string-length@1.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/string-length",
+        "licenseUrl": "git+https://github.com/sindresorhus/string-length/raw/master/license",
+        "parents": "update-notifier:nodemon:gulp-nodemon:HelpNow"
+    },
+    "string_decoder@0.10.31": {
+        "licenses": "MIT",
+        "repository": "https://github.com/rvagg/string_decoder",
+        "licenseUrl": "https://github.com/rvagg/string_decoder/raw/master/LICENSE",
+        "parents": "readable-stream:duplexer2:multipipe:gulp-util:gulp:HelpNow"
+    },
+    "stringstream@0.0.5": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/mhart/StringStream",
+        "licenseUrl": "git+https://github.com/mhart/StringStream/raw/master/LICENSE.txt",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "strip-ansi@3.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/chalk/strip-ansi",
+        "licenseUrl": "git+https://github.com/chalk/strip-ansi/raw/master/license",
+        "parents": "chalk:gulp:HelpNow"
+    },
+    "strip-bom@1.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/sindresorhus/strip-bom",
+        "licenseUrl": "https://github.com/sindresorhus/strip-bom",
+        "parents": "vinyl-fs:gulp:HelpNow"
+    },
+    "strip-bom@2.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/strip-bom",
+        "licenseUrl": "git+https://github.com/sindresorhus/strip-bom/raw/master/license",
+        "parents": "load-json-file:read-pkg:read-pkg-up:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "strip-indent@1.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/strip-indent",
+        "licenseUrl": "git+https://github.com/sindresorhus/strip-indent/raw/master/license",
+        "parents": "redent:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "strip-json-comments@1.0.4": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/strip-json-comments",
+        "licenseUrl": "git+https://github.com/sindresorhus/strip-json-comments/raw/master/license",
+        "parents": "jshint:gulp-jshint:HelpNow"
+    },
+    "supports-color@2.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/chalk/supports-color",
+        "licenseUrl": "git+https://github.com/chalk/supports-color/raw/master/license",
+        "parents": "chalk:gulp:HelpNow"
+    },
+    "tar-pack@3.1.3": {
+        "licenses": "BSD-2-Clause",
+        "repository": "git+https://github.com/ForbesLindesay/tar-pack",
+        "licenseUrl": "git+https://github.com/ForbesLindesay/tar-pack/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "tar@2.2.1": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/node-tar",
+        "licenseUrl": "https://github.com/isaacs/node-tar/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "terraformer-wkt-parser@1.1.0": {
+        "licenses": "MIT",
+        "repository": "git+ssh://git@github.com/Esri/terraformer-wkt-parser",
+        "licenseUrl": "git+ssh://git@github.com/Esri/terraformer-wkt-parser/raw/master/LICENSE",
+        "parents": "sequelize:HelpNow"
+    },
+    "terraformer@1.0.5": {
+        "licenses": "MIT",
+        "repository": "https://github.com/esri/terraformer",
+        "licenseUrl": "https://github.com/esri/terraformer/raw/master/LICENSE",
+        "parents": "terraformer-wkt-parser:sequelize:HelpNow"
+    },
+    "through2@0.6.5": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/rvagg/through2",
+        "licenseUrl": "git+https://github.com/rvagg/through2/raw/master/LICENSE",
+        "parents": "vinyl-fs:gulp:HelpNow"
+    },
+    "through2@2.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/rvagg/through2",
+        "licenseUrl": "git+https://github.com/rvagg/through2/raw/master/LICENSE",
+        "parents": "gulp-util:gulp:HelpNow"
+    },
+    "through@2.3.8": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/dominictarr/through",
+        "licenseUrl": "git+https://github.com/dominictarr/through/raw/master/LICENSE.APACHE2",
+        "parents": "event-stream:gulp-nodemon:HelpNow"
+    },
+    "tildify@1.2.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/tildify",
+        "licenseUrl": "git+https://github.com/sindresorhus/tildify/raw/master/license",
+        "parents": "gulp:HelpNow"
+    },
+    "time-stamp@1.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/time-stamp",
+        "licenseUrl": "git+https://github.com/jonschlinkert/time-stamp/raw/master/LICENSE",
+        "parents": "fancy-log:gulp-util:gulp:HelpNow"
+    },
+    "timed-out@2.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/floatdrop/timed-out",
+        "licenseUrl": "git+https://github.com/floatdrop/timed-out",
+        "parents": "got:package-json:latest-version:update-notifier:nodemon:gulp-nodemon:HelpNow"
+    },
+    "to-no-case@0.1.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/ianstormtaylor/to-no-case",
+        "licenseUrl": "https://github.com/ianstormtaylor/to-no-case",
+        "parents": "to-space-case:to-slug-case:myth:gulp-myth:HelpNow"
+    },
+    "to-no-case@0.1.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/ianstormtaylor/to-no-case",
+        "licenseUrl": "https://github.com/ianstormtaylor/to-no-case",
+        "parents": "to-space-case:myth:gulp-myth:HelpNow"
+    },
+    "to-slug-case@0.1.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/ianstormtaylor/to-slug-case",
+        "licenseUrl": "https://github.com/ianstormtaylor/to-slug-case",
+        "parents": "myth:gulp-myth:HelpNow"
+    },
+    "to-space-case@0.1.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/ianstormtaylor/to-space-case",
+        "licenseUrl": "https://github.com/ianstormtaylor/to-space-case",
+        "parents": "to-slug-case:myth:gulp-myth:HelpNow"
+    },
+    "to-space-case@0.1.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/ianstormtaylor/to-space-case",
+        "licenseUrl": "https://github.com/ianstormtaylor/to-space-case",
+        "parents": "myth:gulp-myth:HelpNow"
+    },
+    "toposort-class@1.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/gustavohenke/toposort",
+        "licenseUrl": "git+https://github.com/gustavohenke/toposort/raw/master/LICENSE",
+        "parents": "sequelize:HelpNow"
+    },
+    "touch@1.0.0": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/node-touch",
+        "licenseUrl": "https://github.com/isaacs/node-touch/raw/master/LICENSE",
+        "parents": "nodemon:gulp-nodemon:HelpNow"
+    },
+    "tough-cookie@2.2.2": {
+        "licenses": "BSD-3-Clause",
+        "repository": "https://github.com/SalesforceEng/tough-cookie",
+        "licenseUrl": "https://github.com/SalesforceEng/tough-cookie",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "trim-newlines@1.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/trim-newlines",
+        "licenseUrl": "git+https://github.com/sindresorhus/trim-newlines/raw/master/license",
+        "parents": "meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "tunnel-agent@0.4.2": {
+        "licenses": "Apache-2.0",
+        "repository": "git+https://github.com/mikeal/tunnel-agent",
+        "licenseUrl": "git+https://github.com/mikeal/tunnel-agent/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "tunnel-agent@0.4.3": {
+        "licenses": "Apache-2.0",
+        "repository": "git+https://github.com/mikeal/tunnel-agent",
+        "licenseUrl": "git+https://github.com/mikeal/tunnel-agent/raw/master/LICENSE",
+        "parents": "request:request-promise:HelpNow"
+    },
+    "tweetnacl@0.14.3": {
+        "licenses": "SEE LICENSE IN COPYING.txt",
+        "repository": "git+https://github.com/dchest/tweetnacl-js",
+        "licenseUrl": "git+https://github.com/dchest/tweetnacl-js",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "twitter@1.3.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/desmondmorris/node-twitter",
+        "licenseUrl": "git+https://github.com/desmondmorris/node-twitter/raw/master/LICENSE.md",
+        "parents": "HelpNow"
+    },
+    "type-is@1.6.13": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jshttp/type-is",
+        "licenseUrl": "git+https://github.com/jshttp/type-is/raw/master/LICENSE",
+        "parents": "body-parser:HelpNow"
+    },
+    "typedarray@0.0.6": {
+        "licenses": "MIT",
+        "repository": "https://github.com/substack/typedarray",
+        "licenseUrl": "https://github.com/substack/typedarray/raw/master/LICENSE",
+        "parents": "concat-stream:base64url:jws:jsonwebtoken:passport-jwt:HelpNow"
+    },
+    "uglify-js@2.6.2": {
+        "licenses": "BSD-2-Clause",
+        "repository": "git+https://github.com/mishoo/UglifyJS2",
+        "licenseUrl": "git+https://github.com/mishoo/UglifyJS2/raw/master/LICENSE",
+        "parents": "gulp-uglify:HelpNow"
+    },
+    "uglify-save-license@0.4.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/shinnn/uglify-save-license",
+        "licenseUrl": "https://github.com/shinnn/uglify-save-license/blob/master/LICENSE",
+        "parents": "gulp-uglify:HelpNow"
+    },
+    "uglify-to-browserify@1.0.2": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/ForbesLindesay/uglify-to-browserify",
+        "licenseUrl": "git+https://github.com/ForbesLindesay/uglify-to-browserify/raw/master/LICENSE",
+        "parents": "uglify-js:gulp-uglify:HelpNow"
+    },
+    "uid-number@0.0.6": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/uid-number",
+        "licenseUrl": "https://github.com/isaacs/uid-number/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "undefsafe@0.0.3": {
+        "licenses": "MIT / http://rem.mit-license.org",
+        "repository": "https://github.com/remy/undefsafe",
+        "licenseUrl": "https://github.com/remy/undefsafe",
+        "parents": "nodemon:gulp-nodemon:HelpNow"
+    },
+    "underscore@1.4.2": {
+        "licenses": "UNKNOWN",
+        "repository": "https://github.com/documentcloud/underscore",
+        "licenseUrl": "https://github.com/documentcloud/underscore/raw/master/LICENSE",
+        "parents": "node-kmeans:HelpNow"
+    },
+    "underscore@1.7.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jashkenas/underscore",
+        "licenseUrl": "https://raw.github.com/jashkenas/underscore/master/LICENSE",
+        "parents": "httpntlm:smtp-connection:nodemailer-direct-transport:nodemailer:HelpNow"
+    },
+    "unique-stream@1.0.0": {
+        "licenses": "BSD",
+        "repository": "git+https://github.com/eugeneware/unique-stream",
+        "licenseUrl": "git+https://github.com/eugeneware/unique-stream/raw/master/LICENSE",
+        "parents": "glob-stream:vinyl-fs:gulp:HelpNow"
+    },
+    "unpipe@1.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/stream-utils/unpipe",
+        "licenseUrl": "git+https://github.com/stream-utils/unpipe/raw/master/LICENSE",
+        "parents": "raw-body:body-parser:HelpNow"
+    },
+    "update-notifier@0.5.0": {
+        "licenses": "BSD-2-Clause",
+        "repository": "git+https://github.com/yeoman/update-notifier",
+        "licenseUrl": "git+https://github.com/yeoman/update-notifier",
+        "parents": "nodemon:gulp-nodemon:HelpNow"
+    },
+    "urix@0.1.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/lydell/urix",
+        "licenseUrl": "https://github.com/lydell/urix/raw/master/LICENSE",
+        "parents": "css:rework:myth:gulp-myth:HelpNow"
+    },
+    "user-home@1.1.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/user-home",
+        "licenseUrl": "git+https://github.com/sindresorhus/user-home/raw/master/license",
+        "parents": "v8flags:gulp:HelpNow"
+    },
+    "util-deprecate@1.0.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/TooTallNate/util-deprecate",
+        "licenseUrl": "https://github.com/TooTallNate/util-deprecate/raw/master/LICENSE",
+        "parents": "readable-stream:through2:gulp-util:gulp:HelpNow"
+    },
+    "utils-merge@1.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jaredhanson/utils-merge",
+        "licenseUrl": "http://www.opensource.org/licenses/MIT",
+        "parents": "express:HelpNow"
+    },
+    "uuid@2.0.2": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/shtylman/node-uuid",
+        "licenseUrl": "git+https://github.com/shtylman/node-uuid/raw/master/LICENSE.md",
+        "parents": "configstore:update-notifier:nodemon:gulp-nodemon:HelpNow"
+    },
+    "v8flags@2.0.11": {
+        "licenses": "MIT",
+        "repository": "https://github.com/tkellen/node-v8flags",
+        "licenseUrl": "https://github.com/tkellen/node-v8flags/blob/master/LICENSE",
+        "parents": "gulp:HelpNow"
+    },
+    "validate-npm-package-license@3.0.1": {
+        "licenses": "Apache-2.0",
+        "repository": "git+https://github.com/kemitchell/validate-npm-package-license.js",
+        "licenseUrl": "git+https://github.com/kemitchell/validate-npm-package-license.js/raw/master/LICENSE",
+        "parents": "normalize-package-data:meow:dateformat:gulp-util:gulp:HelpNow"
+    },
+    "validator@5.4.0": {
+        "licenses": "MIT",
+        "repository": "git+ssh://git@github.com/chriso/validator.js",
+        "licenseUrl": "git+ssh://git@github.com/chriso/validator.js/raw/master/LICENSE",
+        "parents": "sequelize:HelpNow"
+    },
+    "vary@1.0.1": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jshttp/vary",
+        "licenseUrl": "git+https://github.com/jshttp/vary/raw/master/LICENSE",
+        "parents": "express:HelpNow"
+    },
+    "verror@1.3.6": {
+        "licenses": "UNKNOWN",
+        "repository": "https://github.com/davepacheco/node-verror",
+        "licenseUrl": "https://github.com/davepacheco/node-verror/raw/master/LICENSE",
+        "parents": "fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "vinyl-fs@0.3.14": {
+        "licenses": "MIT",
+        "repository": "https://github.com/wearefractal/vinyl-fs",
+        "licenseUrl": "http://github.com/wearefractal/vinyl-fs/raw/master/LICENSE",
+        "parents": "gulp:HelpNow"
+    },
+    "vinyl-sourcemaps-apply@0.2.1": {
+        "licenses": "ISC",
+        "repository": "https://github.com/floridoo/vinyl-sourcemaps-apply",
+        "licenseUrl": "https://github.com/floridoo/vinyl-sourcemaps-apply",
+        "parents": "gulp-uglify:HelpNow"
+    },
+    "vinyl@0.4.6": {
+        "licenses": "MIT",
+        "repository": "https://github.com/wearefractal/vinyl",
+        "licenseUrl": "http://github.com/wearefractal/vinyl/raw/master/LICENSE",
+        "parents": "vinyl-fs:gulp:HelpNow"
+    },
+    "vinyl@0.5.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/wearefractal/vinyl",
+        "licenseUrl": "https://github.com/wearefractal/vinyl/raw/master/LICENSE",
+        "parents": "gulp-util:gulp:HelpNow"
+    },
+    "which@1.2.10": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/node-which",
+        "licenseUrl": "https://github.com/isaacs/node-which/raw/master/LICENSE",
+        "parents": "global-prefix:global-modules:resolve-dir:findup-sync:liftoff:gulp:HelpNow"
+    },
+    "window-size@0.1.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/jonschlinkert/window-size",
+        "licenseUrl": "https://github.com/jonschlinkert/window-size/blob/master/LICENSE-MIT",
+        "parents": "yargs:uglify-js:gulp-uglify:HelpNow"
+    },
+    "wkx@0.2.0": {
+        "licenses": "MIT",
+        "repository": "git+ssh://git@github.com/cschwarz/wkx",
+        "licenseUrl": "git+ssh://git@github.com/cschwarz/wkx/raw/master/LICENSE.txt",
+        "parents": "sequelize:HelpNow"
+    },
+    "wordwrap@0.0.2": {
+        "licenses": "MIT/X11",
+        "repository": "https://github.com/substack/node-wordwrap",
+        "licenseUrl": "https://github.com/substack/node-wordwrap",
+        "parents": "cliui:yargs:uglify-js:gulp-uglify:HelpNow"
+    },
+    "wrappy@1.0.1": {
+        "licenses": "ISC",
+        "repository": "git+https://github.com/npm/wrappy",
+        "licenseUrl": "git+https://github.com/npm/wrappy/raw/master/LICENSE",
+        "parents": "inflight:glob:rimraf:fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "wrappy@1.0.2": {
+        "licenses": "ISC",
+        "repository": "git+https://github.com/npm/wrappy",
+        "licenseUrl": "git+https://github.com/npm/wrappy/raw/master/LICENSE",
+        "parents": "once:end-of-stream:orchestrator:gulp:HelpNow"
+    },
+    "write-file-atomic@1.1.4": {
+        "licenses": "ISC",
+        "repository": "git+ssh://git@github.com/iarna/write-file-atomic",
+        "licenseUrl": "git+ssh://git@github.com/iarna/write-file-atomic/raw/master/LICENSE",
+        "parents": "configstore:update-notifier:nodemon:gulp-nodemon:HelpNow"
+    },
+    "write-file-stdout@0.0.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/ianstormtaylor/write-file-stdout",
+        "licenseUrl": "https://github.com/ianstormtaylor/write-file-stdout",
+        "parents": "myth:gulp-myth:HelpNow"
+    },
+    "xdg-basedir@2.0.0": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/sindresorhus/xdg-basedir",
+        "licenseUrl": "git+https://github.com/sindresorhus/xdg-basedir/raw/master/license",
+        "parents": "configstore:update-notifier:nodemon:gulp-nodemon:HelpNow"
+    },
+    "xml2js@0.4.15": {
+        "licenses": "MIT",
+        "repository": "git+https://github.com/Leonidas-from-XIV/node-xml2js",
+        "licenseUrl": "git+https://github.com/Leonidas-from-XIV/node-xml2js/raw/master/LICENSE",
+        "parents": "aws-sdk:nodemailer-ses-transport:HelpNow"
+    },
+    "xmlbuilder@2.6.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/oozcitak/xmlbuilder-js",
+        "licenseUrl": "https://github.com/oozcitak/xmlbuilder-js/raw/master/LICENSE",
+        "parents": "aws-sdk:nodemailer-ses-transport:HelpNow"
+    },
+    "xtend@4.0.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/Raynos/xtend",
+        "licenseUrl": "https://github.com/Raynos/xtend/raw/master/LICENCE",
+        "parents": "through2:gulp-util:gulp:HelpNow"
+    },
+    "yallist@2.0.0": {
+        "licenses": "ISC",
+        "repository": "git+https://github.com/isaacs/yallist",
+        "licenseUrl": "git+https://github.com/isaacs/yallist/raw/master/LICENSE",
+        "parents": "lru-cache:aws4:fsevents:chokidar:nodemon:gulp-nodemon:HelpNow"
+    },
+    "yargs@3.10.0": {
+        "licenses": "MIT",
+        "repository": "git+ssh://git@github.com/bcoe/yargs",
+        "licenseUrl": "git+ssh://git@github.com/bcoe/yargs/raw/master/LICENSE",
+        "parents": "uglify-js:gulp-uglify:HelpNow"
+    }
+}
