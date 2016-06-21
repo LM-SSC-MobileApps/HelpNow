@@ -7,8 +7,8 @@ module.exports.findNearestDistCenters = function(allDistCenters, location) {
 
 function callRoutingService(serviceQuery) {
 	//var routingBaseUrl = "https://router.project-osrm.org/";
-	//var routingBaseUrl = "http://ec2-52-196-82-173.ap-northeast-1.compute.amazonaws.com/";
-	var routingBaseUrl = "http://172.31.17.32/";
+	var routingBaseUrl = "http://ec2-52-196-82-173.ap-northeast-1.compute.amazonaws.com/";
+	//var routingBaseUrl = "http://172.31.17.32/";
 	var requestOptions = {
 		uri: routingBaseUrl + serviceQuery,
 		rejectUnauthorized: false,
