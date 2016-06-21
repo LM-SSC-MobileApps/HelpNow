@@ -1,7 +1,7 @@
 //this will set the database environemnt in the config.json file
 
 var express = require('express');
-var session = require('express-session');
+// var session = require('express-session');
 var path = require('path');
 var logger = require('morgan');
 var mysql = require('mysql');
@@ -27,14 +27,14 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 //for creating the session availability
-app.use(
-    session({
-        secret: 'H3LbN0M_LM',
-        resave: false,
-        saveUninitialized: false,
-        cookie: { maxAge: 600000 }  //max cookie age is 60 minutes
-    })
-);
+// app.use(
+//     session({
+//         secret: 'H3LbN0M_LM',
+//         resave: false,
+//         saveUninitialized: false,
+//         cookie: { maxAge: 600000 }  //max cookie age is 60 minutes
+//     })
+// );
 
 // Setup for authentication (must be after all body parsers, cookie parsers and session parsers)
 var auth = require('./auth');

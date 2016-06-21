@@ -43,14 +43,7 @@ var routes = function(){
 
                                 var token = jwt.compact();
 
-                                // models.AuthToken.create({
-                                //     Value:token,
-                                //     Username:accounts[0].Username
-                                // });
-
                                 res.cookie("cookie.helpnowmap.org", token);
-                                req.session.accountid =  accounts[0].AccountID;
-                                req.session.organizationid =  accounts[0].OrganizationID;
                                 res.statusCode = 200;
                                 res.send(
                                     {
@@ -106,11 +99,6 @@ var routes = function(){
                             var jwt = nJwt.create(claims, signingKey);
 
                             var token = jwt.compact();
-
-                            // models.AuthToken.create({
-                            //     Value:token,
-                            //     APIKey:org.APIKey
-                            // });
 
                             res.statusCode = 200;
                             res.send(
