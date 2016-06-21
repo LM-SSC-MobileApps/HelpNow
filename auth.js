@@ -236,7 +236,7 @@ function setupJWTAuthentication(app) {
     passport.use('jwt-auth-api', new jwtStrategy(opts, function(req, jwt_payload, done) {
 
         // Get authorization header.
-        var auth = authheader.parse(req.get('authorization'));
+        // var auth = authheader.parse(req.get('authorization'));
 
         // models.AuthToken.Find(
         //     {
