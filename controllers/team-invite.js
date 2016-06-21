@@ -5,24 +5,33 @@
 angular.module("helpNow").controller("TeamInviteCtrl", ["$scope", "$resource", "$routeParams", "Invitation", "$http", "$location", "$uibModal", function ($scope, $resource, $routeParams, Invitation, $http, $location, $uibModal) {
 
     $scope.newInvite = new Invitation();
-
-    //TODO: Verify user is logged in before allowing submit
     $scope.newInvite.OrganizationID = $scope.currentOrg.OrganizationID;
-    console.log("$scope.currentOrg.OrganizationID" + $scope.currentOrg.OrganizationID);
-    //$scope.newInvite.OrganizationID = 1;
-
-
      $scope.sendInvite = function (invitation) {
-      data= Invitation.save(invitation);
-         
-      $http.post('/postemail', $scope.invite).success(function (data, status,headers,config){
-          $scope.confirmEmail(invitation);
-      }).error(function (data, status,headers,config) {
+     Invitation.save(invitation, function (data) {
+         $scope.inviteResponse = angular.fromJson(data.json[0]);
+        console.log("inviteResponse.InviteRequestID: " + $scope.inviteResponse.InviteRequestID )
+         console.log("inviteResponse.Email: " + $scope.inviteResponse.Email )
+         var postdata = 'email=' +  $scope.inviteResponse.Email +  '&' + 'InviteRequestID=' +  $scope.inviteResponse.InviteRequestID;
+         var webCall = $http({
+             method: 'POST',
+             url: '/postemail',
+             async: true,
+             headers: {
+                 'Content-Type': 'application/x-www-form-urlencoded'
+             },
+             data: postdata
+         });
 
-      });
+         webCall.then(function (response) {});
+         $scope.confirmEmail(invitation);
+
+     })
+
+
 
 
     };
+
 
 
     $scope.confirmEmail = function (invitation) {
