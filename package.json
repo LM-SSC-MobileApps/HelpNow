@@ -1,8 +1,8 @@
 {
-  "name": "HelpNowAPI",
+  "name": "HelpNow",
   "version": "1.0.0",
   "private": true,
-  "description": "RESTful API web service for the HelpNow app",
+  "description": "The HelpNow web app: Supporting better, faster disaster response.",
   "apidoc": {
     "name": "HelpNow API",
     "description": "RESTful API web service for the HelpNow app",
