@@ -22,6 +22,8 @@ var routes = function () {
                 sessionToken: ""
             })));
 
+        //console.log('req.body.InviteID : ' + req.body.InviteID);
+
             var mailOptions = {
                 from: "HelpNowMap.com  <invite@helpnowmap.com>", // sender address
                 to: req.body.email , // list of receivers
