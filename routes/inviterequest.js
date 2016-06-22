@@ -1,7 +1,13 @@
 
 var models  = require('../models'),
     express = require('express'),
-    passport = require('passport');
+    passport = require('passport'),
+    nodemailer = require('nodemailer'),
+    sesTransport = require('nodemailer-ses-transport');
+
+var env       = process.env.NODE_ENV || 'aws-development';
+var config    = require(__dirname + '/../config/config.json')[env];
+var sesconfig    = require(__dirname + '/../config/ses_secret.json');
 
 
 var routes = function(){
@@ -166,22 +172,61 @@ var routes = function(){
                     }
 
                     models.InviteRequest.create(invite).then(function(result) {
-                            models.InviteRequest.findAll(
+                            models.InviteRequest.find(
                                 {
                                     where: {
                                         InviteRequestID: result.InviteRequestID
                                     }
                                 }
                             ).then(function(inviteRequest){
-                                res.statusCode = 200;
-                                res.send(
-                                    {
-                                        result: 'success',
-                                        err:    '',
-                                        json:  inviteRequest,
-                                        length: inviteRequest.length
+                                
+                                //send the email
+                                var transport = nodemailer.createTransport((sesTransport({
+                                    accessKeyId:  sesconfig.AccessKeyId,
+                                    secretAccessKey:  sesconfig.SecretAccessKey,
+                                    region: config.ses_region,
+                                    httpOptions: "",
+                                    rateLimit: "5",
+                                    sessionToken: ""
+                                })));
+
+                                console.log("email: " + account.Email);
+                                console.log("InviteID: " + inviteRequest.InviteID);
+                                var mailOptions = {
+                                    from: "HelpNowMap.com  <invite@helpnowmap.com>", // sender address
+                                    to: account.Email, // list of receivers
+                                    subject: "Password Reset from HelpNowMap.com", // Subject line
+                                    //text: "Test from AWS ", // plaintext body
+                                    html: "Please click on link to reset your password:  http://" + config.ses_host_name + "/#/password_reset/" + account.AccountID + "/" + inviteRequest.InviteID
+                                };
+
+                                console.log('Sending Mail');
+
+                                // send mail with defined transport object
+                                transport.sendMail(mailOptions, function (error, response) {
+                                    if (error) {
+                                        console.log('Error occurred');
+                                        console.log(error);
+                                        res.statusCode = 400;
+                                        res.send({
+                                            result: 'error',
+                                            err: error.message
+                                        });
+                                    } else {
+                                        console.log("Message sent: " + response.message);
+                                        res.statusCode = 200;
+                                        res.send(
+                                            {
+                                                result: 'success',
+                                                err:    '',
+                                                json:  true,
+                                            }
+                                        );
                                     }
-                                );
+                                    // if you don't want to use this transport object anymore, uncomment following line
+                                    transport.close(); // shut down the connection pool, no more messages
+                                });
+
                             })
                         }
                     ).catch(function (err) {
@@ -199,7 +244,7 @@ var routes = function(){
                         {
                             result: 'success',
                             err:    'email does not exist',
-                            json:  '',
+                            json:  false,
                             length: 0
                         }
                     );
