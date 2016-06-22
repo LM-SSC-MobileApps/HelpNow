@@ -127,7 +127,7 @@ var routes = function(){
   .post('/', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.InviteRequest.create(req.body)
     .then(function(result) {
-        models.InviteRequest.findAll(
+        models.InviteRequest.find(
           {
             where: {
               InviteRequestID: result.InviteRequestID
@@ -145,10 +145,10 @@ var routes = function(){
 
             var mailOptions = {
                 from: "HelpNowMap.com  <invite@helpnowmap.com>", // sender address
-                to: req.body.Email , // list of receivers
+                to: inviteRequest.Email , // list of receivers
                 subject: "Registration Invitation from HelpNowMap.com", // Subject line
                 //text: "Test from AWS ", // plaintext body
-                html: "Please click on link to register:  https://" + config.ses_host_name + "/#/reg_account/"   + req.body.InviteID
+                html: "Please click on link to register:  https://" + config.ses_host_name + "/#/reg_account/"   + inviteRequest.InviteID
             };
 
             // send mail with defined transport object
