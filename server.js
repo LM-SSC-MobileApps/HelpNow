@@ -82,7 +82,7 @@ var mapLayerRouter = require('./routes/maplayer')();
 var mapLayerTypeRouter = require('./routes/maplayertype')();
 var hashValuesRouter = require('./routes/hashvalues')();
 var authRouter = require('./routes/authenticate')();
-var postEmailRouter = require('./routes/postemail')();
+// var postEmailRouter = require('./routes/postemail')();
 
 
 app.use('/api/account', accountRouter);
@@ -117,7 +117,7 @@ app.use('/api/maplayer', mapLayerRouter);
 app.use('/api/maplayertype', mapLayerTypeRouter);
 app.use('/hashvalues', hashValuesRouter);
 app.use('/authenticate', authRouter);
-app.use('/postemail', postEmailRouter);
+// app.use('/postemail', postEmailRouter);
 
 //set the express.static locations to serve up the static files
 app.use(express.static('views'));

@@ -123,7 +123,7 @@ var routes = function(){
      });
     }
   )
-  //insert into InviteRequest
+  //insert into InviteRequest & send email
   .post('/', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
     models.InviteRequest.create(req.body)
     .then(function(result) {
@@ -134,15 +134,47 @@ var routes = function(){
             }
           }
         ).then(function(inviteRequest){
-          res.statusCode = 200;
-          res.send(
-            {
-              result: 'success',
-              err:    '',
-              json:  inviteRequest,
-              length: inviteRequest.length
-            }
-          );
+            var transport = nodemailer.createTransport((sesTransport({
+                accessKeyId:  sesconfig.AccessKeyId,
+                secretAccessKey:  sesconfig.SecretAccessKey,
+                region: config.ses_region,
+                httpOptions: "",
+                rateLimit: "5",
+                sessionToken: ""
+            })));
+
+            var mailOptions = {
+                from: "HelpNowMap.com  <invite@helpnowmap.com>", // sender address
+                to: req.body.email , // list of receivers
+                subject: "Registration Invitation from HelpNowMap.com", // Subject line
+                //text: "Test from AWS ", // plaintext body
+                html: "Please click on link to register:  https://" + config.ses_host_name + "/#/reg_account/"   + req.body.InviteID
+            };
+
+            // send mail with defined transport object
+            transport.sendMail(mailOptions, function (error, response) {
+                if (error) {
+                    console.log('Error occurred');
+                    console.log(error);
+                    res.statusCode = 400;
+                    res.send({
+                        result: 'error',
+                        err: error.message
+                    });
+                } else {
+                    console.log("Message sent: " + response.message);
+                    res.statusCode = 200;
+                    res.send(
+                        {
+                            result: 'success',
+                            err:    '',
+                            json:  true
+                        }
+                    );
+                }
+                // if you don't want to use this transport object anymore, uncomment following line
+                transport.close(); // shut down the connection pool, no more messages
+            });
         })
       }
      ).catch(function (err) {
@@ -179,8 +211,6 @@ var routes = function(){
                                     }
                                 }
                             ).then(function(inviteRequest){
-                                
-                                //send the email
                                 var transport = nodemailer.createTransport((sesTransport({
                                     accessKeyId:  sesconfig.AccessKeyId,
                                     secretAccessKey:  sesconfig.SecretAccessKey,
@@ -190,15 +220,12 @@ var routes = function(){
                                     sessionToken: ""
                                 })));
 
-                                console.log("email: " + account.Email);
-                                console.log("InviteID: " + inviteRequest.InviteID);
-                                var resetURL = "http://" + config.ses_host_name + "/#/password_reset/" + account.AccountID + "/" + inviteRequest.InviteID;
                                 var mailOptions = {
                                     from: "HelpNowMap.com  <invite@helpnowmap.com>", // sender address
                                     to: account.Email, // list of receivers
-                                    subject: req.body.Subject, // Subject line
+                                    subject: "Password Reset from HelpNowMap.com for "+account.Username, // Subject line
                                     //text: "Test from AWS ", // plaintext body
-                                    html: req.body.Content+" "+account.Username+" "+resetURL
+                                    html: "Please click on link to update the password for account: "+account.Username+"    https://" + config.ses_host_name + "/#/password_reset/" + account.AccountID + "/" + inviteRequest.InviteID
                                 };
 
                                 console.log('Sending Mail');
