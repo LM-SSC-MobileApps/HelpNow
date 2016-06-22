@@ -225,7 +225,7 @@ var routes = function(){
                                     to: account.Email, // list of receivers
                                     subject: "Password Reset from HelpNowMap.com for "+account.Username, // Subject line
                                     //text: "Test from AWS ", // plaintext body
-                                    html: "Please click on link to update the password for username: <b>"+account.Username+"</><br/><br/>    https://" + config.ses_host_name + "/#/password_reset/" + account.AccountID + "/" + inviteRequest.InviteID
+                                    html: "Please click on link to update the password for username: <b>"+account.Username+"</b><br/><br/>    https://" + config.ses_host_name + "/#/password_reset/" + account.AccountID + "/" + inviteRequest.InviteID
                                 };
 
                                 console.log('Sending Mail');
