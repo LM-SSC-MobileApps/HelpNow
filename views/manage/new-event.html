@@ -5,12 +5,12 @@
             <div class="col-md-12">
                 <div class="well">
                     <div class="row">
-                        <label for="eventTitle">Event Title or Location:</label>
+                        <label for="eventTitle">{{text.event_title_location_label}}:</label>
                         <input type="text" ng-model="newEvent.Summary" id="eventTitle" name="eventTitle" class="form-control" ng-required="true" />
                         <br />
                     </div>
                     <div class="row">
-                        <label for="eventType">Event Type:</label><br />
+                        <label for="eventType">{{text.event_type_label}}:</label><br />
                         <div class="col-md-3">
                             <img class="event-img" src="{{getEventIcon(selectedEvent.selectedEventType.Description)}}" style="width: 40px; height: 40px;" />
                         </div>
@@ -50,12 +50,12 @@
             <div class="col-md-12">
                 <div class="well">
                     <div class="row">
-                        <label for="notes">Contact Phone Number (public):</label>
+                        <label for="notes">{{text.contact_phone_label}}:</label>
                         <input type="text" ng-model="newEvent.Notes" id="contactPhone" name="contactPhone" class="form-control" ng-required="true" />
                         <br />
                     </div>
                     <div class="row">
-                        <label for="socialMediaKeywords">Social Media Keywords<br />(comma separated):</label>
+                        <label for="socialMediaKeywords">{{text.social_media_keywords_label}}<br />({{text.comma_separated_label}}):</label>
                         <input type="text" ng-model="newEvent.Keywords" id="socialMediaKeywords" name="socialMediaKeywords" class="form-control" ng-required="true" />
                     </div>
                 </div>

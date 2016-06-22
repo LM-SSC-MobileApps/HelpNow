@@ -62,7 +62,7 @@ var routes = function(){
             }
         )
         //insert into SocialMedia
-        .post('/', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
+        .post('/', function(req, res) {
                 models.SocialMedia.create(req.body)
                     .then(function(socialMedia) {
                             res.statusCode = 200;
@@ -86,7 +86,7 @@ var routes = function(){
             }
         )
         //update into SocialMedia
-        .put('/:id', passport.authenticate('jwt-auth-api', {session:false}), function(req, res) {
+        .put('/:id', function(req, res) {
                 models.SocialMedia.update(
                     req.body,
                     {
