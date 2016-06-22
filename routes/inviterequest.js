@@ -192,12 +192,13 @@ var routes = function(){
 
                                 console.log("email: " + account.Email);
                                 console.log("InviteID: " + inviteRequest.InviteID);
+                                var resetURL = "http://" + config.ses_host_name + "/#/password_reset/" + account.AccountID + "/" + inviteRequest.InviteID;
                                 var mailOptions = {
                                     from: "HelpNowMap.com  <invite@helpnowmap.com>", // sender address
                                     to: account.Email, // list of receivers
-                                    subject: "Password Reset from HelpNowMap.com", // Subject line
+                                    subject: req.body.Subject, // Subject line
                                     //text: "Test from AWS ", // plaintext body
-                                    html: "Please click on link to reset your password:  http://" + config.ses_host_name + "/#/password_reset/" + account.AccountID + "/" + inviteRequest.InviteID
+                                    html: req.body.Content+" "+account.Username+" "+resetURL
                                 };
 
                                 console.log('Sending Mail');
