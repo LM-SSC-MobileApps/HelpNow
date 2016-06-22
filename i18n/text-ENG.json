@@ -221,5 +221,15 @@
   "active_description": "Active",
   "blockages_header": "Blockages",
   "no_dist_ctr_match_label": "No matching distribution centers found.",
-  "minutes_label": "Minutes"
+  "minutes_label": "Minutes",
+  "no_current_event_label": "No current events",
+  "no_base_maps_label": "No Base Maps",
+  "no_map_overlays_label": "No Map Overlays",
+  "edit_api_btn": "Edit API",
+  "demo_scenarios_btn": "Demo Scenarios",
+  "event_title_location_label": "Event Title or Location",
+  "event_type_label": "Event Type",
+  "contact_phone_label": "Contact Phone Number (public)",
+  "social_media_keywords_label": "Social Media Keywords",
+  "comma_separated_label":  "comma separated"
 }
