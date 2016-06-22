@@ -55,7 +55,7 @@
                                     <span></span>
                                 </a>
                                 <br />
-                                <span class="filter-caption">Blockages</span>
+                                <span class="filter-caption">{{text.blockages_header}}</span>
                             </div>
                         </div>
                         <div class="row separated-small">
@@ -150,14 +150,14 @@
                                 <div class="col-xs-9">
                                     <h4><a ng-click="showLocation(match.LAT, match.LONG)" href="">{{match.Organization.Name}}</a></h4>
                                     <h5>{{match.Description}}</h5>
-                                    <h5 style="color:{{getRouteColor($index)}}">{{match.Distance}} minutes</h5>
+                                    <h5 style="color:{{getRouteColor($index)}}">{{match.Distance}} {{text.minutes_label}}</h5>
                                     <div>
                                         <a tabindex="0" class="btn btn-primary" uib-popover-html="'{{getCleanLocationText(match)}}'" popover-trigger="focus"><span class="glyphicon glyphicon-list"></span>{{text.btn_more_info}}</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <h5 ng-hide="hasMatches">No matching distribution centers found.</h5>
+                        <h5 ng-hide="hasMatches">{{text.no_dist_ctr_match_label}}</h5>
                         <hr></hr>
                         <div class="row separated">
                             <div class="col-sm-12 btn-row">
@@ -268,8 +268,8 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
-                            <div class="separated-small"><strong>Primary POC: </strong>{{deployment.PrimaryPOCName}}</div>
-                            <div class="separated-small"><strong>Primary POC Phone: </strong>{{deployment.PrimaryPOCPhone}}</div>
+                            <div class="separated-small"><strong>{{text.primary_poc_name_label}}: </strong>{{deployment.PrimaryPOCName}}</div>
+                            <div class="separated-small"><strong>{{text.primary_poc_phone_label}}: </strong>{{deployment.PrimaryPOCPhone}}</div>
                             <div ng-repeat="inventory in deployment.ResourceLocationInventories" class="separated-small">
                                 <strong>{{getResourceName(inventory)}}: </strong> {{inventory.Quantity}} {{inventory.ResourceTypeUnitOfMeasure.Description}}
                             </div>

@@ -76,7 +76,7 @@
                         <li ng-class="getMenuClass('mng')" ng-show="currentUser"><a href="#/manage">{{text.menu_manage}}</a></li>
                         <li ng-class="getMenuClass('administration')" ng-show="isSuperAdmin"><a href="#/administration">{{text.menu_admin}}</a></li>
                         <li ng-class="getMenuClass('about')"><a href="#/about">{{text.menu_about}}</a></li>
-                        <li class="dropdown">
+                        <li class="dropdown" ng-show="currentUser">
                             <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{text.menu_account}} <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="#/password_reset/{{currentUser.AccountID}}">{{text.reset_password_title}}</a></li>
@@ -120,7 +120,7 @@
         </div>
 
         <footer class="footer">
-            <h6>Version 1.0.0</h6>
+            <h6>{{text.user_label}} 1.0.0</h6>
         </footer>
     </div>
 
