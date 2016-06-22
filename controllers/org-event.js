@@ -276,9 +276,9 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 
 	    function buildHeatmap(selectedClusters) {
 	        var heatmapConfig = {
-	            "radius": 100,
+	            "radius": 0.1,
 	            "maxOpacity": 0.5,
-	            "scaleRadius": false,
+	            "scaleRadius": true,
 	            "useLocalExtrema": true,
 	            latField: 'LAT',
 	            lngField: 'LONG',
@@ -449,6 +449,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	    $scope.toggleResourceButtonClass = function (id) {
 	        var flags = $scope.filterFlags;
 	        var status = flags[id];
+	        updateMap();
 	        return status ? "btn btn-toggle active" : "btn btn-toggle";
 	    };
 

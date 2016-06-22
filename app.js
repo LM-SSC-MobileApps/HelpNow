@@ -116,7 +116,7 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 		    templateUrl: "views/reg-account.html"
 		});
 
-		$routeProvider.when("/password_reset/:accountID", {
+		$routeProvider.when("/password_reset/:accountID/:guid", {
 		    templateUrl: "views/manage/password-reset.html"
 		});
 
