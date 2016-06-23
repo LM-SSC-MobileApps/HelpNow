@@ -124,6 +124,10 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 		    templateUrl: "views/manage/forgot-password.html"
 		});
 
+		$routeProvider.when("/update_account/:accountID/", {
+		    templateUrl: "views/manage/update-account.html"
+		});
+
 		$routeProvider.when("/demo/", {
 			templateUrl: "views/manage/demo.html"
 		});
@@ -4257,28 +4261,15 @@ angular.module("helpNow").controller("TeamInviteCtrl", ["$scope", "$resource", "
     $scope.newInvite.OrganizationID = $scope.currentOrg.OrganizationID;
      $scope.sendInvite = function (invitation) {
      Invitation.save(invitation, function (data) {
-         $scope.inviteResponse = angular.fromJson(data.json[0]);
-        //console.log("inviteResponse.InviteID: " + $scope.inviteResponse.InviteID )
-        // console.log("inviteResponse.Email: " + $scope.inviteResponse.Email )
-         var postdata = 'email=' +  $scope.inviteResponse.Email +  '&' + 'InviteID=' +  $scope.inviteResponse.InviteID;
-         var webCall = $http({
-             method: 'POST',
-             url: '/postemail',
-             async: true,
-             headers: {
-                 'Content-Type': 'application/x-www-form-urlencoded'
-             },
-             data: postdata
-         });
-
-         webCall.then(function (response) {});
-         $scope.confirmEmail(invitation);
-
+         if (data.json) {
+             $scope.confirmEmail(invitation);
+             console.log("email success");
+         }
+         else {
+             $scope.confirmEmailError();
+             conole.log("email failed");
+         }
      })
-
-
-
-
     };
 
 
@@ -4299,7 +4290,21 @@ angular.module("helpNow").controller("TeamInviteCtrl", ["$scope", "$resource", "
             });
     };
 
+    $scope.confirmEmailError = function () {
+        $scope.modalInstance = $uibModal.open(
+            {
+                templateUrl: '/manage/team-invite-modal-error.html',
+                scope: $scope,
+                controller: function ($scope) {
 
+                    $scope.confirm = function () {
+                        $location.path("/manage");
+                    };
+                },
+                controllerAs: "model"
+            });
+    };
+    
     $scope.go = function (path) {
         $location.path(path);
     };
@@ -4321,6 +4326,40 @@ angular.module("helpNow").controller("TomnodCtrl", ["$scope", "$location", "$res
 	        $('#event').append($('<option/>').attr("value", option.EventID).text(option.EventType.Description + " " + option.Summary + " (" + option.EventLocations[0].LAT + ", " + option.EventLocations[0].LONG + ", " + option.EventLocations[0].Radius + " km2)"));
 	    });
 	}]);
+angular.module("helpNow").controller("UpdateAccountCtrl", ["$scope", "$http", "Account", "$location", "$routeParams", "$resource", function ($scope, $http, Account, $location, $routeParams, $resource) {
+    $scope.setCurrentView("update_account");
+    $scope.setTitle($scope.text.update_contact_info);
+
+    $scope.accountID = $routeParams.accountID * 1;
+
+    $scope.accountResource = $resource("/api/account/:id");
+
+    loadAccount();
+
+    function loadAccount() {
+        $scope.accountResource.get({ id: $scope.accountID }, function (data) {
+            $scope.userAccount = data.json[0];
+            if ($scope.userAccount == null)
+                alert("Account could not be found");
+        });
+    }
+
+    $scope.updateAccountInfo = function () {
+        var hasError = false;
+        if ($scope.userAccount.FirstName === undefined || $scope.userAccount.LastName === undefined || $scope.userAccount.Email === undefined) {
+            alert($scope.text.missing_fields_alert);
+            hasError = true;
+        }
+        if (!hasError) {
+            Account.update({ id: $scope.accountID }, JSON.stringify($scope.userAccount)).$promise.then(function (response) {
+                $location.path('#');
+            },
+            function (response) { // optional
+                alert("Error: " + response.data.err);
+            });
+        }
+    };
+}]);
 angular.module("helpNow").directive('showErrors', function () {
     return {
         restrict: 'A',
