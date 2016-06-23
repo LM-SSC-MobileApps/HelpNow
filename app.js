@@ -124,6 +124,10 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 		    templateUrl: "views/manage/forgot-password.html"
 		});
 
+		$routeProvider.when("/update_account/:accountID/", {
+		    templateUrl: "views/manage/update-account.html"
+		});
+
 		$routeProvider.when("/demo/", {
 			templateUrl: "views/manage/demo.html"
 		});
