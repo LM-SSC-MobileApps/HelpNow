@@ -230,5 +230,6 @@
   "event_type_label": "Event Type",
   "contact_phone_label": "Contact Phone Number (public)",
   "social_media_keywords_label": "Social Media Keywords",
-  "comma_separated_label":  "comma separated"
+  "comma_separated_label":  "comma separated",
+  "invite_email_error_label" : "Unable to contact email server - please try again later."
 }
