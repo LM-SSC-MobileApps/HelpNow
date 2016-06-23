@@ -276,7 +276,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 
 	    function buildHeatmap(selectedClusters) {
 	        var heatmapConfig = {
-	            "radius": 0.1,
+	            "radius": 0.085,
 	            "maxOpacity": 0.5,
 	            "scaleRadius": true,
 	            "useLocalExtrema": true,
