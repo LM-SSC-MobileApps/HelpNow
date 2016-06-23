@@ -3308,6 +3308,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            showEvacuation: $scope.filterFlags.showEvacuation,
 	            showMedicine: $scope.filterFlags.showMedicine
 	        };
+
 	        sessionStorage.setItem("showNeedsMarkers", JSON.stringify($scope.showNeedsMarkers));
 	        sessionStorage.setItem("showLocationMarkers", JSON.stringify($scope.showLocationMarkers));
 	        sessionStorage.setItem("showDistCenterMarkers", JSON.stringify($scope.showDistCenterMarkers));
