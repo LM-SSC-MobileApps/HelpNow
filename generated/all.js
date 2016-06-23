@@ -4257,28 +4257,15 @@ angular.module("helpNow").controller("TeamInviteCtrl", ["$scope", "$resource", "
     $scope.newInvite.OrganizationID = $scope.currentOrg.OrganizationID;
      $scope.sendInvite = function (invitation) {
      Invitation.save(invitation, function (data) {
-         $scope.inviteResponse = angular.fromJson(data.json[0]);
-        //console.log("inviteResponse.InviteID: " + $scope.inviteResponse.InviteID )
-        // console.log("inviteResponse.Email: " + $scope.inviteResponse.Email )
-         var postdata = 'email=' +  $scope.inviteResponse.Email +  '&' + 'InviteID=' +  $scope.inviteResponse.InviteID;
-         var webCall = $http({
-             method: 'POST',
-             url: '/postemail',
-             async: true,
-             headers: {
-                 'Content-Type': 'application/x-www-form-urlencoded'
-             },
-             data: postdata
-         });
-
-         webCall.then(function (response) {});
-         $scope.confirmEmail(invitation);
-
+         if (data.json) {
+             $scope.confirmEmail(invitation);
+             console.log("email success");
+         }
+         else {
+             $scope.confirmEmailError();
+             conole.log("email failed");
+         }
      })
-
-
-
-
     };
 
 
@@ -4299,7 +4286,21 @@ angular.module("helpNow").controller("TeamInviteCtrl", ["$scope", "$resource", "
             });
     };
 
+    $scope.confirmEmailError = function () {
+        $scope.modalInstance = $uibModal.open(
+            {
+                templateUrl: '/manage/team-invite-modal-error.html',
+                scope: $scope,
+                controller: function ($scope) {
 
+                    $scope.confirm = function () {
+                        $location.path("/manage");
+                    };
+                },
+                controllerAs: "model"
+            });
+    };
+    
     $scope.go = function (path) {
         $location.path(path);
     };
