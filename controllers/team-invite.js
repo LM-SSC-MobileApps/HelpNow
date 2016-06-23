@@ -6,8 +6,6 @@ angular.module("helpNow").controller("TeamInviteCtrl", ["$scope", "$resource", "
 
     $scope.newInvite = new Invitation();
     $scope.newInvite.OrganizationID = $scope.currentOrg.OrganizationID;
-    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-
      $scope.sendInvite = function (invitation) {
      Invitation.save(invitation, function (data) {
          if (data.json) {
