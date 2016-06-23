@@ -4,15 +4,27 @@
 
     $scope.emailAddress = '';
 
-    $scope.accountResource = $resource("/api/account/email/:email");
+    $scope.accountResource = $resource("/api/inviterequest/passwordreset");
 
-    $scope.loadAccount = function () {
-        $scope.accountResource.get({ email: $scope.emailAddress }, function (data) {
-            $scope.account = data.json;
-            if ($scope.account == null)// || $scope.account[0] == null || $scope.account[0].AccountID <= 0)
-                alert("Account could not be found");
-            else
-                alert(JSON.stringify($scope.account));
+    $scope.sendEmail = function () {
+        var postdata = 'Email=' + $scope.emailAddress;
+        var webCall = $http({
+            method: 'POST',
+            url: '/api/inviterequest/passwordreset',
+            async: true,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data: postdata
+        });
+
+        webCall.then(function (response) {
+            if (response.data.json == true) {
+                $location.path('#');
+            }
+            else {
+                alert("Error: " + response.data.err);
+            }
         });
     };
 }]);

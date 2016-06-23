@@ -116,7 +116,7 @@ angular.module("helpNow", ["ngRoute", "ngResource", "ui.bootstrap", "ngSanitize"
 		    templateUrl: "views/reg-account.html"
 		});
 
-		$routeProvider.when("/password_reset/:accountID", {
+		$routeProvider.when("/password_reset/:accountID/:guid", {
 		    templateUrl: "views/manage/password-reset.html"
 		});
 
@@ -1180,15 +1180,27 @@ angular.module("helpNow").controller("ForgotPasswordCtrl", ["$scope", "$http", "
 
     $scope.emailAddress = '';
 
-    $scope.accountResource = $resource("/api/account/email/:email");
+    $scope.accountResource = $resource("/api/inviterequest/passwordreset");
 
-    $scope.loadAccount = function () {
-        $scope.accountResource.get({ email: $scope.emailAddress }, function (data) {
-            $scope.account = data.json;
-            if ($scope.account == null)// || $scope.account[0] == null || $scope.account[0].AccountID <= 0)
-                alert("Account could not be found");
-            else
-                alert(JSON.stringify($scope.account));
+    $scope.sendEmail = function () {
+        var postdata = 'Email=' + $scope.emailAddress;
+        var webCall = $http({
+            method: 'POST',
+            url: '/api/inviterequest/passwordreset',
+            async: true,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data: postdata
+        });
+
+        webCall.then(function (response) {
+            if (response.data.json == true) {
+                $location.path('#');
+            }
+            else {
+                alert("Error: " + response.data.err);
+            }
         });
     };
 }]);
@@ -3050,9 +3062,9 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 
 	    function buildHeatmap(selectedClusters) {
 	        var heatmapConfig = {
-	            "radius": 100,
+	            "radius": 0.1,
 	            "maxOpacity": 0.5,
-	            "scaleRadius": false,
+	            "scaleRadius": true,
 	            "useLocalExtrema": true,
 	            latField: 'LAT',
 	            lngField: 'LONG',
@@ -3223,6 +3235,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	    $scope.toggleResourceButtonClass = function (id) {
 	        var flags = $scope.filterFlags;
 	        var status = flags[id];
+	        updateMap();
 	        return status ? "btn btn-toggle active" : "btn btn-toggle";
 	    };
 
@@ -3565,10 +3578,14 @@ angular.module("helpNow").controller("PasswordResetCtrl", ["$scope", "$http", "A
     $scope.setTitle($scope.text.reset_password_title);
 
     $scope.accountID = $routeParams.accountID * 1;
+    $scope.guid = $routeParams.guid;
+
+    $scope.showOldPasswordField = $scope.guid == 0 ? true : false;
 
     $scope.accountResource = $resource("/api/account/:id");
+    $scope.inviteRequestResource = $resource("/api/inviterequest/passwordupdate/");
 
-    loadAccount();
+    if ($scope.guid == 0) loadAccount();
 
     function loadAccount() {
         $scope.accountResource.get({ id: $scope.accountID }, function (data) {
@@ -3580,13 +3597,36 @@ angular.module("helpNow").controller("PasswordResetCtrl", ["$scope", "$http", "A
 
     $scope.updatePassword = function () {
         if ($scope.newPassword === $scope.confirmedPassword) {
-            $scope.account[0].Password = $scope.newPassword;
-            Account.update({id: $scope.accountID}, JSON.stringify($scope.account[0])).$promise.then(function (response) {
-                $location.path('#');
-            },
-            function (response) { // optional
-                alert("Error: " + response.data.err);
-            });
+            if ($scope.guid == 0) {
+                $scope.account[0].Password = $scope.newPassword;
+                Account.update({ id: $scope.accountID }, JSON.stringify($scope.account[0])).$promise.then(function (response) {
+                    $location.path('#');
+                },
+                function (response) { // optional
+                    alert("Error: " + response.data.err);
+                });
+            }
+            else {
+                var postdata = 'Password=' + $scope.newPassword + '&' + 'InviteRequestID=' + $scope.guid;
+                var webCall = $http({
+                    method: 'POST',
+                    url: '/api/inviterequest/passwordupdate',
+                    async: true,
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    data: postdata
+                });
+
+                webCall.then(function (response) {
+                    if (response.data.json != false) {
+                        $location.path('#');
+                    }
+                    else {
+                        alert("Error: " + response.data.err);
+                    }
+                });
+            }
         }
         else {
             alert("Passwords do not match.")
