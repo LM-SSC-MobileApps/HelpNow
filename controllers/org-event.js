@@ -361,9 +361,6 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            var type = request.ResourceType.Description;
 	            return $scope.shouldDisplayMarker(type, $scope.filterFlags);
 	        });
-			
-	        if ($scope.showHeatmap && $scope.selectedClusters.length > 0)
-	            buildHeatmap($scope.selectedClusters);
 
 	        if ($scope.showNeedsMarkers && zoom > 7)
 	            buildNeedsMarkers(selectedRequests);
@@ -378,7 +375,10 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            buildDistCenterMarkers();
 			
 			if ($scope.showBlockageMarkers)
-				buildBlockageMarkers();
+			    buildBlockageMarkers();
+
+			if ($scope.showHeatmap && $scope.selectedClusters.length > 0)
+			    buildHeatmap($scope.selectedClusters);
 			
 			if ($scope.showFindResults && $scope.matches)
 				buildRoutes();
@@ -435,6 +435,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 
 	    $scope.toggleButton = function (id) {
 	        $scope[id] = !$scope[id];
+	        saveFilters();
 	        updateMap();
 	        return false;
 	    };
@@ -442,14 +443,13 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	    $scope.toggleResourceFilter = function (filterName) {
 	        var flags = $scope.filterFlags;
 	        flags[filterName] = !flags[filterName];
-	        updateMap();
+	        saveFilters();
 	        return false;
 	    }
 
 	    $scope.toggleResourceButtonClass = function (id) {
 	        var flags = $scope.filterFlags;
 	        var status = flags[id];
-	        updateMap();
 	        return status ? "btn btn-toggle active" : "btn btn-toggle";
 	    };
 
@@ -502,6 +502,12 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	    };
 
 	    $scope.toggleFilters = function () {
+	        saveFilters();
+	        $scope.showFilters = !$scope.showFilters;
+	    };
+
+	    function saveFilters() {
+	        updateMap();
 	        var sessionFilters = {
 	            showMedical: $scope.filterFlags.showMedical,
 	            showShelter: $scope.filterFlags.showShelter,
@@ -518,8 +524,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        sessionStorage.setItem("showClusters", JSON.stringify($scope.showClusters));
 	        sessionStorage.setItem("showHeatmap", JSON.stringify($scope.showHeatmap));
 	        sessionStorage.setItem("filterFlags", JSON.stringify(sessionFilters));
-	        $scope.showFilters = !$scope.showFilters;
-	    };
+	    }
 
 	    $scope.toggleFindPanel = function () {
 	        $scope.showFindPanel = !$scope.showFindPanel;
