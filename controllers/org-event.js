@@ -248,15 +248,24 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            return $scope.shouldDisplayMarker(type, $scope.filterFlags);
 	        });
 
+	        $scope.selectedClusters = $scope.selectedClusters.filter(function (cluster) {
+	            return cluster.LAT != null && !isNaN(cluster.LAT) && cluster.LONG && !isNaN(cluster.LONG);
+	        });
+
 	        angular.forEach($scope.selectedClusters, function (cluster) {
 	            var clusterIcon = L.icon({
 	                iconUrl: getClusterIcon(cluster.ResourceType.Description),
 	                iconSize: [50, 50],
 	                iconAnchor: [25, 25]
 	            });
-	            var marker = L.marker([cluster.LAT, cluster.LONG], { icon: clusterIcon });
-	            marker.bindPopup("<strong>" + cluster.ResourceType.Description + "</strong><br/>" + cluster.Notes);
-	            mapLayers.push(marker);
+	            if (cluster.LAT == null || isNaN(cluster.LAT) || cluster.LONG == null || isNaN(cluster.LONG)) {
+
+	            }
+	            else {
+	                var marker = L.marker([cluster.LAT, cluster.LONG], { icon: clusterIcon });
+	                marker.bindPopup("<strong>" + cluster.ResourceType.Description + "</strong><br/>" + cluster.Notes);
+	                mapLayers.push(marker);
+	            }
 	        });
 	    }
 
