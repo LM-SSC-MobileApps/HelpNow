@@ -266,7 +266,7 @@ var routes = function () {
                             models.Account.create(req.body)
                                 .then(function (account) {
                                     //account created, delete the invite request.
-                                    modles.InviteRequestID.destroy({
+                                    modles.InviteRequest.destroy({
                                         where: {
                                             InviteID: req.body.InviteID
                                         }
