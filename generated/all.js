@@ -736,7 +736,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
 
     $scope.requestsResource = $resource("/api/event/mapitems/:eventID");
     $scope.urgencyResource = $resource("/api/requesturgency");
-    $scope.needRequestResource = $resource("/api/resourcerequest");
+    // $scope.needRequestResource = $resource("/api/resourcerequest");
 
     $scope.helpRequest = { EventID: '', RequestStateID: '1', Notes: 'Reported from App', AreaSize: '0.25 km', UnitOfMeasure: '', Quantity: '' };
 
@@ -748,7 +748,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
         loadUrgencyList();
     }
 
-    $scope.requests = [];
+    // $scope.requests = [];
 
     $scope.overlayRadius = 250;
     $scope.radiusRawVal = 0.25;
@@ -913,7 +913,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
 
     function loadRequests() {
         $scope.requestsResource.get({ eventID: $scope.eventID }, function (data) {
-            $scope.requests = data.json.requests;
+            // $scope.requests = data.json.requests;
             $scope.locations = data.json.locations;
             updateMap();
         });
@@ -2812,7 +2812,6 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        clearInterval(dataRefreshTaskID);
 	    });
 
-	    $scope.requests = [];
 	    $scope.locations = [];
 	    $scope.distributionCenters = [];
 		$scope.blockages = [];
@@ -3060,18 +3059,6 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        });
 	    }
 
-	    function markFulfilledRequests() {
-	        angular.forEach($scope.locations, function (deployment) {
-	            angular.forEach(deployment.ResourceLocationInventories, function (inventory) {
-	                angular.forEach($scope.requests, function (request) {
-                        if (!request.fulfilled) {
-	                        request.fulfilled = calculateKmDistance(deployment.LAT, deployment.LONG, request.LAT, request.LONG) < 4 &&
-                            request.ResourceTypeID == inventory.ResourceTypeID;
-	                    }
-	                });
-	            });
-	        });
-	    }
 
 	    function buildHeatmap(selectedClusters) {
 	        var heatmapConfig = {
@@ -3154,15 +3141,6 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        }
 
 	        mapLayers = [];
-	        markFulfilledRequests();
-	        var selectedRequests = $scope.requests.filter(function (request) {
-	            if (request.fulfilled) return false;
-	            var type = request.ResourceType.Description;
-	            return $scope.shouldDisplayMarker(type, $scope.filterFlags);
-	        });
-
-	        if ($scope.showNeedsMarkers && zoom > 7)
-	            buildNeedsMarkers(selectedRequests);
 
 	        if ($scope.showClusters)
 	            buildClusterMarkers();
@@ -3201,14 +3179,12 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 
 	    function loadRequests() {
 	        $scope.requestsResource.get({ eventID: $scope.eventID }, function (data) {
-	            var dataChanged = data.json.requests.length != $scope.requests.length
-					|| data.json.locations.length != $scope.locations.length
+	            var dataChanged = data.json.locations.length != $scope.locations.length
 					|| data.json.distributionCenters.length != $scope.distributionCenters.length
 					|| data.json.blockages.length != $scope.blockages.length;
 
 	            if (dataChanged) {
 	                $scope.requestClusters = data.json.requestClusters;
-	                $scope.requests = data.json.requests;
 	                $scope.locations = data.json.locations;
 	                $scope.distributionCenters = data.json.distributionCenters;
 					$scope.blockages = data.json.blockages;
@@ -3717,6 +3693,7 @@ angular.module("helpNow").controller("RegAccountCtrl", ["$scope", "$http", "$loc
     };
 
     function submitPost() {
+        $scope.userAccount.InviteID = $scope.inviteid;
         var userAccountData = JSON.stringify($scope.userAccount);
         var webCall = $http({
             method: 'POST',
@@ -3728,12 +3705,16 @@ angular.module("helpNow").controller("RegAccountCtrl", ["$scope", "$http", "$loc
             data: userAccountData
         });
         webCall.then(function (response) {
-            alert("Account Successfully Created");
-            Invitation.delete({inviteid: $scope.inviteid});
-            $location.path('#');
+            if (response.data.json == true) {
+                alert("Account Successfully Created");
+                $location.path('/login');
+            }
+            else {
+                alert(response.data.result);
+            }
         },
         function (response) { // optional
-            alert("Error: ");
+            alert("Error: " + response.data.err);
         });
     }
 }]);
