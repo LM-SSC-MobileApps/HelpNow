@@ -63,6 +63,7 @@
     };
 
     function submitPost() {
+        $scope.userAccount.InviteID = $scope.inviteid;
         var userAccountData = JSON.stringify($scope.userAccount);
         var webCall = $http({
             method: 'POST',
@@ -74,12 +75,16 @@
             data: userAccountData
         });
         webCall.then(function (response) {
-            alert("Account Successfully Created");
-            Invitation.delete({inviteid: $scope.inviteid});
-            $location.path('#');
+            if (response.data.json == true) {
+                alert("Account Successfully Created");
+                $location.path('/login');
+            }
+            else {
+                alert(response.data.result);
+            }
         },
         function (response) { // optional
-            alert("Error: ");
+            alert("Error: " + response.data.err);
         });
     }
 }]);
