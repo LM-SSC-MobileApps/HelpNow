@@ -299,7 +299,7 @@ var routes = function () {
                 else {
                     res.statusCode = 200;
                     res.send({
-                        result: 'Invite to create an account is no longer valid.  Please re-request and invite or contact a system administrator.',
+                        result: 'Invite to create an account is no longer valid.  Please re-request an invite or contact a system administrator.',
                         err: '',
                         json: false,
                         length: 0
