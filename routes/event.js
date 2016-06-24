@@ -301,7 +301,7 @@ var routes = function(){
 	  .then(function(results) {
 		var data = {
 			requestClusters: results[0].requestClusters,
-			requests: results[0].requests,
+			// requests: results[0].requests,
 			locations: results[0].locations,
 			distributionCenters: results[1],
 			blockages: results[2]
@@ -362,8 +362,8 @@ var routes = function(){
             // {model: models.SocialMedia},
             {model: models.Blockage},
             {model: models.EventType},
-            {model: models.Organization},
-            {model: models.ResourceRequest}
+            {model: models.Organization}
+            // {model: models.ResourceRequest}
           ]
         }
       ).then(function(event) {
