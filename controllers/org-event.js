@@ -468,11 +468,13 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	                drawLocationMarker();
 	                $scope.$digest();
 	            } else if ($scope.showDeployPanel) {
+					$scope.locationPref.value = "Other";
 	                $scope.deployment.LAT = e.latlng.lat.toFixed(3);
 	                $scope.deployment.LONG = e.latlng.lng.toFixed(3);
 	                drawLocationMarker();
 	                $scope.$digest();
 	            } else if ($scope.showBlockagePanel) {
+					$scope.locationPref.value = "Other";
 					$scope.blockage.LAT = e.latlng.lat.toFixed(3);
 	                $scope.blockage.LONG = e.latlng.lng.toFixed(3);
 	                drawLocationMarker();
@@ -530,8 +532,10 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        if ($scope.showDeployPanel) {
 	            requestLocation();
 	            $scope.showDistCenterMarkers = true;
-	            updateMap();
+	        } else {
+	            removeLocationMarker();
 	        }
+	        updateMap();
 	    }
 		
 		$scope.toggleBlockagePanel = function () {
@@ -665,6 +669,9 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 				$scope.deployment.LAT = $scope.mappingLoc.LAT;
 				$scope.deployment.LONG = $scope.mappingLoc.LONG;
 			}
+			
+			if (!$scope.deployment.LAT || !$scope.deployment.LONG) return;
+			
 	        var url = "create_deployment/" + $scope.eventID + "/" + $scope.deployment.LAT + "/" + $scope.deployment.LONG;
 	        $location.path(url);
 	    };
@@ -683,7 +690,9 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 			if ($scope.locationPref.value == "Current") {
 				$scope.blockage.LAT = $scope.mappingLoc.LAT;
 				$scope.blockage.LONG = $scope.mappingLoc.LONG;
-			} else if (!$scope.blockage.LAT || !$scope.blockage.LAT) {
+			}
+			
+			if (!$scope.blockage.LAT || !$scope.blockage.LAT) {
 				return;
 			}
 			
