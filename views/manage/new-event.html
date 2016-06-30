@@ -12,7 +12,7 @@
                     <div class="row">
                         <label for="eventType">{{text.event_type_label}}:</label><br />
                         <div class="col-md-3">
-                            <img class="event-img" src="{{getEventIcon(selectedEvent.selectedEventType.Description)}}" style="width: 40px; height: 40px;" />
+                            <img class="event-img" ng-src="{{getEventIcon(selectedEvent.selectedEventType.Description)}}" style="width: 40px; height: 40px;" />
                         </div>
                         <div class="col-md-9" style="padding-top: 15px;">
                             <select class="form-control" ng-model="selectedEvent.selectedEventType" ng-options="eventType as eventType.Description for eventType in eventTypes" ng-change="getSelectedEventType()"></select>

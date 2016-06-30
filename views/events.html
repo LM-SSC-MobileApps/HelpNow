@@ -6,8 +6,8 @@
                 <div ng-repeat="event in events">
                     <div class="row">
                         <div class="col-sm-3">
-                            <a ng-hide="isLoggedIn" href="#event_map/{{event.EventID}}"><img class="resource-img" src="{{getEventIcon(event.EventType.Description)}}" /></a>
-                            <a ng-show="isLoggedIn" href="#org_event/{{event.EventID}}"><img class="resource-img" src="{{getEventIcon(event.EventType.Description)}}" /></a>
+                            <a ng-hide="isLoggedIn" href="#event_map/{{event.EventID}}"><img class="resource-img" ng-src="{{getEventIcon(event.EventType.Description)}}" /></a>
+                            <a ng-show="isLoggedIn" href="#org_event/{{event.EventID}}"><img class="resource-img" ng-src="{{getEventIcon(event.EventType.Description)}}" /></a>
                         </div>
                         <div class="col-sm-9">
                             <h4>{{event.EventType.Description}}</h4>

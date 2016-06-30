@@ -7,7 +7,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
 
     $scope.requestsResource = $resource("/api/event/mapitems/:eventID");
     $scope.urgencyResource = $resource("/api/requesturgency");
-    $scope.needRequestResource = $resource("/api/resourcerequest");
+    // $scope.needRequestResource = $resource("/api/resourcerequest");
 
     $scope.helpRequest = { EventID: '', RequestStateID: '1', Notes: 'Reported from App', AreaSize: '0.25 km', UnitOfMeasure: '', Quantity: '' };
 
@@ -19,7 +19,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
         loadUrgencyList();
     }
 
-    $scope.requests = [];
+    // $scope.requests = [];
 
     $scope.overlayRadius = 250;
     $scope.radiusRawVal = 0.25;
@@ -184,7 +184,7 @@ angular.module("helpNow").controller("EventMapCtrl", ["$scope", "$http", "$route
 
     function loadRequests() {
         $scope.requestsResource.get({ eventID: $scope.eventID }, function (data) {
-            $scope.requests = data.json.requests;
+            // $scope.requests = data.json.requests;
             $scope.locations = data.json.locations;
             updateMap();
         });

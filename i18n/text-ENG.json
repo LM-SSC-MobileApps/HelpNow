@@ -178,9 +178,6 @@
   "confirm": "Confirm",
   "inventory": "Inventory",
   "resource_location": "Resource Location",
-  "about_title": "About HelpNow™",
-
-  "NOTE": "Items below need translation",
   "report_blockage_title": "Report Blockage",
   "report_label": "Report",
   "blockage_details_title": "Blockage Details",
@@ -231,5 +228,52 @@
   "contact_phone_label": "Contact Phone Number (public)",
   "social_media_keywords_label": "Social Media Keywords",
   "comma_separated_label":  "comma separated",
-  "invite_email_error_label" : "Unable to contact email server - please try again later."
+  "invite_email_error_label" : "Unable to contact email server - please try again later.",
+  "about_page_main_header": "About HelpNow™",
+
+  "about_page_main_t1": "When disaster strikes, first responders need to know what areas have been hit the hardest and what resources are available to help, without delay. To meet this challenge, the Global Agenda Council on Space is leading development of ",
+  "about_page_main_b1": "HelpNow™",
+  "about_page_main_t2": ", a free, open-source web tool that uses the power of space technologies to ",
+  "about_page_main_b2": "deliver accurate, up-to-date information",
+  "about_page_main_t3": " rapidly to humanitarian relief efforts.",
+
+  "about_page_sub1": "Map-Based Interface",
+  "about_page_sub1_t1": "HelpNow integrates data from imaging satellites, communication networks and GPS as well as aid organizations and social media. From this data, the software generates a ",
+  "about_page_sub1_b1": "simple, map-based user interface",
+  "about_page_sub1_t2": " that displays disaster-relief information using ",
+  "about_page_sub1_b2": "intuitive icons.",
+
+  "about_page_sub2": "Matching Needs with Resources",
+  "about_page_sub2_t1": "HelpNow’s powerful algorithm enables the user to match the needs of victims quickly to available resources. The software’s icon-based interface allows users to choose between ",
+  "about_page_sub2_b1": "multiple languages.",
+  "about_page_sub2_t2": " When widely used, HelpNow will help response teams and NGOs combine their strengths to reach more victims faster.",
+
+  "about_page_sub3": "Free and Readily Adaptable",
+  "about_page_sub3_t1": "HelpNow will be free to governments, NGOs and individuals. The software’s ",
+  "about_page_sub3_b1": "open-source platform",
+  "about_page_sub3_t2": " makes it easy to incorporate additional plug-ins or apps. ",
+  "about_page_sub3_b2": "Designed without proprietary information,",
+  "about_page_sub3_t3": " HelpNow is easy to integrate with existing humanitarian systems – facilitating collaboration and feature development. Critical data will be safeguarded with ",
+  "about_page_sub3_b3": "controlled access",
+  "about_page_sub3_t4": " via permission-level logins.",
+
+  "about_page_sub4": "Next Steps",
+  "about_page_sub4_t1": "A select team from Lockheed Martin is developing the software, incorporating input from experts in the field of humanitarian aid. The ",
+  "about_page_sub4_b1": "prototype, v0.1,",
+  "about_page_sub4_t2": " can be viewed at : ",
+  "about_page_sub4_t3": ". The ",
+  "about_page_sub4_b2": "first version of the tool, v1.0,",
+  "about_page_sub4_t4": " will be available for use in June 2016. The site chosen for initial testing of HelpNow is ",
+  "about_page_sub4_b3": "Bangladesh",
+  "about_page_sub4_t5": ", a nation challenged by severe seasonal flooding.",
+
+  "about_page_history_header": "History",
+  "about_page_history_t1": "HelpNow was initiated by the ",
+  "about_page_history_b1":"World Economic Forum (WEF)",
+  "about_page_history_t2":" and the ",
+  "about_page_history_b2":"Global Agenda Council for Space (GAC-S)",
+  "about_page_history_t3":" to improve safety, security and quality of life worldwide through the use of space-enabled technologies. The chair of the GAC-S, Rick Ambrose of Lockheed Martin Space Systems Company, assembled the development team from Digital Globe, CauseLabs and Lockheed Martin. Satellite Application Catapult UK also helped refine requirements for the software’s initial release.",
+
+  "about_page_thankyou_header": "Thank you",
+  "about_page_thankyou_t": "Lockheed Martin, Digital Globe, Amazon Web Services, Satellite Applications Catapult, Causelabs, DMCii, Deimos Imagery, Institute of Air and Space Law at McGill University, eGEOS."
 }

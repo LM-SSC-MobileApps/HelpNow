@@ -154,58 +154,111 @@ var routes = function(){
          
      */
   .get('/mapitems/:eventID', function(req, res) {
+      var clusterTasks = [];
 	  var tasks = [];
-	  
+
+      clusterTasks[0] = models.ResourceRequest.findAll(
+          {
+              where: {
+                  EventID: req.params.eventID
+              },
+              include: [
+                  {model: models.RequestState},
+                  {model: models.ResourceType}
+              ]
+          }
+      );
+
+      clusterTasks[1] = models.ResourceLocation.findAll (
+          {
+          	include: [
+          		{
+          			model: models.Organization,
+          			required: true
+                 },
+                 {
+          			model: models.ResourceLocationType,
+          			where: {
+          				Description: "Deployment"
+          			}
+                 },
+          		{
+          			model: models.ResourceLocationInventory,
+          			required: true,
+          			include: [
+          			{
+          				model: models.ResourceType
+          			},
+          			{
+          				model: models.ResourceSubtype
+          			},
+          			{
+          				model: models.ResourceTypeUnitOfMeasure
+          			}]
+          		}
+          	],
+          	where: {
+          		EventID: req.params.eventID
+             }
+          });
+      tasks[0]=promise.all(clusterTasks)
+          .then(function(results) {
+
+              var  requests = results[0];
+              var  locations = results[1];
+              return cluster.clusterRequests(requests, locations);
+          });
+
 	  //load requests
-	  tasks[0] = models.ResourceRequest.findAll(
-        {
-          where: {
-            EventID: req.params.eventID
-          },
-          include: [
-            {model: models.RequestState},
-            {model: models.ResourceType}
-          ]
-        }
-      )
-	  .then(cluster.clusterRequests);
-	
-	//load resource deployments for event
-	tasks[1] = models.ResourceLocation.findAll (
-	{
-		include: [
-			{
-				model: models.Organization,
-				required: true
-            },
-            {
-				model: models.ResourceLocationType,
-				where: {
-					Description: "Deployment"
-				}
-            },
-			{
-				model: models.ResourceLocationInventory,
-				required: true,
-				include: [
-				{
-					model: models.ResourceType
-				},
-				{
-					model: models.ResourceSubtype
-				},
-				{
-					model: models.ResourceTypeUnitOfMeasure
-				}]
-			}
-		],
-		where: {
-			EventID: req.params.eventID
-        }
-	});
+	//   tasks[0] = models.ResourceRequest.findAll(
+     //    {
+     //      where: {
+     //        EventID: req.params.eventID
+     //      },
+     //      include: [
+     //        {model: models.RequestState},
+     //        {model: models.ResourceType}
+     //      ]
+     //    }
+     //  )
+	//   .then(cluster.clusterRequests);
+	//
+	// //load resource deployments for event
+	// tasks[1] = models.ResourceLocation.findAll (
+	// {
+	// 	include: [
+	// 		{
+	// 			model: models.Organization,
+	// 			required: true
+     //        },
+     //        {
+	// 			model: models.ResourceLocationType,
+	// 			where: {
+	// 				Description: "Deployment"
+	// 			}
+     //        },
+	// 		{
+	// 			model: models.ResourceLocationInventory,
+	// 			required: true,
+	// 			include: [
+	// 			{
+	// 				model: models.ResourceType
+	// 			},
+	// 			{
+	// 				model: models.ResourceSubtype
+	// 			},
+	// 			{
+	// 				model: models.ResourceTypeUnitOfMeasure
+	// 			}]
+	// 		}
+	// 	],
+	// 	where: {
+	// 		EventID: req.params.eventID
+     //    }
+	// });
 	
 	//load distribution centers
-	tasks[2] = models.ResourceLocation.findAll (
+	tasks[1] = models.ResourceLocation.findAll (
 	{
 		include: [
 			{
@@ -236,7 +289,7 @@ var routes = function(){
 	});
 	
 	//load blockages
-	tasks[3] = models.Blockage.findAll (
+	tasks[2] = models.Blockage.findAll (
 	{
 		where: {
 			EventID: req.params.eventID
@@ -248,10 +301,10 @@ var routes = function(){
 	  .then(function(results) {
 		var data = {
 			requestClusters: results[0].requestClusters,
-			requests: results[0].requests,
-			locations: results[1],
-			distributionCenters: results[2],
-			blockages: results[3]
+			// requests: results[0].requests,
+			locations: results[0].locations,
+			distributionCenters: results[1],
+			blockages: results[2]
 		};
 		res.statusCode = 200;
         res.send(
@@ -309,8 +362,8 @@ var routes = function(){
             // {model: models.SocialMedia},
             {model: models.Blockage},
             {model: models.EventType},
-            {model: models.Organization},
-            {model: models.ResourceRequest}
+            {model: models.Organization}
+            // {model: models.ResourceRequest}
           ]
         }
       ).then(function(event) {
