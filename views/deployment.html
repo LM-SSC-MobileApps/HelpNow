@@ -55,7 +55,7 @@
                     <div ng-repeat="resource in deployment.ResourceLocationInventories">
                         <div class="row separated">
                             <div class="col-sm-12">
-                                <img class="resource-img pull-left" src="{{getResourceIcon(resource)}}" />
+                                <img class="resource-img pull-left" ng-src="{{getResourceIcon(resource)}}" />
                                 <h4>{{getResourceName(resource)}}</h4>
                                 <h5>{{resource.Quantity}} {{resource.ResourceTypeUnitOfMeasure.Description}}</h5>
                                 <div class="btn-row">
