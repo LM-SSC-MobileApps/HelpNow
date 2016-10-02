@@ -207,13 +207,7 @@ var routes = function () {
                 }
             }).then(function (account) {
                 if (account.length > 0) {
-                    // var userSessionObject = {
-                    //       AccountID: account[0].AccountID,
-                    //       FirstName: account[0].FirstName,
-                    //       LastName: account[0].LastName,
-                    //       OrganizationID: account[0].Organization.OrganizationID,
-                    //       OrganizationName: account[0].Organization.Organization.Name
-                    //   }
+
                     req.session.accountid = account[0].AccountID;
                     req.session.organizationid = account[0].OrganizationID;
                     res.statusCode = 200;
