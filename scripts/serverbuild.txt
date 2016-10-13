@@ -1,0 +1,15 @@
+#!/bin/bash
+yum update -y
+cd /home/ec2-user/HelpNow/
+sudo -u ec2-user git reset --hard
+sudo -u ec2-user git checkout master
+sudo -u ec2-user git pull
+sudo -u ec2-user npm install
+sudo -u ec2-user sed -i 's/var port/var port = 8080; \/\/ /' server.js
+sudo -u ec2-user sed -i 's/var ssl_port/var ssl_port = 4443; \/\/ /' server.js
+sudo -u ec2-user cp /home/ec2-user/config.json /home/ec2-user/HelpNow/config/config.json
+sudo -u ec2-user chmod 600 /home/ec2-user/HelpNow/config/config.json
+sudo -u ec2-user cp /home/ec2-user/ses_secret.json /home/ec2-user/HelpNow/config/ses_secret.json
+sudo -u ec2-user chmod 600 /home/ec2-user/HelpNow/config/ses_secret.json
+cp /etc/rc.d/rc.local.updated /etc/rc.d/rc.local
+/etc/rc.d/rc.local

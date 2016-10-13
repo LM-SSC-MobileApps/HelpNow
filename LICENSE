@@ -1,0 +1,56 @@
+                                                      HelpNow Application Open Source Software License 
+
+
+      This is a HelpNow Application Open Source Software License (“License”) of Lockheed Martin Corporation (“Licensor”) to any person obtaining a copy of the HelpNow software application and associated documentation files (“Application”).  The Application is governed by the terms and conditions of this License.  The Application includes the Open Source Software Programs and is subject to the Open Source Software Licenses set forth on Exhibit A.
+  
+      Copyright 2016 Lockheed Martin Corporation.
+  
+      Permission is hereby granted, free of charge, to deal in the Application without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Application, and to permit persons to whom the Application is furnished to do so, subject to the following conditions: 
+
+1. The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Application.
+
+2. Except as expressly provided in this License no right or interest is granted in, and no  title is transferred, as to the Application or the source code thereto.  All rights which are not licensed herein are expressly reserved by and unto Licensor.
+
+3. The following statement shall be included in any license, lease, or other form of distribution of the Application:
+
+HelpNow was originally developed by an industry team led by Lockheed Martin Space Systems Company, as an open source software application utilizing space assets in order to improve humanitarian response and relief for disaster stricken communities.  The HelpNow application was developed under the auspices of the World Economic Forum’s Global Agenda Council on Space; in addition to Lockheed Martin, the development team included DigitalGlobe, CauseLabs and Satellite Applications UK.
+ 
+4. THE APPLICATION IS PROVIDED “AS IS” AND ALL WARRANTIES AND REPRESENTATIONS, WRITTEN, ORAL, EXPRESS, IMPLIED OR STATUTORY, WITH RESPECT TO THE APPLICATION ARE FULLY DISCLAIMED, INCLUDING WITHOUT LIMITATION ANY IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, FUNCTIONALITY AND ALL OTHER WARRANTIES AND REPRESENTATIONS.  FURTHER, NO WARRANTY IS PROVIDED THAT ALL ERRORS CAN BE CORRECTED OR THAT OPERATION OF THE APPLICATION SHALL BE UNINTERRUPTED OR ERROR-FREE. IN NO EVENT SHALL LICENSOR, ANY AFFILIATE OF LICENSOR, AUTHORS, OR THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, PRODUCTS LIABILITY, OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE APPLICATION OR THE USE OR OTHER DEALINGS IN THE APPLICATION. 
+      
+
+
+*******************
+      Exhibit A – Open Source Software Used in HelpNow and Licenses
+
+* bluebird – promise library – MIT License - https://github.com/petkaantonov/bluebird
+* sequelize – SQL dialect ORM – MIT License - https://github.com/sequelize/sequelize
+* express – web framework – MIT License - https://github.com/expressjs/express/
+* debug – tiny node & browser debugging utility – MIT Licesnse - https://github.com/visionmedia/debug
+* apidoc – inline documentation for RESTful web APIs - MIT License – http://apidocjs.com/
+* morgan – HTTP request logger middleware – MIT License - https://github.com/expressjs/morgan
+* passport – authentication middleware – MIT License - https://github.com/jaredhanson/passport
+* mysql – MySQL connector – MIT License - https://github.com/felixge/node-mysql/
+* jade – template engine – MIT License - https://github.com/jadejs/jade    (renamed to pug & I believe comes packaged with express)
+* node-kmeans – asynch implementation of the clustering algorithm k-means - MIT License – https://github.com/Philmod/node-kmeans
+* oauth2orize – authorization server toolkit – MIT License - https://github.com/jaredhanson/oauth2orize  (not in use yet, but likely will be for our OAuth 2.0 server)
+Javascript Libraries:
+* leaflet – mobile friendly interactive maps –BSD License - https://github.com/Leaflet/Leaflet
+       Other
+* Open Source Routing Machine – Map route calculator- BSD License - https://github.com/Project-OSRM/osrm-backend
+
+                                                                        MIT License 
+Copyright (c) <year> <copyright holders>
+* Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+     
+                                                                        BSD License 
+Copyright (c) <YEAR>, <OWNER>.  All rights reserved.
+* Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+* 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+* 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+       **********************
+
+
+
