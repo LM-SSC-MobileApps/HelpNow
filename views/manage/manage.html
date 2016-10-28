@@ -47,7 +47,7 @@
                     </div>
                     <div class="panel-body text-nowrap spacer">
                         <ul class="list-unstyled list-inline" ng-repeat="invite in invites | orderBy: '+LastName'  ">
-                            <div class="col-md-6  ">
+                            <div class="col-md-7">
                                 <li>
                                     <h5>
                                         <img ng-src="style/images/Person.png" style="height: 30px; width: 13px;" />
@@ -55,7 +55,7 @@
                                     </h5>
                                 </li>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <button class="btn btn-danger btn-sm" ng-click="deleteInvite(invite)">
                                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                                     {{text.remove}}
