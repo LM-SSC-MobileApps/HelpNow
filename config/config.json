@@ -1,0 +1,50 @@
+ {
+   "aws-development": {
+    "username": "dev_usr_name",
+    "password": "dev_usr_ppassword",
+    "database": "databasename",
+    "host": "host.rds.amazonaws.com",
+    "dialect": "mysql",
+    "logging": false,
+    "define": {
+      "timestamps":false,
+      "freezeTableName":true
+    },
+    "jwt_secret":"aws_dev_secret",
+     "jwt_issuer":"accounts.helpnowmap.org",
+     "ses_region": "us-west-2",
+     "ses_host_name" : "ses-server.amazonaws.com"
+
+  },
+  "local-dev": {
+    "username": "root",
+    "password": "root",
+    "database": "helpnow",
+    "host": "localhost",
+    "dialect": "mysql",
+    "define": {
+      "timestamps":false,
+      "freezeTableName":true
+    },
+    "jwt_secret":"super_duper_cookie_monster",
+    "jwt_issuer":"accounts.helpnowmap.org",
+    "ses_region": "us-west-2",
+    "ses_host_name" : "localhost"
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "database_production",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "logging": false,
+    "define": {
+      "timestamps":false,
+      "freezeTableName":true
+    },
+    "jwt_secret":"something_to_configure",
+    "jwt_issuer":"accounts.helpnowmap.org",
+    "ses_region": "us-west-2",
+    "ses_host_name" : "www.helpnowmap.com"
+  }
+}
