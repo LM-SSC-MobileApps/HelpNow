@@ -216,7 +216,7 @@
   "planned_description": "Planned",
   "active_description": "Active",
   "blockages_header": "Blockages",
-  "no_dist_ctr_match_label": "No matching distribution centers found. There may be no resources of the available type or no route from the distribution centers to this location.",
+  "no_dist_ctr_match_label": "No matching distribution centers found. There may be no resources of this type available or no roads from the distribution centers to this location.",
   "minutes_label": "Minutes",
   "no_current_event_label": "No current events",
   "no_base_maps_label": "No Base Maps",
