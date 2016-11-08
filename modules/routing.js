@@ -29,6 +29,17 @@ function findNearestDistCenters(allDistCenters, location) {
 	return callRoutingService("table?src=" + location + "&" + destList)
 	.then(function (distanceData) {
 		var distances = distanceData.distance_table[0];
+
+                var validCenters = 0;
+                for (var i = 0; i < distCenters.length; i++)
+                {
+                        if(distances[i] < 2147483647)
+                                validCenters++;
+                }
+
+                if(validCenters > 3)
+                        validCenters = 3;
+
 		
 		//add the calculated distance to each dist center as a new field
 		distCenters = distCenters.map(function(center, index) {
@@ -41,7 +52,7 @@ function findNearestDistCenters(allDistCenters, location) {
 		distCenters.sort(function(a, b) {
 			return a.dataValues.Distance - b.dataValues.Distance;
 		});
-		distCenters = distCenters.slice(0, 3);
+		distCenters = distCenters.slice(0, validCenters);
 		
 		//for each of the closest centers, call the web service to get the route geometry
 		var routingTasks = [];
