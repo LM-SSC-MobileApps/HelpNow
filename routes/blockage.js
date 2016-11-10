@@ -88,6 +88,9 @@ var routes = function(){
                     }
                 ).then(function(blockage) {
                     //build up the result string
+                        blockage.sort(function(a, b) {
+                            return a.EventID - b.EventID;
+                        });
                         var resultString = "blocked_nodes = {";
                         blockage.forEach(function(block) {
                             resultString += '{["lat"] = '+block.LAT+',';
