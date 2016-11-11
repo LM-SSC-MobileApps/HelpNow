@@ -47,3 +47,5 @@ typings
 
 # ignore mac files
 .DS_Store
+
+certs
