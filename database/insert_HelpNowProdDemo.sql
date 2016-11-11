@@ -1,4 +1,4 @@
-SET foreign_key_checks=0;
+﻿SET foreign_key_checks=0;
 TRUNCATE helpnow.Account;
 TRUNCATE helpnow.AccountRole;
 TRUNCATE helpnow.Address;
@@ -46,7 +46,7 @@ delimiter ;
 INSERT INTO `helpnow`.`AccountRole` (`AccountRoleID`, `Name`) VALUES ('1', 'SuperAdmin');
 INSERT INTO `helpnow`.`AccountRole` (`AccountRoleID`, `Name`) VALUES ('2', 'Admin');
 
-INSERT INTO `helpnow`.`Account` (`Username`, `LastName`, `FirstName`, `Email`, `Password`, `AccountRoleID`, `CreateDate`, `OrganizationID`, `Active`) VALUES (‘tuser’ ‘User’, ‘Test’, ‘test.user@testemail.com’, ‘testuser’, 1, CURDATE(),2, 1);
+INSERT INTO `helpnow`.`Account` (`Username`, `LastName`, `FirstName`, `Email`, `Password`, `AccountRoleID`, `CreateDate`, `OrganizationID`, `Active`) VALUES ('tuser', 'User', 'Test', 'test.user@testemail.com', 'testuser', 1, CURDATE(), 2, 1);
 
 
 INSERT INTO `helpnow`.`Account` (`Username`, `LastName`, `FirstName`, `Email`, `Password`, `AccountRoleID`, `OrganizationID`, `Active`) VALUES ('meal', 'Meal', 'Aid', 'meal.aid@notvalidemail.com', 'demodemo', 1, 4, 1);
@@ -65,7 +65,7 @@ INSERT INTO `helpnow`.`OrganizationType` (`OrganizationTypeID`, `Description`) V
 INSERT INTO `helpnow`.`OrganizationType` (`OrganizationTypeID`, `Description`) VALUES ('2', 'NGO');
 INSERT INTO `helpnow`.`OrganizationType` (`OrganizationTypeID`, `Description`) VALUES ('3', 'App');
 
-INSERT INTO `helpnow`.`Organization` (`Name`, `OrganizationTypeID`, `APIKey`, `APISecret`, `Active`) VALUES ('HelpNow', '3', ‘12345678-1234-1234-1234-123456789012', ‘changethis’, 1);
+INSERT INTO `helpnow`.`Organization` (`Name`, `OrganizationTypeID`, `APIKey`, `APISecret`, `Active`) VALUES ('HelpNow', '3', ‘12345678-1234-1234-1234-123456789012', 'changethis', 1);
 #now we create the APIKey Trigger
 delimiter $$
 CREATE TRIGGER 

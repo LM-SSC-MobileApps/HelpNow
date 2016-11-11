@@ -1,4 +1,4 @@
-SET foreign_key_checks=0;
+﻿SET foreign_key_checks=0;
 TRUNCATE helpnow.Account;
 TRUNCATE helpnow.AccountRole;
 TRUNCATE helpnow.Address;
@@ -49,7 +49,7 @@ delimiter ;
 INSERT INTO `helpnow`.`AccountRole` (`AccountRoleID`, `Name`) VALUES ('1', 'SuperAdmin');
 INSERT INTO `helpnow`.`AccountRole` (`AccountRoleID`, `Name`) VALUES ('2', 'Admin');
 
-INSERT INTO `helpnow`.`Account` (`Username`, `LastName`, `FirstName`, `Email`, `Password`, `AccountRoleID`, `CreateDate`, `OrganizationID`, `Active`) VALUES (‘tuser’, ‘User’, ‘Test’, ‘test.user@testemail.com’, ‘demopassword’, 1, CURDATE(),1, 1);
+INSERT INTO `helpnow`.`Account` (`Username`, `LastName`, `FirstName`, `Email`, `Password`, `AccountRoleID`, `CreateDate`, `OrganizationID`, `Active`) VALUES ('tuser', 'User', 'Test', 'test.user@testemail.com', 'demopassword', 1, CURDATE(),1, 1);
 
 
 INSERT INTO `helpnow`.`Address` (`StreetNumber`, `StreetName`, `StreetType`, `MajorMunicipality`, `GoverningDistrict`, `PostalArea`, `Country`) VALUES ('12999', 'Deer Creek Canyon', 'Road', 'Littleton', 'CO', '80217', 'United States of America');
@@ -59,7 +59,7 @@ INSERT INTO `helpnow`.`OrganizationType` (`OrganizationTypeID`, `Description`) V
 INSERT INTO `helpnow`.`OrganizationType` (`OrganizationTypeID`, `Description`) VALUES ('2', 'NGO');
 INSERT INTO `helpnow`.`OrganizationType` (`OrganizationTypeID`, `Description`) VALUES ('3', 'App');
 
-INSERT INTO `helpnow`.`Organization` (`Name`, `OrganizationTypeID`, `APIKey`, `APISecret`, `Active`) VALUES ('HelpNow', '3', '12345678-1234-1234-1234-123456789012', ‘apitestsecret’, 1);
+INSERT INTO `helpnow`.`Organization` (`Name`, `OrganizationTypeID`, `APIKey`, `APISecret`, `Active`) VALUES ('HelpNow', '3', '12345678-1234-1234-1234-123456789012', 'apitestsecret', 1);
                                                                                                                               
 #now we create the APIKey Trigger
 delimiter $$
