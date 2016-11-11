@@ -76,10 +76,17 @@ function clusterRequestsForType(typeId, requests) {
 	
 	return clusterize(vectors, {k: numClusters})
 		.then(function(clusters) {
-			return clusters.map(function(cluster) {
+		    return clusters.map(function (cluster) {
+		        var clusterRadius = 0.0;
+		        for(var i = 0; i < cluster.cluster.length - 1; i++)
+		        {
+		            if (calculateKmDistance(cluster.cluster[i][0], cluster.cluster[i][1], cluster.cluster[i + 1][0], cluster.cluster[i + 1][1]) > clusterRadius)
+		                clusterRadius = calculateKmDistance(cluster.cluster[i][0], cluster.cluster[i][1], cluster.cluster[i + 1][0], cluster.cluster[i + 1][1]);
+		        }
 				return {
 					LAT: cluster.centroid[0],
 					LONG: cluster.centroid[1],
+                    radius: clusterRadius / 2,
 					ResourceType: resourceType,
 					Quantity: cluster.cluster.length,
 					Notes: "Cluster of " + cluster.cluster.length + " requests"

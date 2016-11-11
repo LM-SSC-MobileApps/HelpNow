@@ -70,7 +70,7 @@
       map.off('viewreset', this._resetOrigin, this);
       map.off('dragend', this._draw, this);
     },
-    _draw: function() {
+    _draw: function () {
       if (!this._map) { return; }
       
       var mapPane = this._map.getPanes().mapPane;
@@ -80,14 +80,17 @@
       this._el.style[HeatmapOverlay.CSS_TRANSFORM] = 'translate(' +
         -Math.round(point.x) + 'px,' +
         -Math.round(point.y) + 'px)';
-
       this._update();
     },
-    _update: function() {
+    _update: function () {
       var bounds, zoom, scale;
       var generatedData = { max: this._max, min: this._min, data: [] };
 
       bounds = this._map.getBounds();
+      var latDist = Math.abs(bounds._southWest.lat - bounds._northEast.lat);
+      var lngDist = Math.abs(bounds._southWest.lng - bounds._northEast.lng);
+      bounds._southWest = { lat: bounds._southWest.lat - latDist * 2, lng: bounds._southWest.lng - lngDist * 2 };
+      bounds._northEast = { lat: bounds._northEast.lat + latDist * 2, lng: bounds._northEast.lng + lngDist * 2 };
       zoom = this._map.getZoom();
       scale = Math.pow(2, zoom);
 
@@ -105,47 +108,50 @@
       var localMin = 0;
       var valueField = this.cfg.valueField;
       var len = this._data.length;
-    
-      while (len--) {
-        var entry = this._data[len];
-        var value = entry[valueField];
-        var latlng = entry.latlng;
+      
+      if (zoom <= 15)
+      {
+          while (len--) {
+              var entry = this._data[len];
+              var value = entry[valueField];
+              var latlng = entry.latlng;
 
+              // we don't wanna render points that are not even on the map ;-)
+              if (!bounds.contains(latlng)) {
+                  //This works but slows it down--look into doing this once, not every update
+                  continue;
+              }
+              // local max is the maximum within current bounds
+              localMax = Math.max(value, localMax);
+              localMin = Math.min(value, localMin);
 
-        // we don't wanna render points that are not even on the map ;-)
-        if (!bounds.contains(latlng)) {
-          continue;
-        }
-        // local max is the maximum within current bounds
-        localMax = Math.max(value, localMax);
-        localMin = Math.min(value, localMin);
+              var point = this._map.latLngToContainerPoint(latlng);
+              var latlngPoint = { x: Math.round(point.x), y: Math.round(point.y) };
+              latlngPoint[valueField] = value;
 
-        var point = this._map.latLngToContainerPoint(latlng);
-        var latlngPoint = { x: Math.round(point.x), y: Math.round(point.y) };
-        latlngPoint[valueField] = value;
+              var radius;
 
-        var radius;
-
-        if (entry.radius) {
-          radius = entry.radius * radiusMultiplier;
-        } else {
-          radius = (this.cfg.radius || 2) * radiusMultiplier;
-        }
-        latlngPoint.radius = radius;
-        latLngPoints.push(latlngPoint);
+              if (entry.radius) {
+                  radius = entry.radius * radiusMultiplier;
+              } else {
+                  radius = (this.cfg.radius || 2) * radiusMultiplier;
+              }
+              latlngPoint.radius = radius;
+              latLngPoints.push(latlngPoint);
+          }
       }
+      
       if (this.cfg.useLocalExtrema) {
         generatedData.max = localMax;
         generatedData.min = localMin;
       }
 
       generatedData.data = latLngPoints;
-
 	  if (this._heatmap) {
 		this._heatmap.setData(generatedData);
 	  }
     },
-    setData: function(data) {
+    setData: function (data) {
       this._max = data.max || this._max;
       this._min = data.min || this._min;
       var latField = this.cfg.latField || 'lat';
@@ -163,12 +169,11 @@
         var dataObj = { latlng: latlng };
         dataObj[valueField] = entry[valueField];
         if (entry.radius) {
-          dataObj.radius = entry.radius;
+          dataObj.radius = entry.radius * 0.005;
         }
         d.push(dataObj);
       }
       this._data = d;
-    
       this._draw();
     },
     // experimential... not ready.
