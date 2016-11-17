@@ -84,38 +84,38 @@ var hashValuesRouter = require('./routes/hashvalues')();
 var authRouter = require('./routes/authenticate')();
 
 
-app.use('/api/account', accountRouter);
-app.use('/api/accountrole', accountRoleRouter);
-app.use('/api/address', addressRouter);
-app.use('/api/event', eventRouter);
-app.use('/api/eventlocation', eventLocationRouter);
-app.use('/api/eventtype', eventTypeRouter);
-app.use('/api/organization', organizationRouter);
-app.use('/api/organizationregulation', organizationRegulationRouter);
-app.use('/api/organizationtype', organizationTypeRouter);
-app.use('/api/requeststate', requestStateRouter);
-app.use('/api/resourcelocation', resourceLocationRouter);
-app.use('/api/resourcelocationtype', resourceLocationTypeRouter);
-app.use('/api/resourcelocationstatus', resourceLocationStatusRouter);
-app.use('/api/resourcelocationinventory', resourceLocationInventoryRouter);
-app.use('/api/resourcelocationtransport', resourceLocationTransportRouter);
-app.use('/api/resourcerequest', resourceRequestRouter);
-app.use('/api/resourceresponse', resourceResponseRouter);
-app.use('/api/resourcetype', resourceTypeRouter);
-app.use('/api/resourcesubtype', resourceSubtypeRouter);
-app.use('/api/transporttype', transportTypeRouter);
-app.use('/api/resourcetypeunitofmeasure', resourceTypeUnitOfMeasureRouter);
-app.use('/api/responsestate', responseStateRouter);
-app.use('/api/requesturgency', requestUrgencyRouter);
-app.use('/api/inviterequest', requestInviteRequestRouter);
-app.use('/api/blockage', blockageRouter);
-app.use('/api/blockagesource', blockageSourceRouter);
-app.use('/api/socialmedia', socialMediaRouter);
-app.use('/api/heatmap', heatMapRouter);
-app.use('/api/maplayer', mapLayerRouter);
-app.use('/api/maplayertype', mapLayerTypeRouter);
-app.use('/hashvalues', hashValuesRouter);
-app.use('/authenticate', authRouter);
+// app.use('/api/account', accountRouter);
+// app.use('/api/accountrole', accountRoleRouter);
+// app.use('/api/address', addressRouter);
+// app.use('/api/event', eventRouter);
+// app.use('/api/eventlocation', eventLocationRouter);
+// app.use('/api/eventtype', eventTypeRouter);
+// app.use('/api/organization', organizationRouter);
+// app.use('/api/organizationregulation', organizationRegulationRouter);
+// app.use('/api/organizationtype', organizationTypeRouter);
+// app.use('/api/requeststate', requestStateRouter);
+// app.use('/api/resourcelocation', resourceLocationRouter);
+// app.use('/api/resourcelocationtype', resourceLocationTypeRouter);
+// app.use('/api/resourcelocationstatus', resourceLocationStatusRouter);
+// app.use('/api/resourcelocationinventory', resourceLocationInventoryRouter);
+// app.use('/api/resourcelocationtransport', resourceLocationTransportRouter);
+// app.use('/api/resourcerequest', resourceRequestRouter);
+// app.use('/api/resourceresponse', resourceResponseRouter);
+// app.use('/api/resourcetype', resourceTypeRouter);
+// app.use('/api/resourcesubtype', resourceSubtypeRouter);
+// app.use('/api/transporttype', transportTypeRouter);
+// app.use('/api/resourcetypeunitofmeasure', resourceTypeUnitOfMeasureRouter);
+// app.use('/api/responsestate', responseStateRouter);
+// app.use('/api/requesturgency', requestUrgencyRouter);
+// app.use('/api/inviterequest', requestInviteRequestRouter);
+// app.use('/api/blockage', blockageRouter);
+// app.use('/api/blockagesource', blockageSourceRouter);
+// app.use('/api/socialmedia', socialMediaRouter);
+// app.use('/api/heatmap', heatMapRouter);
+// app.use('/api/maplayer', mapLayerRouter);
+// app.use('/api/maplayertype', mapLayerTypeRouter);
+ app.use('/hashvalues', hashValuesRouter);
+ app.use('/authenticate', authRouter);
 
 //set the express.static locations to serve up the static files
 app.use(express.static('views'));
@@ -178,3 +178,39 @@ app.use('/hxl', proxy('127.0.0.1:' + port, {
         cb(null, data);
     }
 }));
+
+
+app.use('/hxl', proxy('127.0.0.1:' + port, {
+    //only proxy get requests
+    filter: function(req, res) {
+        return req.method == 'GET';
+    },
+    forwardPath: function(req, res) {
+        return require('url').parse(req.url).path;
+    },
+    decorateRequest: function ( req ) {
+        req.headers[ 'Accept-Encoding' ] = 'utf8';
+        return req;
+    },
+    intercept: function(rsp, data, req, res, cb) {
+        var hxlTags= JSON.parse(fs.readFileSync('./data/hxl.json'));
+        data = data.toString().allReplace(hxlTags);
+        cb(null, data);
+    }
+}));
+
+
+app.use('/api', proxy('127.0.0.1:' + 9000, {
+    //only proxy get requests
+    filter: function(req, res) {
+        return req.method == 'GET';
+    },
+    forwardPath: function(req, res) {
+        return require('url').parse(req.url).path;
+    },
+    decorateRequest: function ( req ) {
+        req.headers[ 'Accept-Encoding' ] = 'utf8';
+        return req;
+    }
+}));
+
