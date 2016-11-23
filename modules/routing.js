@@ -49,6 +49,10 @@ function findNearestDistCenters(allDistCenters, location) {
                 var validCenters = 0;
                 for (var i = 0; i < distCenters.length; i++)
                 {
+			if(distances[i] == "null" || distances[i] == null)
+			{
+				distances[i] = 2147483647;
+			}
                         if(distances[i] < 2147483647 && distances[i] > 0)
                                 validCenters++;
                 }
