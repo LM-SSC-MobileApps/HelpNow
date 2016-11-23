@@ -4,6 +4,7 @@
     "password": "dev_usr_ppassword",
     "database": "databasename",
     "host": "host.rds.amazonaws.com",
+    "routeserver": "https://router.project-osrm.org/",
     "dialect": "mysql",
     "logging": false,
     "define": {
@@ -21,6 +22,7 @@
     "password": "root",
     "database": "helpnow",
     "host": "localhost",
+    "routeserver": "https://router.project-osrm.org/",
     "dialect": "mysql",
     "define": {
       "timestamps":false,
@@ -36,6 +38,7 @@
     "password": null,
     "database": "database_production",
     "host": "127.0.0.1",
+    "routeserver": "https://router.project-osrm.org/",
     "dialect": "mysql",
     "logging": false,
     "define": {
