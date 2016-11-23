@@ -65,10 +65,14 @@ function findNearestDistCenters(allDistCenters, location) {
                         // OSRMV4API
 			// var distanceInMinutes = (distances[index] / 600).toFixed(2)
                         // OSRMV5API
-                        var distanceInMinutes = (distances[index] / 60).toFixed(2)
+                        var distanceInMinutes = (distances[index+1] / 60).toFixed(2)
 			center.dataValues.Distance = distanceInMinutes;
 			return center;
 		});
+
+		//Debug output of results
+		//for (var i = 0; i < distCenters.length; i++)		
+		//	console.log("Center " + distCenters[i].dataValues.Description + " [" + distCenters[i].dataValues.Organization.dataValues.Name + "] = " + distCenters[i].dataValues.Distance + " / " + distCenters[i].dataValues.PrimaryPOCName + " @ " + distCenters[i].dataValues.LONG + ", " + distCenters[i].dataValues.LAT);		
 		
 		//sort the dist centers by distance to find the three closest
 		distCenters.sort(function(a, b) {
@@ -86,7 +90,7 @@ function findNearestDistCenters(allDistCenters, location) {
 			// OSRMV4API
 			// var servicePath = "viaroute?compression=false&loc=" + location + "&loc=" + distCenters[i].LAT + "," + distCenters[i].LONG;
                         // OSRMV5API
-			var servicePath = "route/v1/profile/" + locSplit[1] + "," + locSplit[0] + ";" + distCenters[i].LONG + "," + distCenters[i].LAT + "?geometries=geojson&overview=full";
+			var servicePath = "route/v1/profile/" + locSplit[1] + "," + locSplit[0] + ";" + distCenters[i].LONG + "," + distCenters[i].LAT + "?geometries=geojson";
 			var task = callRoutingService(servicePath);
 			routingTasks.push(task);
 		}
