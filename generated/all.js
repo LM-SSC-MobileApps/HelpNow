@@ -3031,7 +3031,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        });
 	    }
 
-	    function buildClusterMarkers() {
+	    function buildClusterMarkers(showIcons) {
 	        if (!$scope.requestClusters) return;
 	        $scope.selectedClusters = $scope.requestClusters.filter(function (cluster) {
 	            var type = cluster.ResourceType.Description;
@@ -3042,21 +3042,23 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	            return cluster.LAT != null && !isNaN(cluster.LAT) && cluster.LONG && !isNaN(cluster.LONG);
 	        });
 
-	        angular.forEach($scope.selectedClusters, function (cluster) {
-	            var clusterIcon = L.icon({
-	                iconUrl: getClusterIcon(cluster.ResourceType.Description),
-	                iconSize: [50, 50],
-	                iconAnchor: [25, 25]
-	            });
-	            if (cluster.LAT == null || isNaN(cluster.LAT) || cluster.LONG == null || isNaN(cluster.LONG)) {
+	        if (showIcons) {
+	            angular.forEach($scope.selectedClusters, function (cluster) {
+	                var clusterIcon = L.icon({
+	                    iconUrl: getClusterIcon(cluster.ResourceType.Description),
+	                    iconSize: [50, 50],
+	                    iconAnchor: [25, 25]
+	                });
+	                if (cluster.LAT == null || isNaN(cluster.LAT) || cluster.LONG == null || isNaN(cluster.LONG)) {
 
-	            }
-	            else {
-	                var marker = L.marker([cluster.LAT, cluster.LONG], { icon: clusterIcon });
-	                marker.bindPopup("<strong>" + cluster.ResourceType.Description + "</strong><br/>" + cluster.Notes);
-	                mapLayers.push(marker);
-	            }
-	        });
+	                }
+	                else {
+	                    var marker = L.marker([cluster.LAT, cluster.LONG], { icon: clusterIcon });
+	                    marker.bindPopup("<strong>" + cluster.ResourceType.Description + "</strong><br/>" + cluster.Notes);
+	                    mapLayers.push(marker);
+	                }
+	            });
+	        }
 	    }
 
 
@@ -3143,7 +3145,7 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        mapLayers = [];
 
 	        if ($scope.showClusters)
-	            buildClusterMarkers();
+	            buildClusterMarkers($scope.showClusters);
 
 	        if ($scope.showLocationMarkers)
 	            $scope.buildLocationMarkers($scope.locations, mapLayers, $scope.filterFlags, locationClicked);
@@ -3154,7 +3156,11 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 			if ($scope.showBlockageMarkers)
 			    buildBlockageMarkers();
 
-			if ($scope.showHeatmap && $scope.selectedClusters.length > 0)
+			if ($scope.showHeatmap)
+			    if (!$scope.showClusters)
+			    {
+			        buildClusterMarkers($scope.showClusters);
+			    }
 			    buildHeatmap($scope.selectedClusters);
 			
 			if ($scope.showFindResults && $scope.matches)
@@ -4544,6 +4550,14 @@ angular.module("helpNow").directive('map', ['MapLayer', function (MapLayer) {
     };
 }]);
 
+angular.module('helpNow').factory('ResourceRequest', function ($resource) {
+    return $resource('api/resourcerequest/:id', null ,{
+        update: {
+            method: 'PUT'
+        }
+    });
+});
+
 angular.module('helpNow').factory('Account', function ($resource) {
     return $resource('api/account/:id', null ,{
         update: {
@@ -4676,13 +4690,6 @@ angular.module('helpNow').factory('ResourceLocationTransport', function ($resour
 });
 angular.module('helpNow').factory('ResourceLocationType', function ($resource) {
     return $resource('api/resourcelocationtype/:id', null, {
-        update: {
-            method: 'PUT'
-        }
-    });
-});
-angular.module('helpNow').factory('ResourceRequest', function ($resource) {
-    return $resource('api/resourcerequest/:id', null ,{
         update: {
             method: 'PUT'
         }
