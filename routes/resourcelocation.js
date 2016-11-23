@@ -260,7 +260,7 @@ var routes = function () {
 	.get('/dist-center/nearest/:loc', function(req, res) {
 		var location = req.params.loc;
 		var resourceTypes = req.query.resources.split(",");
-		console.log(resourceTypes);
+		//console.log(resourceTypes);
 		findAllDistCenters()
 		.then(function (allCenters) {
 			var selectedCenters = allCenters.filter(function (center) {
