@@ -275,5 +275,9 @@
   "about_page_history_t3":" to improve safety, security and quality of life worldwide through the use of space-enabled technologies. The chair of the GAC-S, Rick Ambrose of Lockheed Martin Space Systems Company, assembled the development team from Digital Globe, CauseLabs and Lockheed Martin. Satellite Application Catapult UK also helped refine requirements for the software’s initial release.",
 
   "about_page_thankyou_header": "Thank you",
-  "about_page_thankyou_t": "Lockheed Martin, Digital Globe, Amazon Web Services, Satellite Applications Catapult, Causelabs, DMCii, Deimos Imagery, Institute of Air and Space Law at McGill University, eGEOS."
+  "about_page_thankyou_t": "Lockheed Martin, Digital Globe, Amazon Web Services, Satellite Applications Catapult, Causelabs, DMCii, Deimos Imagery, Institute of Air and Space Law at McGill University, eGEOS.",
+
+  "heatmap_label": "Heatmap Min/Max Values",
+  "min_label": "Min",
+  "max_label":  "Max"
 }

@@ -276,8 +276,10 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 	        var heatmapConfig = {
 	            "radius": 0.085,
 	            "maxOpacity": 0.5,
+	            "eventMax": $scope.event.HeatmapMax,
+                "eventMin": $scope.event.HeatmapMin,
 	            "scaleRadius": true,
-	            "useLocalExtrema": true,
+	            "useLocalExtrema": false,
 	            latField: 'LAT',
 	            lngField: 'LONG',
 	            valueField: 'Quantity'

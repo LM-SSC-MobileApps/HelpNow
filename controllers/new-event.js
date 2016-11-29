@@ -15,6 +15,8 @@
         $scope.newEvent = $scope.existingEvent;
         $scope.newEvent.LAT = $scope.existingEvent.EventLocations[0].LAT;
         $scope.newEvent.LONG = $scope.existingEvent.EventLocations[0].LONG;
+        $scope.newEvent.HeatmapMin = $scope.existingEvent.HeatmapMin;
+        $scope.newEvent.HeatmapMax = $scope.existingEvent.HeatmapMax;
         $scope.radiusRawVal = $scope.newEvent.EventLocations[0].Radius;
         $scope.overlayRadius = $scope.newEvent.EventLocations[0].Radius * 1000;
         $scope.sliderLabel = $scope.radiusRawVal + " km";
@@ -26,7 +28,7 @@
     }
     else {
         existingEvent = false;
-        $scope.newEvent = { Notes: '', Keywords: '', OrganizationID: $scope.currentOrg.OrganizationID, Active: '1', AreaSize: '15 km' };
+        $scope.newEvent = { Notes: '', Keywords: '', OrganizationID: $scope.currentOrg.OrganizationID, Active: '1', AreaSize: '15 km', HeatmapMin: 0, HeatmapMax: 1 };
         $scope.overlayRadius = 15000;
         $scope.radiusRawVal = 15;
         $scope.sliderLabel = "15 km";
@@ -157,7 +159,7 @@
     };
 
     $scope.updateEventLocation = function () {
-        var splitString = $scope.newEvent.AreaSize.split(" ");
+        var splitString = $scope.sliderLabel.split(" ");
         $scope.locationData.Radius = splitString[0];
         $scope.locationData.LAT = $scope.newEvent.LAT;
         $scope.locationData.LONG = $scope.newEvent.LONG;

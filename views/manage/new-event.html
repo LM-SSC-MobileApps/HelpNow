@@ -58,6 +58,13 @@
                         <label for="socialMediaKeywords">{{text.social_media_keywords_label}}<br />({{text.comma_separated_label}}):</label>
                         <input type="text" ng-model="newEvent.Keywords" id="socialMediaKeywords" name="socialMediaKeywords" class="form-control" ng-required="true" />
                     </div>
+                    <div class="row">
+                        <hr class="separated" />
+                        <label for="heatmapMin">{{text.heatmap_label}}</label>
+                        <br />
+                        <span>{{text.min_label}}: </span><input ng-model="newEvent.HeatmapMin" type="text" class="form-control" name="heatmapMin" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
+                        <span>{{text.max_label}}: </span><input ng-model="newEvent.HeatmapMax" type="text" class="form-control" name="heatmapMax" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
+                    </div>
                 </div>
             </div>
         </div>

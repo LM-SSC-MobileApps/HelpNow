@@ -36,6 +36,14 @@ module.exports = function(sequelize, DataTypes) {
     Keywords: {
       type: DataTypes.STRING,
       allowNull: true
+    },
+    HeatmapMin: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    HeatmapMax: {
+        type: DataTypes.INTEGER,
+        allowNull: true
     }
   });
 };

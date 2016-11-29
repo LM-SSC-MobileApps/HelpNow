@@ -30,8 +30,8 @@
       this.cfg = config;
       this._el = L.DomUtil.create('div', 'leaflet-zoom-hide');
       this._data = [];
-      this._max = 1;
-      this._min = 0;
+      this._max = this.cfg.eventMax;
+      this._min = this.cfg.eventMin;
       this.cfg.container = this._el;
     },
 
