@@ -1,43 +1,54 @@
 <div class="row">
-    <div id="event-info" class="col-md-12">
-        <div class="well">
-            <div class="row">
-                <div class="col-xs-4">
-                    <img class="event-img" ng-src="{{getEventIcon(event.EventType.Description)}}" />
-                </div>
-                <div id="event-title" class="col-xs-8">
-                    <h4>{{event.EventType.Description}}</h4>
-                    <h5>{{event.EventLocations[0].Description}}</h5>
-                </div>
+    <div id="event-info" class="col-md-12 dark-container">
+
+        <div class="row">
+            <div class="col-xs-4">
+                <img class="event-img" ng-src="{{getEventIcon(event.EventType.Description)}}" />
             </div>
-            <div class="row separated-small">
-                <div class="col-sm-12">
+            <div id="event-title" class="col-xs-8">
+                <h4>{{event.EventType.Description}}</h4>
+                <h5>{{event.EventLocations[0].Description}}</h5>
+            </div>
+        </div>
+
+        <div class="dark-container separated-small">
+            <div class="row">
+                <div class="col-sm-2">
+                    <h3><span class="glyphicon glyphicon-globe"></span></h3>
+                </div>
+                <div class="col-sm-10">
                     <a href="" ng-click="centerMapToLongLat(event.EventLocations[0].LAT, event.EventLocations[0].LONG)">
-                        ({{event.EventLocations[0].LAT}}, {{event.EventLocations[0].LONG}}, {{event.EventLocations[0].Radius}} km<sup>2</sup>)
+                    ({{event.EventLocations[0].LAT}}, {{event.EventLocations[0].LONG}}, {{event.EventLocations[0].Radius}} km<sup>2</sup>)
                     </a>
                 </div>
             </div>
-            <div class="row separated-tiny">
+
+            <div class="row">
                 <div class="col-sm-2">
-                    <img src="style/images/Clock.png" style="height: 22px; width: 22px;" />
+                    <!--<h3><img src="style/images/Clock.png" style="height: 22px; width: 22px;" /></h3>-->
+                    <h3><span class="glyphicon glyphicon-time"></span></h3>
                 </div>
                 <div class="col-sm-10">
                     {{event.CreateDate | date : "short"}}
                 </div>
             </div>
-            <div class="row separated-tiny">
+            
+            <div class="row">
                 <div class="col-sm-2">
-                    <img src="style/images/Team.png" style="height: 22px; width: 22px;" />
+                    <!--<img src="style/images/Team.png" style="height: 22px; width: 22px;" />-->
+                    <h3><span class="glyphicon glyphicon-phone-alt"></span></h3>
                 </div>
                 <div class="col-sm-10">
                     {{event.contactPhone}}
                 </div>
             </div>
-            <div class="row separated-small">
-                <div class="col-sm-12">
-                    <a id="btn-help" class="btn btn-danger" ng-click="toggleHelp()" style="margin-left: 0px;"><span class="glyphicon glyphicon-warning-sign"></span>{{text.menu_help}}</a>
-                </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-12">
+                <a id="btn-help" class="btn btn-danger full-width" ng-click="toggleHelp()"><span class="glyphicon glyphicon-warning-sign"></span>{{text.menu_help}}</a>
             </div>
         </div>
+
     </div>
 </div>

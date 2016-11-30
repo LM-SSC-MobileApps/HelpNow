@@ -1,45 +1,53 @@
 ﻿<div ng-controller="UpdateAccountCtrl">
     <div class="row">
-        <div class="well">
-            <div class="row">
-                <form name="userInfoForm" novalidate role="form">
-                    <div class="form-group" ng-class="">
-                        <div class="col-xs-12">
-                            <label for="firstName">{{text.first_name_label}}</label>
-                            <input type="text" ng-model="userAccount.FirstName" id="firstName" name="firstName" class="form-control" ng-required="true" />
-                            <br />
-                        </div>
-                        <div class="col-xs-12">
-                            <label for="middleInitial">{{text.middle_initial_label}}</label>
-                            <input type="text" ng-model="userAccount.MiddleInitial" id="middleInitial" name="middleInitial" class="form-control" ng-required="true" />
-                            <br />
-                        </div>
-                        <div class="col-xs-12">
-                            <label for="lastName">{{text.last_name_label}}</label>
-                            <input type="text" ng-model="userAccount.LastName" id="lastName" name="lastName" class="form-control" ng-required="true" />
-                            <br />
-                        </div>
-                        <div class="col-xs-12">
-                            <label for="email">{{text.email_label}}</label>
-                            <input type="text" ng-model="userAccount.Email" id="email" name="email" class="form-control" ng-required="true" />
-                            <br />
-                        </div>
-                        <div class="col-xs-12">
-                            <label for="phone">{{text.phone_label}}</label>
-                            <input type="text" ng-model="userAccount.Phone" id="phone" name="phone" class="form-control" ng-required="true" />
-                            <br />
-                        </div>
-                        <div class="col-xs-12">
-                            <label for="mobilePhone">{{text.mobile_phone_label}}</label>
-                            <input type="text" ng-model="userAccount.MobilePhone" id="mobilePhone" name="mobilePhone" class="form-control" ng-required="true" />
-                            <br />
-                        </div>
+        <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 dark-container">
+
+            <form name="userInfoForm" novalidate role="form">
+
+                <div class="row">
+                    <div class="col-md-12 form-group">
+                        <label for="firstName">{{text.first_name_label}}</label>
+                        <input type="text" ng-model="userAccount.FirstName" id="firstName" name="firstName" class="form-control" ng-required="true" />
                     </div>
-                </form>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 form-group">
+                        <label for="middleInitial">{{text.middle_initial_label}}</label>
+                        <input type="text" ng-model="userAccount.MiddleInitial" id="middleInitial" name="middleInitial" class="form-control" ng-required="true" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 form-group">
+                        <label for="lastName">{{text.last_name_label}}</label>
+                        <input type="text" ng-model="userAccount.LastName" id="lastName" name="lastName" class="form-control" ng-required="true" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 form-group">
+                        <label for="email">{{text.email_label}}</label>
+                        <input type="text" ng-model="userAccount.Email" id="email" name="email" class="form-control" ng-required="true" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 form-group">
+                        <label for="phone">{{text.phone_label}}</label>
+                        <input type="text" ng-model="userAccount.Phone" id="phone" name="phone" class="form-control" ng-required="true" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 form-group">
+                        <label for="mobilePhone">{{text.mobile_phone_label}}</label>
+                        <input type="text" ng-model="userAccount.MobilePhone" id="mobilePhone" name="mobilePhone" class="form-control" ng-required="true" />
+                    </div>
+                </div>
+
+            </form>
+
                 <div>
                     <a id="btn-showAddress" class="btn btn-primary pull-right" ng-click="updateAccountInfo()"><span></span>{{text.btn_submit}}</a>
                 </div>
             </div>
+
         </div>
     </div>
 </div>

@@ -1,39 +1,37 @@
 <div ng-controller="DemoCtrl">
-    <div class="row separated">
-        <div class="col-xs-3 ">
-            <h4>Demo</h4>
-        </div>
-        <div class="col-xs-offset-7 col-xs-2">
-            <button type="button" class="close" style="" ng-click="go('/manage')">&times;</button>
-        </div>
-    </div>
-    <div class="panel text-center">
-        <div class="panel-title">
-            <h4>&nbsp;</h4>
-        </div>
-        <div class="panel-primary">
-            <div>
-                <a class="btn " ng-click="runBangladeshScenario()" ng-class="{'btn-warning': demoRunning, 'btn-primary': !demoRunning }">
-					<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
-                    <span>Start Bangladesh Scenario</span>
-                </a>
-            </div>
-			
-			<div class="spacer">
-                <a class="btn " ng-click="runNepalScenario()" ng-class="{'btn-warning': demoRunning, 'btn-primary': !demoRunning }">
-					<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
-                    <span>Start Nepal Scenario</span>
-                </a>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2 dark-container">
+
+            <div class="row">
+                <div class="col-xs-9">
+                    <h3>Demo</h3>
+                </div>
+                <div class="col-xs-3">
+                    <button type="button" class="close pull-right" ng-click="go('/manage')">&times;</button>
+                </div>
             </div>
 
-            <div class="spacer">
-                <a class="btn btn-danger " ng-click="cleanDatabase()">
-                    <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-                    <span>Clean Database</span>
-                </a>
+            <div class="row">
+                <div class="col-sm-4 separated-small">
+                    <a class="btn full-width" ng-click="runBangladeshScenario()" ng-class="{'btn-warning': demoRunning, 'btn-primary': !demoRunning }">
+                        <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+                        <span>Start Bangladesh Scenario</span>
+                    </a>
+                </div>
+                <div class="col-sm-4 separated-small">
+                    <a class="btn full-width" ng-click="runNepalScenario()" ng-class="{'btn-warning': demoRunning, 'btn-primary': !demoRunning }">
+                        <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+                        <span>Start Nepal Scenario</span>
+                    </a>
+                </div>
+                <div class="col-sm-4 separated-small">
+                    <a class="btn btn-danger full-width" ng-click="cleanDatabase()">
+                        <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                        <span>Clean Database</span>
+                    </a>
+                </div>
             </div>
 
-            <div class="spacer"></div>
         </div>
     </div>
 </div>

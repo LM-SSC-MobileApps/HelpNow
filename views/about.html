@@ -1,37 +1,32 @@
-﻿<div ng-controller="AboutCtrl">
-    <div class="col-md-9">
-        <p>{{text.about_page_main_t1}}<b style="color: #b5b9dc"><i>{{text.about_page_main_b1}}</i></b>{{text.about_page_main_t2}}<b style="color: #b5b9dc"><i>{{text.about_page_main_b2}}</i></b>{{text.about_page_main_t3}}</p><br />
+﻿<div class="row" ng-controller="AboutCtrl">
+    <div class="col-md-7 col-md-offset-1 dark-container">
+        <p>{{text.about_page_main_t1}}<b class="about-bold"><i>{{text.about_page_main_b1}}</i></b>{{text.about_page_main_t2}}
+            <b class="about-bold"><i>{{text.about_page_main_b2}}</i></b>{{text.about_page_main_t3}}</p><br />
         <h4 style="color: white;">{{text.about_page_sub1}}</h4>
-        <p>{{text.about_page_sub1_t1}}<b style="color: #b5b9dc"><i>{{text.about_page_sub1_b1}}</i></b>{{text.about_page_sub1_t2}}<b style="color: #b5b9dc"><i>{{text.about_page_sub1_b2}}</i></b></p><br />
+        <p>{{text.about_page_sub1_t1}}<b class="about-bold"><i>{{text.about_page_sub1_b1}}</i></b>{{text.about_page_sub1_t2}}
+            <b class="about-bold"><i>{{text.about_page_sub1_b2}}</i></b>
+        </p><br />
         <h4 style="color: white;">{{text.about_page_sub2}}</h4>
-        <p>{{text.about_page_sub2_t1}}<b style="color: #b5b9dc"><i>{{text.about_page_sub2_b1}}</i></b>{{text.about_page_sub2_t2}}</p><br />
+        <p>{{text.about_page_sub2_t1}}<b class="about-bold"><i>{{text.about_page_sub2_b1}}</i></b>{{text.about_page_sub2_t2}}</p><br />
         <h4 style="color: white;">{{text.about_page_sub3}}</h4>
-        <p>{{text.about_page_sub3_t1}}<b style="color: #b5b9dc"><i>{{text.about_page_sub3_b1}}</i></b>{{text.about_page_sub3_t2}}<b style="color: #b5b9dc"><i>{{text.about_page_sub3_b2}}</i></b>{{text.about_page_sub3_t3}}<b style="color: #b5b9dc"><i>{{text.about_page_sub3_b3}}</i></b>{{text.about_page_sub3_t4}}</p><br />
+        <p>{{text.about_page_sub3_t1}}<b class="about-bold"><i>{{text.about_page_sub3_b1}}</i></b>{{text.about_page_sub3_t2}}
+            <b class="about-bold"><i>{{text.about_page_sub3_b2}}</i></b>{{text.about_page_sub3_t3}}<b class="about-bold"><i>{{text.about_page_sub3_b3}}</i></b>{{text.about_page_sub3_t4}}</p><br />
         <h4 style="color: white;">{{text.about_page_sub4}}</h4>
-        <p>{{text.about_page_sub4_t1}}<b style="color: #b5b9dc"><i>{{text.about_page_sub4_b1}}</i></b>{{text.about_page_sub4_t2}}<a href="http://www.helpnowmap.com">http://www.helpnowmap.com</a>{{text.about_page_sub4_t3}}<b style="color: #b5b9dc"><i>{{text.about_page_sub4_b2}}</i></b>{{text.about_page_sub4_t4}}<b style="color: #b5b9dc"><i>{{text.about_page_sub4_b3}}</i></b>{{text.about_page_sub4_t5}}</p><br />
+        <p>{{text.about_page_sub4_t1}}<b class="about-bold"><i>{{text.about_page_sub4_b1}}</i></b>{{text.about_page_sub4_t2}}
+            <a href="http://www.helpnowmap.com">http://www.helpnowmap.com</a>{{text.about_page_sub4_t3}}<b class="about-bold"><i>{{text.about_page_sub4_b2}}</i></b>{{text.about_page_sub4_t4}}
+                <b class="about-bold"><i>{{text.about_page_sub4_b3}}</i></b>{{text.about_page_sub4_t5}}</p><br />
     </div>
     <div class="col-md-3">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="well">
-                    <div class="row">
-                        <h4 align="center" style="color: white;">{{text.about_page_history_header}}</h4>
-                        <p>{{text.about_page_history_t1}}<b style="color: #b5b9dc"><i>{{text.about_page_history_b1}}</i></b>{{text.about_page_history_t2}}<b style="color: #b5b9dc"><i>{{text.about_page_history_b2}}</i></b>{{text.about_page_history_t3}}</p>
-                    </div>
-                </div>
-            </div>
+        <div class="dark-container">
+            <h4 align="center" style="color: white;">{{text.about_page_history_header}}</h4>
+            <p>{{text.about_page_history_t1}}<b class="about-bold"><i>{{text.about_page_history_b1}}</i></b>{{text.about_page_history_t2}}
+                <b class="about-bold"><i>{{text.about_page_history_b2}}</i></b>{{text.about_page_history_t3}}</p>
         </div>
     </div>
     <div class="col-md-3">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="well">
-                    <div class="row">
-                        <h4 align="center" style="color: white;">{{text.about_page_thankyou_header}}</h4>
-                        <p>{{text.about_page_thankyou_t}}</p>
-                    </div>
-                </div>
-            </div>
+        <div class="dark-container">
+            <h4 align="center" style="color: white;">{{text.about_page_thankyou_header}}</h4>
+            <p>{{text.about_page_thankyou_t}}</p>
         </div>
     </div>
     <!--<a href="http://lockheedmartin.com"><img src="style/images/LM_logo_notagline_white.png" alt="Lockheed Martin" style="width: 200px; height: 48px"></a>

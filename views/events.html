@@ -1,9 +1,15 @@
 <div ng-controller="EventListCtrl">
     <div class="row">
-        <div id="map" map map-center="20.0,0.0" map-zoom="2" class="col-md-9" style="height: 512px; border: 1px solid #AAA;"></div>
-        <div id="eventList" class="col-md-3">
+
+        <!--Map-->
+        <div class="col-lg-7 col-lg-offset-1 col-md-8 col-sm-7">
+            <div id="map" map map-center="15.0, 25.0" map-zoom="2"></div>
+        </div>
+        
+        <!--Events-->
+        <div id="eventList" class="col-lg-3 col-md-4 col-sm-5">
             <div id="eventsTable">
-                <div ng-repeat="event in events">
+                <div ng-repeat="event in events" class="dark-container">
                     <div class="row">
                         <div class="col-sm-3">
                             <a ng-hide="isLoggedIn" href="#event_map/{{event.EventID}}"><img class="resource-img" ng-src="{{getEventIcon(event.EventType.Description)}}" /></a>
@@ -12,21 +18,21 @@
                         <div class="col-sm-9">
                             <h4>{{event.EventType.Description}}</h4>
                             <h5>{{event.Summary}}</h5>
-                            <a ng-hide="isLoggedIn" href="#event_map/{{event.EventID}}">
+                            <a class="link-lat-long" ng-hide="isLoggedIn" href="#event_map/{{event.EventID}}">
                                 ({{event.EventLocations[0].LAT}}, {{event.EventLocations[0].LONG}}, {{event.EventLocations[0].Radius}} km<sup>2</sup>)
                             </a>
-                            <a ng-show="isLoggedIn" href="#org_event/{{event.EventID}}">
+                            <a class="link-lat-long" ng-show="isLoggedIn" href="#org_event/{{event.EventID}}">
                                 ({{event.EventLocations[0].LAT}}, {{event.EventLocations[0].LONG}}, {{event.EventLocations[0].Radius}} km<sup>2</sup>)
                             </a>
                         </div>
                     </div>
                     <div class="separated-small">
-                        <a ng-hide="isLoggedIn" id="btn-help" class="btn btn-danger" href="#event_map/{{event.EventID}}" style="margin-left: 0px;"><span class="glyphicon glyphicon-warning-sign"></span>{{text.menu_help}}</a>
-                        <a ng-show="isLoggedIn" id="btn-help" class="btn btn-danger" href="#org_event/{{event.EventID}}" style="margin-left: 0px;"><span class="glyphicon glyphicon-warning-sign"></span>{{text.menu_help}}</a>
+                        <a ng-hide="isLoggedIn" id="btn-help" class="btn btn-danger full-width" href="#event_map/{{event.EventID}}"><span class="glyphicon glyphicon-warning-sign"></span>{{text.menu_help}}</a>
+                        <a ng-show="isLoggedIn" id="btn-help" class="btn btn-danger full-width" href="#org_event/{{event.EventID}}"><span class="glyphicon glyphicon-warning-sign"></span>{{text.menu_help}}</a>
                     </div>
-                    <hr />
                 </div>
             </div>
         </div>
+
     </div>
 </div>

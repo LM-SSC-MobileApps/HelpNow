@@ -1,42 +1,49 @@
 <div ng-controller="RegulationsCtrl">
-    <div class="panel panel-borderless">
-        <div class="panel-title">
-            <div class="col-xs-10">
-                <img ng-src="style/images/Regulations.png" style="height: 87px; width: 87px;" alt="Regulations"/>
-                <span style="font-size: x-large ">Regulations &amp; Policies</span>
-            </div>
-            <div class=" col-xs-2">
-                <button type="button" class="close" ng-click="go('/manage')">&times;</button>
-            </div>
-        </div>
-        <div class="panel-body" id="regulations">
-            <div class="row spacer col-xs-12">
-                <ul class="list-unstyled list-inline" ng-repeat="regulation in regulations">
-                    <li>
-                        <a href="#/regulation_detail/{{regulation.OrganizationRegulationsID}}" class="thumb">
-                            <img alt="Regulation" ng-src="style/images/Policy.png" style="height: 44px; width: 31px;"/>
-                        </a>
-                    </li>
-                    </li>
-                    <li>
-                        <h4>{{regulation.Summary}}</h4>
-                    </li>
-                    <li>
-                        <a href="#/regulation_edit/{{regulation.OrganizationRegulationsID}}" class="thumb">
-                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                        </a>
-                    </li>
-                </ul>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 dark-container">
 
+            <div class="row">
+                <div class="col-xs-10">
+                    <h3>
+                        <img ng-src="style/images/Regulations.png" style="width:40px; margin-right:10px;" alt="Regulations"/>
+                        {{text.regulations_title_label}}
+                    </h3>
+                </div>
+                <div class="col-xs-2">
+                    <button type="button" class="close" ng-click="go('/manage')">&times;</button>
+                </div>
             </div>
-        </div>
-        <div id="AddRegulation">
-            <div class="row col-xs-12">
-                <button class="btn  btn-primary" ng-click="go('/regulation_add')">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                    Add New Policy or Regulation
-                </button>
+
+            <div class="row spacer" id="regulations">
+                <div class="col-xs-12" ng-repeat="regulation in regulations">
+                    <div class="row separated-small">
+                        <div class="col-xs-8">
+                            <a href="#/regulation_detail/{{regulation.OrganizationRegulationsID}}">
+                                <h4>
+                                    <img alt="Regulation" ng-src="style/images/Policy.png" style="width:20px; margin-right:10px;"/>
+                                    {{regulation.Summary}}
+                                </h4>
+                            </a>
+                        </div>
+                        <div class="col-xs-4">
+                            <a class="btn btn-primary full-width" href="#/regulation_edit/{{regulation.OrganizationRegulationsID}}">
+                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>{{text.btn_edit}}
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <hr>
+
+            <div class="row" id="AddRegulation">
+                <div class="col-xs-12">
+                    <button class="btn  btn-primary" ng-click="go('/regulation_add')">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        {{text.btn_add_policy}}
+                    </button>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

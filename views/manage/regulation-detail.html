@@ -1,19 +1,23 @@
 <div ng-controller="RegulationDetailCtrl">
     <div class="row">
-        <div class="col-xs-2 ">
-            <img ng-src="style/images/Regulations.png" style="height: 87px; width: 87px;" alt="Regulations" />
-        </div>
+        <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 dark-container">
 
-        <div ng-repeat="reg in regulation">
-        <div class="col-xs-8">
-            <h3>{{reg.Summary}}</h3>
-        </div>
-        <div class="col-xs-2">
-            <button type="button" class="close" ng-click="go('/regulations')" >&times;</button>
+            <div class="row" ng-repeat="reg in regulation">
+                <div class="col-xs-2">
+                    <img ng-src="style/images/Regulations.png" style="width:35px;" alt="Regulations" />
+                </div>
+                <div class="col-xs-8">
+                    <h3>{{reg.Summary}}</h3>
+                </div>
+                <div class="col-xs-2">
+                    <button type="button" class="close" ng-click="go('/regulations')">&times;</button>
+                </div>
+                
+                <div class="col-xs-12 spacer">
+                    {{reg.Narrative}}
+                </div>
+            </div>
+
         </div>
     </div>
-</div>
-<div ng-repeat="reg in regulation">
-    <p>{{reg.Narrative}}</p>
-</div>
 </div>

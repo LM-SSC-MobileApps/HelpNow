@@ -53,12 +53,14 @@
 
 </head>
 <body ng-controller="RootCtrl">
-    <div class="container page-container">
+    <div class="container-fluid page-container">
+        
         <nav class="navbar navbar-inverse" role="navigation">
             <div class="container">
 
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                        aria-controls="navbar">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -77,49 +79,60 @@
                         <li ng-class="getMenuClass('administration')" ng-show="isSuperAdmin"><a href="#/administration">{{text.menu_admin}}</a></li>
                         <li ng-class="getMenuClass('about')"><a href="#/about">{{text.menu_about}}</a></li>
                         <li class="dropdown" ng-show="currentUser">
-                            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{text.menu_account}} <span class="caret"></span></a>
+                            <a href class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{text.menu_account}} <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="#/password_reset/{{currentUser.AccountID}}/0">{{text.reset_password_title}}</a></li>
                                 <li><a href="#/update_account/{{currentUser.AccountID}}">{{text.update_contact_info}}</a></li>
                             </ul>
                         </li>
                         <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{text.menu_lang}} <span class="caret"></span></a>
+                            <a href class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{text.menu_lang}} <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a ng-click="setCurrentLanguage('Eng')" ng-class="getLanguageClass('Eng')"><img class="lang-img" src="style/images/uk_flag.png" /> English</a></li>
-                                <li><a ng-click="setCurrentLanguage('Esp')" ng-class="getLanguageClass('Esp')"><img class="lang-img" src="style/images/spain_flag.jpg" /> Español</a></li>
-                                <li><a ng-click="setCurrentLanguage('Fre')" ng-class="getLanguageClass('Fre')"><img class="lang-img" src="style/images/french_flag.png" /> français</a></li>
+                                <li>
+                                    <a ng-click="setCurrentLanguage('Eng')" ng-class="getLanguageClass('Eng')"><img class="lang-img" src="style/images/uk_flag.png" /> English</a>
+                                </li>
+                                <li>
+                                    <a ng-click="setCurrentLanguage('Esp')" ng-class="getLanguageClass('Esp')"><img class="lang-img" src="style/images/spain_flag.jpg" /> Español</a>
+                                </li>
+                                <li>
+                                    <a ng-click="setCurrentLanguage('Fre')" ng-class="getLanguageClass('Fre')"><img class="lang-img" src="style/images/french_flag.png" /> français</a>
+                                </li>
                             </ul>
                         </li>
                     </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li ng-show="currentUser">
+                            <a href id="btn-logout" ng-click="redirectToLogout()">
+                                {{text.logout}}
+                            </a>
+                        </li>
+                        <li ng-show="getShowLogin()">
+                            <a href id="btn-login" ng-click="redirectToLogin()">
+                                {{text.login}}
+                            </a>
+                        </li>
+                    </ul>
                 </div>
+            </div>
+            <div ng-show="currentUser" id="user-info">
+                <a>{{text.user_label}}: {{currentUser.FirstName + " " + currentUser.LastName + ", " + currentUser.OrganizationName}}</a>
             </div>
         </nav>
 
         <div class="row main-content">
             <div class="col-lg-12">
                 <div class="panel panel-default">
+                    <div class="panel-heading" id="header-row">
+                        <h2><img id="event-header-icon" ng-show="imageSrc" ng-src="{{imageSrc}}" />{{title}}</h2>
+                    </div>
                     <div class="panel-body">
-                        <div id="header-row" class="row">
-                            <div class="col-md-8">
-                                <h3><img id="event-header-icon" ng-show="imageSrc" ng-src="{{imageSrc}}" />{{title}}</h3>
-                            </div>
-                            <div class="col-md-4" ng-show="currentUser">
-                                <h5><a id="btn-logout" class="btn btn-primary pull-right" ng-click="redirectToLogout()"><span></span>{{text.logout}}</a>
-									{{text.user_label}}: {{currentUser.FirstName + " " + currentUser.LastName + ", " + currentUser.OrganizationName}}
-								</h5> 
-                            </div>
-                            <div class="col-md-4" ng-show="getShowLogin()">
-                                <a id="btn-login" class="btn btn-primary pull-right" ng-click="redirectToLogin()"><span></span>{{text.login}}</a>
-                            </div>
-                        </div>
                         <ng-view autoscroll="true" />
                     </div>
                 </div>
             </div>
         </div>
 
-        <footer class="footer">
+        <footer>
             <h6>{{text.version}} 1.0.0</h6>
         </footer>
     </div>

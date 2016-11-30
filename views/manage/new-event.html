@@ -1,77 +1,96 @@
 ﻿<div ng-controller="NewEventCtrl">
-    <div id="map" map map-center="20.0, 0.0" map-zoom="2" class="col-md-9" style="height: 512px; border: 1px solid #AAA;"></div>
-    <div id="eventPanel" ng-show="showEventDetails" class="col-md-3">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="well">
+    <div class="row">
+
+        <!--Map-->
+        <div class="col-lg-7 col-lg-offset-1 col-md-8 col-sm-7">
+            <div id="map" map map-center="20.0, 0.0" map-zoom="2"></div>
+        </div>
+
+        <!--Event Info-->
+        <div id="eventPanel" ng-show="showEventDetails" class="col-lg-3 col-md-4 col-sm-5">
+            <div class="row">
+                <div class="col-md-12 dark-container">
+
                     <div class="row">
-                        <label for="eventTitle">{{text.event_title_location_label}}:</label>
-                        <input type="text" ng-model="newEvent.Summary" id="eventTitle" name="eventTitle" class="form-control" ng-required="true" />
-                        <br />
-                    </div>
-                    <div class="row">
-                        <label for="eventType">{{text.event_type_label}}:</label><br />
-                        <div class="col-md-3">
-                            <img class="event-img" ng-src="{{getEventIcon(selectedEvent.selectedEventType.Description)}}" style="width: 40px; height: 40px;" />
-                        </div>
-                        <div class="col-md-9" style="padding-top: 15px;">
-                            <select class="form-control" ng-model="selectedEvent.selectedEventType" ng-options="eventType as eventType.Description for eventType in eventTypes" ng-change="getSelectedEventType()"></select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <hr class="separated" />
-                        <div class="col-xs-12">
-                            <span>{{text.lat_label}} </span><input ng-model="newEvent.LAT" type="text" class="form-control" name="lat" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
-                            <span>{{text.long_label}} </span><input ng-model="newEvent.LONG" type="text" class="form-control" name="long" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
+                        <div class="col-sm-12">
+                            <label for="eventTitle">{{text.event_title_location_label}}:</label>
+                            <input type="text" ng-model="newEvent.Summary" id="eventTitle" name="eventTitle" class="form-control" ng-required="true" />
                         </div>
                     </div>
 
-                    <div class="well separated-small">
-                        <span class="glyphicon glyphicon-pushpin"></span> {{text.map_note}}
-                    </div>
-                    <div class="row">
-                        <div id="slider" style="height: 100px; width: 100%; margin-top: 15px; margin-bottom: -15px;">
-                            <span>{{text.area_size_label}}: </span>
-                            <input id="overlayRadiusSlider" ng-model="radiusRawVal" ng-click="showValue()" type="range" min="0" max="300" step="15" />
-                            <span id="range">{{sliderLabel}}  </span>
-                            <input type="checkbox" id="unitsToggle" ng-model="isMetric" name="unitsToggle" class="switch" checked="checked" ng-click="changeUnits()" />
-                            <label for="unitsToggle">{{text.metric_label}}</label>
+                    <div class="row separated-small">
+                        <div class="col-sm-9">
+                            <label for="eventType">{{text.event_type_label}}:</label>
+                            <select class="form-control" ng-model="selectedEvent.selectedEventType" ng-options="eventType as eventType.Description for eventType in eventTypes" ng-change="getSelectedEventType()"></select>
+                        </div>
+                        <div class="col-md-3">
+                            <img ng-src="{{getEventIcon(selectedEvent.selectedEventType.Description)}}" style="width:50px; margin-top:10px;" />
                         </div>
                     </div>
+
+                    <div class="row row-lat-long">
+                        <div class="col-xs-6">
+                            <label>{{text.lat_label}}</label>
+                            <input ng-model="newEvent.LAT" type="text" class="form-control" name="lat" />
+                        </div>
+                        <div class="col-xs-6">
+                            <label>{{text.long_label}}</label>
+                            <input ng-model="newEvent.LONG" type="text" class="form-control" name="long" />
+                        </div>
+                    </div>
+
+                    <div class="dark-container separated-small">
+                        <span class="glyphicon glyphicon-pushpin"></span> {{text.map_note}}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div id="slider">
+                                <label>{{text.area_size_label}}: </label>
+                                <input id="overlayRadiusSlider" ng-model="radiusRawVal" ng-click="showValue()" type="range" min="0" max="300" step="15" />
+                                <label id="range">{{sliderLabel}}  </label>
+                                <input type="checkbox" id="unitsToggle" ng-model="isMetric" name="unitsToggle" class="switch" checked="checked" ng-click="changeUnits()" />
+                                <label for="unitsToggle">{{text.metric_label}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <div class="separated">
+                        <a id="btn-next" class="btn btn-primary pull-right" ng-click="toggleNewEvent()"><span></span>{{text.next}}</a>
+                    </div>
+
                 </div>
             </div>
         </div>
-        <div class="separated">
-            <a id="btn-next" class="btn btn-primary pull-right" ng-click="toggleNewEvent()"><span></span>{{text.next}}</a>
-        </div>
-    </div>
-    <div id="contactsPanel" ng-show="showContacts" class="col-md-3">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="well">
+
+        <!--Contacts-->
+        <div id="contactsPanel" ng-show="showContacts" class="col-lg-3 col-md-4 col-sm-5">
+            <div class="row">
+                <div class="col-md-12 dark-container">
+
                     <div class="row">
-                        <label for="notes">{{text.contact_phone_label}}:</label>
-                        <input type="text" ng-model="newEvent.Notes" id="contactPhone" name="contactPhone" class="form-control" ng-required="true" />
-                        <br />
+                        <div class="col-sm-12">
+                            <label for="notes">{{text.contact_phone_label}}:</label>
+                            <input type="text" ng-model="newEvent.Notes" id="contactPhone" name="contactPhone" class="form-control" ng-required="true" />
+                        </div>
                     </div>
-                    <div class="row">
-                        <label for="socialMediaKeywords">{{text.social_media_keywords_label}}<br />({{text.comma_separated_label}}):</label>
-                        <input type="text" ng-model="newEvent.Keywords" id="socialMediaKeywords" name="socialMediaKeywords" class="form-control" ng-required="true" />
+
+                    <div class="row spacer">
+                        <div class="col-sm-12">
+                            <label for="socialMediaKeywords">{{text.social_media_keywords_label}}<br />({{text.comma_separated_label}}):</label>
+                            <input type="text" ng-model="newEvent.Keywords" id="socialMediaKeywords" name="socialMediaKeywords" class="form-control" ng-required="true" />
+                        </div>
                     </div>
-                    <div class="row">
-                        <hr class="separated" />
-                        <label for="heatmapMin">{{text.heatmap_label}}</label>
-                        <br />
-                        <span>{{text.min_label}}: </span><input ng-model="newEvent.HeatmapMin" type="text" class="form-control" name="heatmapMin" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
-                        <span>{{text.max_label}}: </span><input ng-model="newEvent.HeatmapMax" type="text" class="form-control" name="heatmapMax" style="display:inline; width: 34%; margin-top: 10px; color: black;" />
-                    </div>
+                    <hr class="spacer">
+
+                    <a id="btn-submit" ng-hide="existingEvent" class="btn btn-primary pull-right" ng-click="postNewEvent()"><span></span>{{text.btn_submit}}</a>
+                    <a id="btn-update" ng-show="existingEvent" class="btn btn-primary pull-right" ng-click="updateNewEvent()"><span></span>{{text.btn_update}}</a>
+                    <a id="btn-back" class="btn btn-primary pull-left" ng-click="toggleNewEvent()"><span></span>{{text.back}}</a>
+
                 </div>
             </div>
         </div>
-        <div class="separated">
-            <a id="btn-submit" ng-hide="existingEvent" class="btn btn-primary pull-right" ng-click="postNewEvent()"><span></span>{{text.btn_submit}}</a>
-            <a id="btn-update" ng-show="existingEvent" class="btn btn-primary pull-right" ng-click="updateNewEvent()"><span></span>{{text.btn_update}}</a>
-            <a id="btn-back" class="btn btn-primary pull-left" ng-click="toggleNewEvent()"><span></span>{{text.back}}</a>
-        </div>
+
     </div>
 </div>

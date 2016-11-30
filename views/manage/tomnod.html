@@ -1,36 +1,38 @@
 ﻿<div ng-controller="TomnodCtrl">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="panel">
-                    <div class="panel-body">                        
-                        <h2>Tomnod File Upload</h2>
-                        <h4>1. Please select the event you want to load Tomnod data to:</h4>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 dark-container">
 
-                        <div class="spacer">
-                            <select id="event"></select>
-                        </div> 
-                        <br/>
-                        <h4>2. Please select the Tomnod JSON file you want to upload by clicking Upload File:</h4>
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2>Tomnod File Upload</h2>
+                    <br>
+                    <p>1. Please select the event you want to load Tomnod data to:</p>
 
-                        <div class="spacer">
-                            <a class="btn btn-primary upload-btn">
-                                <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
-                                <span>Upload File</span>
-                            </a>
-                        </div>                         
+                    <div class="spacer">
+                        <select class="form-control" id="event"></select>
+                    </div> 
+                    <br>
 
-                        <input id="upload-input" type="file" accept=".json" name="uploads[]" style="display: none;"></br>
-                        
-                        <h4><center>Import Progress</center></h4>
+                    <p>2. Please select the Tomnod JSON file you want to upload by clicking Upload File:</p>
 
-                        <div class="progress">
-                            <div class="progress-bar" role="progressbar"></div>
-                        </div>
-                                                                      
+                    <div class="spacer">
+                        <a class="btn btn-primary upload-btn">
+                            <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
+                            <span>Upload File</span>
+                        </a>
+                    </div>                         
+
+                    <input id="upload-input" type="file" accept=".json" name="uploads[]" style="display:none;" />
+                    <br>
+                    
+                    <h4 style="text-align:center;">Import Progress</h4>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar"></div>
                     </div>
+
                 </div>
             </div>
+
         </div>
     </div>
 </div>

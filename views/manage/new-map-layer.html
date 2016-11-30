@@ -1,56 +1,70 @@
 ﻿<div ng-controller="NewMapLayerCtrl">
     <div class="row">
-        <div class="well">
+        <div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 dark-container">
+
             <div class="row">
-                <form name="newMapLayerForm" novalidate role="form">
-                    <div class="form-group" ng-class="">
-                        <div class="col-md-12">
-                            <label for="layerName">{{text.layer_name_label}}</label>
-                            <input type="text" ng-model="mapLayer.Name" id="streetPrefix" name="streetPrefix" class="form-control" ng-required="true" />
-                            <br />
+                <div class="col-md-12">
+
+                    <form name="newMapLayerForm" novalidate role="form">
+
+                        <div class="row form-group" ng-class="">
+                            <div class="col-md-12">
+                                <label for="layerName">{{text.layer_name_label}}</label>
+                                <input type="text" ng-model="mapLayer.Name" class="form-control" ng-required="true" />
+                            </div>
                         </div>
-                        <div class="col-md-12">
-                            <label for="layerType">{{text.layer_type_label}}</label>
-                            <select class="form-control" ng-model="selectedMapLayerType.selectedMapLayerType" ng-options="mapLayerType as mapLayerType.Description for mapLayerType in mapLayerTypes" ng-change="getSelectedMapLayerType()"></select>
-                            <br />
+
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <label for="layerType">{{text.layer_type_label}}</label>
+                                <select class="form-control" ng-model="selectedMapLayerType.selectedMapLayerType" ng-options="mapLayerType as mapLayerType.Description for mapLayerType in mapLayerTypes" ng-change="getSelectedMapLayerType()"></select>
+                            </div>
                         </div>
-                        <div class="col-md-12">
-                            <label for="layerType">{{text.layer_url_label}}</label>
-                            <input type="text" ng-model="mapLayer.ImageryURL" id="streetNumber" name="streetNumber" class="form-control" ng-required="true" />
+
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <label>{{text.layer_url_label}}</label>
+                                <input type="text" ng-model="mapLayer.ImageryURL" class="form-control" ng-required="true" />
+                            </div>
+                            <div class="col-md-4 col-xs-6">
+                                <label>{{text.layer_esri_label}}</label>
+                                <input type="checkbox" ng-model="mapLayer.UsesEsri" ng-required="true" />
+                            </div>
+                            <div class="col-md-4 col-xs-6">
+                                <label>{{text.layer_tsm_label}}</label>
+                                <input type="checkbox" ng-model="mapLayer.UsesTSM" ng-required="true" />
+                            </div>
                         </div>
-                        <div class="col-md-2">
-                            <label for="layerType">{{text.layer_esri_label}}</label>
-                            <input type="checkbox" ng-model="mapLayer.UsesEsri" id="streetNumber" name="streetNumber" ng-required="true" />
-                            <br />
+
+                        <div class="row">
+                            <div class="col-sm-6 form-group">
+                                <label>{{text.layer_min_zoom_label}}</label>
+                                <input type="text" ng-model="mapLayer.MinZoomLevel" class="form-control" ng-required="true" />
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                <label>{{text.layer_max_zoom_label}}</label>
+                                <input type="text" ng-model="mapLayer.MaxZoomLevel" class="form-control" ng-required="true" />
+                            </div>
                         </div>
-                        <div class="col-md-2">
-                            <label for="layerType">{{text.layer_tsm_label}}</label>
-                            <input type="checkbox" ng-model="mapLayer.UsesTSM" id="streetNumber" name="streetNumber" ng-required="true" />
-                            <br />
+
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <label>{{text.layer_attribution_label}}</label>
+                                <input type="text" ng-model="mapLayer.AttributionText" class="form-control" ng-required="true" />
+                            </div>
                         </div>
-                        <div class="col-md-12">
-                            <br />
-                            <label for="layerType">{{text.layer_min_zoom_label}}</label>
-                            <input type="text" ng-model="mapLayer.MinZoomLevel" id="streetNumber" name="streetNumber" class="form-control" ng-required="true" />
-                            <br />
-                        </div>
-                        <div class="col-md-12">
-                            <label for="layerType">{{text.layer_max_zoom_label}}</label>
-                            <input type="text" ng-model="mapLayer.MaxZoomLevel" id="streetNumber" name="streetNumber" class="form-control" ng-required="true" />
-                            <br />
-                        </div>
-                        <div class="col-md-12">
-                            <label for="layerType">{{text.layer_attribution_label}}</label>
-                            <input type="text" ng-model="mapLayer.AttributionText" id="streetNumber" name="streetNumber" class="form-control" ng-required="true" />
-                            <br />
-                        </div>
+                        <hr class="spacer">
+
+                    </form>
+
+                    <div class="separated">
+                        <a id="btn-submit" ng-hide="existingMapLayer" class="btn btn-primary pull-right" ng-click="submitNewMapLayer()"><span></span>{{text.btn_submit}}</a>
+                        <a id="btn-update" ng-show="existingMapLayer" class="btn btn-primary pull-right" ng-click="updateMapLayer()"><span></span>{{text.btn_update}}</a>
                     </div>
-                </form>
+
+                </div>
             </div>
-        </div>
-        <div class="separated">
-            <a id="btn-submit" ng-hide="existingMapLayer" class="btn btn-primary pull-right" ng-click="submitNewMapLayer()"><span></span>{{text.btn_submit}}</a>
-            <a id="btn-update" ng-show="existingMapLayer" class="btn btn-primary pull-right" ng-click="updateMapLayer()"><span></span>{{text.btn_update}}</a>
+
         </div>
     </div>
 </div>

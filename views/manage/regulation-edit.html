@@ -1,44 +1,54 @@
 <div ng-controller="RegulationEditCtrl">
-    <form class="form-horizontal" name="regulationEditForm" novalidate role="form">
-        <div class="form-group"
-             ng-class="{'has-error' : (regulationEditForm.policyTitle.$invalid  && regulationEditForm.policyTitle.$touched) || regulationEditForm.policyTitle.$error.maxlength  }">
-            <div class="col-xs-2 ">
-                <img ng-src="style/images/Regulations.png" style="height: 87px; width: 87px;" alt="Regulations" />
-            </div>
-            <div class="col-xs-8">
-                <h3><input type="text" class="form-control" ng-model="editReg.Summary" ng-maxlength="50"
-                           id="policyTitle" name="policyTitle"
-                           required
-                           placeholder="Policy Title"/>
-                        <span class="help-block"
-                              ng-if="regulationEditForm.policyTitle.$error.required && regulationEditForm.policyTitle.$touched ">Policy title is required</span>
-                                 <span class="help-block"
-                                       ng-if="regulationEditForm.policyTitle.$error.maxlength">Policy title is limited to 50 characters</span>
-                </h3>
-            </div>
-            <div class="col-xs-2">
-                <button type="button" class="close" ng-click="go('/regulations')">&times;</button>
-            </div>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 dark-container">
+
+            <form name="regulationEditForm" novalidate role="form">
+
+                <div class="row form-group" ng-class="{'has-error' : (regulationEditForm.policyTitle.$invalid  && regulationEditForm.policyTitle.$touched) || regulationEditForm.policyTitle.$error.maxlength  }">
+                    <div class="col-xs-2 ">
+                        <img ng-src="style/images/Regulations.png" style="width:50px; margin-top:10px;" alt="Regulations" />
+                    </div>
+                    <div class="col-xs-8 form-group">
+                        <label>{{text.policy_title_label}}</label>
+                        <input type="text" class="form-control" ng-model="editReg.Summary" ng-maxlength="50" id="policyTitle" name="policyTitle" required />
+                        <span class="help-block" ng-if="regulationEditForm.policyTitle.$error.required && regulationEditForm.policyTitle.$touched ">
+                            {{text.policy_title_required_label}}
+                        </span>
+                        <span class="help-block" ng-if="regulationEditForm.policyTitle.$error.maxlength">
+                            {{text.policy_title_limit_label}}
+                        </span>
+                    </div>
+                    <div class="col-xs-2">
+                        <button type="button" class="close" ng-click="go('/regulations')">&times;</button>
+                    </div>
+                </div>
+
+                <div class="row form-group" ng-class="{'has-error' : (regulationEditForm.policyText.$invalid   && regulationEditForm.policyText.$touched) || regulationEditForm.policyText.$error.maxlength }">
+                    <div class="col-xs-12">
+                        <label>{{text.policy_text_label}}</label>
+                        <textarea class="form-control" rows="5" ng-maxlength="1500" id="policyText" name="policyText" ng-model="editReg.Narrative" required />
+                        <span class="help-block" ng-if="regulationEditForm.policyText.$error.required && regulationEditForm.policyText.$touched ">
+                            {{text.policy_text_required_label}}
+                        </span>
+                        <span class="help-block" ng-if="regulationEditForm.policyText.$error.maxlength ">
+                            {{text.policy_text_limit_label}}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <button class="btn btn-danger" ng-click="deleteRegulation(editReg)">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> {{text.remove}}
+                        </button>
+                        <button class="btn btn-primary pull-right" type="submit" ng-disabled="regulationEditForm.$invalid" ng-click="updateRegulation(editReg)">
+                            <span class="glyphicon glyphicon-save" aria-hidden="true"></span> {{text.save}}
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+
         </div>
-        <div class="form-group"
-             ng-class="{'has-error' : (regulationEditForm.policyText.$invalid   && regulationEditForm.policyText.$touched) || regulationEditForm.policyText.$error.maxlength }">
-            <textarea class="form-control" rows="5" ng-maxlength="1500" id="policyText" name="policyText"
-                      ng-model="editReg.Narrative" required placeholder="Policy Text"/>
-             <span class="help-block"
-                   ng-if="regulationEditForm.policyText.$error.required && regulationEditForm.policyText.$touched ">Policy text is required</span>
-             <span class="help-block"
-                   ng-if="regulationEditForm.policyText.$error.maxlength ">Policy text is limited to 1500 characters</span>
-        </div>
-        <div class="col-xs-offset-7 col-xs-5">
-            <button class="btn btn-danger" ng-click="deleteRegulation(editReg)">
-                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                Remove
-            </button>
-            <button class="btn  btn-primary" type="submit" ng-disabled="regulationEditForm.$invalid"
-                    ng-click="updateRegulation(editReg)">
-                <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
-                Save
-            </button>
-        </div>
-    </form>
+    </div>
 </div>

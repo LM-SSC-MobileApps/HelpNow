@@ -1,14 +1,15 @@
 <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">{{text.email_confirmation_label}}</h3>
-            </div>
-            <div class="modal-body">
 
-               {{text.email_success_label}}: {{model.invitation.Email}} .
+    <div class="modal-header">
+        <h3 class="modal-title">{{text.email_confirmation_label}}</h3>
+    </div>
 
+    <div class="modal-body">
+        {{text.email_success_label}}: {{model.invitation.Email}}.
+    </div>
 
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" ng-click="$close(confirm())">{{text.btn_close}}</button>
-            </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="$close(confirm())">{{text.btn_close}}</button>
+    </div>
+
 </div>

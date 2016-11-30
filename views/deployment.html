@@ -1,105 +1,147 @@
 <div ng-controller="DeploymentCtrl">
-    <hr></hr>
-    <div ng-hide="showDistributionCenters">
-        <div class="row separated">
+    <div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 dark-container">
+        <div ng-hide="showDistributionCenters">
             <form name="DeploymentForm">
-                <div class="col-xs-6">
-                    <h3>{{text.deployment_details_header}}</h3>
-                    <div class="form-group separated">
-                        <label>{{text.event_label}}:</label>
-                        {{event.EventLocations[0].Description}}
+                <h3>{{text.deployment_details_header}}</h3>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label>{{text.event_label}}:</label> {{event.EventLocations[0].Description}}
                     </div>
-                    <div class="form-group">
-                        <label>{{text.location}}:</label>
-                        ({{deployment.LAT}}, {{deployment.LONG}})
-                    </div>
-                    <div class="form-group">
-                        <label>{{text.description_label}}:</label>
-                        <input name="Description" ng-model="deployment.Description" type="text" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label>{{text.notes_label}}:</label>
-                        <textarea name="Notes" ng-model="deployment.Notes" type="text" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label>{{text.primary_poc_name_label}}:</label>
-                        <input name="PrimaryPOCName" ng-model="deployment.PrimaryPOCName" type="text" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label>{{text.primary_poc_phone_label}}:</label>
-                        <input name="PrimaryPOCPhone" ng-model="deployment.PrimaryPOCPhone" type="text" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label>{{text.secondary_poc_name_label}}:</label>
-                        <input name="SecondaryPOCName" ng-model="deployment.SecondaryPOCName" type="text" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label>{{text.secondary_poc_phone_label}}:</label>
-                        <input name="SecondaryPOCPhone" ng-model="deployment.SecondaryPOCPhone" type="text" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label>{{text.status_label}}:</label>
-                        <select name="ResourceLocationStatusID" ng-model="deployment.ResourceLocationStatusID" class="form-control">
-                            <option value="1">{{text.planned_description}}</option>
-                            <option value="2">{{text.active_description}}</option>
-                        </select>
+                    <div class="col-sm-6">
+                        <label>{{text.location}}:</label> ({{deployment.LAT | number:4}}, {{deployment.LONG | number:4}})
                     </div>
                 </div>
-
-                <div class="col-xs-6" ng-show="deployment.ResourceLocationID">
-                    <h3>{{text.inventory_header}}</h3>
-                    <div ng-show="distCenters" class="btn-row">
-                        <a class="btn btn-primary" ng-click="toggleDistributionCenters()"><span class="glyphicon glyphicon-plus-sign"></span>{{text.btn_add_inventory}}</a>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>{{text.description_label}}:</label>
+                            <input name="Description" ng-model="deployment.Description" type="text" class="form-control" />
+                        </div>
                     </div>
-                    <br />
-                    <div ng-repeat="resource in deployment.ResourceLocationInventories">
-                        <div class="row separated">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>{{text.notes_label}}:</label>
+                            <textarea name="Notes" ng-model="deployment.Notes" type="text" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>{{text.primary_poc_name_label}}:</label>
+                            <input name="PrimaryPOCName" ng-model="deployment.PrimaryPOCName" type="text" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>{{text.primary_poc_phone_label}}:</label>
+                            <input name="PrimaryPOCPhone" ng-model="deployment.PrimaryPOCPhone" type="text" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>{{text.secondary_poc_name_label}}:</label>
+                            <input name="SecondaryPOCName" ng-model="deployment.SecondaryPOCName" type="text" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>{{text.secondary_poc_phone_label}}:</label>
+                            <input name="SecondaryPOCPhone" ng-model="deployment.SecondaryPOCPhone" type="text" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>{{text.status_label}}:</label>
+                            <select name="ResourceLocationStatusID" ng-model="deployment.ResourceLocationStatusID" class="form-control">
+                                <option value="1">{{text.planned_description}}</option>
+                                <option value="2">{{text.active_description}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+
+                <div ng-show="deployment.ResourceLocationID">
+                    <h3>{{text.inventory_header}}</h3>
+                    <div ng-show="distCenters">
+                        <a class="btn btn-primary" ng-click="toggleDistributionCenters()">
+                            <span class="glyphicon glyphicon-plus-sign"></span>{{text.btn_add_inventory}}
+                        </a>
+                    </div>
+                    <div class="row spacer">
+                        <div ng-repeat="resource in deployment.ResourceLocationInventories">
                             <div class="col-sm-12">
-                                <img class="resource-img pull-left" ng-src="{{getResourceIcon(resource)}}" />
-                                <h4>{{getResourceName(resource)}}</h4>
-                                <h5>{{resource.Quantity}} {{resource.ResourceTypeUnitOfMeasure.Description}}</h5>
-                                <div class="btn-row">
-                                    <a class="btn btn-danger" ng-click="removeInventory(resource)"><span class="glyphicon glyphicon-trash"></span>{{text.remove}}</a>
+                                <div class="dark-container">
+                                    <div class="col-xs-2">
+                                        <img class="resource-img pull-left" ng-src="{{getResourceIcon(resource)}}" />
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <h4>{{getResourceName(resource)}}</h4>
+                                        <h5>{{resource.Quantity}} {{resource.ResourceTypeUnitOfMeasure.Description}}</h5>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <a class="btn btn-danger pull-right" ng-click="removeInventory(resource)">
+                                            <span class="glyphicon glyphicon-trash"></span>{{text.remove}}
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </form>
-        </div>
-        <hr></hr>
-        <div class="row separated">
-            <div class="col-sm-12 btn-row">
-                <a class="btn btn-primary" ng-click="saveDeployment()"><span class="glyphicon glyphicon-save"></span>{{text.save}}</a>
-                <a class="btn btn-primary" ng-click="cancel()"><span class="glyphicon glyphicon-remove-sign"></span>{{text.btn_close}}</a>
-            </div>
-        </div>
-    </div>
 
-    <div ng-show="showDistributionCenters">
-        <div class="row separated">
-            <div ng-repeat="center in distCenters">
-                <div class="col-xs-4 separated-large">
-                    <h4>{{center.Description}}</h4>
-                    <strong>{{text.primary_poc_label}}: </strong>{{center.PrimaryPOCName}}<br />
-                    <strong>{{text.primary_poc_phone_label}}: </strong>{{center.PrimaryPOCPhone}}
-                    <div ng-repeat="inventory in center.ResourceLocationInventories" class="separated-small">
-                        <strong>{{getResourceName(inventory)}}:</strong>
-                        <div class="input-group">
-                            <input type="text" class="form-control" ng-model="inventory.Quantity">
-                            <span class="input-group-addon">{{inventory.ResourceTypeUnitOfMeasure.Description}}</span>
-                        </div>
-                        <a class="btn btn-primary separated-tiny" ng-click="addResources(inventory)"><span class="glyphicon glyphicon-plus-sign"></span>{{text.btn_add}}</a>
-                    </div>
+            </form>
+            <hr>
+
+            <div class="row separated">
+                <div class="col-sm-12 btn-row">
+                    <a class="btn btn-primary pull-right" ng-click="saveDeployment()"><span class="glyphicon glyphicon-save"></span>{{text.save}}</a>
+                    <a class="btn btn-primary pull-right" ng-click="cancel()"><span class="glyphicon glyphicon-remove-sign"></span>{{text.btn_close}}</a>
                 </div>
             </div>
         </div>
-        <hr class="separated" />
-        <div class="row separated">
-            <div class="col-sm-12 btn-row">
-                <a class="btn btn-primary" ng-click="saveDeployment()"><span class="glyphicon glyphicon-save"></span>{{text.save}}</a>
-                <a class="btn btn-danger" ng-click="cancel()"><span class="glyphicon glyphicon-remove-sign"></span>{{text.cancel}}</a>
+
+        <!--Add Inventory-->
+        <div ng-show="showDistributionCenters">
+            <div class="row">
+                <div ng-repeat="center in distCenters">
+                    <div class="col-sm-12">
+                        <h3>{{center.Description}}</h3>
+                        <strong>{{text.primary_poc_label}}: </strong>{{center.PrimaryPOCName}}<br>
+                        <strong>{{text.primary_poc_phone_label}}: </strong>{{center.PrimaryPOCPhone}}
+
+                        <div class="row">
+                            <div ng-repeat="inventory in center.ResourceLocationInventories">
+                                <div class="col-sm-4">
+                                    <div class="dark-container separated">
+                                        <strong>{{getResourceName(inventory)}}:</strong>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" ng-model="inventory.Quantity">
+                                            <span class="input-group-addon">{{inventory.ResourceTypeUnitOfMeasure.Description}}</span>
+                                        </div>
+                                        <a class="btn btn-primary separated-small" ng-click="addResources(inventory)">
+                                            <span class="glyphicon glyphicon-plus-sign"></span>{{text.btn_add}}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row separated">
+                <div class="col-sm-12 btn-row">
+                    <a class="btn btn-primary" ng-click="saveDeployment()"><span class="glyphicon glyphicon-save"></span>{{text.save}}</a>
+                    <a class="btn btn-danger" ng-click="cancel()"><span class="glyphicon glyphicon-remove-sign"></span>{{text.cancel}}</a>
+                </div>
             </div>
         </div>
+        
     </div>
 </div>
