@@ -83,6 +83,21 @@
                         </div>
                     </div>
                     <hr class="spacer">
+                    <div class="row spacer">
+                        <div class="col-sm-12">
+                            <label for="heatmapMin">{{text.heatmap_label}}</label>
+                            <br />
+                            <div class="col-xs-6">
+                                <label>{{text.min_label}}</label>
+                                <input ng-model="newEvent.HeatmapMin" type="text" class="form-control" name="heatmapMin" />
+                            </div>
+                            <div class="col-xs-6">
+                                <label>{{text.max_label}}</label>
+                                <input ng-model="newEvent.HeatmapMax" type="text" class="form-control" name="heatmapMax"/>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="spacer">
 
                     <a id="btn-submit" ng-hide="existingEvent" class="btn btn-primary pull-right" ng-click="postNewEvent()"><span></span>{{text.btn_submit}}</a>
                     <a id="btn-update" ng-show="existingEvent" class="btn btn-primary pull-right" ng-click="updateNewEvent()"><span></span>{{text.btn_update}}</a>
