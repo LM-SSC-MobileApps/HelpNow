@@ -1,6 +1,77 @@
 angular.module("helpNow").controller("RootCtrl", ["$scope", "$route", "$location", "$http", "$resource", function ($scope, $route, $location, $http, $resource) {
     var currentLanguage = "Eng";
     var currentView = "";
+    $scope.APIURL="";
+
+    $scope.setAPI = function (){
+        return $http.get("config/config.json")
+    }
+
+    $scope.setAPI().then(function(response){
+        if ($location.host() == "localhost"){
+            angular.forEach(response.data, function(value, key){
+                env=  value;
+                if (key == "local-dev") {
+                    angular.forEach(env, function (value, key) {
+                        if (key == "api_url") {
+                            $scope.APIURL=  value;
+                        }
+                    })
+                }
+            })
+        }
+        else if ($location.host() == "www.helpnowmap.com"){
+            angular.forEach(data, function(value, key){
+                env=  value;
+                if (key == "production") {
+                    angular.forEach(env, function (value, key) {
+                        if (key == "api_url") {
+                            $scope.APIURL = value;
+                        }
+                    })
+                }
+            })
+        }
+        else if ($location.host() == "www.helpnowmap.net"){
+            angular.forEach(data, function(value, key){
+                env=  value;
+                if (key == "production") {
+                    angular.forEach(env, function (value, key) {
+                        if (key == "api_url") {
+                            $scope.APIURL = value;
+                        }
+                    })
+                }
+            })
+        }
+        else if ($location.host() == "www.helpnowmap.org"){
+            angular.forEach(data, function(value, key){
+                env=  value;
+                if (key == "production") {
+                    angular.forEach(env, function (value, key) {
+                        if (key == "api_url") {
+                            $scope.APIURL = value;
+                        }
+                    })
+                }
+            })
+        }
+        else {
+            angular.forEach(data, function(value, key){
+                env=  value;
+                if (key == "aws-development") {
+                    angular.forEach(env, function (value, key) {
+                        if (key == "api_url") {
+                            $scope.APIURL = value;
+                        }
+                    })
+                }
+            })
+        }
+
+    });
+
+
 
     $scope.eventsResource = $resource("/api/event");
     $scope.currentUser = JSON.parse(sessionStorage.getItem("user"));

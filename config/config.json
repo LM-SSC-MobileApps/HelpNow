@@ -5,6 +5,7 @@
     "database": "databasename",
     "host": "host.rds.amazonaws.com",
     "routeserver": "https://router.project-osrm.org/",
+     "api_url": "127.0.0.1:9000",
     "dialect": "mysql",
     "logging": false,
     "define": {
@@ -23,6 +24,7 @@
     "database": "helpnow",
     "host": "localhost",
     "routeserver": "https://router.project-osrm.org/",
+    "api_url": "127.0.0.1:9000",
     "dialect": "mysql",
     "define": {
       "timestamps":false,
@@ -39,6 +41,7 @@
     "database": "database_production",
     "host": "127.0.0.1",
     "routeserver": "https://router.project-osrm.org/",
+    "api_url": "127.0.0.1:9000",
     "dialect": "mysql",
     "logging": false,
     "define": {
