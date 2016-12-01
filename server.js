@@ -13,6 +13,9 @@ var formidable = require('formidable');
 var http = require('http');
 //note - only version 06.0 works - 0.7.0 does not read the port #
 var proxy = require('express-http-proxy');
+var env       = process.env.NODE_ENV || 'aws-development';
+var config    = require(__dirname + '/config/config.json')[env];
+
 
 var app = express();
 
@@ -21,6 +24,19 @@ var port = process.env.PORT || 80;
 var ssl_port = process.env.SSL_PORT || 443;
 var enable_redirect = process.env.ENABLE_REDIRECT || true;
 
+
+app.use('/api', proxy(config.api_url, {
+    reqAsBuffer: true
+    // Uncomment below to debug proxy requests....
+    // ,intercept: function(rsp, data, req, res, cb) {
+    //     console.log("res.statusCode: " + res.statusCode);
+    //     console.log("req.body: " + JSON.stringify(req.body));
+    //     console.log("req.method: " + JSON.stringify(req.method));
+    //     console.log("req.headers: " + JSON.stringify(req.headers));
+    //     cb(null, data);
+    // }
+
+}));
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
@@ -84,35 +100,35 @@ var hashValuesRouter = require('./routes/hashvalues')();
 var authRouter = require('./routes/authenticate')();
 
 
-app.use('/api/account', accountRouter);
-app.use('/api/accountrole', accountRoleRouter);
-app.use('/api/address', addressRouter);
-app.use('/api/event', eventRouter);
-app.use('/api/eventlocation', eventLocationRouter);
-app.use('/api/eventtype', eventTypeRouter);
-app.use('/api/organization', organizationRouter);
-app.use('/api/organizationregulation', organizationRegulationRouter);
-app.use('/api/organizationtype', organizationTypeRouter);
-app.use('/api/requeststate', requestStateRouter);
-app.use('/api/resourcelocation', resourceLocationRouter);
-app.use('/api/resourcelocationtype', resourceLocationTypeRouter);
-app.use('/api/resourcelocationstatus', resourceLocationStatusRouter);
-app.use('/api/resourcelocationinventory', resourceLocationInventoryRouter);
-app.use('/api/resourcelocationtransport', resourceLocationTransportRouter);
-app.use('/api/resourcerequest', resourceRequestRouter);
-app.use('/api/resourceresponse', resourceResponseRouter);
-app.use('/api/resourcetype', resourceTypeRouter);
-app.use('/api/resourcesubtype', resourceSubtypeRouter);
-app.use('/api/transporttype', transportTypeRouter);
-app.use('/api/resourcetypeunitofmeasure', resourceTypeUnitOfMeasureRouter);
-app.use('/api/responsestate', responseStateRouter);
-app.use('/api/requesturgency', requestUrgencyRouter);
-app.use('/api/inviterequest', requestInviteRequestRouter);
-app.use('/api/blockage', blockageRouter);
-app.use('/api/blockagesource', blockageSourceRouter);
-app.use('/api/socialmedia', socialMediaRouter);
-app.use('/api/heatmap', heatMapRouter);
-app.use('/api/maplayer', mapLayerRouter);
+// app.use('/api/account', accountRouter);
+// app.use('/api/accountrole', accountRoleRouter);
+// app.use('/api/address', addressRouter);
+// app.use('/api/event', eventRouter);
+// app.use('/api/eventlocation', eventLocationRouter);
+// app.use('/api/eventtype', eventTypeRouter);
+// app.use('/api/organization', organizationRouter);
+// app.use('/api/organizationregulation', organizationRegulationRouter);
+// app.use('/api/organizationtype', organizationTypeRouter);
+// app.use('/api/requeststate', requestStateRouter);
+// app.use('/api/resourcelocation', resourceLocationRouter);
+// app.use('/api/resourcelocationtype', resourceLocationTypeRouter);
+// app.use('/api/resourcelocationstatus', resourceLocationStatusRouter);
+// app.use('/api/resourcelocationinventory', resourceLocationInventoryRouter);
+// app.use('/api/resourcelocationtransport', resourceLocationTransportRouter);
+// app.use('/api/resourcerequest', resourceRequestRouter);
+// app.use('/api/resourceresponse', resourceResponseRouter);
+// app.use('/api/resourcetype', resourceTypeRouter);
+// app.use('/api/resourcesubtype', resourceSubtypeRouter);
+// app.use('/api/transporttype', transportTypeRouter);
+// app.use('/api/resourcetypeunitofmeasure', resourceTypeUnitOfMeasureRouter);
+// app.use('/api/responsestate', responseStateRouter);
+// app.use('/api/requesturgency', requestUrgencyRouter);
+// app.use('/api/inviterequest', requestInviteRequestRouter);
+// app.use('/api/blockage', blockageRouter);
+// app.use('/api/blockagesource', blockageSourceRouter);
+// app.use('/api/socialmedia', socialMediaRouter);
+// app.use('/api/heatmap', heatMapRouter);
+// app.use('/api/maplayer', mapLayerRouter);
 app.use('/api/maplayertype', mapLayerTypeRouter);
 app.use('/hashvalues', hashValuesRouter);
 app.use('/authenticate', authRouter);
@@ -178,3 +194,7 @@ app.use('/hxl', proxy('127.0.0.1:' + port, {
         cb(null, data);
     }
 }));
+
+
+
+
