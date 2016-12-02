@@ -344,36 +344,37 @@ angular.module("helpNow").controller("OrgEventCtrl", ["$scope", "$routeParams", 
 			});
 		}
 
-	    function updateMap() {
-			if (!map || !$scope.events) return;
+		function updateMap() {
+		    if (!map || !$scope.events) return;
 
-	        var zoom = map.getZoom();
+		    var zoom = map.getZoom();
 
-	        for (var i = 0; i < mapLayers.length; i++) {
-	            var layer = mapLayers[i];
-	            map.removeLayer(layer);
-	        }
+		    for (var i = 0; i < mapLayers.length; i++) {
+		        var layer = mapLayers[i];
+		        map.removeLayer(layer);
+		    }
 
-	        mapLayers = [];
+		    mapLayers = [];
 
-	        if ($scope.showClusters)
-	            buildClusterMarkers($scope.showClusters);
+		    if ($scope.showClusters)
+		        buildClusterMarkers($scope.showClusters);
 
-	        if ($scope.showLocationMarkers)
-	            $scope.buildLocationMarkers($scope.locations, mapLayers, $scope.filterFlags, locationClicked);
+		    if ($scope.showLocationMarkers)
+		        $scope.buildLocationMarkers($scope.locations, mapLayers, $scope.filterFlags, locationClicked);
 
-	        if ($scope.showDistCenterMarkers)
-	            buildDistCenterMarkers();
+		    if ($scope.showDistCenterMarkers)
+		        buildDistCenterMarkers();
 			
-			if ($scope.showBlockageMarkers)
-			    buildBlockageMarkers();
+		    if ($scope.showBlockageMarkers)
+		        buildBlockageMarkers();
 
-			if ($scope.showHeatmap)
-			    if (!$scope.showClusters)
-			    {
-			        buildClusterMarkers($scope.showClusters);
-			    }
-			    buildHeatmap($scope.selectedClusters);
+		    if ($scope.showHeatmap) {
+		        if (!$scope.showClusters)
+		        {
+		            buildClusterMarkers($scope.showClusters);
+		        }
+		        buildHeatmap($scope.selectedClusters);
+		    }
 			
 			if ($scope.showFindResults && $scope.matches)
 				buildRoutes();

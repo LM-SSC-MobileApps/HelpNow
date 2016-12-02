@@ -277,7 +277,7 @@
   "about_page_thankyou_header": "Thank you",
   "about_page_thankyou_t": "Lockheed Martin, Digital Globe, Amazon Web Services, Satellite Applications Catapult, Causelabs, DMCii, Deimos Imagery, Institute of Air and Space Law at McGill University, eGEOS.",
 
-  "heatmap_label": "Heatmap Min/Max Values",
+  "heatmap_min_max_label": "Heatmap Min/Max Values",
   "min_label": "Min",
   "max_label":  "Max"
 }
