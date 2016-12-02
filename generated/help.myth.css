@@ -1,3 +1,8 @@
+:root {
+  /* Google Material Design Color Palette - Shade 800 */
+  /* https://material.google.com/style/color.html#color-color-palette */
+}
+
 html {
   height: 100%;
   width: 100%;
@@ -163,7 +168,8 @@ h5 {
 .btn-toggle.active {
   color: white;
   font-size: 14px;
-  background-color: #25d6e8;
+  /*background-color: var(--light-blue);*/
+  background-color: #00838F;
   border-style: none;
   width: 50px;
   height: 50px;
@@ -231,8 +237,7 @@ h5 {
 /*Resources*/
 
 #showClothing {
-  background-image: -webkit-linear-gradient(top, #ffff00, rgb(153, 153, 0));
-  background-image: linear-gradient(to bottom, #ffff00, rgb(153, 153, 0));
+  background-color: #F9A825;
 }
 
 #showClothing span {
@@ -242,8 +247,7 @@ h5 {
 }
 
 #showRescue {
-  background-image: -webkit-linear-gradient(top, #ff00ff, rgb(153, 0, 153));
-  background-image: linear-gradient(to bottom, #ff00ff, rgb(153, 0, 153));
+  background-color: #AD1457;
 }
 
 #showRescue span {
@@ -253,8 +257,7 @@ h5 {
 }
 
 #showEvacuation {
-  background-image: -webkit-linear-gradient(top, #663399, rgb(61, 31, 92));
-  background-image: linear-gradient(to bottom, #663399, rgb(61, 31, 92));
+  background-color: #6A1B9A;
 }
 
 #showEvacuation span {
@@ -264,8 +267,7 @@ h5 {
 }
 
 #showMedical {
-  background-image: -webkit-linear-gradient(top, red, rgb(153, 0, 0));
-  background-image: linear-gradient(to bottom, red, rgb(153, 0, 0));
+  background-color: #C62828;
 }
 
 #showMedical span {
@@ -275,8 +277,7 @@ h5 {
 }
 
 #showMedicine {
-  background-image: -webkit-linear-gradient(top, #21dce4, rgb(20, 132, 137));
-  background-image: linear-gradient(to bottom, #21dce4, rgb(20, 132, 137));
+  background-color: #00838F;
 }
 
 #showMedicine span {
@@ -286,8 +287,7 @@ h5 {
 }
 
 #showShelter {
-  background-image: -webkit-linear-gradient(top, #ff9500, rgb(153, 89, 0));
-  background-image: linear-gradient(to bottom, #ff9500, rgb(153, 89, 0));
+  background-color: #EF6C00;
 }
 
 #showShelter span {
@@ -297,8 +297,7 @@ h5 {
 }
 
 #showFood {
-  background-image: -webkit-linear-gradient(top, #00a819, rgb(0, 101, 15));
-  background-image: linear-gradient(to bottom, #00a819, rgb(0, 101, 15));
+  background-color: #2E7D32;
 }
 
 #showFood span {
@@ -308,8 +307,7 @@ h5 {
 }
 
 #showWater {
-  background-image: -webkit-linear-gradient(top, #087fff, rgb(5, 76, 153));
-  background-image: linear-gradient(to bottom, #087fff, rgb(5, 76, 153));
+  background-color: #1565C0;
 }
 
 #showWater span {

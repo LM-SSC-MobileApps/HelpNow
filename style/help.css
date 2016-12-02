@@ -36,6 +36,16 @@
     --marker-blue: #087fff;
     --marker-blue-grad: linear-gradient(to bottom, var(--marker-blue), color(var(--marker-blue) shade(40%)));
 
+    /* Google Material Design Color Palette - Shade 800 */
+    /* https://material.google.com/style/color.html#color-color-palette */
+    --material-red: #C62828;
+    --material-pink: #AD1457;
+    --material-purple: #6A1B9A;
+    --material-blue: #1565C0;
+    --material-cyan: #00838F;
+    --material-green: #2E7D32;
+    --material-yellow: #F9A825;
+    --material-orange: #EF6C00;
 }
 
 html {
@@ -190,7 +200,8 @@ h5 {
 .btn-toggle, .btn-toggle:hover, .btn-toggle:active, .btn-toggle.active {
     color: white;
     font-size: 14px;
-    background-color: var(--light-blue);
+    /*background-color: var(--light-blue);*/
+    background-color: var(--material-cyan);
     border-style: none;
     width: 50px;
     height: 50px;
@@ -260,7 +271,7 @@ h5 {
 /*Resources*/
 
 #showClothing {
-    background-image: var(--marker-yellow-grad);
+    background-color: var(--material-yellow);
 }
 
 #showClothing span {
@@ -270,7 +281,7 @@ h5 {
 }
 
 #showRescue {
-    background-image: var(--marker-magenta-grad);
+    background-color: var(--material-pink);
 }
 
 #showRescue span {
@@ -280,7 +291,7 @@ h5 {
 }
 
 #showEvacuation {
-    background-image: var(--marker-purple-grad);
+    background-color: var(--material-purple);
 }
 
 #showEvacuation span {
@@ -290,7 +301,7 @@ h5 {
 }
 
 #showMedical {
-    background-image: var(--marker-red-grad);
+    background-color: var(--material-red);
 }
 
 #showMedical span {
@@ -300,7 +311,7 @@ h5 {
 }
 
 #showMedicine {
-    background-image: var(--marker-cyan-grad);
+    background-color: var(--material-cyan);
 }
 
 #showMedicine span {
@@ -310,7 +321,7 @@ h5 {
 }
 
 #showShelter {
-    background-image: var(--marker-orange-grad);
+    background-color: var(--material-orange);
 }
 
 #showShelter span {
@@ -320,7 +331,7 @@ h5 {
 }
 
 #showFood {
-    background-image: var(--marker-green-grad);
+    background-color: var(--material-green);
 }
 
 #showFood span {
@@ -330,7 +341,7 @@ h5 {
 }
 
 #showWater {
-    background-image: var(--marker-blue-grad);
+    background-color: var(--material-blue);
 }
 
 #showWater span {
