@@ -344,8 +344,10 @@ h5 {
 .navbar-inverse .navbar-nav > li > a:focus,
 .navbar-inverse .navbar-brand:hover,
 .navbar-inverse .navbar-brand:focus {
-  color: #deefff;
-  background-color: #46696f;
+  /*color: var(--bright-blue);*/
+  /*background-color:  var(--med-blue);*/
+  color: whitesmoke;
+  background-color: #2d4358;
 }
 
 .help-menu .btn {
@@ -554,10 +556,6 @@ input.switch:checked ~ label:after {
   margin-left: 5px;
 }
 
-/*#event-info {
-    margin-left: 10px;
-}*/
-
 #event-info h4 {
   margin-top: 5px;
   margin-bottom: 0px;
@@ -693,6 +691,10 @@ select {
 
   .dark-container .dark-container {
     padding: 8px;
+  }
+
+  .panel-body {
+    padding: 5px;
   }
 }
 

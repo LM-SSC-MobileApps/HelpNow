@@ -1,10 +1,17 @@
 ﻿<div ng-controller="OrganizationAddCtrl">
     <div class="col-sm-6 col-sm-offset-3 dark-container">
+
         <form name="organizationForm" novalidate role="form">
+
             <div class="form-group" ng-class="">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <button type="button" class="close pull-right" ng-click="go('/administration')">&times;</button>
+                    </div>
+                </div>
                 <label for="orgName">{{orgType}} {{text.name_label}}</label>
                 <input type="text" ng-model="newOrg.Name" id="orgName" name="orgName" class="form-control" ng-required="true" ng-disabled="!isNew" />
-                <br />
+                <br>
                 <label for="apiSecret">API Secret:</label>
                 <input type="text" ng-model="newOrg.APISecret" id="apiSecret" name="apiSecret" class="form-control" ng-required="true" />
                 <div class="separated">
@@ -12,6 +19,8 @@
                     <a id="btn-showUser" class="btn btn-primary pull-right" ng-click="enterAddress(newOrg)"><span></span>{{text.btn_enter_address}}</a>
                 </div>
             </div>
+
         </form>
+
     </div>
 </div>
